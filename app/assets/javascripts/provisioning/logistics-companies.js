@@ -180,4 +180,21 @@ $(function () {
         $(this).find('form').attr('action', '/operators/?logistics_company_id=' + id).attr('method', 'POST');
     });
 
+    // validate fields
+    logisticCompaniesTableEditor.on('preSubmit', function (e, o, action) {
+        if (action !== 'remove') {
+            var name = logisticCompaniesTableEditor.field('name');
+            if (!name.isMultiValue()) {
+                if (!name.val()) {
+                    name.error('A company name must be given');
+                }
+            }
+            if (this.inError()) {
+                return false;
+            }
+        }
+    });
+
+});
+
 });
