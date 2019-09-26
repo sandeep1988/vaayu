@@ -50,8 +50,8 @@ class IngestEmployeeShiftWorker < IngestWorker
       gender: row['gender'],
       area: row['area'],
       process_code: row['process_code'],
-      site: Site.last,
-      zone: Zone.last,
+      site: Site.find_by_name(row['site']),
+      zone: Zone.find_by_name(row['zone']),
       employee_company: EmployeeCompany.first,
       allow_update: true
     )
