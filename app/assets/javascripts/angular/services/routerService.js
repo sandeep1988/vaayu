@@ -29,7 +29,7 @@ function ($resource, BASE_URL_8002, SessionService) {
 
 angular.module('app').factory('RouteService', ['$resource', 'BASE_URL_8002', 'SessionService',
 function ($resource, BASE_URL_8002, SessionService) {
-  return $resource('http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8002/api/v1/' + 'generateRoutes', {}, {
+  return $resource(BASE_URL_8002 + 'generateRoutes', {}, {
     query: { method: "GET", isArray: true },
     create: { method: "POST" },
     getRoutes: {

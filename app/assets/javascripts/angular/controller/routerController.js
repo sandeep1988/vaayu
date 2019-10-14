@@ -71,7 +71,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.finalizeArray = [];
 
   $scope.selectRoute = (container) => {
-    $scope.finalizeArray.push(container);
+    $scope.finalizeArray.push({routeId: container.routeId});
 
     var coords = [];
     angular.forEach(container.employees, function (emp, idx, empArray) {
@@ -217,10 +217,17 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.isDisabled = true;
 
-  $scope.finalizeRoutes = function () {
-    FinalizeService.query($scope.finalizeArray, function () {
+  $scope.finalizeRoutes =  () => {
+    if ($scope.finalizeArray.length === 0) {
+      ToasterService.showError('Error', 'Kindly select a route before save')
+      return;
+    }
+    let postdata = {routesFinalizeArray : $scope.finalizeArray}
+    console.log('finalizeRoutes request object',postdata)
+    FinalizeService.query( postdata, (data) => {
+      console.log('finalizeRoutes ',data);
       $scope.resetRoute();
-    });
+    }, err => ToasterService.showError('Error', 'Something went wrong'));
   }
 
   $scope.saveRoutes = function () {
@@ -599,23 +606,23 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.autoAllocate = function () {
     let shift = JSON.parse($scope.selectedShift);
-    // var postData = {
-    //   'customerId': SessionService.custId,
-    //   "siteId": $scope.siteId,
-    //   "shiftId": shift.id,
-    //   "shift_type": shift.trip_type,
-    //   scheduledDate: '2019-10-24' //moment($scope.filterDate).format('YYYY-MM-DD')
-    // }
     var postData = {
-      "siteId": 30,
-      "shiftId": 138,
-      "customerId": 1,
-      "shift_type": 1,
-      "scheduledDate": "2019-10-24"
+      'customerId': SessionService.custId,
+      "siteId": $scope.siteId,
+      "shiftId": shift.id,
+      "shift_type": shift.trip_type,
+      scheduledDate: moment($scope.filterDate).format('YYYY-MM-DD')
     }
+    // var postData = {
+    //   "siteId": 30,
+    //   "shiftId": 138,
+    //   "customerId": 1,
+    //   "shift_type": 1,
+    //   "scheduledDate": "2019-10-24"
+    // }
     console.log(postData)
     AutoAllocationService.query(postData, function (data) {
-      console.log(data);
+      console.log('autoallocation response ', data);
       if (data['success']) {
         console.log(JSON.stringify(data))
         $scope.routes = data;

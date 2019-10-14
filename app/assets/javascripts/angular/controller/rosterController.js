@@ -66,9 +66,6 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
   }
 
-  $scope.updateDirectionData = function (directionData) {
-  }
-
   $scope.updateFilters = function () {
 
     let postData = {
@@ -76,9 +73,10 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
     }
 
-    if ($scope.directionData) {
-      postData.shift_type = $scope.directionData;
+    if ($scope.shift_type) {
+      postData.shift_type = $scope.shift_type;
     }
+    console.log(postData)
     RosterService.get(postData, function (data) {
       $scope.rosters = data.data.shiftdetails;
       $scope.stats = data.data.stats;
@@ -120,9 +118,9 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   //date picker function
 
   $scope.generateRoutes = function(roster) {
-    console.log(roster);
-    console.log($scope.selectedSite);
-    console.log($scope.filterDate)
+    // console.log(roster);
+    // console.log($scope.selectedSite);
+    // console.log($scope.filterDate)
 
     let shift_type = 0;
     if (roster.shift_type.toLowerCase() === 'check out') {
@@ -133,14 +131,18 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       "site_id":parseInt($scope.selectedSite.id),
       "shift_id":parseInt(roster.id),
       "to_date":moment($scope.filterDate).format('YYYY-MM-DD'),
+      "search" : '0',
       "shift_type": shift_type // 0 -checkin 1-checout
     }
+    console.log(postData)
 
     RouteService.getRoutes(postData,
       (res) => {
         console.log(res);
         if (res['success']) {
           ToasterService.showSuccess('Success', 'Route generated successfully.');
+        } else {
+          ToasterService.showError('Error', res['message']);
         }
 
     }, (error) => {
@@ -199,13 +201,15 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.minusVehicle = function (key) {
-    $scope.currentRoster.vehicle[key] = parseInt($scope.currentRoster.vehicle[key]) - 1
-    $scope.currentRoster.total_vehicles = $scope.currentRoster.total_vehicles - 1;
-    if ($scope.currentRoster.vehicle_capacity[key]) {
-      $scope.currentRoster.total_seats = $scope.currentRoster.total_seats - $scope.currentRoster.vehicle_capacity[key];
-    }
+    if(parseInt($scope.currentRoster.vehicle[key]) > 0){
+      $scope.currentRoster.vehicle[key] = parseInt($scope.currentRoster.vehicle[key]) - 1
+      $scope.currentRoster.total_vehicles = $scope.currentRoster.total_vehicles - 1;
+      if ($scope.currentRoster.vehicle_capacity[key]) {
+        $scope.currentRoster.total_seats = $scope.currentRoster.total_seats - $scope.currentRoster.vehicle_capacity[key];
+      }
 
-    $scope.disableDone($scope.currentRoster);
+      $scope.disableDone($scope.currentRoster);
+    }
   }
 
   $scope.submitAddVehicle = function () {

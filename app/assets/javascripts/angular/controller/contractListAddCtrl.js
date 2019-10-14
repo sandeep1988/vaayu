@@ -1,4 +1,4 @@
-app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionService, ToasterService, $location, $timeout) {
+app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionService, ToasterService, $location) {
 
     this.$onInit = function () {
         console.log('onit - contractListAddCtrl');
@@ -172,7 +172,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
                     // $scope.$broadcast('onSiteListReceived',res.data.data.list);
                     console.log(JSON.stringify($scope.siteList))
                 } else {
-                    ToasterService.showError('Error', res.data['message']);
+                    alert(res.data['message']);
                 }
 
             }).catch(err => {
@@ -182,18 +182,13 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
 
     };
 
-    $scope.onFileSelected = () => {
-        console.log($scope.selectedFile)
-    }
+
 
     $scope.fileNameChanged = function (e) {
         console.log(e.files)
         $scope.fileObject = e.files[0];
         console.log(e, $scope.fileObject)
-        $timeout(() => {
-            $scope.tempfileName = $scope.fileObject.name
-            console.log($scope.tempfileName)
-        }, 200)
+
     }
 
     $scope.downloadCSV = function () {
@@ -239,7 +234,6 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     }
 
     $scope.createContract = function () {
-        $scope.tempfileName = 'atul jadhav'
         // var file=$scope.myFile;
         if (!$scope.isValid()) {
             return;
@@ -251,8 +245,8 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
 
         var formData = new FormData();
         formData.append("customer_id", "1");
-        console.log($scope.selectedUIDtoSend);
-        formData.append("unique_identification", $scope.selectedUIDtoSend);
+        
+        formData.append("unique_identification[]", $scope.selectedUIDtoSend);
         formData.append("billig_cycle", $scope.bcycle);
         formData.append("contract_type", $scope.ctype);
         formData.append("contract_file", $scope.fileObject);
@@ -265,8 +259,8 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         } 
         var request = new XMLHttpRequest();
         var vm = $scope;
-        // request.open("POST", "http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8003/api/v1/" + contractType + "/upload");
-        request.open("POST", "http://5be4a49e.ngrok.io/api/v1/" + contractType + "/upload");
+        request.open("POST", "http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8003/api/v1/" + contractType + "/upload");
+        // request.open("POST", "http://83015bdb.ngrok.io/api/v1/" + contractType + "/upload");
         request.onload = function () {
             console.log(request.response);
             if (request.readyState === request.DONE) {
@@ -275,7 +269,6 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
                     vm.submitResponse = request.response;                    
                     ToasterService.showSuccess('Success', 'Contract created successfully.');
                     console.log('Contract created successfully.');
-                    $scope.getContracts();
                 }
             } else {
                 ToasterService.showError('Error', 'Something went wrong, Try again later.');
@@ -355,14 +348,12 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
             },
             data: { test: 'test' }
         }).then(function (res) {
-            console.log(res)
             if (res.data['success']) {
                 $scope.contractList = res.data.data;
                 // $scope.$broadcast('onSiteListReceived',res.data.data.list);
                 console.log(JSON.stringify($scope.contractList))
-                
             } else {
-                ToasterService.showError('Error', res.data['message']);
+                alert(res.data['message']);
             }
 
         }).catch(err => {
@@ -373,23 +364,12 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
 
     $scope.downloadSampleFile = () => {
         console.log($scope.selectedSiteId );
-        if (!$scope.selectedSiteId && $scope.tab === 'CUSTOMER') {
+        if (!$scope.selectedSiteId ) {
             ToasterService.showError('Error', 'Please select site name');
             return;
         }
-        
-        if (!$scope.baID && $scope.tab === 'BA') {
-            ToasterService.showError('Error', 'Please select BA name');
-            return;
-        }
-        let id = $scope.selectedSiteId;
-        let type = "SITE";
-        if ($scope.tab == 'BA') {
-            id = $scope.baID;
-            type = 'BA'
-        } 
         var a = document.createElement("a");
-        let url = 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8003/api/v1/contract/download-samplefile/'+id+'/'+type
+        let url = 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8003/api/v1/contract/download-samplefile/'+$scope.selectedSiteId
         a.href = url;
         a.download = 'contract_sample.xlsx';
         a.click();   
@@ -414,7 +394,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
                     // $scope.$broadcast('onSiteListReceived',res.data.data.list);
                     console.log(JSON.stringify($scope.baList))
                 } else {
-                    ToasterService.showError('Error', res.data['message']);
+                    alert(res.data['message']);
                 }
 
             }).catch(err => {
@@ -435,4 +415,4 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         return name;
     }
 
-});
+})
