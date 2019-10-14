@@ -2,7 +2,7 @@ default: &default
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: moove_db_uat_test #<%= ENV['DATABASE_NAME'] %>
+  database: moove_db #<%= ENV['DATABASE_NAME'] %>
   pool: <%= ENV.fetch('RAILS_MAX_THREADS') { 5 } %>
   username: MOOVE_DEV #<%= ENV['DATABASE_USERNAME'] %>
   password: NG$Pir7ySMJ9m&p9 #<%= ENV['DATABASE_PASSWORD'] %>
