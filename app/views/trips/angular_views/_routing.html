@@ -37,9 +37,7 @@
             </div>
           </div>
 
-          <button type="button"
-            ng-click="genrateRoute(siteId, JSON.parse(selectedShift.id) , filterDate, JSON.parse(selectedShift.trip_type))"
-            class="btn btn-terniary-disable">OK</button>
+          <button type="button" ng-click="generateRoute(siteId, JSON.parse(selectedShift.id) , filterDate, JSON.parse(selectedShift.trip_type))" class="btn btn-terniary-disable">OK</button>
         </form>
       </div>
 
@@ -139,8 +137,8 @@
                 <div class="col-md-12">
                   <div ng-repeat="containers in model2">
                     <div class="vaayu-dropzone">
-                      <div
-                        ng-repeat="container in containers | filter :{vehicle_allocated:search} | range : 'empty_seats' : slider_empty.minValue : slider_empty.maxValue | range : 'total_seats' : slider_occupied.minValue : slider_occupied.maxValue"
+                      <!-- | filter :{vehicle_allocated:search} | range : 'empty_seats' : slider_empty.minValue : slider_empty.maxValue | range : 'total_seats' : slider_occupied.minValue : slider_occupied.maxValue -->
+                      <div ng-repeat="container in containers | filter :{vehicle_allocated:search}"
                         no-drag dnd-callback="container.employees.length" class="employee-cluster-panel">
                         <div class="employee-cluster-panel-heading">
                           <div class="employee-cluster-panel-title">
@@ -150,14 +148,14 @@
                           </div>
                         </div>
 
-                        <div class="employee-cluster-panel-body">
+                        <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()' style="cursor: pointer">
                           <div class="employee-cluster-panel-heading-meta">
                             <div class="employee-cluster-panel-title">
                               <div class="row">
                                 <div class="col-md-6 align-center">
                                   <span class="kilometer_time_duration">
                                     <i class="fa fa-road" aria-hidden="true"></i>
-                                    {{container.total_distabce}} Km
+                                    {{container.total_distance}} Km
                                   </span>
                                 </div>
                                 <div class="col-md-6 align-center">

@@ -18,17 +18,12 @@ angular.module('app')
 
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, VehicleService, SiteService, GuardsService, RosterService, RouteService, RouteUpdateService,
   AutoAllocationService, VehicleAssignService, GuardAssignService,
-  FinalizeService, RouteStaticResponse) {
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService) {
 
   $scope.place = {};
   // Map.init();
 
   $scope.initMap = function () {
-    $scope.mymap = new google.maps.Map(document.getElementById('map'), {
-      zoom: 13,
-      center: { lat: 0, lng: -180 },
-      mapTypeId: 'terrain'
-    });
 
     // $scope.drawMapPath([
     //   {lat: 37.772, lng: -122.214},
@@ -44,25 +39,34 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // {lat: -27.467, lng: 153.027}
     // ];
 
-  }
-
-  $scope.drawMapPath = (coordinates) => {
-    var pt = new google.maps.LatLng(coordinates[0].lat, coordinates[0].lng);
-    // var pt = new google.maps.LatLng(19.184925, 72.8398173);
-
-    $scope.mymap.setCenter(pt);
-    $scope.mymap.setZoom(13);
-
-    let flightPath = new google.maps.Polyline({
-      path: coordinates,
-      geodesic: true,
-      strokeColor: '#FF0000',
-      strokeOpacity: 1.0,
-      strokeWeight: 2
+    var directionsService = new google.maps.DirectionsService();
+    var directionsRenderer = new google.maps.DirectionsRenderer();
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 13,
+      center: { lat: 19.2578, lng: 72.8731 },
+      mapTypeId: 'terrain'
     });
+    $scope.map = map
+    console.log('map ', $scope.map)
+    directionsRenderer.setMap(map);
+    var stepDisplay = new google.maps.InfoWindow;
+    var waypts = [
+      {
+        location: 'Kandivali Station (W), Parekh Nagar, Kandivali, Mumbai, Maharashtra',
+        stopover: true
+      },
+      {
+        location: 'Thane Station Road, Jambli Naka, Thane West, Thane, Maharashtra',
+        stopover: true
+      }
 
-    flightPath.setMap($scope.mymap);
+    ];
+    // calculateAndDisplayRoute(directionsRenderer, directionsService, $scope.markerArray, waypts, stepDisplay, map);    // Define a symbol using SVG path notation, with an opacity of 1.
+    // calculateAndDisplayRoute( directionsService, directionsRenderer, waypts)
+
   }
+
+
 
   $scope.finalizeArray = [];
 
@@ -76,7 +80,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       } catch (er) { console.log(er) }
     });
 
-    $scope.drawMapPath(coords)
+
   }
 
 
@@ -118,7 +122,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     RosterService.getAllSiteList(function (data) {
       $scope.siteList = data.data.list;
-      $scope.siteId = $scope.siteList[0].id;
+      if ($scope.siteList.length) {
+        $scope.siteId = $scope.siteList[0].id;
+      }
 
       let postData = {
         "site_id": $scope.siteList[0].id,
@@ -126,12 +132,13 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       }
 
       RosterService.get(postData, function (data) {
+
         if (data.data) {
           $scope.shifts = data.data.shiftdetails;
           if ($scope.shifts && $scope.shifts.length) {
             $scope.selectedShift = $scope.shifts[0];
             $scope.resetRoute();
-            // $scope.genrateRoute($scope.siteId,$scope.shifts[0].id,moment().format('YYYY-MM-DD'),1);
+            // $scope.generateRoute($scope.siteId,$scope.shifts[0].id,moment().format('YYYY-MM-DD'),1);
           } else {
             $scope.selectedShift = null;
             // $scope.resetRoute();
@@ -147,10 +154,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.getVehicleAndGuardList = function (siteId, shiftId) {
-
-    GuardsService.get({ "siteId": siteId, "shiftId": shiftId }, function (res) {
-      // $scope.guardList = res.data;
-      $scope.guardList = RouteStaticResponse.all_guards_response;
+    // let body = {shiftId:105, siteId:8} // { siteId, shiftId }
+    GuardsService.get({ siteId, shiftId }, function (res) {
+      console.log('guard list')
+      $scope.guardList = res.data;
+      // $scope.guardList = RouteStaticResponse.all_guards_response;
       console.log(res.data);
       angular.forEach($scope.guardList, function (item) {
         item.type = "guard";
@@ -167,10 +175,13 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       console.log(error);
     });
 
-    VehicleService.get({ "siteId": siteId, "shiftId": shiftId }, function (res) {
-      // $scope.vehicleList = res.data;
-      $scope.vehicleList = RouteStaticResponse.all_vehicle_response;
+    VehicleService.get({ shiftId, siteId }, function (res) {
+      // $scope.vehicleList = res.data;c
+      console.log('vehicle list')
       console.log(res.data);
+      $scope.vehicleList = res.data;
+
+      // $scope.vehicleList = RouteStaticResponse.all_vehicle_response;
       angular.forEach($scope.vehicleList, function (item) {
         item.type = "vehical";
       })
@@ -193,13 +204,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
     }
 
-
     RosterService.get(postData, function (data) {
       $scope.shifts = data.data.shiftdetails;
-    }
-      , function (error) {
-        console.log(error);
-      });
+    }, function (error) {
+      console.log(error);
+    });
   }
 
   $scope.shuffleEvent = function (item) {
@@ -290,7 +299,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     $scope.finalizeArray = [];
     $scope.routeChangedIds = [];
 
-    $scope.genrateRoute($scope.siteId, $scope.selectedShift.id, $scope.filterDate, $scope.selectedShift.trip_type);
+    $scope.generateRoute($scope.siteId, $scope.selectedShift.id, $scope.filterDate, $scope.selectedShift.trip_type);
   }
 
   $scope.showStaticData = () => {
@@ -335,81 +344,110 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       }
     )
 
+    console.log($scope.routes);
+
     $scope.fullModel = [$scope.routes.data.routes];
     $scope.model2 = $scope.fullModel;
   }
 
-  $scope.genrateRoute = function (siteId, shiftId, filterDate, shiftType) {
+  $scope.generateRoute = function (siteId, shiftId, filterDate, shiftType) {
+
+    if (!$scope.siteId) {
+      ToasterService.showError('Error', 'Select Site.');
+      return;
+    } else if (!$scope.selectedShift) {
+      ToasterService.showError('Error', 'Select Shift.');
+      return;
+    }
 
     let shift = JSON.parse($scope.selectedShift);
+    // Static data display
+    // $scope.showStaticData();
+    //  $scope.getVehicleAndGuardList(siteId, 92);
 
-    $scope.showStaticData();
-
-    // $scope.getVehicleAndGuardList(siteId, shift.id);
-    $scope.getVehicleAndGuardList(siteId, 92);
-
-
+    $scope.getVehicleAndGuardList(siteId, shift.id);
 
     let postData = {
       "site_id": parseInt($scope.siteId),
       "shift_id": parseInt(shift.id),
       "to_date": moment(filterDate).format('YYYY-MM-DD'),
-      "shift_type": shift.trip_type // 0 -checkin 1-checout
+      "search": "1",
+      "shift_type": shift.trip_type + '' // 0 -checkin 1-checout
     }
-    console.log('getRoutes = ' + JSON.stringify(postData));
-    // RouteService.getRoutes(postData, (data) => {
+    console.log(postData)
 
-    //   // $scope.routes =data;
-    //   console.log(data);
-    //   $scope.routes = RouteStaticResponse.route_response;
+    RouteService.getRoutes(postData, (data) => {
 
-    //   $scope.originalRoutes = angular.copy($scope.routes.data.routes);
+      console.log(data);
+      $scope.routes = data;
 
-    //   $scope.stats = $scope.routes.data.tats[0];
+      // $scope.routes = RouteStaticResponse.route_response;
 
-    //   angular.forEach($scope.routes.data.routes, function (route, index, routeArray) {
-    //     route.allowed = "all";
-    //     if (route.guard) {
-    //       let guard = route.guard;
-    //       guard.type = 'guard';
-    //       route.guard = [guard]
-    //     } else {
-    //       route.guard = [];
-    //     }
-    //     if (route.vehicle) {
-    //       let vehical = route.vehicle;
-    //       vehical.type = 'vehical';
-    //       route.vehicle = [vehical]
-    //     } else {
-    //       route.vehicle = [];
-    //     }
+      if ($scope.routes.data) {
+        try {
+          ToasterService.showToast('info', 'Response Received', $scope.routes.data.routes.length+' Routes found for this shift')
+          $scope.originalRoutes = angular.copy($scope.routes.data.routes);
+          $scope.stats = $scope.routes.data.tats[0];
+          console.log($scope.model2)
+        } catch (err) {
+          $scope.routes = RouteStaticResponse.emptyResponse;
+          $scope.routes.data.routes = [];
+          ToasterService.showToast('info', 'Response Received', 'No Routes found for this shift')
+          console.log('error', err)
+        }
+        $scope.showRouteData()
+      }
+    }, (error) => {
+      console.log(error);
+    });
+  }
 
-    //     angular.forEach(route.employees_nodes_addresses, function (employee, idx, emmplyeeArray) {
-    //       employee.type = "employee";
-    //       employee.effectAllowed = "all";
-    //     })
+  $scope.showRouteData = () => {
+    angular.forEach($scope.routes.data.routes, function (route, index, routeArray) {
+      route.allowed = "all";
+      if (route.guard) {
+        let guard = route.guard;
+        guard.type = 'guard';
+        route.guard = [guard]
+      } else {
+        route.guard = [];
+      }
+      if (route.vehicle) {
+        let vehical = route.vehicle;
+        vehical.type = 'vehical';
+        route.vehicle = [vehical]
+      } else {
+        route.vehicle = [];
+      }
 
-    //     route.employees = route.employees_nodes_addresses;
-    //   })
+      angular.forEach(route.employees_nodes_addresses, function (employee, idx, emmplyeeArray) {
+        employee.type = "employee";
+        employee.effectAllowed = "all";
+      })
 
-    //   $scope.routes.data.routes.push(
-    //     {
-    //       "vehicle_allocated": '',
-    //       "employees": [],
-    //       "vehicle": [],
-    //       "guard": [],
-    //       "allowed": "all"
-    //     }
-    //   )
+      route.employees = route.employees_nodes_addresses;
+    })
 
-    //   $scope.fullModel = [$scope.routes.data.routes];
-    //   $scope.model2 = $scope.fullModel;
+    $scope.routes.data.routes.push(
+      {
+        "vehicle_allocated": '',
+        "employees": [],
+        "vehicle": [],
+        "guard": [],
+        "allowed": "all"
+      }
+    )
 
+    $scope.fullModel = [$scope.routes.data.routes];
+    $scope.model2 = $scope.fullModel;
+  }
 
-    // }
-    //   , (error) => {
-    //     console.log(error);
-    //   });
+  $scope.collapsiblePanel = function (item) {
+    if (item.collapse) {
+      item.collapse = false;
+    } else {
+      item.collapse = true;
+    }
   }
 
   // datepicker function
@@ -528,11 +566,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   };
 
   $scope.dropGuardCallback = function (container, index, item, external, type) {
-
     var isAssign = true;
     if (isAssign) {
       var postData = {
-        "guardId": item.id,
+        "guardId": item.guardId,
         "routeId": container.routeId
       };
 
@@ -561,13 +598,36 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   // // Initialize model
 
   $scope.autoAllocate = function () {
+    let shift = JSON.parse($scope.selectedShift);
+    // var postData = {
+    //   'customerId': SessionService.custId,
+    //   "siteId": $scope.siteId,
+    //   "shiftId": shift.id,
+    //   "shift_type": shift.trip_type,
+    //   scheduledDate: '2019-10-24' //moment($scope.filterDate).format('YYYY-MM-DD')
+    // }
     var postData = {
-      "site_id": $scope.siteId,
-      "shift_id_id": $scope.selectedShift.id,
+      "siteId": 30,
+      "shiftId": 138,
+      "customerId": 1,
+      "shift_type": 1,
+      "scheduledDate": "2019-10-24"
     }
-    AutoAllocationService.query(function (data) {
-      $scope.routes = data;
-      $scope.resetRoute();
+    console.log(postData)
+    AutoAllocationService.query(postData, function (data) {
+      console.log(data);
+      if (data['success']) {
+        console.log(JSON.stringify(data))
+        $scope.routes = data;
+      } else {
+        ToasterService.showError('Error', data.message);
+      }
+
+      // $scope.resetRoute();
+
+
+    }, function (err) {
+      ToasterService.showError('Error', 'Something went wrong..');
     })
   }
 
@@ -618,11 +678,95 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.showFilterSidebar = function () {
     $scope.resetSidebar();
-    $scope.isFilterSidebarView = true;
+    // $scope.isFilterSidebarView = true;
   }
+
+  function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
+    directionsService.route({
+      origin: 'Veer Savarkar Flyover, Malad, Liliya Nagar, Malad West, Mumbai, Maharashtra 400064',
+      destination: 'Panvel, Navi Mumbai, Maharashtra',
+      waypoints: waypts,
+      optimizeWaypoints: true,
+      travelMode: google.maps.DirectionsTravelMode.DRIVING
+    }, function (response, status) {
+      if (status === 'OK') {
+        directionsRenderer.setDirections(response);
+        var route = response.routes[0];
+        var summaryPanel = document.getElementById('directions-panel');
+        
+        if(summaryPanel){
+          summaryPanel.innerHTML = '';
+          // For each route, display summary information.
+          for (var i = 0; i < route.legs.length; i++) {
+            var routeSegment = i + 1;
+            summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+              '</b><br>';
+            summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+            summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+            summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+          }
+        }
+      } else {
+        window.alert('Directions request failed due to ' + status);
+      }
+    });
+  }
+
+  function attachInstructionText(stepDisplay, marker, text, map) {
+    google.maps.event.addListener(marker, 'click', function () {
+      // Open an info window when the marker is clicked on, containing the text
+      // of the step.
+      stepDisplay.setContent(text);
+      stepDisplay.open(map, marker);
+    });
+  }
+  // Helping Functions End
 
   $scope.getShiftType = (shiftType) => {
     return shiftType.toLowerCase() === 'check out' ? 1 : 0;
   }
 
+  $scope.getCurrentVehicleLocation = (vehicleNumber) => {
+    // call vehicle list api
+    // $http({
+    //   method: 'GET',
+    //   url: 'https://intouch.mapmyindia.com/Intouch/apis/getEntityList?token=z5fmo6ekwd6ucrp4k9ujf1x5jwnw25m2'
+    // })
+    //   .then(function (response) {
+    //   // console.log(JSON.stringify(response))
+
+    //     if (response.entity.length > 0 && response.message === 'success' && response.status === 200) {
+    //       const vehicleListData = response.entity.filter((e) => e.registrationNumber === vehicleNumber)
+
+    //       if (vehicleListData.length > 0) {
+    //         const entityId = vehicleListData[0].id
+    //         $http({
+    //           method: 'GET',
+    //           url: 'https://intouch.mapmyindia.com/Intouch/apis/getEntityLiveData?token=z5fmo6ekwd6ucrp4k9ujf1x5jwnw25m2&entityId=' + entityId
+    //         })
+    //           .then((vehicleData) => {
+    //           // map car icon in google map
+    //           })
+    //           .catch(() => {
+    //             ToasterService.showError('Error', 'Something went wrong, Try again later.')    
+    //           })
+    //       } else {
+    //         ToasterService.showError('Error', 'Something went wrong, Try again later.')
+    //       }
+    //     } else {
+    //       ToasterService.showError('Error', 'Something went wrong, Try again later.')
+    //     }
+    //   }).catch(err => {
+    //     console.log(err)
+    //     ToasterService.showError('Error', 'Something went wrong, Try again later.')
+    //   })
+
+    // hard coded vehicle location
+    console.log('$scope.map ', $scope.map)
+    var marker1 = new google.maps.Marker({
+      map: $scope.map,
+      position:  new google.maps.LatLng(19.2578, 72.8731),
+      icon: "../assets/angular_images/car.png"
+    })
+  }
 });
