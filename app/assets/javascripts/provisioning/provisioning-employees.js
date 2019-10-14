@@ -122,30 +122,7 @@ $(function () {
             }]
 
     });
-
-    // Edit record
-    $(table).on('click', 'a.editor_edit', function (e) {
-        e.preventDefault();
-
-        employeesTableEditor
-            .title('Edit employee')
-            .buttons([
-                {
-                    label: "Close",
-                    className: 'btn btn-sm btn-default',
-                    fn: function () {
-                        this.close()
-                    }
-                }, {
-                    label: "Save changes",
-                    className: 'btn btn-sm btn-primary btn-fixed-width',
-                    fn: function () {
-                        this.submit()
-                    }
-                }])
-            .edit($(this).closest('tr'))
-    });
-
+    
     // set selectboxes
     employeesTableEditor.on('preOpen', function (e, mode, action) {
         window.setTimeout(function () {
@@ -156,7 +133,6 @@ $(function () {
     // Delete record
     $(table).on('click', 'a.editor_remove', function (e) {
         e.preventDefault();
-
         employeesTableEditor
             .title('Delete employee')
             .message("Are you sure you wish to delete this employee?")
@@ -253,7 +229,7 @@ $(function () {
                         data: null,
                         orderable: false,
                         render: function (data) {
-                            var txt = data.status === "Invited" ? '<a href="#" data-url="/employees/'+ data.id +'/invite" class="invite-count"><span>Re-Invite</span></a> <a href="#" class="editor_remove text-danger">Delete</a>' : '<a href="#" class="editor_remove text-danger">Delete</a>'
+                            var txt = data.status === "Invited" ? '<a href="#" data-url="/employees/'+ data.id +'/invite" class="invite-count"><span>Re-Invite</span></a> <a href="#" class="editor_remove text-danger">Delete</a>/ <a href="/employees/' + data.id + '/edit" data-remote="true" class="edit employer_view" id="viewEmployee" >View</a>' : '<a href="#" class="editor_remove text-danger">Delete</a> <a href="/employees/' + data.id + '/edit" data-remote="true" class="edit employer_view" id="viewEmployee">View</a>'
                             return txt;
                         }
                     }
@@ -408,4 +384,6 @@ $(function () {
     }
   });
 });
+
+
 
