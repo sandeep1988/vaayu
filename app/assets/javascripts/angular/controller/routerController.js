@@ -367,10 +367,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       return;
     }
 
-    let shift = JSON.parse($scope.selectedShift);
+    // let shift = JSON.parse($scope.selectedShift);
     // Static data display
-    // $scope.showStaticData();
-    //  $scope.getVehicleAndGuardList(siteId, 92);
+    $scope.showStaticData();
+    $scope.getVehicleAndGuardList(siteId, 92);
+    return;
 
     $scope.getVehicleAndGuardList(siteId, shift.id);
 
