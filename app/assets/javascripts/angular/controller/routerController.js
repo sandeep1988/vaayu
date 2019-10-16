@@ -23,7 +23,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.place = {};
   // Map.init();
 
-  $scope.initMap = function () {
+  $scope.initMap =  () => {
 
     // $scope.drawMapPath([
     //   {lat: 37.772, lng: -122.214},
@@ -59,7 +59,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         location: 'Thane Station Road, Jambli Naka, Thane West, Thane, Maharashtra',
         stopover: true
       }
-
     ];
     // calculateAndDisplayRoute(directionsRenderer, directionsService, $scope.markerArray, waypts, stepDisplay, map);    // Define a symbol using SVG path notation, with an opacity of 1.
     // calculateAndDisplayRoute( directionsService, directionsRenderer, waypts)
@@ -154,11 +153,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.getVehicleAndGuardList = function (siteId, shiftId) {
-    // let body = {shiftId:105, siteId:8} // { siteId, shiftId }
-    GuardsService.get({ siteId, shiftId }, function (res) {
+    let body = {shiftId:105, siteId:8} // { siteId, shiftId }
+    GuardsService.get(body, function (res) {
       console.log('guard list')
-      $scope.guardList = res.data;
-      // $scope.guardList = RouteStaticResponse.all_guards_response;
+      // $scope.guardList = res.data;
+      $scope.guardList = RouteStaticResponse.all_guards_response;
       console.log(res.data);
       angular.forEach($scope.guardList, function (item) {
         item.type = "guard";
@@ -175,13 +174,14 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       console.log(error);
     });
 
-    VehicleService.get({ shiftId, siteId }, function (res) {
-      // $scope.vehicleList = res.data;c
+    let body1 = {shiftId:138, siteId:30}
+    VehicleService.get(body1, function (res) {
+      // $scope.vehicleList = res.data;
       console.log('vehicle list')
       console.log(res.data);
-      $scope.vehicleList = res.data;
+      // $scope.vehicleList = res.data;
 
-      // $scope.vehicleList = RouteStaticResponse.all_vehicle_response;
+      $scope.vehicleList = RouteStaticResponse.all_vehicle_response;
       angular.forEach($scope.vehicleList, function (item) {
         item.type = "vehical";
       })
@@ -309,12 +309,13 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     $scope.generateRoute($scope.siteId, $scope.selectedShift.id, $scope.filterDate, $scope.selectedShift.trip_type);
   }
 
-  $scope.showStaticData = () => {
-    $scope.routes = RouteStaticResponse.route_response;
+  $scope.showStaticData = (res) => {
+    $scope.routes = res;
 
     $scope.originalRoutes = angular.copy($scope.routes.data.routes);
 
     $scope.stats = $scope.routes.data.tats[0];
+    
 
     angular.forEach($scope.routes.data.routes, function (route, index, routeArray) {
       route.allowed = "all";
@@ -341,15 +342,18 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       route.employees = route.employees_nodes_addresses;
     })
 
-    $scope.routes.data.routes.push(
-      {
-        "vehicle_allocated": '',
-        "employees": [],
-        "vehicle": [],
-        "guard": [],
-        "allowed": "all"
-      }
-    )
+    if ( $scope.routes.data.routes.length <= 4) {
+      $scope.routes.data.routes.push(
+        {
+          "vehicle_allocated": '',
+          "employees": [],
+          "vehicle": [],
+          "guard": [],
+          "allowed": "all"
+        }
+      )
+    }
+    
 
     console.log($scope.routes);
 
@@ -367,9 +371,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       return;
     }
 
-    // let shift = JSON.parse($scope.selectedShift);
+    let shift = JSON.parse($scope.selectedShift);
     // Static data display
-    $scope.showStaticData();
+    $scope.showStaticData(RouteStaticResponse.route_response);
     $scope.getVehicleAndGuardList(siteId, 92);
     return;
 
@@ -606,6 +610,17 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   // // Initialize model
 
   $scope.autoAllocate = function () {
+    if (!$scope.siteId) {
+      ToasterService.showError('Error', 'Select Site.');
+      return;
+    } else if (!$scope.selectedShift) {
+      ToasterService.showError('Error', 'Select Shift.');
+      return;
+    }
+    ToasterService.showSuccess('Success', 'Routes are allocated successfully.')
+    $scope.showStaticData(RouteStaticResponse.allocated_route_response);
+    return ;
+
     let shift = JSON.parse($scope.selectedShift);
     var postData = {
       'customerId': SessionService.custId,
