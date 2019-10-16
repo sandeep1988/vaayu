@@ -115,7 +115,7 @@ Given(/^I create "([^"]*)" Manager in database$/) do |type|
 end
 
 Given(/^Start Console$/) do
-  binding.pry
+  # binding.pry
 end
 
 Given(/^Page Refreshed$/) do

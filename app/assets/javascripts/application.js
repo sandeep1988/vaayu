@@ -13,17 +13,6 @@
 //= require jquery/dist/jquery
 //= require jquery-ui/ui/jquery-ui
 //= require jqueryui-touch-punch/jquery.ui.touch-punch
-//= require angular
-//= require angular-animate
-//= require angular-ui-router
-//= require angular-drag-and-drop-lists
-//= require angular-google-maps
-//= require angular-resource
-//= require angular-simple-logger
-//= require AngularJS-Toaster
-//= require angular-bootstrap
-//= require angular/rzslider
-//= require angular/config
 //= require bootstrap
 //= require underscore
 //= require gmaps/google
@@ -82,11 +71,10 @@
 //= require chart.js/dist/Chart
 //= require chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels
 
+ 
+
 //= require_tree ./provisioning
 //= require_tree ./trips
 //= require_tree ./reports
 //= require_tree ./jobs
-//= require_tree ./angular
 //= require_tree .
-
-
