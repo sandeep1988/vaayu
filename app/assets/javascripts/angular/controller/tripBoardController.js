@@ -147,12 +147,12 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
 
   $scope.tempResponse = {
     "stats": {
-      "all_trips": 4,
-      "ongoing_trips": 9,
+      "all_trips": 3,
+      "ongoing_trips": 1,
       "delayed_trips": 0,
       "accepted_trips": 4,
       "pending_acceptance_trips": 0,
-      "cancelled": 0
+      "cancelled": 3
     },
     "tripsdetails": [{
       "trip_id": 138,

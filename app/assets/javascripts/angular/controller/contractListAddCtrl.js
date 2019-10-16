@@ -191,23 +191,30 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
 
     }
 
-    $scope.downloadCSV = function () {
-        $http({
-            method: 'GET',
-            url: 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8003/api/v1/contract/download-samplefile',
-            headers: {
-                'Content-Type': 'application/json',
-                'uid': SessionService.uid,
-                'access_token': SessionService.access_token,
-                'client': SessionService.client
-            },
+    // $scope.downloadCSV = function () {
+    //     var id = $scope.selectedSiteId
+    //     var type = 'SITE'
+    //     if ($scope.tab === 'BA') {
+    //         id = $scope.baID
+    //         type = 'BA'
+    //     }
+    //     console.log(type, id)        
+    //     $http({
+    //         method: 'GET',
+    //         url: 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8003/api/v1/contract/download-samplefile/'+id+'/'+type,
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'uid': SessionService.uid,
+    //             'access_token': SessionService.access_token,
+    //             'client': SessionService.client
+    //         },
 
-        })
-            .then(function (response) {
-                console.log(JSON.stringify(response))
-            });
-        console.log('download CSV');
-    }
+    //     })
+    //         .then(function (response) {
+    //             console.log(JSON.stringify(response))
+    //         });
+    //     console.log('download CSV');
+    // }
     
     $scope.isValid = () => {
         $scope.selectedUIDtoSend = $scope.selectedUIDs.map(({ value }) => value)
@@ -363,20 +370,35 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     }
 
     $scope.downloadSampleFile = () => {
-        console.log($scope.selectedSiteId );
-        if (!$scope.selectedSiteId ) {
-            ToasterService.showError('Error', 'Please select site name');
+        var id = $scope.selectedSiteId
+        var type = 'SITE'
+        if (!$scope.selectedSiteId && $scope.tab === 'CUSTOMER') {
+            ToasterService.showError('Error', 'Please select SITE name');
+            return;
+        } else if (!$scope.baID && $scope.tab === 'BA') {
+            ToasterService.showError('Error', 'Please select BA name');
+            id = $scope.baID
+            type = 'BA'
             return;
         }
+        var id = $scope.selectedSiteId
+        var type = 'SITE'
+        if ($scope.tab === 'BA') {
+            id = $scope.baID
+            type = 'BA'
+        }
+
         var a = document.createElement("a");
-        let url = 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8003/api/v1/contract/download-samplefile/'+$scope.selectedSiteId
+        let url = 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8003/api/v1/contract/download-samplefile/'+id+'/'+type
         a.href = url;
         a.download = 'contract_sample.xlsx';
         a.click();   
     }
 
     $scope.fetchBAList = () => {
-
+        if (!$scope.baID && $scope.tab === 'BA') {
+            return;
+        }
         $http({
             method: 'POST',
             url: 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com/induction/getAllBaList',

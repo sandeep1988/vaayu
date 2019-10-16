@@ -316,9 +316,13 @@ $(function () {
                     type: "GET",
                     url: '/employee_companies/get_all'
                 }).done(function (response) {
+                    console.log('employee_companies')
                     orig_service_html = $("#services").html()
                     allCompanies = response.employee_companies
+                    console.log('allCompanies', allCompanies)
+                    
                     logisticsCompanies = response.logistics_companies
+                    console.log('logisticsCompanies', logisticsCompanies)
                     current_user = response.current_user.entity_type
                     setTimeout(function(){                     
                         for(var i = 0; i < allCompanies.length; i++){

@@ -272,12 +272,12 @@ return {
                   "shift_id": 138,
                   "to_date": "2019-09-24",
                   "shift_type": "1",
-                  "no_of_routes": 2,
-                  "male_count": 2,
-                  "female_count": 2,
+                  "no_of_routes": 4,
+                  "male_count": 10,
+                  "female_count": 6,
                   "special": 1,
-                  "on_duty_vehicle": 3,
-                  "kilometres": 60
+                  "on_duty_vehicle": 4,
+                  "kilometres": 160
               }
           ],
           "routes": [
@@ -343,7 +343,7 @@ return {
                           "empName": "Madhuri Dikshit",
                           "lat": "123123123.23",
                           "long": "23423423423.234",
-                          "gender": "M",
+                          "gender": "F",
                           "special": "Yes"
                       },
                       {
@@ -419,7 +419,7 @@ return {
                           "empName": "Pushp C",
                           "lat": "123123123.23",
                           "long": "23423423423.234",
-                          "gender": "F",
+                          "gender": "M",
                           "special": "Yes"
                       },
                       {
@@ -512,7 +512,7 @@ return {
                           "empName": "Pranjali Deshmukh Deshmukh Deshmukh ",
                           "lat": "123123123.23",
                           "long": "23423423423.234",
-                          "gender": "M",
+                          "gender": "F",
                           "special": "Yes"
                       },
                       {
@@ -521,7 +521,7 @@ return {
                           "empName": "Praveen Samariya",
                           "lat": "123123123.23",
                           "long": "23423423423.234",
-                          "gender": "F",
+                          "gender": "M",
                           "special": "Yes"
                       }
                   ]
@@ -576,7 +576,7 @@ return {
                           "empName": "Sachin P",
                           "lat": "123123123.23",
                           "long": "23423423423.234",
-                          "gender": "F",
+                          "gender": "M",
                           "special": "Yes"
                       },
                       {
@@ -594,7 +594,7 @@ return {
                           "empName": "Dhruv R",
                           "lat": "123123123.23",
                           "long": "23423423423.234",
-                          "gender": "F",
+                          "gender": "M",
                           "special": "Yes"
                       }
                   ]
@@ -632,7 +632,7 @@ return {
   all_vehicle_response: [
     {
       "vehicleId": 12915,
-      "vehicleNumber": "MH04L8971",
+      "vehicleNumber": "MH04BC1235",
       "driverName": "Rajeev P",
       "driverID": 232524,
       "vehicleType": "SUV"
@@ -658,8 +658,364 @@ return {
       "driverID": 232527,
       "vehicleType": "HB"
     },
-  ]
+  ],
 
+
+  allocated_route_response: {
+    "success": true,
+    "data": {
+        "tats": [
+            {
+                "site_id": 30,
+                "shift_id": 138,
+                "to_date": "2019-09-24",
+                "shift_type": "1",
+                "no_of_routes": 4,
+                "male_count": 10,
+                "female_count": 6,
+                "special": 1,
+                "on_duty_vehicle": 4,
+                "kilometres": 160
+            }
+        ],
+        "routes": [
+            {
+                "routeId": 234234,
+                "total_time": 90,
+                "total_distance": 40,
+                "tripStartTime": "09:00",
+                "tripEndTime": "10:00",
+                "vehicle_type": "SUV",
+                "total_seats": 5,
+                "empty_seats": 2,
+                "guard_required": "N",
+                "vehicle_allocated": "Y",
+                "trip_cost": 100,
+                "guard": {
+                    "guardId": 12311,
+                    "guardName": "Dhruv Rathi",
+                    "gender": "M"
+                },
+                "vehicle": {
+                    "vehicleId": 12312,
+                    "vehicleNumber": "MH47L5609",
+                    "driverName": "Rushikesh Indulkar",
+                    "driverID": 232423,
+                    "vehicleType": "HB"
+                },
+                "route_final_path": [
+                    {
+                        "lat": "123131231.23",
+                        "long": "123131231.23",
+                        "time": "09:00"
+                    },
+                    {
+                        "lat": "123131231.23",
+                        "long": "123131231.23",
+                        "time": "09:00"
+                    },
+                    {
+                        "lat": "123131231.23",
+                        "long": "123131231.23",
+                        "time": "09:00"
+                    },
+                    {
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "time": "09:00"
+                    }
+                ],
+                "employees_nodes_addresses": [
+                    {
+                        "rank": 1,
+                        "empId": 12313,
+                        "empName": "Vaibhavi Rawale",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "F",
+                        "special": "Yes"
+                    },
+                    {
+                        "rank": 2,
+                        "empId": 12314,
+                        "empName": "Madhuri Dikshit",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "F",
+                        "special": "Yes"
+                    },
+                    {
+                        "rank": 3,
+                        "empId": 12315,
+                        "empName": "Ajay Sharma",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "M",
+                        "special": "Yes"
+                    },
+                    {
+                        "rank": 4,
+                        "empId": 12316,
+                        "empName": "Mansi Sawant",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "F",
+                        "special": "Yes"
+                    }
+                ]
+            },
+            {
+                "routeId": 234278,
+                "total_time": 90,
+                "total_distance": 40,
+                "tripStartTime": "09:00",
+                "tripEndTime": "10:00",
+                "vehicle_type": "SUV",
+                "total_seats": 5,
+                "empty_seats": 2,
+                "guard_required": "N",
+                "vehicle_allocated": "Y",
+                "trip_cost": 100,
+                "guard": {
+                    "guardId": 12411,
+                    "guardName": "Bambam Singh",
+                    "gender": "M"
+                },
+                "vehicle": {
+                    "vehicleId": 12412,
+                    "vehicleNumber": "MH04L9608",
+                    "driverName": "Sumit P",
+                    "driverID": 232523,
+                    "vehicleType": "HB"
+                },
+                "route_final_path": [
+                    {
+                        "lat": "123131231.23",
+                        "long": "123131231.23",
+                        "time": "09:00"
+                    },
+                    {
+                        "lat": "123131231.23",
+                        "long": "123131231.23",
+                        "time": "09:00"
+                    },
+                    {
+                        "lat": "123131231.23",
+                        "long": "123131231.23",
+                        "time": "09:00"
+                    },
+                    {
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "time": "09:00"
+                    }
+                ],
+                "employees_nodes_addresses": [
+                    {
+                        "rank": 1,
+                        "empId": 12413,
+                        "empName": "Pushp C",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "M",
+                        "special": "Yes"
+                    },
+                    {
+                        "rank": 2,
+                        "empId": 12414,
+                        "empName": "Rajeev S",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "M",
+                        "special": "Yes"
+                    },
+                    {
+                        "rank": 3,
+                        "empId": 12415,
+                        "empName": "Dipak P",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "M",
+                        "special": "Yes"
+                    },
+                    {
+                        "rank": 4,
+                        "empId": 12416,
+                        "empName": "Atul J",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "F",
+                        "special": "Yes"
+                    }
+                ]
+            },
+
+
+            {
+                "routeId": 23423232342344,
+                "total_time": 90,
+                "total_distance": 40,
+                "tripStartTime": "09:00",
+                "tripEndTime": "10:00",
+                "vehicle_type": "SUV",
+                "total_seats": 5,
+                "empty_seats": 2,
+                "guard_required": "Y",
+                "vehicle_allocated": "N",
+                "trip_cost": 100,
+                "vehicle": {
+                  "vehicleId": 124190,
+                  "vehicleNumber": "MH04LB8971",
+                  "driverName": "Umar Sayyed",
+                  "driverID": 2325223,
+                  "vehicleType": "SUV"
+                },
+                "route_final_path": [
+                    {
+                        "lat": "123131231.23",
+                        "long": "123131231.23",
+                        "time": "09:00"
+                    },
+                    {
+                        "lat": "123131231.23",
+                        "long": "123131231.23",
+                        "time": "09:00"
+                    },
+                    {
+                        "lat": "123131231.23",
+                        "long": "123131231.23",
+                        "time": "09:00"
+                    },
+                    {
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "time": "09:00"
+                    }
+                ],
+                "employees_nodes_addresses": [
+                    {
+                        "rank": 1,
+                        "empId": 12321,
+                        "empName": "Umar Sayyed",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "M",
+                        "special": "Yes"
+                    },
+                    {
+                        "rank": 2,
+                        "empId": 12322,
+                        "empName": "Ekta Shinde",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "F",
+                        "special": "Yes"
+                    },
+                    {
+                        "rank": 3,
+                        "empId": 12323,
+                        "empName": "Pranjali Deshmukh Deshmukh Deshmukh ",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "F",
+                        "special": "Yes"
+                    },
+                    {
+                        "rank": 4,
+                        "empId": 12324,
+                        "empName": "Praveen Samariya",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "M",
+                        "special": "Yes"
+                    }
+                ]
+            },
+            {
+                "routeId": 23423232342389,
+                "total_time": 90,
+                "total_distance": 40,
+                "tripStartTime": "09:00",
+                "tripEndTime": "10:00",
+                "vehicle_type": "SUV",
+                "total_seats": 5,
+                "empty_seats": 2,
+                "guard_required": "Y",
+                "vehicle_allocated": "N",
+                "trip_cost": 100,
+                "vehicle": {
+                  "vehicleId": 124193,
+                  "vehicleNumber": "MH14BC1346",
+                  "driverName": "Vaibhavi",
+                  "driverID": 2325223,
+                  "vehicleType": "SUV"
+                },
+                "route_final_path": [
+                    {
+                        "lat": "123131231.23",
+                        "long": "123131231.23",
+                        "time": "09:00"
+                    },
+                    {
+                        "lat": "123131231.23",
+                        "long": "123131231.23",
+                        "time": "09:00"
+                    },
+                    {
+                        "lat": "123131231.23",
+                        "long": "123131231.23",
+                        "time": "09:00"
+                    },
+                    {
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "time": "09:00"
+                    }
+                ],
+                "employees_nodes_addresses": [
+                    {
+                        "rank": 1,
+                        "empId": 12521,
+                        "empName": "Rushikesh I",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "M",
+                        "special": "Yes"
+                    },
+                    {
+                        "rank": 2,
+                        "empId": 12522,
+                        "empName": "Sachin P",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "M",
+                        "special": "Yes"
+                    },
+                    {
+                        "rank": 3,
+                        "empId": 12523,
+                        "empName": "Nitin M",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "M",
+                        "special": "Yes"
+                    },
+                    {
+                        "rank": 4,
+                        "empId": 12524,
+                        "empName": "Dhruv R",
+                        "lat": "123123123.23",
+                        "long": "23423423423.234",
+                        "gender": "M",
+                        "special": "Yes"
+                    }
+                ]
+            }
+        ]
+    },
+    "errors": {},
+    "message": "routes listed successfully"
+},
 }
 
 

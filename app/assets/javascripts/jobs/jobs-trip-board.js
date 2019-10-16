@@ -310,7 +310,7 @@ $(function () {
     "driver_arrived_check_in": "Arrived at Employee Location",
     "driver_arrived_check_out": "Arrived at Site Name",
     "employee_on_board_check_in": "Picked Up Employee",
-    "driver_face_detection" : "Driver Face Detection"
+    "driver_face_detection" : "Driver Face Detection",
     "employee_on_board_check_out": "Picked Up Employee",
     "employee_drop_off_check_in": "Dropped Off at Site",
     "employee_drop_off_check_out": "Dropped Off Employee Name",
