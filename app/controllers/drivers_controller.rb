@@ -36,6 +36,7 @@ class DriversController < ApplicationController
   def update
     user = @driver.user
     attr = driver_params
+    @driver.update_attribute('site_id', params[:user]["entity_attributes"][:site_id])
     attr['entity_attributes']['entity_id'] = user.entity_id
     if @driver.licence_number != attr['entity_attributes']['licence_number']
       attr["password"] = attr['entity_attributes']["licence_number"].last(6)
