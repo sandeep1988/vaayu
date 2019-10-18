@@ -50,15 +50,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
         "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
       }
 
-      RosterService.get(postData, function (data) {
-        if (data.data) {
-          $scope.rosters = data.data.shiftdetails;
-          $scope.stats = data.data.stats;
-        }
-      }
-        , function (error) {
-          console.error(error);
-        });
+      $scope.getRosters(postData);
     }
       , function (error) {
         console.error(error);
@@ -77,17 +69,23 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       postData.shift_type = $scope.shift_type;
     }
     console.log(postData)
-    RosterService.get(postData, function (data) {
-      $scope.rosters = data.data.shiftdetails;
-      $scope.stats = data.data.stats;
-    }
-      , function (error) {
-        console.error(error);
-      });;
-
+    $scope.getRosters(postData)
 
   }
 
+
+  $scope.getRosters = (postData) => {
+    RosterService.get(postData, function (data) {
+      if (data.data) {
+        $scope.rosters = data.data.shiftdetails;
+        $scope.stats = data.data.stats;
+        console.log('rosters', $scope.rosters);
+      }
+    }
+      , function (error) {
+        console.error(error);
+      });
+  }
 
   // datepicker function
   $scope.today = function () {
@@ -117,7 +115,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
   //date picker function
 
-  $scope.generateRoutes = function(roster) {
+  $scope.generateRoutes = function (roster) {
     // console.log(roster);
     // console.log($scope.selectedSite);
     // console.log($scope.filterDate)
@@ -128,10 +126,10 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     }
 
     let postData = {
-      "site_id":parseInt($scope.selectedSite.id),
-      "shift_id":parseInt(roster.id),
-      "to_date":moment($scope.filterDate).format('YYYY-MM-DD'),
-      "search" : '0',
+      "site_id": parseInt($scope.selectedSite.id),
+      "shift_id": parseInt(roster.id),
+      "to_date": moment($scope.filterDate).format('YYYY-MM-DD'),
+      "search": '0',
       "shift_type": shift_type // 0 -checkin 1-checout
     }
     console.log(postData)
@@ -145,16 +143,16 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
           ToasterService.showError('Error', res['message']);
         }
 
-    }, (error) => {
-      ToasterService.showError('Error', 'Something went wrong, Try again later.');
-      console.error(error);
-    });
-  } 
+      }, (error) => {
+        ToasterService.showError('Error', 'Something went wrong, Try again later.');
+        console.error(error);
+      });
+  }
 
   $scope.addVehicleToRoster = function (roster) {
     $scope.currentRoster = roster;
-    console.log($scope.currentRoster.vehicle);
-    console.log(angular.equals($scope.currentRoster.vehicle, {}));
+    // console.log($scope.currentRoster.vehicle);
+    // console.log(angular.equals($scope.currentRoster.vehicle, {}));
     if (angular.equals($scope.currentRoster.vehicle, {})) {
       $scope.currentRoster.vehicle = $scope.defaultVehiclesList;
       $scope.currentRoster.vehicle_capacity = $scope.defaultVehiclesCapacityList;
@@ -201,7 +199,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.minusVehicle = function (key) {
-    if(parseInt($scope.currentRoster.vehicle[key]) > 0){
+    if (parseInt($scope.currentRoster.vehicle[key]) > 0) {
       $scope.currentRoster.vehicle[key] = parseInt($scope.currentRoster.vehicle[key]) - 1
       $scope.currentRoster.total_vehicles = $scope.currentRoster.total_vehicles - 1;
       if ($scope.currentRoster.vehicle_capacity[key]) {
@@ -214,18 +212,24 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
   $scope.submitAddVehicle = function () {
 
-        let postData = {
-          id: $scope.currentRoster.id,
-          no_of_emp: $scope.currentRoster.no_of_emp,
-          vehicle: $scope.currentRoster.vehicle,
-          total_seats: $scope.currentRoster.total_seats,
-          vehicle_capacity: $scope.currentRoster.vehicle_capacity,
-          to_date:moment($scope.filterDate).format('YYYY-MM-DD'),
-          total_vehicles: $scope.currentRoster.total_vehicles,
-          trip_type: $scope.currentRoster.trip_type,
-
+    let postData = {
+      id: $scope.currentRoster.id,
+      no_of_emp: $scope.currentRoster.no_of_emp,
+      vehicle: $scope.currentRoster.vehicle,
+      total_seats: $scope.currentRoster.total_seats,
+      vehicle_capacity: $scope.currentRoster.vehicle_capacity,
+      to_date: moment($scope.filterDate).format('YYYY-MM-DD'),
+      total_vehicles: $scope.currentRoster.total_vehicles,
+      trip_type: $scope.currentRoster.trip_type,
     }
+
+    console.log('vehicleAdd', postData)
     RosterService.addVehicle(postData, function (result) {
+      console.log('vehicleAdd', result)
+      if (!result['success']) {
+        ToasterService.showError('Error', result['message']);
+        return;
+      }
       $scope.isAddMenuOpen = false;
       $scope.updateFilters();
       $scope.defaultVehiclesList = {

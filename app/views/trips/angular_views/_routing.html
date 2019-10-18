@@ -13,7 +13,7 @@
           </div>
 
           <div class="form-group pr-2">
-            <select id="disabledSelect" class="form-control" ng-model="selectedShift">
+            <select id="disabledSelect" class="form-control" ng-model="selectedShift" ng-change="updateFilters()">
               <option ng-repeat="shift in shifts" value="{{shift}}">{{shift.name + ' ('+shift.shift_type+')'}}
               </option>
             </select>
@@ -493,7 +493,7 @@
                 </span>
 
                 <div class="inner-text">
-                  <div class="text-small"> {{vehical.vehicleNumber}} - <i> (On Duty) </i></div>
+                  <div class="text-medium"> {{vehical.vehicleNumber}} - <i> (On Duty) </i></div>
                   <div class="text-big"> {{vehical.model}}</div>
                 </div>
 

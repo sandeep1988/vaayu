@@ -16,8 +16,8 @@ angular.module('app')
     };
   });
 
-angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, VehicleService, SiteService, GuardsService, RosterService, RouteService, RouteUpdateService,
-  AutoAllocationService, VehicleAssignService, GuardAssignService,
+angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService,
+  AutoAllocationService,
   FinalizeService, RouteStaticResponse, ToasterService, SessionService) {
 
   $scope.place = {};
@@ -135,7 +135,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         if (data.data) {
           $scope.shifts = data.data.shiftdetails;
           if ($scope.shifts && $scope.shifts.length) {
-            $scope.selectedShift = $scope.shifts[0];
+            $scope.selectedShift = JSON.stringify($scope.shifts[0]);
             $scope.resetRoute();
             // $scope.generateRoute($scope.siteId,$scope.shifts[0].id,moment().format('YYYY-MM-DD'),1);
           } else {
@@ -153,8 +153,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.getVehicleAndGuardList = function (siteId, shiftId) {
-    let body = {shiftId:105, siteId:8} // { siteId, shiftId }
-    GuardsService.get(body, function (res) {
+    // let body = {shiftId:105, siteId:8} // { siteId, shiftId }
+    RouteService.getGuardList({siteId, shiftId}, function (res) {
       console.log('guard list')
       // $scope.guardList = res.data;
       $scope.guardList = RouteStaticResponse.all_guards_response;
@@ -174,8 +174,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       console.log(error);
     });
 
-    let body1 = {shiftId:138, siteId:30}
-    VehicleService.get(body1, function (res) {
+    // let body1 = {shiftId:138, siteId:30}
+    RouteService.getVehicleList({siteId, shiftId}, function (res) {
       // $scope.vehicleList = res.data;
       console.log('vehicle list')
       console.log(res.data);
@@ -206,6 +206,14 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     RosterService.get(postData, function (data) {
       $scope.shifts = data.data.shiftdetails;
+      if ($scope.shifts && $scope.shifts.length) {
+        $scope.selectedShift = JSON.stringify($scope.shifts[0]);
+        $scope.resetRoute();
+        // $scope.generateRoute($scope.siteId,$scope.shifts[0].id,moment().format('YYYY-MM-DD'),1);
+      } else {
+        $scope.selectedShift = null;
+        // $scope.resetRoute();
+      }
     }, function (error) {
       console.log(error);
     });
@@ -370,12 +378,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       ToasterService.showError('Error', 'Select Shift.');
       return;
     }
-
     let shift = JSON.parse($scope.selectedShift);
     // Static data display
-    $scope.showStaticData(RouteStaticResponse.route_response);
-    $scope.getVehicleAndGuardList(siteId, 92);
-    return;
+    // $scope.showStaticData(RouteStaticResponse.route_response);
+    // $scope.getVehicleAndGuardList(siteId, 92);
+    // return;
 
     $scope.getVehicleAndGuardList(siteId, shift.id);
 
@@ -386,14 +393,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       "search": "1",
       "shift_type": shift.trip_type + '' // 0 -checkin 1-checout
     }
-    console.log(postData)
+    console.log('postData',postData)
 
     RouteService.getRoutes(postData, (data) => {
 
       console.log(data);
       $scope.routes = data;
-
-      // $scope.routes = RouteStaticResponse.route_response;
 
       if ($scope.routes.data) {
         try {
@@ -568,7 +573,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         "routeId": container.routeId
       };
 
-      VehicleAssignService.query(postData, function (data) {
+      RouteService.assignVehicle(postData, function (data) {
         console.log("Guard Assign");
         isAssign = false;
       })
@@ -585,7 +590,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         "routeId": container.routeId
       };
 
-      GuardAssignService.query(postData, function (data) {
+      RouteService.assignGuards(postData, function (data) {
         console.log("Guard Assign");
         $scope.resetRoute();
       })

@@ -53,24 +53,28 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
 
   $scope.getAllTrips = function () {
 
-    $scope.fullRoster = $scope.tempResponse.tripsdetails;
-    $scope.rosters = $scope.fullRoster;
-    $scope.stats = $scope.tempResponse.stats;
+    // $scope.fullRoster = $scope.tempResponse.tripsdetails;
+    // $scope.rosters = $scope.fullRoster;
+    // $scope.stats = $scope.tempResponse.stats;
 
-    // let postData = {
-    //   "site_id": $scope.selectedSiteID,
-    //   "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
-    // }
-    // console.log(postData)
-    // TripboardService.get(postData, function (data) {
-    //   // $scope.rosters = data.data.tripsdetails;
-    //   $scope.fullRoster = $scope.tempResponse.tripsdetails;
-    //   $scope.rosters = $scope.fullRoster;
-    //   $scope.stats = $scope.tempResponse.stats;
-    //   console.log($scope.rosters);
-    // }, function (error) {
-    //   console.error(error);
-    // });
+    let postData = {
+      "site_id": $scope.selectedSiteID,
+      "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
+    }
+    console.log(postData)
+    TripboardService.get(postData,  (data) => {
+      console.log(data);
+      if (!data['success']) {
+        ToasterService.showError('Error', result['message']);
+        return;
+      }
+      // $scope.rosters = data.data.tripsdetails;
+      $scope.rosters = $scope.fullRoster;
+      $scope.stats = $scope.tempResponse.stats;
+      
+    }, function (error) {
+      console.error(error);
+    });
 
   }
   //date picker function
