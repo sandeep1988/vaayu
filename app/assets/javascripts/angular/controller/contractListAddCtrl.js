@@ -253,7 +253,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         var formData = new FormData();
         formData.append("customer_id", "1");
         
-        formData.append("unique_identification[]", $scope.selectedUIDtoSend);
+        formData.append("unique_identification", $scope.selectedUIDtoSend);
         formData.append("billig_cycle", $scope.bcycle);
         formData.append("contract_type", $scope.ctype);
         formData.append("contract_file", $scope.fileObject);
@@ -266,8 +266,8 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         } 
         var request = new XMLHttpRequest();
         var vm = $scope;
-        request.open("POST", "http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8003/api/v1/" + contractType + "/upload");
-        // request.open("POST", "http://83015bdb.ngrok.io/api/v1/" + contractType + "/upload");
+        // request.open("POST", "http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8003/api/v1/" + contractType + "/upload");
+        request.open("POST", "https://a7c05928.ngrok.io/api/v1/" + contractType + "/upload");
         request.onload = function () {
             console.log(request.response);
             if (request.readyState === request.DONE) {
@@ -276,6 +276,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
                     vm.submitResponse = request.response;                    
                     ToasterService.showSuccess('Success', 'Contract created successfully.');
                     console.log('Contract created successfully.');
+                    $scope.getContracts();
                 }
             } else {
                 ToasterService.showError('Error', 'Something went wrong, Try again later.');
@@ -340,6 +341,9 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         var urlEnd = $scope.selectedSiteId;
         if ($scope.tab === 'BA') {
             urlEnd = $scope.baID;
+            if (!urlEnd) {
+                return
+            }
         }
         let url = 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com/getContractListByCustId?custId=1&custType=' + $scope.tab + '&siteId=' + urlEnd;
         // let url = 'http://4607df07.ngrok.io/api/v1/getContractListByCustId?custId=1&custType=' + $scope.tab + '&siteId=' + urlEnd;
