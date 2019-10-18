@@ -398,6 +398,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     RouteService.getRoutes(postData, (data) => {
 
       console.log(data);
+      if (!data['success']) {
+        ToasterService.showError('Error', data['message']);
+        return;
+      }
       $scope.routes = data;
 
       if ($scope.routes.data) {
