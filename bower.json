@@ -71,7 +71,6 @@
     "seiyria-bootstrap-slider": "^10.0.0",
     "chart.js": "^2.7.1",
     "chartjs-plugin-datalabels": "^0.2.0",
-    "angular": "^1.7.8",
     "angular-ui-router": "^1.0.22",
     "angular-drag-and-drop-lists": "^2.1.0",
     "angular-resource": "^1.7.8",
@@ -82,7 +81,8 @@
     "lodash": "^4.17.15",
     "swiper": "^5.0.3",
     "AngularJS-Toaster": "angularjs-toaster#^3.0.0",
-    "angular-bootstrap": "^2.5.0"
+    "angular-bootstrap": "^2.5.0",
+    "jstz": "*"
   },
   "resolutions": {
     "get-size": "~1.1.7",
