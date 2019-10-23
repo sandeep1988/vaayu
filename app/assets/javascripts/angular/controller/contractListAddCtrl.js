@@ -266,8 +266,8 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         } 
         var request = new XMLHttpRequest();
         var vm = $scope;
-        // request.open("POST", "http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8003/api/v1/" + contractType + "/upload");
-        request.open("POST", "https://a7c05928.ngrok.io/api/v1/" + contractType + "/upload");
+        request.open("POST", "http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8003/api/v1/" + contractType + "/upload");
+        // request.open("POST", "https://a7c05928.ngrok.io/api/v1/" + contractType + "/upload");
         request.onload = function () {
             console.log(request.response);
             if (request.readyState === request.DONE) {

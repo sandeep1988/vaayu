@@ -1,7 +1,5 @@
-<!-- <div class="vayau-routing" ng-init="init()" ng-controller='routeCtrl'> -->
-
 <div class="vayau-routing" ng-init="init()" ng-controller='routeCtrl'>
-
+  <toaster-container></toaster-container>
   <div class="container-fluid mt-4">
     <div class="row">
       <div class="col-md-9">
@@ -13,7 +11,7 @@
           </div>
 
           <div class="form-group pr-2">
-            <select id="disabledSelect" class="form-control" ng-model="selectedShift" ng-change="updateFilters()">
+            <select id="disabledSelect" class="form-control" ng-model="selectedShift" >
               <option ng-repeat="shift in shifts" value="{{shift}}">{{shift.name + ' ('+shift.shift_type+')'}}
               </option>
             </select>
@@ -42,7 +40,7 @@
       </div>
 
       <div class="col-md-3">
-        <toaster-container></toaster-container>
+        
         <div class="btn-toolbar float-right" role="toolbar">
           <div class="btn-group" role="group">
             <button type="button" ng-click="finalizeRoutes()" class="btn btn-terniary-blue">Finalize</button>

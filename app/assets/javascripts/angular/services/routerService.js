@@ -59,7 +59,7 @@ function ($resource, BASE_URL_8002, SessionService) {
 
 angular.module('app').factory('AutoAllocationService', ['$resource', 'BASE_URL_8002', 'SessionService',
 function ($resource, BASE_URL_8002, SessionService) {
-  return $resource('https://2c6da523.ngrok.io/' + 'allocateVehicles', {}, {
+  return $resource(BASE_URL_8002 + 'autoAllocationFinal', {}, {
     query: { method: "POST" },
     create: { method: "POST" },
     getRoutes: {

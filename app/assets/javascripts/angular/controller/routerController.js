@@ -391,7 +391,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       "shift_id": parseInt(shift.id),
       "to_date": moment(filterDate).format('YYYY-MM-DD'),
       "search": "1",
-      "shift_type": shift.trip_type + '' // 0 -checkin 1-checout
+      "shift_type": shift.trip_type+'' // 0 -checkin 1-checout
     }
     console.log('postData',postData)
 
@@ -626,9 +626,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       ToasterService.showError('Error', 'Select Shift.');
       return;
     }
-    ToasterService.showSuccess('Success', 'Routes are allocated successfully.')
-    $scope.showStaticData(RouteStaticResponse.allocated_route_response);
-    return ;
+    // ToasterService.showSuccess('Success', 'Routes are allocated successfully.')
+    // $scope.showStaticData(RouteStaticResponse.allocated_route_response);
+    // return ;
 
     let shift = JSON.parse($scope.selectedShift);
     var postData = {
@@ -645,12 +645,25 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     //   "shift_type": 1,
     //   "scheduledDate": "2019-10-24"
     // }
-    console.log(postData)
+    console.log('autoAllocate postData', postData)
     AutoAllocationService.query(postData, function (data) {
-      console.log('autoallocation response ', data);
+      console.log('autoallocation response ', data);  
       if (data['success']) {
-        console.log(JSON.stringify(data))
         $scope.routes = data;
+        if ($scope.routes.data) {
+          try {
+            ToasterService.showToast('info', 'Response Received', $scope.routes.data.routes.length+' Routes found for this shift')
+            $scope.originalRoutes = angular.copy($scope.routes.data.routes);
+            $scope.stats = $scope.routes.data.tats[0];
+            console.log($scope.model2)
+          } catch (err) {
+            $scope.routes = RouteStaticResponse.emptyResponse;
+            $scope.routes.data.routes = [];
+            ToasterService.showToast('info', 'Response Received', 'No Routes found for this shift')
+            console.log('error', err)
+          }
+          $scope.showRouteData()
+        }
       } else {
         ToasterService.showError('Error', data.message);
       }

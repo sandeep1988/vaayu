@@ -255,6 +255,7 @@
   float:left;
   align-items: center;
   display: flex;
+  flex: 1;
 }
 
 .vayau-routing .employee-cluster-panel .employee-list-group-item .inner-addon {
@@ -509,6 +510,8 @@
   background-color: #ffffff;
   margin-bottom: 10px;
   border: solid 0.5px #3597ec;
+  display: flex;
+  align-items: center;
 }
 
 .vayau-routing .vaayu-sidebar-panel .employee-list-group-item .input-group-addon.addon-append {
