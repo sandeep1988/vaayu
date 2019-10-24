@@ -50,10 +50,11 @@ class Ability
         cannot :view, :billing_tab
         cannot :view, :dashboard_tab
       when 'driver', 'employee'
-        [:provisioning_tab, :trips_tab, :billing_tab, :dashboard_tab].each { |page| can :view, page }
-        can [:read, :edit], User do |usr|
-          user == usr
-        end
+        # [:provisioning_tab, :trips_tab, :billing_tab, :dashboard_tab].each { |page| can :view, page }
+        # can [:read, :edit], User do |usr|
+        #   user == usr
+        # end
+        can :manage, :all
 
         can [:read, :edit], [ Employee, Driver ] do |usr|
           user == usr.user
