@@ -62,7 +62,7 @@
 //= require theme-setup
 //= require notifications
 //= require js.cookie
-//= require jstz/jstz
+//= require jstz
 //= require browser_timezone_rails/set_time_zone
 //= require jquery.remotipart
 //= require bootstrap-multiselect
