@@ -45,7 +45,7 @@
             = ui.input :gender, as: 'hidden', input_html: { value: 'male' }
             = ui.association :site, label: 'Site', wrapper_html: { class: 'site' }, prompt: false, required: true, prompt: "Choose Site"
           -else
-            = ui.input :gender, required: true, label: 'Gender', prompt: false, collection: [['Male', 'male'], ['Female', 'female']], prompt: "Choose Gender"
+            = ui.input :gender, required: true, label: 'Gender', prompt: false, collection: [['Male', 1], ['Female', 0]], prompt: "Choose Gender"
       - unless @is_guard
         .row
           .col-md-8.col-md-offset-4
