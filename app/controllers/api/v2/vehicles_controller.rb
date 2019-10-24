@@ -198,7 +198,7 @@ class API::V2::VehiclesController < ApplicationController
   def upload_commercial_permit_doc(vehicle)
     if vehicle.commercial_permit_doc.url.present?
       vehicle.update(commercial_permit_doc_url: vehicle.commercial_permit_doc.url.gsub("//",''))
-      DocumentRenewalRequest.create(status: "New", resource_id: vehicle.id, document_id: "13", document_url: "#{vehicle.commercial_permit_doc.url.gsub("//",'')}", expiry_date: vehicle.permit_validity_date , created_by: 0, resource_type: "Vehicle" ) if vehicle.permit_validity_date.present?
+      DocumentRenewalRequest.create(status: "New", resource_id: vehicle.id, document_id: "14", document_url: "#{vehicle.commercial_permit_doc.url.gsub("//",'')}", expiry_date: vehicle.permit_validity_date , created_by: 0, resource_type: "Vehicle" ) if vehicle.permit_validity_date.present?
       logger.info "commercial_permi done"
     end 
   end 
@@ -214,7 +214,7 @@ class API::V2::VehiclesController < ApplicationController
   def upload_authorization_certificate_doc(vehicle)
     if vehicle.authorization_certificate_doc.url.present?
       vehicle.update(authorization_certificate_doc_url: vehicle.authorization_certificate_doc.url.gsub("//",''))
-      DocumentRenewalRequest.create(status: "New", resource_id: vehicle.id, document_id: "15", document_url: "#{vehicle.authorization_certificate_doc.url.gsub("//",'')}", expiry_date: vehicle.road_tax_validity_date , created_by: 0, resource_type: "Vehicle" ) if vehicle.authorization_certificate_validity_date.present?
+      DocumentRenewalRequest.create(status: "New", resource_id: vehicle.id, document_id: "18", document_url: "#{vehicle.authorization_certificate_doc.url.gsub("//",'')}", expiry_date: vehicle.road_tax_validity_date , created_by: 0, resource_type: "Vehicle" ) if vehicle.authorization_certificate_validity_date.present?
       logger.info "authorization certificate doc done"
     end 
   end 
@@ -229,7 +229,7 @@ class API::V2::VehiclesController < ApplicationController
   def upload_fitness_doc(vehicle)
     if vehicle.fitness_doc.url.present?
       vehicle.update(fitness_doc_url: vehicle.fitness_doc.url.gsub("//",''))
-      DocumentRenewalRequest.create(status: "New", resource_id: vehicle.id, document_id: "15", document_url: "#{vehicle.fitness_doc.url.gsub("//",'')}", expiry_date: vehicle.fitness_validity_date , created_by: 0, resource_type: "Vehicle" ) if vehicle.fitness_validity_date.present?
+      DocumentRenewalRequest.create(status: "New", resource_id: vehicle.id, document_id: "16", document_url: "#{vehicle.fitness_doc.url.gsub("//",'')}", expiry_date: vehicle.fitness_validity_date , created_by: 0, resource_type: "Vehicle" ) if vehicle.fitness_validity_date.present?
       logger.info "fitness doc done"
     end 
   end 

@@ -118,6 +118,7 @@ class API::V2::BusinessAssociatesController < ApplicationController
       business_associate.gst_certificates_doc_url = set_gstdoc(params["gstDocs"])
       business_associate.is_gst = params[:isGst]
       business_associate.bussiness_area = params[:bussinessAera].to_a
+      business_associate.category = params[:category].present? ? params[:category] : "BA"
       return business_associate
     end
 
