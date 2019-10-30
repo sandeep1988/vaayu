@@ -1,4 +1,6 @@
-<div class="vayau-routing vayau-roster" ng-controller='tripboardCtrl'>
+<div  ng-controller='tripboardCtrl'>
+
+<div class="vayau-routing vayau-roster">
 
   <div class="container-fluid mt-4" ng-init="init()">
     <div class="row">
@@ -167,7 +169,7 @@
                 <td>{{roster.current_status.toUpperCase()}}</td>
                 <td>
                   <div class="">
-                    <button type="button" id="myBtn" ng-click="popup(roster)"
+                    <button type="button" id="myBtn" ng-click="showModal(roster)"
                       class="btn btn-sm-vaayu btn-terniary-blue btn-block">View</button>
                   </div>
                 </td>
@@ -185,14 +187,14 @@
 <!-- <button id="myBtn">Open Modal</button> -->
 
 <!-- The Modal -->
-<div id="myModal" class="vaayu-modal">
+<div id="myModal" class="vaayu-modal" style="display: block;" ng-show="showPopup">
 
   <!-- Modal content -->
   <div class="vaayu-modal-content">
     <div class="vaayu-modal-header">
 
       <span>All Routes</span>
-      <span class="vaayu-pop-close closepop">&times;</span>
+      <span class="vaayu-pop-close closepop" ng-click="showPopup=false">&times;</span>
     </div>
     <div class="vaayu-modal-body">
       <div class="row">
@@ -244,7 +246,7 @@
         </div>
         <div class="col-md-4">
           <div class="pop-img-card">
-            <img src="./img_avatar.png" alt="Avatar" style="width:100%">
+            <img src="../assets/angular_images/img_avatar.png" alt="Avatar" style="width:100%">
             <div class="container">
               <span class="pop-name">{{modelData.driver_name}}</span>
               <span class="pop-status">{{modelData.tripInfo[0].vehicle_type}}</span>
@@ -261,4 +263,6 @@
 
     </div>
   </div>
+</div>
+
 </div>

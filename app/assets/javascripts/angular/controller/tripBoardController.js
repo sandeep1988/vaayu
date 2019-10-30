@@ -79,8 +79,14 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
 
   }
   //date picker function
-  $scope.popup = function (modelData) {
-    $scope.modelData = modelData;
+
+
+  $scope.showPopup = false;
+  $scope.showModal = (row) => {
+    console.log('showModal', row);
+    $scope.modelData = row;
+    $scope.showPopup = true;
+    return ;
 
     // var mapProp = {
     //   center: new google.maps.LatLng(51.508742, -0.120850),
