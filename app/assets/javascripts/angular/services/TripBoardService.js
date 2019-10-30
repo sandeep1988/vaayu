@@ -30,7 +30,7 @@ angular.module('app').factory('TripboardResponse', function () {
         "vehicle_model": 'CRETA',
         "vehicle_number": "MH43K7867",
         "driver_name": 'Ram Kumar',
-        "no_of_employees": 4,
+        "no_of_employees": 16,
         "current_status": "cancelled",
         "tripInfo": [{
   
@@ -49,6 +49,78 @@ angular.module('app').factory('TripboardResponse', function () {
           "driver_profile_image": "",
         }],
         "employees_nodes_addresses": [{
+          "rank": 1,
+          "empId": 12312,
+          "empName": "Deekshith M",
+          "lat": "123123123.23",
+          "long": "23423423423.234",
+          "gender": "M",
+          "special": "Yes"
+        },
+        {
+          "rank": 2,
+          "empId": 12312,
+          "empName": "Umar Sayyed",
+          "lat": "123123123.23",
+          "long": "23423423423.234",
+          "gender": "M",
+          "special": "Yes"
+        },
+        {
+          "rank": 3,
+          "empId": 12312,
+          "empName": "Ajay Sharma",
+          "lat": "123123123.23",
+          "long": "23423423423.234",
+          "gender": "M",
+          "special": "Yes"
+        },
+        {
+          "rank": 4,
+          "empId": 12312,
+          "empName": "Vaibhavi Rawale",
+          "lat": "123123123.23",
+          "long": "23423423423.234",
+          "gender": "M",
+          "special": "Yes"
+        },
+        {
+          "rank": 1,
+          "empId": 12312,
+          "empName": "Deekshith M",
+          "lat": "123123123.23",
+          "long": "23423423423.234",
+          "gender": "M",
+          "special": "Yes"
+        },
+        {
+          "rank": 2,
+          "empId": 12312,
+          "empName": "Umar Sayyed",
+          "lat": "123123123.23",
+          "long": "23423423423.234",
+          "gender": "M",
+          "special": "Yes"
+        },
+        {
+          "rank": 3,
+          "empId": 12312,
+          "empName": "Ajay Sharma",
+          "lat": "123123123.23",
+          "long": "23423423423.234",
+          "gender": "M",
+          "special": "Yes"
+        },
+        {
+          "rank": 4,
+          "empId": 12312,
+          "empName": "Vaibhavi Rawale",
+          "lat": "123123123.23",
+          "long": "23423423423.234",
+          "gender": "M",
+          "special": "Yes"
+        },
+        {
           "rank": 1,
           "empId": 12312,
           "empName": "Deekshith M",
