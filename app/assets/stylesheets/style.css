@@ -49,13 +49,13 @@
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
-  line-height: 1.14;
+  line-height: 2;
   letter-spacing: normal;
   text-align: left;
   color: #000000;
-  display: table-cell;
+  display: table-row;
+  margin-top: 10px;
   vertical-align: bottom;
-  padding-bottom: 15px;
   text-transform: uppercase;
 }
 
@@ -839,4 +839,10 @@
     .card_flex img{width: 100%;}
     .card_flex .fa{font-size: 26px;}
     .card_flex h5{font-size: 16px;font-weight: 600;padding-left: 7px;}
+
+
+    
+    
+  
+  
 /*e*/
