@@ -17,7 +17,7 @@ class User < ApplicationRecord
   enum status: [:pending, :on_boarded, :active]
 
   # @TODO: add proper default images: default_url: '/images/:style/user.png'
-  has_attached_file :avatar, styles: { medium: '300x300>', thumb: '100x100>', large: '500x500>' }, default_url: "https://s3.ap-south-1.amazonaws.com/#{ENV['S3_BUCKET']}/DX_SQ.jpg", s3_protocol: 'http'
+  has_attached_file :avatar, styles: { medium: '300x300>', thumb: '100x100>', large: '500x500>' }, default_url: "ic_profile.png", s3_protocol: 'http'
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
 
   belongs_to :entity, polymorphic: true, :dependent => :destroy

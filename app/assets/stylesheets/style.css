@@ -166,6 +166,32 @@
   padding: 4px 10px;
 }
 
+.vayau-routing .employee-cluster-panel .employee-cluster-panel-heading  .title_container {
+  font-family: "Roboto";
+  font-size: 12px;
+  font-weight: 900;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: normal;
+  color: #ffffff;
+  vertical-align: middle;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.vayau-routing .employee-cluster-panel .employee-cluster-panel-heading  .title_text {
+  flex: 1;
+  margin-left: 5px;
+  margin-top: 7px;
+}
+
+.vayau-routing .employee-cluster-panel .un_allocated_route {
+  background-color: #394266;
+}
+
+.vayau-routing .employee-cluster-panel .allocated_route {
+  background-color: brown;
+}
 .vayau-routing .employee-cluster-panel .employee-cluster-panel-body {
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
