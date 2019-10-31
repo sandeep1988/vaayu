@@ -459,7 +459,8 @@ module API::V1
     def assign_driver
       @driver = Driver.find(params['driver_id'])
       @vehicle = @driver.vehicle
-
+      @trip = Trip.find(params[:id])
+      
       if params['last_paired_vehicle'].present?
         @last_paired_vehicle = Vehicle.where('plate_number' => params['last_paired_vehicle'])&.first&.id
       end
@@ -476,7 +477,7 @@ module API::V1
           @exception = 0
         end
         # render 'show_trip_on_dispatch'
-        render json: {:trip => @trip, :employee_trips => @employee_trips, :submit => true, :exception => @exception, :driver => @driver, :vehicle => @vehicle, :last_paired_vehicle => @last_paired_vehicle}
+        render json: { :success => true, :trip => @trip, :employee_trips => @employee_trips, :submit => true, :exception => @exception, :driver => @driver, :vehicle => @vehicle, :last_paired_vehicle => @last_paired_vehicle }
       end
     end
 

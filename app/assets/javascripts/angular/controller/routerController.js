@@ -238,6 +238,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }, err => ToasterService.showError('Error', 'Something went wrong'));
   }
 
+  $scope.roundValue = (val) => {
+    return parseInt(val)
+  }
+
   $scope.saveRoutes = function () {
 
     var changedRoutes = [];
@@ -250,6 +254,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       })
     })
 
+    
 
     var finalChangedRoutes = [];
     angular.forEach(changedRoutes, function (route) {
