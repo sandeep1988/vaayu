@@ -156,8 +156,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // let body = {shiftId:105, siteId:8} // { siteId, shiftId }
     RouteService.getGuardList({siteId, shiftId}, function (res) {
       console.log('guard list')
-      // $scope.guardList = res.data;
-      $scope.guardList = RouteStaticResponse.all_guards_response;
+      $scope.guardList = res.data;
+      // $scope.guardList = RouteStaticResponse.all_guards_response;
       console.log(res.data);
       angular.forEach($scope.guardList, function (item) {
         item.type = "guard";
@@ -179,9 +179,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       // $scope.vehicleList = res.data;
       console.log('vehicle list')
       console.log(res.data);
-      // $scope.vehicleList = res.data;
+      $scope.vehicleList = res.data;
 
-      $scope.vehicleList = RouteStaticResponse.all_vehicle_response;
+      // $scope.vehicleList = RouteStaticResponse.all_vehicle_response;
       angular.forEach($scope.vehicleList, function (item) {
         item.type = "vehical";
       })
