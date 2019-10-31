@@ -26,9 +26,9 @@ class Employee < ApplicationRecord
   has_many :shifts, through: :user
 
   accepts_nested_attributes_for :employee_schedules
-  enum gender: [:female, :male]
+  # enum gender: [:female, :male]
 
-  validates :gender, presence: true
+  # validates :gender, presence: true
   validates :home_address, presence: true
   validates :home_address_latitude, presence: true
   validates :home_address_longitude, presence: true
