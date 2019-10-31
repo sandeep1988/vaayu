@@ -3,12 +3,18 @@ class UserController < ApplicationController
   before_action :set_user, only: [:edit, :update, :destroy]
 
   def index
-    @users = User.all
+    @users = User.all.order("created_at DESC")
   end
 
   def new
-
+    @user = User.new
   end
+
+  def create_user
+    entity = Operator.last
+    @user = User.create!(email: params[:user][:email], username: params[:user][:username] , password: params[:user][:password], role: 2, f_name: params[:user][:f_name], l_name: params[:user][:l_name], phone: params[:user][:phone] , entity:entity)
+    redirect_to users_path
+  end  
 
   def create
 

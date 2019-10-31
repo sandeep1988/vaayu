@@ -1,0 +1,18 @@
+<%= simple_form_for @user, url: create_user_path, :method => :post do |f| %>
+  <%= f.error_notification %>
+
+  <%= f.input :f_name %>
+
+  <%= f.input :l_name %>
+
+  <%= f.input :phone %>
+
+  <%= f.input :email, input_html: { autocomplete: 'email' } %>
+
+  <%= f.input :username, input_html: { autocomplete: 'username' } %>
+
+  <%= f.input :password, input_html: { autocomplete: 'current-password' } %>
+
+  <%= f.button :submit, class: "btn-primary" %>
+  <%= f.button :button, "Cancel", type: "reset", class: "btn-outline-secondary" %>
+<% end %>
