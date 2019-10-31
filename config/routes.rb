@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
+
+  post '/create_user', to: "user#create_user", as: :create_user
   resources :devices do
     post :validate, on: :collection
   end
@@ -74,6 +76,7 @@ Rails.application.routes.draw do
 
   # --------------------------- Users --------------------------------
   resources :user
+
   get 'users', to: 'user#index'
 
   get '/profile', to: 'home#profile_edit', as: :user_profile_edit
