@@ -16,7 +16,7 @@ function ($resource,BASE_URL_8002,BASE_URL) {
           method: "POST"
         },
         addCustomEmployee:{
-          url: 'http://8e1d7a0d.ngrok.io/api/v1/' + 'adhoc_employee_route',
+          url: 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8002/api/v1/' + 'adhoc_employee_route',
           method: "POST"
         },
         getEmployeeList:{
