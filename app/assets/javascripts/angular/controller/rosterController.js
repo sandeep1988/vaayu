@@ -2,7 +2,17 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
 
   $scope.init = function () {
+    $scope.SelectedEmp = [];
+    $scope.example14settings = {
+        scrollableHeight: '200px',
+        scrollable: true,
+        enableSearch: true,
+        width: '300px'
+    };
+  
     $scope.isAddMenuOpen = false;
+    $scope.isAddMenuOpen2 = false;
+
     $scope.today();
 
     $scope.defaultVehiclesList = {
@@ -257,6 +267,68 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     } else {
       $scope.isDoneDisabled = false;
     }
+  }
+
+
+  //mansi changes
+  $scope.getEmployeeList = function () {
+
+    let postData = {
+      "siteId": $scope.selectedSite.id,
+      "date": moment($scope.filterDate).format('YYYY-MM-DD'),
+      //"searchText":'',
+    }
+    console.log(postData);
+    RosterService.getEmployeeList(postData, function (res) {
+      console.log('Emp list')
+      $scope.EmpList = res.data.employeeList;
+      console.log(res.data);
+    }, function (error) {
+      console.log(error);
+    });
+  }
+
+  $scope.addCustomeRoute = function () {
+    $scope.getEmployeeList();
+    $scope.isAddMenuOpen2 = true;
+  }
+  $scope.hideAddMenu2 = function () {
+    $scope.isAddMenuOpen2 = false;
+    $scope.SelectedEmp = [];
+  }
+  $scope.submitAddCustomRoute = function (selectedShift, to_time) {
+    var d = new Date(to_time);
+    $scope.shiftTime = d.getHours() + ':' + d.getMinutes();
+    console.log('shiftTime', $scope.shiftTime);
+    console.log('filterDate', $scope.filterDate);
+    if ($scope.SelectedEmp.length == 0) {
+      ToasterService.showError('Error', 'Select atleast one Employee');
+      return;
+    }
+    var employeeIds = $scope.SelectedEmp.map(emp => emp.id);
+    let postData = {
+      siteId: $scope.selectedSite.id,
+      tripType: selectedShift,
+      date: moment($scope.filterDate).format('YYYY-MM-DD'),
+      shiftTime: $scope.shiftTime,
+      employeeIds: employeeIds
+    }
+    console.log(postData);
+    RosterService.addCustomEmployee(postData,
+      (res) => {
+
+        if (res['success']) {
+          ToasterService.showSuccess('Success', 'Custom Route generated successfully.');
+          $scope.SelectedEmp = [];
+          $scope.isAddMenuOpen2 = false;
+          $scope.updateFilters();
+        } else {
+          ToasterService.showError('Error', res['message']);
+          return;
+        }
+      }, (error) => {
+        ToasterService.showError('Error', 'Something went wrong, Try again later.');
+      });
   }
 
 });
