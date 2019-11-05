@@ -47,6 +47,7 @@ app.controller('addTime', function ($scope, $http, $state, SessionService, Toast
     $http({
       method: 'POST',
       url: 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com/' + 'constraint/insert',
+      // url: 'http://localhost:8002/api/v1/' + 'constraint/insert',
       headers: {
         'Content-Type': 'application/json',
         'uid': SessionService.uid,
@@ -58,14 +59,14 @@ app.controller('addTime', function ($scope, $http, $state, SessionService, Toast
         type: 'time',
         clause: 'total_time',
         operator: 'less_than',
-        value: parseInt($scope.max_trip_time)
+        value: parseInt($scope.$parent.max_trip_time)
       }
     })
       .then(function (res) {
         console.log(JSON.stringify(res));
         if (res.data['success']) {
-          ToasterService.showSuccess('Success', 'Constraint added successfully');
-          $scope.$parent.fetchConstraintList($scope.$parent.siteID);
+          ToasterService.showSuccess('Success', res.data['message']);
+          $timeout(() => $scope.$parent.fetchConstraintList($scope.$parent.siteID), 200);
         } else {
           ToasterService.showError('Error', res.data['message']);
         }

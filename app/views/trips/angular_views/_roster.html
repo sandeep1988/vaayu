@@ -7,8 +7,7 @@
         <form class="form-inline" ng-submit="updateFilters()">
           <div class="form-group pr-2">
             <select ng-model="selectedSite" ng-options="site.name for site in siteList track by site.id"
-            ng-change="getEmployeeList()"
-              class="form-control" placeholder="Select Shift">
+              ng-change="getEmployeeList()" class="form-control" placeholder="Select Shift">
               <!-- <option value="" >Site</option> -->
             </select>
           </div>
@@ -16,8 +15,7 @@
             <p class="input-group custom-date date_style">
               <input type="text" class="form-control data_in_style" datepicker-popup="{{format}}" ng-model="filterDate"
                 is-open="opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
-                ng-change="getEmployeeList()"
-                ng-required="true" close-text="Close" />
+                ng-change="getEmployeeList()" ng-required="true" close-text="Close" />
               <span class="input-group-btn-datePicket">
                 <button type="button" class="btn btn-default data_in_style" ng-click="open($event)"><i
                     class="fa fa-calendar" aria-hidden="true"></i>
@@ -25,7 +23,7 @@
               </span>
             </p>
           </div>
-          <div class="form-group pr-2">
+          <div class="form-group pr-2" style="display: none;">
             <select class="form-control" ng-model="directionData" ng-change="updateDirectionData(directionData)">
               <option value="0">Check In</option>
               <option value="1">Check Out</option>
@@ -52,13 +50,13 @@
 
 
       <div class="col-md-4">
-          <div class="btn-toolbar float-right" role="toolbar">
-              <div class="">
-                  <button ng-click="addCustomeRoute()" type="button"
-                      class="btn btn-terniary fa-search-custom" style="float: right; background-color: #384266;">Add Custom
-                      Route</button>
-              </div>
+        <div class="btn-toolbar float-right" role="toolbar">
+          <div class="">
+            <button ng-click="addCustomeRoute()" type="button" class="btn btn-terniary fa-search-custom"
+              style="float: right; background-color: #384266;">Add Custom
+              Route</button>
           </div>
+        </div>
 
       </div>
 
@@ -268,107 +266,104 @@
   </div>
 
   <div class="row vayau-sidebar filter-sidebar" ng-if="isAddMenuOpen2">
-      <div class="col-md-12">
-          <div class="vaayu-sidebar-panel">
-              <div class="vaayu-sidebar-heading">
-                  <div class="row">
-                      <div class="col-md-8">
-                          <h4 class="float-left"><span class="vaayu-sidebar-title">Create Route </span></h4>
-                      </div>
-                      <div class="col-md-4">
-                          <button type="button" ng-click="hideAddMenu2()"
-                              class="btn btn-close float-right">&#x2715;</button>
-                      </div>
-                  </div>
-              </div>
-              <div class="">
-                  <form class="" ng-submit="submitAddCustomRoute(selectedShift,to_time)">
-                          <div class="row">
-                              <div class="col-md-6">
-                                  <div class="form-group">
-                                      <!-- <input class="form-control" type="number" id="appt" min="0" max="23"  ng-model="to_time" name='to_time' placeholder="Time" required>
+    <div class="col-md-12">
+      <div class="vaayu-sidebar-panel">
+        <div class="vaayu-sidebar-heading">
+          <div class="row">
+            <div class="col-md-8">
+              <h4 class="float-left"><span class="vaayu-sidebar-title">Create Route </span></h4>
+            </div>
+            <div class="col-md-4">
+              <button type="button" ng-click="hideAddMenu2()" class="btn btn-close float-right">&#x2715;</button>
+            </div>
+          </div>
+        </div>
+        <div class="">
+          <form class="" ng-submit="submitAddCustomRoute(selectedShift,to_time)">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <!-- <input class="form-control" type="number" id="appt" min="0" max="23"  ng-model="to_time" name='to_time' placeholder="Time" required>
                                                           <span ng-show="hasError('to_time', 'required')" class="help-block">To Time is
                                                               required.</span>
                                                               </div> -->
-                                      <input type="time" id="to_time" name="to_time" class="form-control" ng-model="to_time"
-                                          placeholder="Time"  required />
-                                          <span ng-show="hasError('to_time', 'required')" class="help-block">To Time is
-                                                  required.</span>
-                                                  </div>
-                                  </div>
-                                  <div class="col-md-6">
-                                      <div class="form-group">
-                                          <select name="selectedShift" class="form-control" ng-model="selectedShift" required>
-                                                  <option value="">Select Shift</option>
-                                              <option value="0">Check In</option>
-                                              <option value="1">Check Out</option>
-                                          </select>
-                                          <span  ng-show="selectedShift.$error.required" class="help-block">Shift is 
-                                              required.</span>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="row">
-                                  <div class="col-md-12">
-                                      <div ng-dropdown-multiselect="" class="form-control" options="EmpList"
-                                          selected-model="SelectedEmp " checkboxes="true"
-                                          extra-settings="example14settings" validation="required"
-                                          validation-result="SelectedEmp"></div>
-                                  </div>
-                                  <span  ng-show="SelectedEmp .$error.required" class="help-block">Employee is 
-                                          required.</span>
-                              </div>
-                              <div class="row">
-                                  <div class="col-md-12">
-                                      <div class="vaayu-sidebar-body form-group" set-height style="overflow-y: auto">
-                                          <ul class="emplyoee-list-group" dnd-list="SelectedEmp "
-                                              dnd-effect-allowed="copy" dnd-allowed-types="list.allowedTypes"
-                                              dnd-disable-if="SelectedEmp .length >= SelectedEmp .max"
-                                              dnd-dragover="dragoverCallback(SelectedEmp ,index, external, type)"
-                                              dnd-drop="dropCallback(SelectedEmp ,index, item, external, type)">
-                                              <li ng-repeat="emp in SelectedEmp " no-drop dnd-draggable="emp"
-                                                  dnd-effect-allowed="move"
-                                                  class="background-{{emp.type}} input-group employee-list-group-item">
-                                                  <span class="input-group-addon addon-prepend">
-                                                      <div class="inner-addon">
-                                                          <i class="fa fa-shield" aria-hidden="true"></i>
-                                                      </div>
-                                                  </span>
-
-                                                  <div class="inner-text">
-                                                      <div class="text-small">Selected Employee</div>
-                                                      <div class="text-big"> {{emp.label}}</div>
-                                                  </div>
-
-                                                  <div class="input-group-addon addon-append">
-                                                      <i class="fa fa-bars" aria-hidden="true"></i>
-                                                  </div>
-                                              </li>
-
-                                          </ul>
-
-                                      </div>
-                                  </div>
-                              </div>
-
-
-
-                          <div class="row" style="margin:70px">
-                              <div class="col-md-6">
-                                  <button type="button" style="width:100%" ng-click="hideAddMenu2()"
-                                      class="btn btn-cancel ">Cancel</button>
-                              </div>
-                              <div class="col-md-6"><button style="width:100%" type="submit"
-                                      class="btn btn-primary add-vehicle-btn-done">Submit</button>
-                              </div>
-                          </div>
-
-
-                          <!-- </div> -->
-                  </form>
+                  <input type="time" id="to_time" name="to_time" class="form-control" ng-model="to_time"
+                    placeholder="Time" required />
+                  <span ng-show="hasError('to_time', 'required')" class="help-block">To Time is
+                    required.</span>
+                </div>
               </div>
-          </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <select name="selectedShift" class="form-control" ng-model="selectedShift" required>
+                    <option value="">Select Shift</option>
+                    <option value="0">Check In</option>
+                    <option value="1">Check Out</option>
+                  </select>
+                  <span ng-show="selectedShift.$error.required" class="help-block">Shift is
+                    required.</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div ng-dropdown-multiselect="" class="form-control" options="EmpList" selected-model="SelectedEmp "
+                  checkboxes="true" extra-settings="example14settings" validation="required"
+                  validation-result="SelectedEmp">
+                </div>
+              </div>
+              <span ng-show="SelectedEmp .$error.required" class="help-block">Employee is
+                required.</span>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="vaayu-sidebar-body form-group" set-height style="overflow-y: auto">
+                  <ul class="emplyoee-list-group" dnd-list="SelectedEmp " dnd-effect-allowed="copy"
+                    dnd-allowed-types="list.allowedTypes" dnd-disable-if="SelectedEmp .length >= SelectedEmp .max"
+                    dnd-dragover="dragoverCallback(SelectedEmp ,index, external, type)"
+                    dnd-drop="dropCallback(SelectedEmp ,index, item, external, type)">
+                    <li ng-repeat="emp in SelectedEmp " no-drop dnd-draggable="emp" dnd-effect-allowed="move"
+                      class="background-{{emp.type}} input-group employee-list-group-item">
+                      <span class="input-group-addon addon-prepend">
+                        <div class="inner-addon">
+                          <i class="fa fa-shield" aria-hidden="true"></i>
+                        </div>
+                      </span>
+
+                      <div class="inner-text">
+                        <div class="text-small">Selected Employee</div>
+                        <div class="text-big"> {{emp.label}}</div>
+                      </div>
+
+                      <div class="input-group-addon addon-append">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                      </div>
+                    </li>
+
+                  </ul>
+
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="row" style="margin:70px">
+              <div class="col-md-6">
+                <button type="button" style="width:100%" ng-click="hideAddMenu2()"
+                  class="btn btn-cancel ">Cancel</button>
+              </div>
+              <div class="col-md-6"><button style="width:100%" type="submit"
+                  class="btn btn-primary add-vehicle-btn-done">Submit</button>
+              </div>
+            </div>
+
+
+            <!-- </div> -->
+          </form>
+        </div>
       </div>
+    </div>
   </div>
 
 </div>

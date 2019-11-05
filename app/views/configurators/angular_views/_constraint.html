@@ -9,6 +9,7 @@
                 <toaster-container></toaster-container>
                 <select class="form-control" id="sel1" ng-model="siteID" name="site_name" required
                     ng-change="fetchConstraintList(siteID)">
+                    <option value="">Select Site</option>
                     <option ng-repeat="site in siteNames" value="{{site.id}}">{{site.name.toUpperCase()}}
                     </option>
                 </select>
@@ -231,7 +232,7 @@
                         <div class="col-md-6">
                             <div class="input-group mb-3">
                                 <label class="text-label" for="basic-url">Max Trip Time*</label>
-                                <input type="number" class="form-control" name='max_trip_time' ng-model='max_trip_time'
+                                <input type="number" class="form-control" name='max_trip_time' ng-model='$parent.max_trip_time'
                                     required>
                                 <div class="input-group-append">
                                     <span class="input-group-text">Min</span>
@@ -240,7 +241,7 @@
                                     Field is required.</span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="display: none;">
                             <div class="input-group mb-3">
                                 <label class="text-label" for="basic-url">Between Two Points</label>
                                 <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
@@ -282,8 +283,8 @@
                         <div class="col-md-6">
                             <div class="input-group mb-3">
                                 <label class="text-label" for="basic-url">Max Trip Distance *</label>
-                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
-                                    name='distance' ng-model='distance' required>
+                                <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
+                                    name='distance' ng-model='$parent.distance' required>
                                 <div class="input-group-append">
                                     <span class="input-group-text">Km</span>
                                 </div>
@@ -291,7 +292,7 @@
                             <span ng-show="hasError('distance', 'required')" class="help-block">
                                 Field is required.</span>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="display: none;">
                             <div class="input-group mb-3">
                                 <label class="text-label" for="basic-url">Between Two Points</label>
                                 <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">

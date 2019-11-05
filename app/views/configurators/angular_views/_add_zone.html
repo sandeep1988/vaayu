@@ -25,7 +25,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <div class="form-group">
                         <label for="usr" class="leb_color">Latitude</label>
                         <input type="number" class="form-control" ng-model="latitude" name="latitude"
@@ -45,7 +45,7 @@
                         <span ng-show="hasError('longitude', 'required')" class="help-block">Longitude
                             is required.</span>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="basic-url" class="leb_color">Zipcode</label>
@@ -75,8 +75,8 @@
                     <tr>
                         <th>Site Name</th>
                         <th>Zone Name</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
+                        <!-- <th>Latitude</th>
+                        <th>Longitude</th> -->
                         <th>Zipcode</th>
                     </tr>
                 </thead>
@@ -84,9 +84,13 @@
                     <tr ng-repeat="item in zoneList track by $index">
                         <td>{{item.site_id}}</td>
                         <td>{{item.name}}</td>
-                        <td>{{item.latitude}}</td>
-                        <td>{{item.longitude }}</td>
-                        <td>{{item.zipcode}}</td>
+                        <!-- <td>{{item.latitude}}</td>
+                        <td>{{item.longitude }}</td> -->
+                        <td><div style="line-height: 3em;">  
+                            {{item.zipcode}} 
+                            <button type="button" class="btn btn-danger main-submit-btn" style="margin-top: 5px;"
+                                ng-click="deleteZone(item)">Delete</button></div>
+                        </td>
                     </tr>
                 </tbody>
             </table>

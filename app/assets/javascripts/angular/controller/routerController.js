@@ -131,7 +131,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       }
 
       RosterService.get(postData, function (data) {
-
         if (data.data) {
           $scope.shifts = data.data.shiftdetails;
           if ($scope.shifts && $scope.shifts.length) {
@@ -297,12 +296,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     })
 
     if (finalChangedRoutes.length) {
-
+      let shift = JSON.parse($scope.selectedShift);
       let postData = {
         "site_id": parseInt($scope.siteId),
-        "shift_id": parseInt($scope.selectedShift.id),
+        "shift_id": parseInt(shift.id),
         "to_date": moment($scope.filterDate).format('YYYY-MM-DD'),
-        "shift_type": $scope.selectedShift.shift_type,
+        "shift_type": shift.shift_type,
         "updated_routes": finalChangedRoutes,
         "original_route": original_routes
       }
@@ -454,15 +453,15 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       route.employees = route.employees_nodes_addresses;
     })
 
-    $scope.routes.data.routes.push(
-      {
-        "vehicle_allocated": '',
-        "employees": [],
-        "vehicle": [],
-        "guard": [],
-        "allowed": "all"
-      }
-    )
+    // $scope.routes.data.routes.push(
+    //   {
+    //     "vehicle_allocated": '',
+    //     "employees": [],
+    //     "vehicle": [],
+    //     "guard": [],
+    //     "allowed": "all"
+    //   }
+    // )
 
     $scope.fullModel = [$scope.routes.data.routes];
     $scope.model2 = $scope.fullModel;

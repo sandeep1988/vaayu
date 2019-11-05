@@ -1,4 +1,4 @@
-app.controller('constraintController', function ($scope, $http, $state, SessionService, ToasterService) {
+app.controller('constraintController', function ($scope, $http, $state, SessionService, ToasterService, $timeout) {
 
   $scope.siteNames = [];
   $scope.siteID = null;
@@ -7,7 +7,7 @@ app.controller('constraintController', function ($scope, $http, $state, SessionS
   $scope.siteLong = null;
   $scope.zipcode = null;
 
-  
+
 
 
   this.$onInit = () => {
@@ -37,7 +37,7 @@ app.controller('constraintController', function ($scope, $http, $state, SessionS
     console.log(SessionService.client);
     $http({
       method: 'GET',
-      url: 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com/' + 'constraint/getall/site/'+id,
+      url: 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com/' + 'constraint/getall/site/' + id,
       headers: {
         // 'Content-Type': 'application/json',
         'uid': SessionService.uid,
@@ -46,47 +46,54 @@ app.controller('constraintController', function ($scope, $http, $state, SessionS
       },
       data: { test: 'test' }
     }).then(function (res) {
+
+      if (res.data['success']) {
+        $scope.max_trip_time = null;
+        $scope.distance = null;
+        var constraintList = res.data.data;
+        var guardConstraints = [];
+        console.log('constraintList',constraintList);
         
-        if (res.data['success']) {
-          $scope.constraintList = res.data.data;
-          for (i = 0; i < $scope.constraintList.length; i++) {
-            if ( $scope.constraintList[i].type === 'time') {
-              $scope.max_trip_time = $scope.constraintList[i].value;
-            } else if ( $scope.constraintList[i].type === 'distance') {
-              $scope.distance =  $scope.constraintList[i].value;
-            }
-            
+        
+        for (i = 0; i < constraintList.length; i++) {
+          if (constraintList[i].type === 'time') {
+            $scope.max_trip_time = constraintList[i].value;
+            console.log('max_trip_time', $scope.max_trip_time)
+          } else if (constraintList[i].type === 'distance') {
+            $scope.distance = constraintList[i].value;
+            console.log('distance', $scope.distance)
+          } else if (constraintList[i].type === 'guard') {
+            guardConstraints.push(constraintList[i])
           }
-          console.log($scope.constraintList);
-          arr = $scope.constraintList.sort((a, b) => a.id > b.id ? -1 : 1);
-          
-        } else {
-          alert(res.data['message']);
         }
-      }).catch(err => {
-        console.log(err)
-        // ToasterService.showError('Error', 'Something went wrong, Try again later.');
-      });
+        $scope.constraintList = guardConstraints;
+        
+        arr = $scope.constraintList.sort((a, b) => a.id > b.id ? -1 : 1);
+      } else {
+        alert(res.data['message']);
+      }
+    }).catch(err => {
+      console.log(err)
+      // ToasterService.showError('Error', 'Something went wrong, Try again later.');
+    });
   }
 
 
   $scope.sortByKey = (array, key) => {
-    return array.sort(function(a, b) {
-        var x = a[key];
-        var y = b[key];
+    return array.sort(function (a, b) {
+      var x = a[key];
+      var y = b[key];
 
-        if (typeof x == "string")
-        {
-            x = (""+x).toLowerCase(); 
-        }
-        if (typeof y == "string")
-        {
-            y = (""+y).toLowerCase();
-        }
+      if (typeof x == "string") {
+        x = ("" + x).toLowerCase();
+      }
+      if (typeof y == "string") {
+        y = ("" + y).toLowerCase();
+      }
 
-        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+      return ((x > y) ? -1 : ((x < y) ? 1 : 0));
     });
-}
+  }
 
   $scope.fetchSiteList = () => {
 
