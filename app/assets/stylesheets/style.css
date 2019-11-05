@@ -865,7 +865,7 @@
     .card_flex img{width: 100%;}
     .card_flex .fa{font-size: 26px;}
     .card_flex h5{font-size: 16px;font-weight: 600;padding-left: 7px;}
-
+    .edit-buttons{display: inline-block;float: right;}
 
     
     

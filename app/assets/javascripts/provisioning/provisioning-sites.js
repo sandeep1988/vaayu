@@ -2,7 +2,6 @@ var sitesTableEditor;
 
 $(function () {
     'use strict';
-
     var allCompanies = []
     var logisticsCompanies = []
     var cities = []
@@ -311,7 +310,8 @@ $(function () {
         })
 
         $(document).on('click', '.editor_create ', function(e){
-            if(e.target.baseURI.indexOf("sites") != -1){
+            // if(e.target.baseURI.indexOf("sites") != -1){ //Onload dropdown condition check
+                if (0 != 1){
                 $.ajax({
                     type: "GET",
                     url: '/employee_companies/get_all'
@@ -350,13 +350,16 @@ $(function () {
 
 //  listing for state
         $(document).on('click', '.editor_create ', function(e){
-            if(e.target.baseURI.indexOf("sites") != -1){
+           // if(e.target.baseURI.indexOf("sites") != -1){  // Onload Dropdown condition failing
+            if(0 != -1){
+                console.log("Start of ajax call");
                 $.ajax({
                     type: "GET",
                     url: '/employee_companies/get_all'
                 }).done(function (response) {
                     orig_service_html = $("#site_html").html()
                     states = response.states
+                    console.log(states);
                     setTimeout(function(){                     
                         for(var i = 0; i < states.length; i++){
                             $('#state, #party_state').append($('<option>', {
@@ -377,7 +380,8 @@ $(function () {
 
       //  listing for city
         $(document).on('click', '.editor_create ', function(e){
-            if(e.target.baseURI.indexOf("sites") != -1){
+            // if(e.target.baseURI.indexOf("sites") != -1){ // Onload Dropdown condition failing
+                if(0 != -1){
                 $.ajax({
                     type: "GET",
                     url: '/employee_companies/get_all'

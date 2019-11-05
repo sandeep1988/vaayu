@@ -76,6 +76,7 @@ $(function () {
                     .attr('data-toggle', '')
                     .attr('data-remote', 'true')
                     .attr('href', source);
+                    
                 submitBtn.attr('form', 'form-' + $nextTabWrap.attr('class'));
         }
 
@@ -204,7 +205,6 @@ function setTabActiveState() {
     var submitBtn = $('.nav-actions .submit-btn');
 
     var $activeTab = $('.provisioning .nav-tabs li.active');
-
     var source = $activeTab.find('a').data('source');
     var isModal = $activeTab.find('a').data('modalType');
     var tabClassesStr = $activeTab.attr('class');
