@@ -456,30 +456,30 @@ module API::V1
       @trip.reload      
     end
 
-    def assign_driver
-      @driver = Driver.find(params['driver_id'])
-      @vehicle = @driver.vehicle
-      @trip = Trip.find(params[:id])
+    # def assign_driver
+    #   @driver = Driver.find(params['driver_id'])
+    #   @vehicle = @driver.vehicle
+    #   @trip = Trip.find(params[:id])
       
-      if params['last_paired_vehicle'].present?
-        @last_paired_vehicle = Vehicle.where('plate_number' => params['last_paired_vehicle'])&.first&.id
-      end
+    #   if params['last_paired_vehicle'].present?
+    #     @last_paired_vehicle = Vehicle.where('plate_number' => params['last_paired_vehicle'])&.first&.id
+    #   end
 
-      if @vehicle.present? && @trip.employee_trips.count > @vehicle&.seats
-        render :json => { :error => 'To many people to one car' }
-        return
-      else
-        @employee_trips = EmployeeTrip.joins(:trip_route).where(:trip => @trip).order('trip_routes.scheduled_route_order ASC')
-        get_trip_data(@employee_trips)
-        if params[:exception] == 'true'
-          @exception = 1
-        else
-          @exception = 0
-        end
-        # render 'show_trip_on_dispatch'
-        render json: { :success => true, :trip => @trip, :employee_trips => @employee_trips, :submit => true, :exception => @exception, :driver => @driver, :vehicle => @vehicle, :last_paired_vehicle => @last_paired_vehicle }
-      end
-    end
+    #   if @vehicle.present? && @trip.employee_trips.count > @vehicle&.seats
+    #     render :json => { :error => 'To many people to one car' }
+    #     return
+    #   else
+    #     @employee_trips = EmployeeTrip.joins(:trip_route).where(:trip => @trip).order('trip_routes.scheduled_route_order ASC')
+    #     get_trip_data(@employee_trips)
+    #     if params[:exception] == 'true'
+    #       @exception = 1
+    #     else
+    #       @exception = 0
+    #     end
+    #     # render 'show_trip_on_dispatch'
+    #     render json: { :success => true, :trip => @trip, :employee_trips => @employee_trips, :submit => true, :exception => @exception, :driver => @driver, :vehicle => @vehicle, :last_paired_vehicle => @last_paired_vehicle }
+    #   end
+    # end
 
     def resolve_exception
       errors = []

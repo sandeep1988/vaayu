@@ -316,7 +316,7 @@ Rails.application.routes.draw do
       end
       resources :trips do
         member do
-          post :assign_driver
+          # post :assign_driver
         end
       end
       resources :employee_trips, except: :destroy do
