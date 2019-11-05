@@ -4,12 +4,12 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   $scope.init = function () {
     $scope.SelectedEmp = [];
     $scope.example14settings = {
-        scrollableHeight: '200px',
-        scrollable: true,
-        enableSearch: true,
-        width: '300px'
+      scrollableHeight: '200px',
+      scrollable: true,
+      enableSearch: true,
+      width: '300px'
     };
-  
+
     $scope.isAddMenuOpen = false;
     $scope.isAddMenuOpen2 = false;
 
@@ -271,6 +271,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
 
   //mansi changes
+
   $scope.getEmployeeList = function () {
 
     let postData = {
@@ -297,12 +298,11 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     $scope.SelectedEmp = [];
   }
   $scope.submitAddCustomRoute = function (selectedShift, to_time) {
-    var d = new Date(to_time);
-    $scope.shiftTime = d.getHours() + ':' + d.getMinutes();
-    console.log('shiftTime', $scope.shiftTime);
-    console.log('filterDate', $scope.filterDate);
     if ($scope.SelectedEmp.length == 0) {
       ToasterService.showError('Error', 'Select atleast one Employee');
+      return;
+    } else if (moment($scope.filterDate).format('YYYY-MM-DD') < moment(new Date()).format('YYYY-MM-DD')) {
+      ToasterService.showError('Error', 'Selected date should not be smaller than todays date.');
       return;
     }
     var employeeIds = $scope.SelectedEmp.map(emp => emp.id);
@@ -310,7 +310,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       siteId: $scope.selectedSite.id,
       tripType: selectedShift,
       date: moment($scope.filterDate).format('YYYY-MM-DD'),
-      shiftTime: $scope.shiftTime,
+      shiftTime: moment(to_time).format('HH:mm'),
       employeeIds: employeeIds
     }
     console.log(postData);
@@ -318,6 +318,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       (res) => {
 
         if (res['success']) {
+          console.log(res);
           ToasterService.showSuccess('Success', 'Custom Route generated successfully.');
           $scope.SelectedEmp = [];
           $scope.isAddMenuOpen2 = false;

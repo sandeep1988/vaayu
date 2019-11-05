@@ -16,11 +16,11 @@ function ($resource,BASE_URL_8002,BASE_URL) {
           method: "POST"
         },
         addCustomEmployee:{
-          url: 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8002/api/v1/' + 'adhoc_employee_route',
+          url: BASE_URL_8002 + 'adhoc_employee_route',
           method: "POST"
         },
         getEmployeeList:{
-          url: 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8002/api/v1/' + 'get_all_employees',
+          url: BASE_URL_8002 + 'get_all_employees',
           method: "POST"
         },
     });

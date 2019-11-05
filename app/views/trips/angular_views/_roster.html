@@ -7,6 +7,7 @@
         <form class="form-inline" ng-submit="updateFilters()">
           <div class="form-group pr-2">
             <select ng-model="selectedSite" ng-options="site.name for site in siteList track by site.id"
+            ng-change="getEmployeeList()"
               class="form-control" placeholder="Select Shift">
               <!-- <option value="" >Site</option> -->
             </select>
@@ -15,6 +16,7 @@
             <p class="input-group custom-date date_style">
               <input type="text" class="form-control data_in_style" datepicker-popup="{{format}}" ng-model="filterDate"
                 is-open="opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
+                ng-change="getEmployeeList()"
                 ng-required="true" close-text="Close" />
               <span class="input-group-btn-datePicket">
                 <button type="button" class="btn btn-default data_in_style" ng-click="open($event)"><i
@@ -259,9 +261,6 @@
                   class="btn btn-primary add-vehicle-btn-done">DONE</button>
               </div>
             </div>
-
-
-            <!-- </div> -->
           </form>
         </div>
       </div>
@@ -292,7 +291,7 @@
                                                               required.</span>
                                                               </div> -->
                                       <input type="time" id="to_time" name="to_time" class="form-control" ng-model="to_time"
-                                          placeholder="Time" required />
+                                          placeholder="Time"  required />
                                           <span ng-show="hasError('to_time', 'required')" class="help-block">To Time is
                                                   required.</span>
                                                   </div>
@@ -314,7 +313,7 @@
                                       <div ng-dropdown-multiselect="" class="form-control" options="EmpList"
                                           selected-model="SelectedEmp " checkboxes="true"
                                           extra-settings="example14settings" validation="required"
-                                          validation-result="SelectedEmp "></div>
+                                          validation-result="SelectedEmp"></div>
                                   </div>
                                   <span  ng-show="SelectedEmp .$error.required" class="help-block">Employee is 
                                           required.</span>
