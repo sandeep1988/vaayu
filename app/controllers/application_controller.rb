@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   around_filter :set_time_zone
   before_action :set_headers
-  before_action :authenticate_user!, unless: -> { ['devise_token_auth', 'overrides' ].include?(params[:controller].split('/')[0])}
+  # before_action :authenticate_user!, unless: -> { ['devise_token_auth', 'overrides' ].include?(params[:controller].split('/')[0])}
   around_action :set_current_user
 
   rescue_from CanCan::AccessDenied do |exception|
