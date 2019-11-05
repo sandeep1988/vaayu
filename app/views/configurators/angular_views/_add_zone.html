@@ -48,8 +48,10 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="basic-url" class="leb_color">Zipcode {{}}</label>
-                        <input type="number" class="form-control" name="zipcode" required ng-model="zipcode">
+                        <label for="basic-url" class="leb_color">Zipcode</label>
+                        <input type="number" class="form-control" name="zipcode" required ng-model="zipcode"  
+                        pattern="[0-9]{6}" 
+                        onKeyPress="if(this.value.length==6) return false;">
                         <span ng-show="hasError('zipcode', 'required')" class="help-block">Zipcode
                             is required.</span>
                     </div>
