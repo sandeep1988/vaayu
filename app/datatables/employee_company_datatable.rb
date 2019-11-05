@@ -59,7 +59,9 @@ class EmployeeCompanyDatatable
        :agreement_date => @employee_company.agreement_date,
        :swachh_bharat_cess => @employee_company.swachh_bharat_cess,
        :krishi_kalyan_cess => @employee_company.krishi_kalyan_cess,
-       :profit_centre => @employee_company.profit_centre
+       :profit_centre => @employee_company.profit_centre,
+       :reference_no2 => @employee_company.reference_no2,
+       :reference_no1 => @employee_company.reference_no1
     }
   end
 end

@@ -32,10 +32,13 @@ $(function () {
                             return '<a href="" class="modal_view">' + data + '</a>'
                         }
                     },
-                    {data: 'hq_address'},
-                    {data: 'business_type'},
-                    {data: 'pan'},
-                    {data: 'service_tax_no'},
+                    // {data: 'hq_address'},
+                    // {data: 'business_type'},
+                    // {data: 'pan'},
+                    // {data: 'service_tax_no'},
+                    {data: 'category'},
+                    {data: 'home_address_state'},
+                    {data: 'home_address_city'},
                     {
                         data: null,
                         render: function (data) {
@@ -69,78 +72,103 @@ $(function () {
                 url: '/employee_companies/_id_'
             }
         },
-        fields: [{
-            label: "Name",
+        fields: [
+        // {
+        //     label: "Customer Code *",
+        //     className: "col-md-4",
+        //     name: "customer_code"
+        // },
+        {
+            label: "Customer Name *",
             className: "col-md-4",
             name: "name"
         },
         {
-            label: "HQ Address",
-            className: "col-md-4",
-            name: "hq_address"
-        }, {
-            label: "Business Type",
-            className: "col-md-4",
-            name: "business_type"
-        }, {
-            label: 'PAN',
+            label: 'PAN No *',
             className: "col-md-4 clear",
             name: "pan"
-        }, {
-            label: 'Service Tax No.',
+        }, 
+        {
+            label: 'Reference No1',
             className: "col-md-4",
-            name: "service_tax_no"
-        }, {
+            name: "reference_no1"
+        },
+        {
+            label: 'Reference No2',
+            className: "col-md-4",
+            name: "reference_no2"
+        },
+        {
             label: 'Zone',
-            className: "col-md-4",
-            name: "zone"
-        }, {
+            className: "col-md-4 selectboxit-wrap",
+            name: "zone",
+            type: "select",
+            options: [
+                {label: "SEZ", value: "SEZ"},
+                {label: "NON SEZ", value: "NON SEZ"}
+            ]
+        },
+       
+         {
             label: 'Category',
-            className: "col-md-4",
-            name: "category"
-         } , {
-            label: 'Billing To',
-            className: "col-md-4",
-            name: "billing_to"
+            className: "col-md-4 selectboxit-wrap",
+            name: "category",
+            type: "select",
+            options: [
+                {label: "IT/ Transportation", value: "IT/ Transportation"}
+            ]
+          },
+          {
+            label: 'Billing To *',
+            className: "col-md-4 selectboxit-wrap",
+            name: "billing_to",
+            type: "select",
+            options: [
+                {label: "Home", value: "IT/ Transportation"},
+                {label: "Registered", value: "Registered"},
+                {label: "Site", value: "Site"},
+                {label: "Invoice to Party", value: "Invoice to Party"}
+            ]
          } ,
+         
 
           {
-            label: 'Contact Name',
+            label: 'Contact Name *',
             className: "col-md-4",
             name: "home_address_contact_name"
           },
           {
-            label: 'Address 1',
+            label: 'Address line 1 *',
             className: "col-md-4",
             name: "home_address_address_1"
           },
           {
-            label: 'Address 2',
+            label: 'Address line 2 *',
             className: "col-md-4",
             name: "home_address_address_2"
           },
           {
-            label: 'Address 3',
+            label: 'Address line 3',
             className: "col-md-4",
             name: "home_address_address_3"
           },
           {
-            label: 'PIN',
+            label: 'Pin Code *',
             className: "col-md-4",
             name: "home_address_pin"
           },
           {
-            label: 'State',
+            label: 'State *',
             className: "col-md-4",
             name: "home_address_state"
           },
           {
-            label: 'City',
+            label: 'City *',
             className: "col-md-4",
             name: "home_address_city"
           },
           {
-            label: 'Phone 1',
+            label: 'Phone 1 *',
             className: "col-md-4",
             name: "home_address_phone_1"
           },
@@ -155,7 +183,7 @@ $(function () {
             name: "home_address_business_area"
           },
           {
-            label: 'PAN No ',
+            label: 'PAN No *',
             className: "col-md-4",
             name: "home_address_pan_no"
           },
@@ -171,12 +199,12 @@ $(function () {
             name: "registered_contact_name"
           },
           {
-            label: 'Registered Address 1',
+            label: 'Registered Address 1 *',
             className: "col-md-4",
             name: "registered_address1"
           },
           {
-            label: 'Registered Address 2',
+            label: 'Registered Address 2 *',
             className: "col-md-4",
             name: "registered_address2"
           },
@@ -186,22 +214,22 @@ $(function () {
             name: "registered_address3"
           },
           {
-            label: 'Registered Pin',
+            label: 'Registered Pin Code',
             className: "col-md-4",
             name: "registered_pin"
           },
           {
-            label: 'Registered State',
+            label: 'Registered State *',
             className: "col-md-4",
             name: "registered_state"
           },
           {
-            label: 'Registered City',
+            label: 'Registered City *',
             className: "col-md-4",
             name: "registered_city"
           },
           {
-            label: 'Registered Phone1',
+            label: 'Registered Phone 1 *',
             className: "col-md-4",
             name: "registered_phone1"
           },
@@ -209,11 +237,6 @@ $(function () {
             label: 'Registered Phone2',
             className: "col-md-4",
             name: "registered_phone2"
-          },
-          {
-            label: 'Registered Phone2',
-            className: "col-md-4",
-            name: "registered_phone3"
           },
           {
             label: 'Registered Business Area',
