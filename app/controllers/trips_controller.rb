@@ -312,14 +312,15 @@ class TripsController < ApplicationController
       render :json => { :error => 'To many people to one car' }
       return
     else
-      @employee_trips = EmployeeTrip.joins(:trip_route).where(:trip => @trip).order('trip_routes.scheduled_route_order ASC')
+      # @employee_trips = EmployeeTrip.joins(:trip_route).where(:trip => @trip).order('trip_routes.scheduled_route_order ASC')
+      @employee_trips = EmployeeTrip.joins("INNER JOIN trip_routes ON trip_routes.trip_id = employee_trips.trip_id").where(:trip => @trip).order('trip_routes.scheduled_route_order ASC')
       get_trip_data(@employee_trips)
       if params[:exception] == 'true'
         @exception = 1
       else
         @exception = 0
       end
-      render 'show_trip_on_dispatch'
+      render json: {:trip => @trip, :employee_trips => @employee_trips, :submit => true, :exception => @exception, :driver => @driver, :vehicle => @vehicle, :last_paired_vehicle => @last_paired_vehicle}
     end
   end
 
