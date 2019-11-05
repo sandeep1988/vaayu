@@ -96,12 +96,12 @@ $(function () {
                 document.getElementById("company").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if($("#address").val() == '' || $("#address").val() == undefined || $("#address").val() == null){
-                document.getElementById("address").classList.add("border-danger")
+            if($("#address_1").val() == '' || $("#address_1").val() == undefined || $("#address_1").val() == null){
+                document.getElementById("address_1").classList.add("border-danger")
                 validationError = true
             }
             else{
-                document.getElementById("address").classList.remove("border-danger")
+                document.getElementById("address_1").classList.remove("border-danger")
                 validationError = validationError || false
             }
             // if(current_user != 'Operator' && ($("#operator").val() == 0 || $("#operator").val() == undefined || $("#operator").val() == null)){
@@ -135,7 +135,6 @@ $(function () {
                         'id': site_id
                     }
                 }).done(function(response){
-                    console.log(response)
                     orig_service_html = $("#services").html()
                     edit_site = true
                     var html = generate_edit(response, 'site', response.logistics_company_id, orig_service_html)
@@ -168,7 +167,6 @@ $(function () {
                         'id': site_id
                     }
                 }).done(function(response){
-                    console.log(response)
                     orig_service_html = $("#services").html()
                     edit_site = true
                     var html = generate_edit(response, 'site', response.logistics_company_id, orig_service_html)
@@ -187,7 +185,8 @@ $(function () {
         });
 
         $(document).on('click', ".submit-btn", function(e){
-            if(e.target.baseURI.indexOf("sites") != -1){
+            // if(e.target.baseURI.indexOf("sites") != -1){ failing save event
+                if(0 != 1){
                 var site = {
                     'name': $("#siteName").val(),
                     'employee_company_id': $("#company").val(),
@@ -316,13 +315,10 @@ $(function () {
                     type: "GET",
                     url: '/employee_companies/get_all'
                 }).done(function (response) {
-                    console.log('employee_companies')
                     orig_service_html = $("#services").html()
                     allCompanies = response.employee_companies
-                    console.log('allCompanies', allCompanies)
                     
                     logisticsCompanies = response.logistics_companies
-                    console.log('logisticsCompanies', logisticsCompanies)
                     current_user = response.current_user.entity_type
                     setTimeout(function(){                     
                         for(var i = 0; i < allCompanies.length; i++){
@@ -352,7 +348,6 @@ $(function () {
         $(document).on('click', '.editor_create ', function(e){
            // if(e.target.baseURI.indexOf("sites") != -1){  // Onload Dropdown condition failing
             if(0 != -1){
-                console.log("Start of ajax call");
                 $.ajax({
                     type: "GET",
                     url: '/employee_companies/get_all'

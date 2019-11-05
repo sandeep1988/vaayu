@@ -32,6 +32,7 @@ $(function () {
         var source = $(e.target).data('source');
         var modalType = $(e.target).data('modal-type');
         var submitBtn = $('.nav-actions .submit-btn');
+        console.log(submitBtn);
         $(".provisioning .edit-buttons .submit-btn").fadeIn()
         $(".provisioning .edit-buttons").fadeOut()
 
@@ -76,7 +77,7 @@ $(function () {
                     .attr('data-toggle', '')
                     .attr('data-remote', 'true')
                     .attr('href', source);
-                    
+                    console.log(source);
                 submitBtn.attr('form', 'form-' + $nextTabWrap.attr('class'));
         }
 

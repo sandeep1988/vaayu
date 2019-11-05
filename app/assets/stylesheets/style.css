@@ -856,7 +856,7 @@
   .data_in_style{height: 42px !important;border: 1px solid #707070 !important;}
   .cut_title{font-size: 16px;font-weight: 500;padding-bottom: 20px;}
   #toast-container > div{padding-left: 45px !important;}
-  .action-buttons, .save-button{display: inline-block !important;margin-right: 2px !important;}
+  .action-buttons, .save-button{display: inline-block ;margin-right: 2px !important;}
   .btn-terniary{background-color: #14a89e;
     color: #fff;}
     .table-condensed th{text-align: center;}
@@ -865,8 +865,7 @@
     .card_flex img{width: 100%;}
     .card_flex .fa{font-size: 26px;}
     .card_flex h5{font-size: 16px;font-weight: 600;padding-left: 7px;}
-    .edit-buttons{display: inline-block;float: right;}
-
+    .edit-buttons{float: right;}
     
     
   
