@@ -215,7 +215,10 @@ $(function () {
                     },
                     {
                         data: "entity_attributes.gender",
-                        orderable: false
+                        orderable: false,
+                        render: function (data) {
+                          return data == "0" ? "Female" : "Male";
+                        }
                     },
                     {
                         data: "entity_attributes.home_address",

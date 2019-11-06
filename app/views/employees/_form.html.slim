@@ -11,22 +11,19 @@
         .col-md-4
           = f.input :email, label: 'Email', required: true, wrapper_html: { class: 'search-match' }, input_html: { data: { "match-user" => "email" } }
       .col-md-4
-        = f.input :phone, as: :tel, label: 'Phone', required: true, wrapper_html: { class: 'search-match' }, input_html: { data: { "match-user" => "phone" } }
+        = f.input :phone, as: :tel, label: 'Phone', maxlength: 10, required: true, wrapper_html: { class: 'search-match' }, input_html: { data: { "match-user" => "phone" } }
       .col-md-4
         = f.simple_fields_for :entity_attributes, @employee.entity do |ui|
           = ui.association :employee_company, label: 'Company', prompt: false, required: true, prompt: "Choose a Company"
       - if @is_guard
         .col-md-4
-          = f.input :shift_ids, collection: Shift.active.map { |x| [x.name, x.id] }, input_html: { multiple: true, class: "multiple-select-ui" }, wrapper_html: { class: "provisioning-multiselect" }
+          = f.input :shift_ids, collection: Shift.active.map { |x| [x.name, x.id] }, input_html: { multiple: true, class: "multiple-select-ui" }, required: true ,wrapper_html: { class: "provisioning-multiselect" }
     - unless @is_guard
       .row
         .col-md-4
           = f.input :shift_ids, collection: Shift.active.map { |x| [x.name, x.id] }, input_html: { multiple: true, class: "multiple-select-ui" }, wrapper_html: { class: "provisioning-multiselect" }
         .col-md-4
           = f.input :process_code, label: 'Process Code'
-        .col-md-4
-          = f.simple_fields_for :entity_attributes, @employee.entity do |ui|
-            = ui.input :line_manager_id, collection: @line_managers, label: "Line Manager", prompt: "Choose a Line Manager"
     = f.simple_fields_for :entity_attributes, @employee.entity do |ui|
       -if @is_guard
         = ui.input :is_guard, as: 'hidden', input_html: { value: '1' }
@@ -39,7 +36,7 @@
             span.field-label
               | Employee attributes:
         .col-md-4
-          = ui.input :employee_id, label: 'Employee id', required: true
+          = ui.input :employee_id, label: 'Employee Company ID', required: true
         .col-md-4
           - if @is_guard
             = ui.input :gender, as: 'hidden', input_html: { value: 'male' }

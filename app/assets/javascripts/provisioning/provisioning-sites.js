@@ -53,13 +53,13 @@ $(function () {
                         }
                     },
                     {data: "company"},
-                    {data: "address"},
-                    {data: "phone"},
+                    // {data: "address"},
+                    // {data: "phone"},
                     {
                         data: null,
                         render: function (data) {
                             // return '<a href="#" class="editor_remove text-danger" data-toggle="modal" data-target="#modal-confirm-remove-site" data-site_id="' + data.id + '">Delete</a>';
-                            return '<a style="cursor:pointer" id="viewSite" class="editor_edit" data-remote="true" data-site_id="' + data.id + '">View</a>'
+                            return '<a style="cursor:pointer" id="viewSite" class="editor_edit" data-remote="true" data-site_id="' + data.id + '">View</a>&nbsp<a style="cursor:pointer" id="editSite" class="editor_edit" data-remote="true" data-site_id="' + data.id + '">Edit</a>'
                         }
                     }
                 ],
