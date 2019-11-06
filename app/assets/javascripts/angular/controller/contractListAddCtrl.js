@@ -3,7 +3,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     this.$onInit = function () {
         console.log('onit - contractListAddCtrl');
         $scope.totalSelectedUIDs = "Select UIDs";
-        $scope.showCheckboxes();
+        // $scope.showCheckboxes();
 
         $scope.fetchSiteList();
         $scope.fetchBAList();
@@ -20,7 +20,6 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     $scope.selectedSiteId;
     $scope.selectedUIDs = [];
 
-
     $scope.contract_type = [
         { name: 'PER KM',   value: 'Per km' },
         { name: 'PER HEAD', value: 'Per head', },
@@ -31,80 +30,99 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
 
     $scope.uniqueId = [
         {
+            id: 1,
             "name": "Trip Category",
             "value": "trip_category"
         },
 
         {
+            id: 2,
             "name": "Vehicle Category",
             "value": "vehicle_category"
         },
         {
+            id: 3,
             "name": "Vehicle Model",
             "value": "vehicle_model"
         },
         {
+            id: 4,
             "name": "Age of Vehicle",
             "value": "age_of_vehicle"
         },
         {
+            id: 5,
             "name": "Trip Time",
             "value": "trip_time"
         },
         {
+            id:6,
             "name": "From to To Time",
             "value": "from_time_to_time"
         },
         {
+            id:7,
             "name": "KM",
             "value": "trip_km"
         },
         {
+            id:8,
             "name": "Trip Date",
             "value": "trip_date"
         },
         {
+            id:9,
             "name": "AC/ Non AC",
             "value": "ac_nonac"
         },
         {
+            id: 10,
             "name": "Shift",
             "value": "shift"
         },
         {
+            id: 11,
             "name": "Zone",
             "value": "zone"
         },
         {
+            id: 12,
             "name": "Trip Type",
             "value": "trip_type"
         },
         {
+            id: 13,
             "name": "Garage KM",
             "value": "garage_km"
         },
         {
+            id: 14,
             "name": "Swing KM",
             "value": "swing_km"
         },
 
         {
+            id: 15,
             "name": "Trip Day",
             "value": "day_type"
         },
         {
+            id: 16,
             "name": "Number of employees",
             "value": "employee_count"
         },
         {
+            id: 17,
             "name": "Vehicle Capacity",
             "value": "vehicle_capacity"
         },
         {
+            id: 18,
             "name": "Vehicle Average",
             "value": "vehicle_avg"
         },
         {
+            id: 19,
             "name": "Guard",
             "value": "guard"
         },
@@ -123,36 +141,36 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     $scope.selectedUIDtoSend;
 
 
-    $scope.closeExpanded = () => {
-        console.log('exp')
-        checkboxes.style.display = "none";
-        $scope.expanded = false;
-    }
-    $scope.showCheckboxes = () => {
-        var checkboxes = document.getElementById("checkboxes");
-        if (!$scope.expanded) {
-            checkboxes.style.display = "block";
-            $scope.expanded = true;
-        } else {
-            checkboxes.style.display = "none";
-            $scope.expanded = false;
-        }
-    }
-    $scope.toggleSelection = function toggleSelection(UID) {
-        var idx = $scope.selectedUIDs.indexOf(UID);
+    // $scope.closeExpanded = () => {
+    //     console.log('exp')
+    //     checkboxes.style.display = "none";
+    //     $scope.expanded = false;
+    // }
+    // $scope.showCheckboxes = () => {
+    //     var checkboxes = document.getElementById("checkboxes");
+    //     if (!$scope.expanded) {
+    //         checkboxes.style.display = "block";
+    //         $scope.expanded = true;
+    //     } else {
+    //         checkboxes.style.display = "none";
+    //         $scope.expanded = false;
+    //     }
+    // }
+    // $scope.toggleSelection = function toggleSelection(UID) {
+    //     var idx = $scope.selectedUIDs.indexOf(UID);
 
-        // Is currently selected
-        if (idx > -1) {
-            $scope.selectedUIDs.splice(idx, 1);
-        }
+    //     // Is currently selected
+    //     if (idx > -1) {
+    //         $scope.selectedUIDs.splice(idx, 1);
+    //     }
 
-        // Is newly selected
-        else {
-            $scope.selectedUIDs.push(UID);
-        }
-        $scope.totalSelectedUIDs = $scope.selectedUIDs.length + ' UIDs selected';
-        console.log($scope.selectedUIDs);
-    };
+    //     // Is newly selected
+    //     else {
+    //         $scope.selectedUIDs.push(UID);
+    //     }
+    //     $scope.totalSelectedUIDs = $scope.selectedUIDs.length + ' UIDs selected';
+    //     console.log($scope.selectedUIDs);
+    // };
     $scope.fetchSiteList = () => {
 
         $http({
@@ -191,6 +209,12 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
 
     }
 
+    $scope.getSelectedUDIDs = () => {
+        if ($scope.selectedUIDs.length == 0) return "";
+        let items = $scope.selectedUIDs.map(i => i.label);
+        return items.join(" | ");
+    }
+
     // $scope.downloadCSV = function () {
     //     var id = $scope.selectedSiteId
     //     var type = 'SITE'
@@ -217,8 +241,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     // }
     
     $scope.isValid = () => {
-        $scope.selectedUIDtoSend = $scope.selectedUIDs.map(({ value }) => value)
-        if ($scope.selectedUIDtoSend.length == 0) {
+        if ($scope.selectedUIDs.length == 0) {
             ToasterService.showError('Error', 'Select one or more UDID\'s');
             return false;
         } else if (!$scope.selectedSiteId && $scope.tab == 'CUSTOMER') {
@@ -245,10 +268,8 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         if (!$scope.isValid()) {
             return;
         }
-        $scope.selectedUIDtoSend = $scope.selectedUIDs.map(({ value }) => value)
+        $scope.selectedUIDtoSend = $scope.selectedUIDs.map(({ label }) => label)
         console.log($scope.selectedUIDtoSend);
-
-        
 
         var formData = new FormData();
         formData.append("customer_id", "1");

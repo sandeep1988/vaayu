@@ -11,7 +11,7 @@
                     <label for="usr" class="leb_color">Site Name *</label>
                     <!-- <input type="text" class="form-control" id="usr"> -->
                     <select class="custom-select form-control" ng-model="selectedSiteId" ng-change="getContracts()"
-                        ng-click="closeExpanded()">
+                        >
                         <option value="">Select Site</option>
                         <option ng-repeat="site in siteList" value="{{site.id}}">{{site.name.toUpperCase()}}
                         </option>
@@ -22,7 +22,7 @@
                     <label for="usr" class="leb_color">BA Name *</label>
                     <!-- <input type="text" class="form-control" id="usr"> -->
                     <select class="custom-select form-control" ng-model="baID" ng-change="getContracts()"
-                        ng-click="closeExpanded()">
+                        >
                         <option value="">Select BA</option>
                         <option ng-repeat="site in baList" value="{{site.id}}">{{site.legal_name.toUpperCase()}}
                         </option>
@@ -34,11 +34,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="usr" class="leb_color">Unique Identifier *</label>
-                    <!-- <div ng-dropdown-multiselect="" class="form-control" options="EmpList"
-                            selected-model="SelectedEmp " checkboxes="true" extra-settings="example14settings"
-                            validation="required" validation-result="SelectedEmp">
-                        </div> -->
-                    <div class="multiselect wd-full">
+                    <div ng-dropdown-multiselect="" 
+                        checkboxes="true" 
+                        search-placeholder="   Search UDID's    " options="uniqueId" selected-model="selectedUIDs" extra-settings="example2settings">
+                        
+                    </div>
+                    {{getSelectedUDIDs()}}       
+             <!-- <div class="multiselect wd-full">
                         <div class="selectBox " ng-click="showCheckboxes()">
                             <select class="custom-select form-control">
                                 <option>
@@ -54,15 +56,15 @@
                                 <input type="checkbox" id="{{uid.value}}" ng-checked="selectedUIDs.indexOf(uid) > -1"
                                     ng-click="toggleSelection(uid)" />{{uid.name}}</label>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-md-12 ">
                         <button ng-repeat="uid in selectedUIDs" class="btn selectedUIDs border-bt">
                             {{uid.name}}<i class="fa fa-close" ng-click="toggleSelection(uid)" style="margin: 5px"></i>
                         </button>
                     </div>
-                </div>
+                </div> -->
             </div>
 
 
@@ -101,7 +103,7 @@
                                             class="required">*</span></label>
 
                                     <select class="custom-select form-control" ng-model="bcycle"
-                                        ng-click="closeExpanded()">
+                                        >
                                         <option value="">Select Billing Cycle</option>
                                         <option ng-repeat="bill in billingOption" value="{{bill.value}}">
                                             {{bill.name.toUpperCase()}}</option>
@@ -111,7 +113,7 @@
 
                                 <div class="form-group">
                                     <label class="leb_color" for="basic-url">Download Sample File</label>
-                                    <div class="input-group mb-3" ng-click="closeExpanded()">
+                                    <div class="input-group mb-3" >
 
 
 
@@ -129,7 +131,7 @@
                                     <label class="leb_color" for="basic-url">Contract Type<span
                                             class="required">*</span></label>
                                     <select class="custom-select form-control" ng-model="ctype"
-                                        ng-click="closeExpanded()">
+                                        >
                                         <option value="">Choose Options</option>
                                         <option ng-repeat="item in contract_type" value="{{item.value}}">
                                             {{item.name.toUpperCase()}}</option>
@@ -142,7 +144,7 @@
                                         <label class="input-group-btn">
                                             <span class="btn btn-primary">
                                                 Choose File&hellip; <input type="file" style="display: none;"
-                                                    accept=".csv, text/csv" id="file" name='file'
+                                                    accept=".csv, text/csv, .xls, .xlsx" id="file" name='file'
                                                     onchange="angular.element(this).scope().fileNameChanged(this)">
                                             </span>
                                         </label>
@@ -185,7 +187,7 @@
                                     <label class="leb_color " for="basic-url">Billing Cycle<span
                                             class="required">*</span></label>
                                     <select class="custom-select form-control" ng-model="bcycle"
-                                        ng-click="closeExpanded()">
+                                        >
                                         <option value="">Select Billing Cycle</option>
                                         <option ng-repeat="bill in billingOption" value="{{bill.value}}">
                                             {{bill.name.toUpperCase()}}</option>
@@ -194,7 +196,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="leb_color" for="basic-url">Download Sample File</label>
-                                    <div class="input-group mb-3" ng-click="closeExpanded()">
+                                    <div class="input-group mb-3" >
 
 
 
@@ -210,7 +212,7 @@
                                             class="required">*</span></label>
 
                                     <select class="custom-select form-control" ng-model="ctype"
-                                        ng-click="closeExpanded()">
+                                        >
                                         <option value="">Choose Options</option>
                                         <option ng-repeat="item in contract_type" value="{{item.value}}">
                                             {{item.name.toUpperCase()}}</option>
@@ -223,7 +225,7 @@
                                         <label class="input-group-btn">
                                             <span class="btn btn-primary">
                                                 Choose File&hellip; <input type="file" style="display: none;"
-                                                    accept=".csv, text/csv" id="file" name='file'
+                                                accept=".csv, text/csv, .xls, .xlsx" id="file" name='file'
                                                     onchange="angular.element(this).scope().fileNameChanged(this)">
                                             </span>
                                         </label>

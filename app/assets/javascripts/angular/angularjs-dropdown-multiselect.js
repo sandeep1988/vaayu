@@ -5,6 +5,7 @@ var directiveModule = angular.module('angularjs-dropdown-multiselect', []);
 
 directiveModule.directive('dmDropdownStaticInclude', ['$compile', function($compile) {
 	return function(scope, element, attrs) {
+		
 		var template = attrs.dmDropdownStaticInclude;
 		var contents = element.html(template).contents();
 		$compile(contents)(scope);
@@ -22,12 +23,13 @@ directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$co
 			searchFilter: '=?',
 			translationTexts: '=',
 			groupBy: '@',
-			disabled: "="
+			disabled: "=",
+			// searchPlaceholder: "=",
 		},
 		template: function(element, attrs) {
 			var checkboxes = attrs.checkboxes ? true : false;
 			var groups = attrs.groupBy ? true : false;
-
+			
 			var template = '<div class="multiselect-parent btn-group dropdown-multiselect" ng-class="{open: open}">';
 			template += '<button ng-disabled="disabled" type="button" class="dropdown-toggle" ng-class="settings.buttonClasses"  ng-click="toggleDropdown()" ng-style="{padding_left:\'76px\' }">{{getButtonText()}}&nbsp;<span class="caret" ></span></button>';
 			template += '<ul class="dropdown-menu dropdown-menu-form" ng-if="open" ng-style="{display: open ? \'block\' : \'none\',width:\'300px\',height : settings.scrollable ? settings.scrollableHeight : \'auto\', overflow: \'auto\' }" >';
@@ -71,6 +73,8 @@ directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$co
 		link: function($scope, $element, $attrs) {
 			var $dropdownTrigger = $element.children()[0];
 
+			console.log('dropdown attrs', $attrs)
+			$scope.dropdownsearchPlaceholder = $attrs.searchPlaceholder;
 			$scope.toggleDropdown = function() {
 				if ($scope.open) {
 					$scope.close()
@@ -144,7 +148,7 @@ directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$co
 				selectionCount: 'checked',
 				selectionOf: '/',
 				searchPlaceholder: 'Search...',
-				buttonDefaultText: 'Search Employee',
+				buttonDefaultText: $scope.dropdownsearchPlaceholder,
 				dynamicButtonTextSuffix: 'checked',
 				disableSearch: 'Disable search',
 				enableSearch: 'Enable search',
