@@ -87,7 +87,7 @@ class API::V2::VehiclesController < ApplicationController
     if params[:plate_number].present?
       result = Vehicle.pluck(:plate_number).include? params[:plate_number]
       render json: {success: true , message: "Vehicle registration number should not be duplicate", data:{ plate_number: params[:plate_number] }, errors: {} }, status: :ok if result
-      render json: { success: false , message: "Plate number is unique", data: { plate_number: params[:plate_number] } , errors: {} }, status: :ok if result == false
+      render json: { success: false , message: "Registration number is unique", data: { plate_number: params[:plate_number] } , errors: {} }, status: :ok if result == false
     end
   end
 
