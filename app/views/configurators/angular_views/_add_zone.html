@@ -49,9 +49,10 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="basic-url" class="leb_color">Zipcode</label>
-                        <input type="number" class="form-control" name="zipcode" required ng-model="zipcode"  
-                        pattern="[0-9]{6}" 
-                        onKeyPress="if(this.value.length==6) return false;">
+                        <input type="text" class="form-control" name="zipcode" required ng-model="zipcode"
+                        onKeyPress="if (this.value.length == 6) return false; else setInputFilter(this, function(value) {return /^\d*?\d*$/.test(value);});"
+                            pattern="[0-9]{6}" onKeyPress="">
+                        
                         <span ng-show="hasError('zipcode', 'required')" class="help-block">Zipcode
                             is required.</span>
                     </div>
@@ -86,10 +87,11 @@
                         <td>{{item.name}}</td>
                         <!-- <td>{{item.latitude}}</td>
                         <td>{{item.longitude }}</td> -->
-                        <td><div style="line-height: 3em;">  
-                            {{item.zipcode}} 
-                            <button type="button" class="btn btn-danger main-submit-btn" style="margin-top: 5px;"
-                                ng-click="deleteZone(item)">Delete</button></div>
+                        <td>
+                            <div style="line-height: 3em;">
+                                {{item.zipcode}}
+                                <button type="button" class="btn btn-danger main-submit-btn" style="margin-top: 5px;"
+                                    ng-click="deleteZone(item)">Delete</button></div>
                         </td>
                     </tr>
                 </tbody>
@@ -99,5 +101,21 @@
     </div>
 
 
-
+    <script>
+        function setInputFilter(textbox, inputFilter) {
+            ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
+                textbox.oldValue = "";
+                textbox.addEventListener(event, function () {
+                    if (inputFilter(this.value)) {
+                        this.oldValue = this.value;
+                        this.oldSelectionStart = this.selectionStart;
+                        this.oldSelectionEnd = this.selectionEnd;
+                    } else if (this.hasOwnProperty("oldValue")) {
+                        this.value = this.oldValue;
+                        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                    }
+                });
+            });
+        }
+    </script>
 </form>
