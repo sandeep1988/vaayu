@@ -303,7 +303,6 @@ class TripsController < ApplicationController
   def assign_driver
     @driver = Driver.find(params['driver_id'])
     @vehicle = @driver.vehicle
-
     if params['last_paired_vehicle'].present?
       @last_paired_vehicle = Vehicle.where('plate_number' => params['last_paired_vehicle'])&.first&.id
     end
@@ -646,7 +645,7 @@ class TripsController < ApplicationController
   end
 
   def annotate_trip    
-    reporter = "Operator: #{current_user.full_name}"
+    reporter = "Operator: #{User.first.full_name}"
     @notification = Notification.where(:trip => @trip, :message => "annotate_trip", :remarks => "#{params[:subject]} - #{params[:body]}").first
     if @notification.blank?
       Notification.create!(:trip => @trip, :driver => nil, :employee => nil, :message => "annotate_trip", :remarks => "#{params[:subject]} - #{params[:body]}", :resolved_status => true,:new_notification => true, :reporter => reporter).send_notifications
@@ -704,7 +703,6 @@ class TripsController < ApplicationController
       @eta_mapping[last] = ets.size
 
       ets.each do |et|
-
         
         if et.trip_route.status == 'missed' || et.trip_route.status == 'canceled'
           if et.trip_route.status == 'canceled' && !et.trip_route.cancel_exception?
