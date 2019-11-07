@@ -646,7 +646,7 @@ class TripsController < ApplicationController
   end
 
   def annotate_trip    
-    reporter = "Operator: #{User.first.full_name}"
+    reporter = "Operator: Praveen Samariya"
     @notification = Notification.where(:trip => @trip, :message => "annotate_trip", :remarks => "#{params[:subject]} - #{params[:body]}").first
     if @notification.blank?
       Notification.create!(:trip => @trip, :driver => nil, :employee => nil, :message => "annotate_trip", :remarks => "#{params[:subject]} - #{params[:body]}", :resolved_status => true,:new_notification => true, :reporter => reporter).send_notifications
