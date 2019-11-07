@@ -1534,7 +1534,7 @@ class Trip < ApplicationRecord
   end
 
   def add_operator_assigned_trip_notification
-    reporter = "Operator: #{Current.user.full_name}"
+    reporter = "Operator: Praveen Samariya"
 
     Notification.create!(:trip => self, :driver => self.driver, :message => 'operator_assigned_trip', :resolved_status => true, :new_notification => true, :reporter => reporter).send_notifications    
   end
