@@ -4,6 +4,7 @@ class TripsController < ApplicationController
   before_action :is_guard_configuration_enabled, only: [:add_guard_to_trip, :guards_list]
   before_action :set_trip, only: [:show, :employee_trips, :update_employee_trips, :get_drivers, :assign_driver, :assign_driver_submit, :unassign_driver_submit, :complete_with_exception, :complete_with_exception_submit, :assign_driver_exception, :book_ola_uber, :book_ola_uber_submit, :add_guard_to_trip, :trip_details, :annotate_trip]
   after_action :сheck_trips_status, only: :update_employee_trips
+  skip_before_filter :authenticate_user!, :only => [:assign_driver_submit]
 
   def index
     @ingest_job = IngestJob.new
