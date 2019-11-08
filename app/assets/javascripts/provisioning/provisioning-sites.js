@@ -96,12 +96,76 @@ $(function () {
                 document.getElementById("company").classList.remove("border-danger")
                 validationError = validationError || false
             }
+            if($("#contact_name").val() == '' || $("#contact_name").val() == undefined || $("#contact_name").val() == null){
+                document.getElementById("contact_name").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("contact_name").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if($("#address").val() == '' || $("#address").val() == undefined || $("#address").val() == null){
+                document.getElementById("address").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("address").classList.remove("border-danger")
+                validationError = validationError || false
+            }
             if($("#address_1").val() == '' || $("#address_1").val() == undefined || $("#address_1").val() == null){
                 document.getElementById("address_1").classList.add("border-danger")
                 validationError = true
             }
             else{
                 document.getElementById("address_1").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if($("#address_2").val() == '' || $("#address_2").val() == undefined || $("#address_2").val() == null){
+                document.getElementById("address_2").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("address_2").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if($("#pin").val() == '' || $("#pin").val() == undefined || $("#pin").val() == null){
+                document.getElementById("pin").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("pin").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if($("#state").val() == 0 || $("#state").val() == undefined || $("#state").val() == null){
+                document.getElementById("state").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("state").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if($("#city").val() == 0 || $("#city").val() == undefined || $("#city").val() == null){
+                document.getElementById("city").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("city").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if($("#phone_1").val() == '' || $("#phone_1").val() == undefined || $("#phone_1").val() == null){
+                document.getElementById("phone_1").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("phone_1").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if($("#pan_no").val() == '' || $("#pan_no").val() == undefined || $("#pan_no").val() == null){
+                document.getElementById("pan_no").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("pan_no").classList.remove("border-danger")
                 validationError = validationError || false
             }
             // if(current_user != 'Operator' && ($("#operator").val() == 0 || $("#operator").val() == undefined || $("#operator").val() == null)){
@@ -247,7 +311,9 @@ $(function () {
                 
                 if(!validationError){
                     $('.submit-btn').prop('disabled', true)
+                    console.log(edit_site)
                     if(edit_site){
+                        console.log('before ajax call ')
                         $.ajax({
                             type: "PUT",
                             data: {
@@ -260,12 +326,13 @@ $(function () {
                             site_id = ''                        
                             edit_site = false;
                             resetBillingParameters();
-                            restoreDefaultTabState()
+                            restoreDefaultTabState();
                             siteTable.draw()
                             $(".add-new-item").show()
                         });
                     }
                     else{
+                        console.log(site);
                         $.ajax({
                             type: "POST",
                             data: {
