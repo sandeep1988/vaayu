@@ -867,8 +867,7 @@
     .card_flex h5{font-size: 16px;font-weight: 600;padding-left: 7px;}
     .edit-buttons{float: right;}
     .siteFieldsHide{display: none;}
-    
-    
-  
-  
-/*e*/
+    .ml_selec{width:100% !important;}
+    .ml_selec > .multiselect-parent{width: 100% !important;}
+    .ml_selec > .multiselect-parent > .dropdown-toggle{width:100%;text-align: left;}
+    .ml_selec > .multiselect-parent > .dropdown-toggle > .caret{ float: right;position: relative;top:10px;}
