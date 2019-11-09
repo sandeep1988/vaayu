@@ -452,7 +452,7 @@ $(function () {
                     cities = response.cities
                     setTimeout(function(){                     
                         for(var i = 0; i < cities.length; i++){
-                            $('#city, #party_city, #party_business_area, #business_area ').append($('<option>', {
+                            $('#city, #party_city, #party_business_area, #business_are,#branch_name ').append($('<option>', {
                                 value: cities[i].city_name,
                                 text: cities[i].city_name
                             }));

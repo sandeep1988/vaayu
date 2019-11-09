@@ -105,6 +105,14 @@ function generate_edit(response, type, operator_id, orig_service_html){
                         '</select>' + 
                     '</div>' + 
                     '<div class="col-md-4 no-margin">' + 
+                        '<label class="site_labels" for="contact_name">contact name*</label>' + 
+                        '<input class="form-control" id="contact_name" name="contact_name" type="text" value="' + response.site.contact_name + '" required="true">' + 
+                    '</div>' +
+                    '<div class="col-md-4 no-margin">' + 
+                        '<label class="site_labels" for="branch_name">branch name</label>' + 
+                        '<input class="form-control" id="branch_name" name="branch_name" type="text" value="' + response.site.branch_name + '">' + 
+                    '</div>' +
+                    '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="address">Address*</label>' + 
                         '<input class="form-control" id="address" name="address" type="text" value="' + response.site.address + '" required="true">' + 
                     '</div>' + 
@@ -119,14 +127,6 @@ function generate_edit(response, type, operator_id, orig_service_html){
                     '<div class="col-md-4 no-margin siteFieldsHide">' + 
                         '<label class="site_labels" for="site_code">site_code</label>' + 
                         '<input class="form-control" id="site_code" name="site_code" type="text" value="' + response.site.site_code + '">' + 
-                    '</div>' +
-                    '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="branch_name">branch name</label>' + 
-                        '<input class="form-control" id="branch_name" name="branch_name" type="text" value="' + response.site.branch_name + '">' + 
-                    '</div>' +
-                    '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="contact_name">contact name*</label>' + 
-                        '<input class="form-control" id="contact_name" name="contact_name" type="text" value="' + response.site.contact_name + '" required="true">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="address_1">address 1*</label>' + 
