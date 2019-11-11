@@ -58,10 +58,10 @@ ADD . /home/app/webapp
 RUN chown -R app:app /home/app/webapp
 WORKDIR /home/app/webapp
 
-RUN wget http://mirrors.estointernet.in/apache//jmeter/binaries/apache-jmeter-5.1.1.tgz
-RUN tar -xzf apache-jmeter-5.1.1.tgz
+RUN wget http://mirrors.estointernet.in/apache/jmeter/binaries/apache-jmeter-5.2.tgz
+RUN tar -xzf apache-jmeter-5.2.tgz
 
-RUN ln -s /home/app/webapp/apache-jmeter-5.1.1/bin/jmeter /usr/bin/jmeter
+RUN ln -s /home/app/webapp/apache-jmeter-5.2/bin/jmeter /usr/bin/jmeter
 
 ADD Gemfile /home/app/webapp/Gemfile
 ADD Gemfile.lock /home/app/webapp/Gemfile.lock
