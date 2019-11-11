@@ -1,8 +1,8 @@
-class MllComplianceUser < ApplicationRecord
+class QcDataEntry < ApplicationRecord
     extend AdditionalFinders
     include UserData
 
-    DATATABLE_PREFIX = 'mll_audit_user'
+    DATATABLE_PREFIX = 'qc_data_entry'
 
     has_one :user, :as => :entity, :dependent => :destroy
     belongs_to :employee_company

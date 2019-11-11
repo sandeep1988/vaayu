@@ -13,7 +13,7 @@ class User < ApplicationRecord
     include DeviseTokenAuth::Concerns::User
   end
 
-  enum role: [:employee, :employer, :operator, :driver, :admin, :transport_desk_manager, :line_manager, :employer_shift_manager, :operator_shift_manager]
+  enum role: [:employee, :employer, :operator, :driver, :admin, :transport_desk_manager, :line_manager, :employer_shift_manager, :operator_shift_manager, :qc_data_entry]
   enum status: [:pending, :on_boarded, :active]
 
   # @TODO: add proper default images: default_url: '/images/:style/user.png'
@@ -43,7 +43,8 @@ class User < ApplicationRecord
     state :transport_desk_manager
     state :line_manager    
     state :employer_shift_manager    
-    state :operator_shift_manager    
+    state :operator_shift_manager  
+    state :qc_data_entry   
   end
 
   # validates :username, presence: true, uniqueness: true
@@ -171,7 +172,9 @@ class User < ApplicationRecord
           when 7
             EmployerShiftManager.new                        
           when 8
-            OperatorShiftManager.new                        
+            OperatorShiftManager.new   
+          when 9
+            QcDataEntry.new                       
         end
     super
   end
@@ -207,7 +210,7 @@ class User < ApplicationRecord
 
   # Driver can access only drivers app through api, so do employee
   def has_access_to_app?(app_name)
-    (app_name == 'driver' && self.driver?) || (app_name == 'employee' && self.employee?)
+    (app_name == 'driver' && self.driver?) || (app_name == 'employee' && self.employee?) || (app_name == 'web' && self.qc_data_entry? )
   end
 
   # Sign in through username or email or phone

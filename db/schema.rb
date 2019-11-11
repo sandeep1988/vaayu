@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 201803071436) do
+ActiveRecord::Schema.define(version: 20191111145841) do
 
   create_table "Induction_logs_WIP", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "resource_id",                    null: false
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.datetime "updated_at",               null: false
   end
 
-  create_table "ba_invoices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "ba_invoices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "company_type"
     t.integer  "company_id"
     t.datetime "date"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.index ["company_type", "company_id"], name: "index_ba_invoices_on_company_type_and_company_id", using: :btree
   end
 
-  create_table "ba_package_rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "ba_package_rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer "ba_vehicle_rate_id"
     t.string  "duration"
     t.decimal "package_duty_hours",          precision: 10, default: 0
@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.index ["ba_vehicle_rate_id"], name: "index_ba_package_rates_on_ba_vehicle_rate_id", using: :btree
   end
 
-  create_table "ba_services", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "ba_services", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer "business_associate_id"
     t.string  "service_type"
     t.string  "billing_model"
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.index ["logistics_company_id"], name: "index_ba_services_on_logistics_company_id", using: :btree
   end
 
-  create_table "ba_trip_invoices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "ba_trip_invoices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer "trip_id"
     t.integer "ba_invoice_id"
     t.decimal "trip_amount",        precision: 10, default: 0
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.index ["vehicle_id"], name: "index_ba_trip_invoices_on_vehicle_id", using: :btree
   end
 
-  create_table "ba_vehicle_rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "ba_vehicle_rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer "ba_service_id"
     t.integer "vehicle_capacity"
     t.boolean "ac",                              default: true
@@ -99,12 +99,21 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.index ["ba_service_id"], name: "index_ba_vehicle_rates_on_ba_service_id", using: :btree
   end
 
-  create_table "ba_zone_rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "ba_zone_rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer "ba_vehicle_rate_id"
     t.decimal "rate",               precision: 10
     t.decimal "guard_rate",         precision: 10
     t.string  "name"
     t.index ["ba_vehicle_rate_id"], name: "index_ba_zone_rates_on_ba_vehicle_rate_id", using: :btree
+  end
+
+  create_table "bgc_agency_master", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string   "bgc_agency_name",                                                null: false
+    t.string   "status",          limit: 8,                                      null: false
+    t.datetime "created_at",                default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at",                                                     null: false
+    t.string   "created_by",                                                     null: false
+    t.string   "updated_by",                                                     null: false
   end
 
   create_table "bus_trip_routes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -137,35 +146,89 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.string   "business_type"
     t.string   "service_tax_no"
     t.string   "hq_address"
-    t.datetime "created_at",                                                      null: false
-    t.datetime "updated_at",                                                      null: false
+    t.datetime "created_at",                                                                         null: false
+    t.datetime "updated_at",                                                                         null: false
     t.string   "name"
-    t.decimal  "standard_price",       precision: 10,           default: 0
-    t.integer  "pay_period",                                    default: 0
-    t.integer  "time_on_duty_limit",                            default: 0
-    t.integer  "distance_limit",                                default: 0
-    t.decimal  "rate_by_time",         precision: 10,           default: 0
-    t.decimal  "rate_by_distance",     precision: 10,           default: 0
-    t.integer  "invoice_frequency",                             default: 0
-    t.decimal  "service_tax_percent",  precision: 5,  scale: 4, default: "0.0"
-    t.decimal  "swachh_bharat_cess",   precision: 5,  scale: 4, default: "0.002"
-    t.decimal  "krishi_kalyan_cess",   precision: 5,  scale: 4, default: "0.002"
+    t.decimal  "standard_price",                          precision: 10,           default: 0
+    t.integer  "pay_period",                                                       default: 0
+    t.integer  "time_on_duty_limit",                                               default: 0
+    t.integer  "distance_limit",                                                   default: 0
+    t.decimal  "rate_by_time",                            precision: 10,           default: 0
+    t.decimal  "rate_by_distance",                        precision: 10,           default: 0
+    t.integer  "invoice_frequency",                                                default: 0
+    t.decimal  "service_tax_percent",                     precision: 5,  scale: 4, default: "0.0"
+    t.decimal  "swachh_bharat_cess",                      precision: 5,  scale: 4, default: "0.002"
+    t.decimal  "krishi_kalyan_cess",                      precision: 5,  scale: 4, default: "0.002"
     t.integer  "logistics_company_id"
     t.string   "profit_centre"
     t.datetime "agreement_date"
+    t.string   "category",                  limit: 10
+    t.string   "sap_code"
+    t.string   "esic_code"
+    t.string   "pf_number"
+    t.string   "aadhar_number"
+    t.integer  "credit_days"
+    t.integer  "credit_amount"
+    t.datetime "bgc_date"
+    t.datetime "credit_days_start"
+    t.integer  "owned_fleet"
+    t.integer  "managed_fleet"
+    t.integer  "turn_over"
+    t.string   "partnership_status"
+    t.integer  "business_area_id"
+    t.string   "address"
+    t.string   "address_2"
+    t.string   "alternate_phone"
+    t.string   "fax_no"
+    t.string   "website"
+    t.text     "address_3",                 limit: 65535
+    t.string   "bank_name"
+    t.string   "bank_no"
+    t.string   "ifsc_code"
+    t.string   "city_of_operation"
+    t.string   "state_of_operation"
+    t.string   "msmed_certificate_doc_url"
+    t.string   "photo_url"
+    t.string   "owner_photo_url"
+    t.string   "created_by"
+    t.string   "updated_by"
+    t.string   "ba_portal_id"
+    t.string   "baId"
+    t.string   "pin_code"
+    t.string   "company_name"
+    t.string   "contact_person"
+    t.string   "cin_no"
+    t.string   "landline"
+    t.string   "contact_person_mobile"
+    t.datetime "approved_till_date"
+    t.string   "old_sap_master_code"
+    t.string   "new_sap_master_code"
+    t.datetime "ba_verified_on"
+    t.string   "state_code"
+    t.boolean  "is_gst",                                                           default: false
+    t.text     "cancelled_cheque_doc_url",  limit: 65535
+    t.text     "pan_card_doc_url",          limit: 65535
+    t.text     "gstDocs",                   limit: 65535
+    t.text     "bussiness_area",            limit: 65535
+    t.text     "gst_certificates_doc_url",  limit: 65535
     t.index ["logistics_company_id"], name: "index_business_associates_on_logistics_company_id", using: :btree
   end
 
-  create_table "checklist_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "checklist_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "checklist_id"
     t.string   "key"
     t.boolean  "value"
     t.integer  "compliance_type"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.boolean  "priority",        default: false
+    t.datetime "tat"
+    t.datetime "created_by"
+    t.datetime "updated_by"
+    t.boolean  "status",          default: true
   end
 
-  create_table "checklists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "checklists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "vehicle_id"
     t.integer  "driver_id"
     t.integer  "status",     default: 0
@@ -177,7 +240,7 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.string "city_name", null: false
   end
 
-  create_table "cluster_vehicles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "cluster_vehicles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.datetime "date"
     t.integer  "vehicle_id"
     t.integer  "employee_cluster_id"
@@ -188,21 +251,21 @@ ActiveRecord::Schema.define(version: 201803071436) do
   end
 
   create_table "compliance_checks", unsigned: true, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
-    t.integer  "resource_id",                                                          null: false
-    t.string   "resource_type",     limit: 7,                                          null: false
-    t.string   "compliance_type",   limit: 16,                                         null: false
-    t.integer  "site_id",                                                              null: false
+    t.integer  "resource_id",                     null: false
+    t.string   "resource_type",     limit: 7,     null: false
+    t.string   "compliance_type",   limit: 16,    null: false
+    t.integer  "site_id"
     t.text     "comments",          limit: 65535
-    t.datetime "created_at",                                                           null: false
+    t.datetime "created_at",                      null: false
     t.datetime "updated_at"
     t.integer  "updated_by"
     t.integer  "created_by"
-    t.string   "compliance_status", limit: 20,                                         null: false
-    t.integer  "checklist_id",                                                         null: false
-    t.datetime "tat_date",                        default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.string   "compliance_status", limit: 20,    null: false
+    t.integer  "checklist_id",                    null: false
+    t.datetime "tat_date"
   end
 
-  create_table "compliance_notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "compliance_notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "driver_id"
     t.integer  "vehicle_id"
     t.string   "message"
@@ -212,7 +275,7 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.datetime "updated_at",                  null: false
   end
 
-  create_table "compliances", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "compliances", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "key"
     t.integer  "modal_type"
     t.integer  "compliance_type"
@@ -259,7 +322,7 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.text     "file_url",          limit: 65535
   end
 
-  create_table "devices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "devices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "device_id"
     t.string   "make"
     t.string   "model"
@@ -277,6 +340,7 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.string  "doc_name",                    null: false
     t.string  "doc_display_name",            null: false
     t.string  "doc_type",          limit: 8, null: false
+    t.boolean "is_expiring",                 null: false
     t.string  "status",            limit: 8, null: false
     t.integer "notification_days", limit: 1
     t.date    "created_at",                  null: false
@@ -327,6 +391,21 @@ ActiveRecord::Schema.define(version: 201803071436) do
 
   create_table "drivers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "business_associate_id"
+    t.string   "business_state"
+    t.string   "business_city"
+    t.string   "qualification"
+    t.datetime "date_of_registration"
+    t.date     "police_verification_vailidty"
+    t.date     "date_of_police_verification"
+    t.integer  "criminal_offence",                              limit: 1
+    t.string   "criminal_offence_details"
+    t.date     "bgc_date"
+    t.integer  "bgc_agency_id"
+    t.date     "medically_certified_date"
+    t.string   "sexual_policy",                                 limit: 10,                    null: false
+    t.string   "bank_name"
+    t.string   "bank_no"
+    t.string   "ifsc_code"
     t.integer  "logistics_company_id"
     t.integer  "site_id"
     t.string   "status"
@@ -335,22 +414,98 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.date     "badge_expire_date"
     t.string   "local_address"
     t.string   "permanent_address"
+    t.integer  "total_experience"
     t.string   "aadhaar_number"
     t.string   "aadhaar_mobile_number"
+    t.string   "alternate_number"
+    t.string   "blood_group",                                   limit: 4,                     null: false, comment: "'A+','A-','B+','B-','O+','O-','AB+','AB-'"
+    t.string   "licence_type",                                  limit: 8,                     null: false, comment: "'MGV', 'LMV', 'HMV','HGMV','HPMV/HTV','Trailer'"
     t.string   "licence_number"
     t.date     "licence_validity"
-    t.boolean  "verified_by_police"
+    t.string   "verified_by_police"
     t.boolean  "uniform"
     t.boolean  "licence"
     t.boolean  "badge"
-    t.datetime "created_at",                                                 null: false
-    t.datetime "updated_at",                                                 null: false
+    t.datetime "created_at",                                                                  null: false
+    t.datetime "updated_at",                                                                  null: false
     t.string   "aadhaar_address"
     t.string   "offline_phone"
-    t.integer  "sort_status",                                   default: -1
+    t.integer  "sort_status",                                                 default: -1
     t.integer  "active_checklist_id"
-    t.text     "compliance_notification_message", limit: 65535
-    t.text     "compliance_notification_type",    limit: 65535
+    t.text     "compliance_notification_message",               limit: 65535
+    t.text     "compliance_notification_type",                  limit: 65535
+    t.boolean  "verified_image",                                              default: false
+    t.string   "driver_image_url"
+    t.text     "comment",                                       limit: 65535
+    t.string   "compliance_status",                             limit: 20
+    t.boolean  "blacklisted",                                                 default: false
+    t.text     "driving_license_doc_url",                       limit: 65535
+    t.text     "driver_badge_doc_url",                          limit: 65535
+    t.text     "id_proof_doc_url",                              limit: 65535
+    t.text     "sexual_policy_doc_url",                         limit: 65535
+    t.text     "police_verification_vailidty_doc_url",          limit: 65535
+    t.text     "medically_certified_doc_url",                   limit: 65535
+    t.text     "bgc_doc_url",                                   limit: 65535
+    t.text     "profile_picture_url",                           limit: 65535
+    t.text     "other_docs_url",                                limit: 65535
+    t.text     "driving_registration_form_doc_url",             limit: 65535
+    t.string   "created_by"
+    t.string   "updated_by"
+    t.string   "induction_status",                              limit: 10
+    t.string   "renewal_status",                                limit: 16,                    null: false
+    t.string   "driver_name"
+    t.date     "date_of_birth"
+    t.string   "marital_status",                                limit: 8,                     null: false, comment: "'Married', 'Single', 'Widowed', 'Divorced', 'N/A'"
+    t.string   "father_spouse_name"
+    t.string   "registration_steps"
+    t.string   "gender"
+    t.string   "driving_license_doc_file_name"
+    t.string   "driving_license_doc_content_type"
+    t.bigint   "driving_license_doc_file_size"
+    t.datetime "driving_license_doc_updated_at"
+    t.string   "driver_badge_doc_file_name"
+    t.string   "driver_badge_doc_content_type"
+    t.bigint   "driver_badge_doc_file_size"
+    t.datetime "driver_badge_doc_updated_at"
+    t.string   "id_proof_doc_file_name"
+    t.string   "id_proof_doc_content_type"
+    t.bigint   "id_proof_doc_file_size"
+    t.datetime "id_proof_doc_updated_at"
+    t.string   "driving_registration_form_doc_file_name"
+    t.string   "driving_registration_form_doc_content_type"
+    t.bigint   "driving_registration_form_doc_file_size"
+    t.datetime "driving_registration_form_doc_updated_at"
+    t.string   "f_name"
+    t.string   "l_name"
+    t.string   "profile_picture_file_name"
+    t.string   "profile_picture_content_type"
+    t.integer  "profile_picture_file_size"
+    t.datetime "profile_picture_updated_at"
+    t.date     "badge_expiry_date"
+    t.string   "sap_code"
+    t.string   "esic_code"
+    t.string   "pf_number"
+    t.string   "aadhar_number"
+    t.integer  "credit_days"
+    t.integer  "credit_amount"
+    t.string   "police_verification_vailidty_doc_file_name"
+    t.string   "police_verification_vailidty_doc_content_type"
+    t.integer  "police_verification_vailidty_doc_file_size"
+    t.datetime "police_verification_vailidty_doc_updated_at"
+    t.string   "sexual_policy_doc_file_name"
+    t.string   "sexual_policy_doc_content_type"
+    t.integer  "sexual_policy_doc_file_size"
+    t.datetime "sexual_policy_doc_updated_at"
+    t.string   "medically_certified_doc_file_name"
+    t.string   "medically_certified_doc_content_type"
+    t.integer  "medically_certified_doc_file_size"
+    t.datetime "medically_certified_doc_updated_at"
+    t.string   "bgc_doc_file_name"
+    t.string   "bgc_doc_content_type"
+    t.integer  "bgc_doc_file_size"
+    t.datetime "bgc_doc_updated_at"
+    t.string   "shift_start_time"
+    t.string   "shift_end_time"
     t.index ["business_associate_id"], name: "index_drivers_on_business_associate_id", using: :btree
     t.index ["logistics_company_id"], name: "index_drivers_on_logistics_company_id", using: :btree
     t.index ["site_id"], name: "index_drivers_on_site_id", using: :btree
@@ -489,7 +644,7 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.integer  "site_id"
     t.integer  "zone_id"
     t.string   "employee_id"
-    t.integer  "gender"
+    t.string   "gender",                  limit: 1
     t.string   "home_address"
     t.decimal  "home_address_latitude",                 precision: 10, scale: 6
     t.decimal  "home_address_longitude",                precision: 10, scale: 6
@@ -763,6 +918,9 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.index ["vehicle_rate_id"], name: "index_package_rates_on_vehicle_rate_id", using: :btree
   end
 
+  create_table "qc_data_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  end
+
   create_table "rate_contracts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "contract_id",                                             null: false
     t.integer  "site_id"
@@ -848,6 +1006,7 @@ ActiveRecord::Schema.define(version: 201803071436) do
 
   create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string "RoleName", null: false
+    t.string "name"
   end
 
   create_table "services", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -883,11 +1042,12 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.string   "start_time"
     t.string   "end_time"
     t.string   "status"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "site_id"
     t.string   "name_2"
-    t.string   "name_3",     limit: 15
+    t.string   "name_3",      limit: 15
+    t.integer  "adhoc_shift",            default: 0, null: false
   end
 
   create_table "sites", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -1024,7 +1184,60 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.datetime "resolved_date"
   end
 
-  create_table "trip_routes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "trip_routes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer  "shift_id"
+    t.integer  "site_id"
+    t.integer  "customer_id"
+    t.string   "shift_type",                                                     collation: "utf8_general_ci"
+    t.integer  "planned_duration"
+    t.integer  "planned_distance"
+    t.integer  "planned_route_order"
+    t.text     "planned_start_location",           limit: 65535,                 collation: "utf8_general_ci"
+    t.text     "planned_end_location",             limit: 65535,                 collation: "utf8_general_ci"
+    t.integer  "employee_trip_id"
+    t.integer  "trip_id"
+    t.datetime "driver_arrived_date"
+    t.datetime "on_board_date"
+    t.datetime "completed_date"
+    t.string   "status",                                                         collation: "utf8_general_ci"
+    t.string   "trip_start",                                                     collation: "utf8_general_ci"
+    t.string   "trip_end",                                                       collation: "utf8_general_ci"
+    t.integer  "total_seats"
+    t.integer  "empty_seats"
+    t.string   "guard_required",                   limit: 10,                    collation: "utf8_general_ci"
+    t.string   "vehicle_allocated",                limit: 10,                    collation: "utf8_general_ci"
+    t.integer  "scheduled_distance"
+    t.integer  "scheduled_duration"
+    t.integer  "scheduled_route_order"
+    t.text     "scheduled_start_location",         limit: 65535,                 collation: "utf8_general_ci"
+    t.text     "scheduled_end_location",           limit: 65535,                 collation: "utf8_general_ci"
+    t.text     "driver_arrived_location",          limit: 65535,                 collation: "utf8_general_ci"
+    t.text     "check_in_location",                limit: 65535,                 collation: "utf8_general_ci"
+    t.text     "drop_off_location",                limit: 65535,                 collation: "utf8_general_ci"
+    t.text     "missed_location",                  limit: 65535,                 collation: "utf8_general_ci"
+    t.boolean  "cancel_exception",                               default: false
+    t.text     "cab_type",                         limit: 65535,                 collation: "utf8_general_ci"
+    t.integer  "cab_fare"
+    t.text     "cab_driver_name",                  limit: 65535,                 collation: "utf8_general_ci"
+    t.text     "cab_licence_number",               limit: 65535,                 collation: "utf8_general_ci"
+    t.text     "cab_start_location",               limit: 65535,                 collation: "utf8_general_ci"
+    t.text     "cab_end_location",                 limit: 65535,                 collation: "utf8_general_ci"
+    t.boolean  "bus_rider",                                      default: false
+    t.text     "bus_stop_name",                    limit: 65535,                 collation: "utf8_general_ci"
+    t.text     "bus_stop_address",                 limit: 65535,                 collation: "utf8_general_ci"
+    t.datetime "missed_date"
+    t.datetime "geofence_driver_arrived_date"
+    t.datetime "geofence_completed_date"
+    t.text     "geofence_driver_arrived_location", limit: 65535,                 collation: "utf8_general_ci"
+    t.text     "geofence_completed_location",      limit: 65535,                 collation: "utf8_general_ci"
+    t.datetime "move_to_next_step_date"
+    t.text     "move_to_next_step_location",       limit: 65535,                 collation: "utf8_general_ci"
+    t.datetime "pick_up_time"
+    t.datetime "drop_off_time"
+    t.string   "exception_status",                                               collation: "utf8_general_ci"
+  end
+
+  create_table "trip_routes_clubbed", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "shift_id"
     t.integer  "site_id"
     t.integer  "customer_id"
@@ -1044,8 +1257,8 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.string   "trip_end"
     t.integer  "total_seats"
     t.integer  "empty_seats"
-    t.integer  "guard_required"
-    t.integer  "vehicle_allocated"
+    t.string   "guard_required",                   limit: 10
+    t.string   "vehicle_allocated",                limit: 10
     t.integer  "scheduled_distance"
     t.integer  "scheduled_duration"
     t.integer  "scheduled_route_order"
@@ -1141,7 +1354,7 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.string   "vehicle_type"
     t.string   "vehicle_model"
     t.string   "vehicle_number"
-    t.integer  "vehicle_allocated"
+    t.string   "vehicle_allocated",                  limit: 10
     t.string   "trip_category"
     t.integer  "age_of_vehicle"
     t.string   "ac_nonac_trip"
@@ -1154,6 +1367,7 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.string   "guard_required"
     t.boolean  "is_distance_exceeded"
     t.boolean  "is_time_exceeded"
+    t.text     "routeresponse",                      limit: 65535
     t.index ["driver_id"], name: "index_trips_on_driver_id", using: :btree
     t.index ["scheduled_date"], name: "index_trips_on_scheduled_date", using: :btree
     t.index ["site_id"], name: "index_trips_on_site_id", using: :btree
@@ -1213,9 +1427,10 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.string   "category_name"
     t.string   "created_by"
     t.string   "updated_by"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.string   "avg_speed"
+    t.integer  "seating_capacity"
   end
 
   create_table "vehicle_models", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -1262,7 +1477,7 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.string   "driverid"
     t.string   "driver_name"
     t.string   "rc_book_no"
-    t.date     "registration_date"
+    t.datetime "registration_date"
     t.date     "insurance_date"
     t.string   "permit_type"
     t.date     "permit_validity_date"
@@ -1271,14 +1486,14 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.boolean  "ac"
     t.integer  "seats",                                                    default: 0
     t.string   "fuel_type"
-    t.integer  "make_year",                                                                  null: false, unsigned: true
-    t.integer  "odometer",                                                                                unsigned: true
+    t.integer  "make_year",                                                                  null: false,                                                                                                                                unsigned: true
+    t.integer  "odometer",                                                                                                                                                                                                               unsigned: true
     t.boolean  "spare_type"
     t.boolean  "first_aid_kit"
     t.string   "tyre_condition"
     t.string   "fuel_level"
     t.string   "plate_condition"
-    t.integer  "device_id",                                                                               unsigned: true
+    t.string   "device_id",                                                                               collation: "utf8_bin"
     t.string   "category"
     t.string   "business_area_id"
     t.date     "fitness_validity_date"
@@ -1287,8 +1502,8 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.date     "last_service_km"
     t.date     "km_at_induction"
     t.date     "authorization_certificate_validity_date"
-    t.date     "date_of_registration"
-    t.string   "gps_provider_id"
+    t.datetime "date_of_registration"
+    t.string   "gps_provider_id",                                                                                                comment: "1.ARYA OMNITALK)\n2.AUTOCOP\n3.FALCON AVL SYSTEM\n4.MAP MY INDIA\n5.MOVE IN SYNC\n6.NIVAATA"
     t.string   "insurance_doc_url"
     t.string   "rc_book_doc_url"
     t.string   "puc_doc_url"
@@ -1354,6 +1569,11 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.index ["plate_number"], name: "index_vehicles_on_plate_number", using: :btree
   end
 
+  create_table "web_api_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string "name",  null: false
+    t.string "value", null: false
+  end
+
   create_table "zone_rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.decimal "rate",                          precision: 10, default: 0
     t.decimal "guard_rate",                    precision: 10, default: 0
@@ -1373,7 +1593,9 @@ ActiveRecord::Schema.define(version: 201803071436) do
     t.index ["site_id"], name: "index_zones_on_site_id", using: :btree
   end
 
+  add_foreign_key "bus_trip_routes", "bus_trips"
+  add_foreign_key "driver_requests", "drivers"
   add_foreign_key "employee_trips", "employee_clusters"
   add_foreign_key "trip_change_requests", "employees"
-  add_foreign_key "trip_routes", "employee_trips"
+  add_foreign_key "trip_routes_clubbed", "employee_trips"
 end
