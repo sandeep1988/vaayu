@@ -2,7 +2,6 @@ var sitesTableEditor;
 
 $(function () {
     'use strict';
-
     var allCompanies = []
     var logisticsCompanies = []
     var cities = []
@@ -97,12 +96,76 @@ $(function () {
                 document.getElementById("company").classList.remove("border-danger")
                 validationError = validationError || false
             }
+            if($("#contact_name").val() == '' || $("#contact_name").val() == undefined || $("#contact_name").val() == null){
+                document.getElementById("contact_name").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("contact_name").classList.remove("border-danger")
+                validationError = validationError || false
+            }
             if($("#address").val() == '' || $("#address").val() == undefined || $("#address").val() == null){
                 document.getElementById("address").classList.add("border-danger")
                 validationError = true
             }
             else{
                 document.getElementById("address").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if($("#address_1").val() == '' || $("#address_1").val() == undefined || $("#address_1").val() == null){
+                document.getElementById("address_1").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("address_1").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if($("#address_2").val() == '' || $("#address_2").val() == undefined || $("#address_2").val() == null){
+                document.getElementById("address_2").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("address_2").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if($("#pin").val() == '' || $("#pin").val() == undefined || $("#pin").val() == null){
+                document.getElementById("pin").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("pin").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if($("#state").val() == 0 || $("#state").val() == undefined || $("#state").val() == null){
+                document.getElementById("state").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("state").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if($("#city").val() == 0 || $("#city").val() == undefined || $("#city").val() == null){
+                document.getElementById("city").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("city").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if($("#phone_1").val() == '' || $("#phone_1").val() == undefined || $("#phone_1").val() == null){
+                document.getElementById("phone_1").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("phone_1").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if($("#pan_no").val() == '' || $("#pan_no").val() == undefined || $("#pan_no").val() == null){
+                document.getElementById("pan_no").classList.add("border-danger")
+                validationError = true
+            }
+            else{
+                document.getElementById("pan_no").classList.remove("border-danger")
                 validationError = validationError || false
             }
             // if(current_user != 'Operator' && ($("#operator").val() == 0 || $("#operator").val() == undefined || $("#operator").val() == null)){
@@ -136,7 +199,6 @@ $(function () {
                         'id': site_id
                     }
                 }).done(function(response){
-                    console.log(response)
                     orig_service_html = $("#services").html()
                     edit_site = true
                     var html = generate_edit(response, 'site', response.logistics_company_id, orig_service_html)
@@ -169,7 +231,6 @@ $(function () {
                         'id': site_id
                     }
                 }).done(function(response){
-                    console.log(response)
                     orig_service_html = $("#services").html()
                     edit_site = true
                     var html = generate_edit(response, 'site', response.logistics_company_id, orig_service_html)
@@ -188,7 +249,8 @@ $(function () {
         });
 
         $(document).on('click', ".submit-btn", function(e){
-            if(e.target.baseURI.indexOf("sites") != -1){
+            // if(e.target.baseURI.indexOf("sites") != -1){ failing save event
+                if(0 != 1){
                 var site = {
                     'name': $("#siteName").val(),
                     'employee_company_id': $("#company").val(),
@@ -249,7 +311,9 @@ $(function () {
                 
                 if(!validationError){
                     $('.submit-btn').prop('disabled', true)
+                    console.log(edit_site)
                     if(edit_site){
+                        console.log('before ajax call ')
                         $.ajax({
                             type: "PUT",
                             data: {
@@ -262,12 +326,13 @@ $(function () {
                             site_id = ''                        
                             edit_site = false;
                             resetBillingParameters();
-                            restoreDefaultTabState()
+                            restoreDefaultTabState();
                             siteTable.draw()
                             $(".add-new-item").show()
                         });
                     }
                     else{
+                        console.log(site);
                         $.ajax({
                             type: "POST",
                             data: {
@@ -311,18 +376,16 @@ $(function () {
         })
 
         $(document).on('click', '.editor_create ', function(e){
-            if(e.target.baseURI.indexOf("sites") != -1){
+            // if(e.target.baseURI.indexOf("sites") != -1){ //Onload dropdown condition check
+                if (0 != 1){
                 $.ajax({
                     type: "GET",
                     url: '/employee_companies/get_all'
                 }).done(function (response) {
-                    console.log('employee_companies')
                     orig_service_html = $("#services").html()
                     allCompanies = response.employee_companies
-                    console.log('allCompanies', allCompanies)
                     
                     logisticsCompanies = response.logistics_companies
-                    console.log('logisticsCompanies', logisticsCompanies)
                     current_user = response.current_user.entity_type
                     setTimeout(function(){                     
                         for(var i = 0; i < allCompanies.length; i++){
@@ -350,13 +413,15 @@ $(function () {
 
 //  listing for state
         $(document).on('click', '.editor_create ', function(e){
-            if(e.target.baseURI.indexOf("sites") != -1){
+           // if(e.target.baseURI.indexOf("sites") != -1){  // Onload Dropdown condition failing
+            if(0 != -1){
                 $.ajax({
                     type: "GET",
                     url: '/employee_companies/get_all'
                 }).done(function (response) {
                     orig_service_html = $("#site_html").html()
                     states = response.states
+                    console.log(states);
                     setTimeout(function(){                     
                         for(var i = 0; i < states.length; i++){
                             $('#state, #party_state').append($('<option>', {
@@ -377,7 +442,8 @@ $(function () {
 
       //  listing for city
         $(document).on('click', '.editor_create ', function(e){
-            if(e.target.baseURI.indexOf("sites") != -1){
+            // if(e.target.baseURI.indexOf("sites") != -1){ // Onload Dropdown condition failing
+                if(0 != -1){
                 $.ajax({
                     type: "GET",
                     url: '/employee_companies/get_all'
@@ -386,7 +452,7 @@ $(function () {
                     cities = response.cities
                     setTimeout(function(){                     
                         for(var i = 0; i < cities.length; i++){
-                            $('#city, #party_city, #party_business_area, #business_area ').append($('<option>', {
+                            $('#city, #party_city, #party_business_area, #business_area , #branch_name ').append($('<option>', {
                                 value: cities[i].city_name,
                                 text: cities[i].city_name
                             }));
