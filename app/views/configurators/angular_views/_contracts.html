@@ -292,7 +292,7 @@
                 <table class="table table-condensed ">
                     <thead class="pop-table-head">
                         <tr>
-                            <th>Customer</th>
+                            <!-- <th>Customer</th> -->
                             <th>BA Name</th>
                             <th>Unique Identification</th>
                             <th>Billing Cycle</th>
@@ -300,8 +300,8 @@
                         </tr>
                     </thead>
                     <tbody class="pop-table-body">
-                        <tr class="active" ng-repeat="contract in contractList track by $index">
-                            <td>{{contract.customerId}}</td>
+                        <tr class="active" ng-repeat="contract in bacontractList track by $index">
+                            <!-- <td>{{contract.customerId}}</td> -->
                             <td>{{getSelectedBA()}}</td>
                             <td>
                                 <div class="contractListMenu">
