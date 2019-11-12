@@ -28,7 +28,7 @@ module Overrides
       end
 
       app = resource_params[:app]
-      if app.blank?
+      if app.blank? 
         render_create_error_app_not_specified
       elsif @resource and valid_params?(field, q_value) and @resource.valid_password?(resource_params[:password]) and (!@resource.respond_to?(:active_for_authentication?) or @resource.active_for_authentication?) and @resource.has_access_to_app?(resource_params[:app])
 
