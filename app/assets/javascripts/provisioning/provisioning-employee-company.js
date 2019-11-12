@@ -302,7 +302,8 @@ $(function () {
                     }
                 }])
             .edit($(this).closest('tr'));
-            $('input').removeAttr('disabled'); //Rushikesh added code here
+            $('input').removeAttr('disabled'); 
+            $('select').removeAttr('disabled');//Rushikesh added code here
             $('.btn-primary').removeAttr('disabled'); //Rushikesh added code here
     });
         //Rushikesh made changes here, added View Record function
@@ -312,6 +313,7 @@ $(function () {
             employeeCompaniesTableEditor
                 .title('View Company')
                 .edit($(this).closest('tr'));
+                $('select').attr('disabled','disabled');
                 $('input').attr('disabled','disabled'); //Rushikesh added code here
                 $('.btn-primary').attr('disabled','disabled');//Rushikesh added code here
                 //$('input').css({
