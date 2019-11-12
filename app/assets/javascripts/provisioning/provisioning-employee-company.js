@@ -315,7 +315,7 @@ $(function () {
                 .edit($(this).closest('tr'));
                 $('select').attr('disabled','disabled');
                 $('input').attr('disabled','disabled'); //Rushikesh added code here
-                $('.btn-primary').attr('disabled','disabled');//Rushikesh added code here
+                // $('.btn-primary').attr('disabled','disabled');//Rushikesh added code here
                 //$('input').css({
                 // 'background-color': 'red',
                 //'color': 'white',
