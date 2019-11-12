@@ -3,6 +3,24 @@ require_relative '../lib/tests/random_address'
 include ActionDispatch::TestProcess
 
 FactoryGirl.define do
+  factory :ct_manager do
+    
+  end
+  factory :mdm_admin do
+    
+  end
+  factory :qc_manager do
+    
+  end
+  factory :commercial_manager do
+    
+  end
+  factory :operations_admin do
+    
+  end
+  factory :operations_supervisor do
+    
+  end
   factory :compliance_notification do
     driver_id 1
     vehicle_id 1
