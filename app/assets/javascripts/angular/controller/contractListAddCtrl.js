@@ -1,4 +1,4 @@
-app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionService, ToasterService, $location) {
+app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionService, ToasterService, $timeout) {
 
     this.$onInit = function () {
         console.log('onit - contractListAddCtrl');
@@ -201,12 +201,13 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     };
 
 
-
     $scope.fileNameChanged = function (e) {
-        console.log(e.files)
-        $scope.fileObject = e.files[0];
-        console.log(e, $scope.fileObject)
-
+        // console.log(e.files)
+        let file = e.files[0];
+        console.log('selected file', file)
+        $timeout(()=>{
+            $scope.tempfileName = file.name;
+        },50)
     }
 
     $scope.getSelectedUDIDs = () => {
