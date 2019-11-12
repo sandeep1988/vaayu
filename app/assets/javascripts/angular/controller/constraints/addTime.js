@@ -6,7 +6,7 @@
 //   component('addTime', {
 //     templateUrl: './views/add_time.html',
 //     controller: function GuardController($http, $scope, SessionService, ToasterService) {
-app.controller('addTime', function ($scope, $http, $state, SessionService, ToasterService) {
+app.controller('addTime', function ($scope, $http, $state, SessionService, ToasterService, $timeout) {
   
   
 
