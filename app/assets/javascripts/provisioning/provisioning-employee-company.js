@@ -2,6 +2,8 @@ var employeeCompaniesTableEditor;
 
 $(function () {
     'use strict';
+    var cities = []
+    var states = []
     /**
      * Employee Companies Operator Table
      */
@@ -10,9 +12,232 @@ $(function () {
     /**
      * Init table
      */
+
+    $.ajax({
+      type: "GET",
+      url: '/employee_companies/get_all'
+    }).done(function (response) {
+      states = response.states.map(item => { return {label: item.state, value: item.id}} );
+      cities = response.cities.map(item => { return {label: item.city_name, value: item.id}} );
+      // {label, value}
+      console.log('umar-states', cities);
+
+        employeeCompaniesTableEditor = new $.fn.dataTable.Editor({
+          table: table,
+          ajax: {
+              create: {
+                  type: 'POST',
+                  url: '/employee_companies'
+              },
+              edit: {
+                  type: 'PUT',
+                  url: '/employee_companies/_id_'
+              },
+              remove: {
+                  type: 'DELETE',
+                  url: '/employee_companies/_id_'
+              }
+          },
+          fields: [{
+              label: "Name",
+              className: "col-md-4",
+              name: "name"
+          },
+          {
+              label: "HQ Address",
+              className: "col-md-4",
+              name: "hq_address"
+          }, {
+              label: "Business Type",
+              className: "col-md-4",
+              name: "business_type"
+          }, {
+              label: 'PAN',
+              className: "col-md-4 clear",
+              name: "pan"
+          }, {
+              label: 'Service Tax No.',
+              className: "col-md-4",
+              name: "service_tax_no"
+          }, {
+              label: 'Zone',
+              className: "col-md-4",
+              name: "zone"
+          }, {
+              label: 'Category',
+              className: "col-md-4",
+              name: "category",
+             
+           } , {
+              label: 'Billing To',
+              className: "col-md-4",
+              name: "billing_to"
+           } ,
+  
+            {
+              label: 'Contact Name',
+              className: "col-md-4",
+              name: "home_address_contact_name"
+            },
+            {
+              label: 'Address 1',
+              className: "col-md-4",
+              name: "home_address_address_1"
+            },
+            {
+              label: 'Address 2',
+              className: "col-md-4",
+              name: "home_address_address_2"
+            },
+            {
+              label: 'Address 3',
+              className: "col-md-4",
+              name: "home_address_address_3"
+            },
+            {
+              label: 'PIN',
+              className: "col-md-4",
+              name: "home_address_pin"
+            },
+            {
+              label: 'State',
+              className: "col-md-4 home_address_state",
+              name: "home_address_state",
+              type:"select",
+              options:states
+            },
+            {
+              label: 'City',
+              className: "col-md-4",
+              name: "home_address_city",
+              type:"select",
+              options:cities
+            },
+            {
+              label: 'Phone 1',
+              className: "col-md-4",
+              name: "home_address_phone_1"
+            },
+            {
+              label: 'Phone 2',
+              className: "col-md-4",
+              name: "home_address_phone_2"
+            },
+            {
+              label: 'Business Area ',
+              className: "col-md-4",
+              name: "home_address_business_area"
+            },
+            {
+              label: 'PAN No ',
+              className: "col-md-4",
+              name: "home_address_pan_no"
+            },
+            {
+              label: 'GSTIN No ',
+              className: "col-md-4",
+              name: "home_address_gstin_no"
+            },
+            {
+              label: 'Registered Contact Name',
+              className: "col-md-4",
+              name: "registered_contact_name"
+            },
+            {
+              label: 'Registered Address 1',
+              className: "col-md-4",
+              name: "registered_address1"
+            },
+            {
+              label: 'Registered Address 2',
+              className: "col-md-4",
+              name: "registered_address2"
+            },
+            {
+              label: 'Registered Address 3',
+              className: "col-md-4",
+              name: "registered_address3"
+            },
+            {
+              label: 'Registered Pin',
+              className: "col-md-4",
+              name: "registered_pin"
+            },
+            {
+              label: 'Registered State',
+              className: "col-md-4",
+              name: "registered_state",
+              type:"select",
+              options:states
+            },
+            {
+              label: 'Registered City',
+              className: "col-md-4",
+              name: "registered_city",
+              type:"select",
+              options:cities
+            },
+            {
+              label: 'Registered Phone1',
+              className: "col-md-4",
+              name: "registered_phone1"
+            },
+            {
+              label: 'Registered Phone2',
+              className: "col-md-4",
+              name: "registered_phone2"
+            },
+            {
+              label: 'Registered Phone2',
+              className: "col-md-4",
+              name: "registered_phone3"
+            },
+            {
+              label: 'Registered Business Area',
+              className: "col-md-4",
+              name: "registered_business_area"
+            },
+            {
+              label: 'Registered GSTIN No',
+              className: "col-md-4",
+              name: "registered_gstin_no"
+            }
+  
+          ]
+      });
+  
+      // set selectboxes
+      employeeCompaniesTableEditor.on('preOpen', function (e, mode, action) {
+          window.setTimeout(function () {
+              initModalSelectBox();
+          }, 100);
+      });
+  
+      // validate fields
+      employeeCompaniesTableEditor.on('preSubmit', function (e, o, action) {
+          if (action !== 'remove') {
+              var name = employeeCompaniesTableEditor.field('name');
+  
+              if (!name.isMultiValue()) {
+                  if (!name.val()) {
+                      name.error('A company name must be given');
+                  }
+                  if (name.val().length <= 3) {
+                      name.error('The company name length must be more than 3 characters');
+                  }
+              }
+  
+              if (this.inError()) {
+                  return false;
+              }
+          }
+      });
+    });  
+  
+
     $('a[href="#employee-company"]').on('shown.bs.tab', function () {
         if (!loadedDatatables[table]) {
-
+           console.log("I am here umar ", states);
             $(table).dataTable({
                 serverSide: true,
                 ajax: "/employee_companies",
@@ -53,208 +278,7 @@ $(function () {
         }
     });
 
-    employeeCompaniesTableEditor = new $.fn.dataTable.Editor({
-        table: table,
-        ajax: {
-            create: {
-                type: 'POST',
-                url: '/employee_companies'
-            },
-            edit: {
-                type: 'PUT',
-                url: '/employee_companies/_id_'
-            },
-            remove: {
-                type: 'DELETE',
-                url: '/employee_companies/_id_'
-            }
-        },
-        fields: [{
-            label: "Name",
-            className: "col-md-4",
-            name: "name"
-        },
-        {
-            label: "HQ Address",
-            className: "col-md-4",
-            name: "hq_address"
-        }, {
-            label: "Business Type",
-            className: "col-md-4",
-            name: "business_type"
-        }, {
-            label: 'PAN',
-            className: "col-md-4 clear",
-            name: "pan"
-        }, {
-            label: 'Service Tax No.',
-            className: "col-md-4",
-            name: "service_tax_no"
-        }, {
-            label: 'Zone',
-            className: "col-md-4",
-            name: "zone"
-        }, {
-            label: 'Category',
-            className: "col-md-4",
-            name: "category"
-         } , {
-            label: 'Billing To',
-            className: "col-md-4",
-            name: "billing_to"
-         } ,
-
-          {
-            label: 'Contact Name',
-            className: "col-md-4",
-            name: "home_address_contact_name"
-          },
-          {
-            label: 'Address 1',
-            className: "col-md-4",
-            name: "home_address_address_1"
-          },
-          {
-            label: 'Address 2',
-            className: "col-md-4",
-            name: "home_address_address_2"
-          },
-          {
-            label: 'Address 3',
-            className: "col-md-4",
-            name: "home_address_address_3"
-          },
-          {
-            label: 'PIN',
-            className: "col-md-4",
-            name: "home_address_pin"
-          },
-          {
-            label: 'State',
-            className: "col-md-4",
-            name: "home_address_state"
-          },
-          {
-            label: 'City',
-            className: "col-md-4",
-            name: "home_address_city"
-          },
-          {
-            label: 'Phone 1',
-            className: "col-md-4",
-            name: "home_address_phone_1"
-          },
-          {
-            label: 'Phone 2',
-            className: "col-md-4",
-            name: "home_address_phone_2"
-          },
-          {
-            label: 'Business Area ',
-            className: "col-md-4",
-            name: "home_address_business_area"
-          },
-          {
-            label: 'PAN No ',
-            className: "col-md-4",
-            name: "home_address_pan_no"
-          },
-          {
-            label: 'GSTIN No ',
-            className: "col-md-4",
-            name: "home_address_gstin_no"
-          },
-
-          {
-            label: 'Registered Contact Name',
-            className: "col-md-4",
-            name: "registered_contact_name"
-          },
-          {
-            label: 'Registered Address 1',
-            className: "col-md-4",
-            name: "registered_address1"
-          },
-          {
-            label: 'Registered Address 2',
-            className: "col-md-4",
-            name: "registered_address2"
-          },
-          {
-            label: 'Registered Address 3',
-            className: "col-md-4",
-            name: "registered_address3"
-          },
-          {
-            label: 'Registered Pin',
-            className: "col-md-4",
-            name: "registered_pin"
-          },
-          {
-            label: 'Registered State',
-            className: "col-md-4",
-            name: "registered_state"
-          },
-          {
-            label: 'Registered City',
-            className: "col-md-4",
-            name: "registered_city"
-          },
-          {
-            label: 'Registered Phone1',
-            className: "col-md-4",
-            name: "registered_phone1"
-          },
-          {
-            label: 'Registered Phone2',
-            className: "col-md-4",
-            name: "registered_phone2"
-          },
-          {
-            label: 'Registered Phone2',
-            className: "col-md-4",
-            name: "registered_phone3"
-          },
-          {
-            label: 'Registered Business Area',
-            className: "col-md-4",
-            name: "registered_business_area"
-          },
-          {
-            label: 'Registered GSTIN No',
-            className: "col-md-4",
-            name: "registered_gstin_no"
-          }
-
-        ]
-    });
-
-    // set selectboxes
-    employeeCompaniesTableEditor.on('preOpen', function (e, mode, action) {
-        window.setTimeout(function () {
-            initModalSelectBox();
-        }, 100);
-    });
-
-    // validate fields
-    employeeCompaniesTableEditor.on('preSubmit', function (e, o, action) {
-        if (action !== 'remove') {
-            var name = employeeCompaniesTableEditor.field('name');
-
-            if (!name.isMultiValue()) {
-                if (!name.val()) {
-                    name.error('A company name must be given');
-                }
-                if (name.val().length <= 3) {
-                    name.error('The company name length must be more than 3 characters');
-                }
-            }
-
-            if (this.inError()) {
-                return false;
-            }
-        }
-    });
+   
 
 
     // Edit record
