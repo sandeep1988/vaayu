@@ -42,7 +42,7 @@ class VehiclesController < ApplicationController
   end
 
   def destroy
-    if current_user.admin? || current_user.operator?
+    if current_user || current_user.operator?
       @vehicle.destroy
       respond_to do |format|
         format.json { head :no_content }
@@ -126,7 +126,7 @@ class VehiclesController < ApplicationController
   end
 
   def only_admin_and_operator
-    return if current_user.admin? || current_user.operator?
+    return if current_user || current_user.operator?
     flash[:error] = 'You have not permissions for update vehicle'
     redirect_to provisioning_path(anchor: 'vehicles')
   end

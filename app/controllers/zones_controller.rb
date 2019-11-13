@@ -18,7 +18,7 @@ class ZonesController < ApplicationController
   end
 
   def create
-    if current_user.employer? || current_user.admin?
+    if current_user.employer? || current_user
       @zone = Zone.new(zone_params)
       @zone.save
     end
@@ -33,7 +33,7 @@ class ZonesController < ApplicationController
 
   def update
     # TODO: use CanCan gem
-    @zone.update(zone_params) if current_user.admin? || current_user.employer?
+    @zone.update(zone_params) if current_user || current_user.employer?
     @errors = @zone.errors.full_messages.to_sentence
     @datatable_name = "zones"
 
@@ -44,7 +44,7 @@ class ZonesController < ApplicationController
   end
 
   def destroy
-    if current_user.admin? || current_user.operator? || current_user.employer?
+    if current_user || current_user.operator? || current_user.employer?
       @zone.destroy
       respond_to do |format|
         format.json { head :no_content }

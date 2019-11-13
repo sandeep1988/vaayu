@@ -163,7 +163,7 @@ class EmployeeTripClustersDatatable
 
   # def fetch_trip
   #   trip = empl_trips
-  #   if @current_user.admin? || @current_user.employer? || (@current_user.transport_desk_manager? && ENV["ENABLE_TRANSPORT_DESK_MANAGER_APPROVE"] == "true") || @current_user.line_manager?
+  #   if @current_user || @current_user.employer? || (@current_user.transport_desk_manager? && ENV["ENABLE_TRANSPORT_DESK_MANAGER_APPROVE"] == "true") || @current_user.line_manager?
   #     trip = Kaminari.paginate_array(trip).page(page).per(per_page)
   #   else
   #     trip = trip.page(page).per(per_page)

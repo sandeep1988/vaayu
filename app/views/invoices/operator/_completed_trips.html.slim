@@ -9,7 +9,7 @@
           | By Trips
         option[value="vehicles"]
           | By Vehicles
-    -if current_user.admin?
+    -if current_user
       .filter-block.inline-display[style="width:200px; margin-left:10px"]
         select#invoice_type.form-control.selectboxit[placeholder="false" name="invoice_type"]
           option[value="customer"]

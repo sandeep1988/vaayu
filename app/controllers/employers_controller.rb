@@ -2,7 +2,7 @@ class EmployersController < ApplicationController
 
   def index
     respond_to do |format|
-      if current_user.admin?
+      if current_user
         format.html
         format.json { render json: ManageUsers::ManageEmployersDatatable.new(view_context)}
       elsif (employee_companies = current_user.entity&.logistics_company.employee_companies)

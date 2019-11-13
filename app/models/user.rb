@@ -298,7 +298,7 @@ class User < ApplicationRecord
   private
 
   def set_status
-    self.status = 0 if ["employee", "driver", "line_manager", "transport_desk_manager", "operator"].include? self.role
+    self.status = 0 if ["employee", "driver", "line_manager", "transport_desk_manager", "operator", "mdm_admin"].include? self.role
   end
 
   def after_reset_password

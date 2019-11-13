@@ -13,7 +13,7 @@
           li
             a[href="#customer-invoices" data-toggle="tab"]
               | Customer Invoices
-        - if current_user.admin? || current_user.operator?
+        - if current_user || current_user.operator?
           li
             a[href="#completed-trips" data-toggle="tab"]
               | Billable Entities
@@ -28,7 +28,7 @@
       - if current_user.employer?
         = render :partial => 'invoices/operator/completed_trips'
         = render :partial => 'invoices/operator/customer_invoices'      
-      - if current_user.admin? || current_user.operator?
+      - if current_user || current_user.operator?
         = render :partial => 'invoices/operator/completed_trips'
         = render :partial => 'invoices/operator/customer_invoices'
         = render :partial => 'invoices/operator/ba_invoices'      

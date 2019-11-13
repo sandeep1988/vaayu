@@ -8,7 +8,7 @@ class EmployeesController < ApplicationController
 
   def index
     respond_to do |format|
-      if current_user.admin? || current_user.employer?
+      if current_user || current_user.employer?
         employee = Employee.includes(:user => { :entity => [:employee_company, :zone, :site]}).not_guard
         employee = employee.ransack(Searchables::EmployeeSearchable.new(params[:search_input]).send("by_#{params[:search_by]}")).result.joins(:user).order("f_name ASC, m_name ASC, l_name ASC") if params[:search_input].present? && params[:search_by].present?
         format.html
@@ -32,7 +32,7 @@ class EmployeesController < ApplicationController
 
   def create
     user =  User.new(employee_params.except(:id, :role).merge(:role => 0))
-    user.entity.employee_company_id = current_user.admin? ? employee_params[:entity_attributes][:employee_company_id] : current_user.entity&.employee_company_id
+    user.entity.employee_company_id = current_user ? employee_params[:entity_attributes][:employee_company_id] : current_user.entity&.employee_company_id
     user.save_with_notify
     @errors = user.errors.full_messages.to_sentence
     @datatable_name = user.entity.is_guard ? 'guards' : 'employees'
@@ -84,7 +84,7 @@ class EmployeesController < ApplicationController
 
   def guards
     respond_to do |format|
-      if current_user.admin? || current_user.employer? || current_user.transport_desk_manager?
+      if current_user || current_user.employer? || current_user.transport_desk_manager?
         employees = Employee.where(is_guard: true)
         format.json { render json: ManageUsers::ManageEmployeesDatatable.new(view_context, employees)}
       else
@@ -102,7 +102,7 @@ class EmployeesController < ApplicationController
       user.assign_attributes(emp_params)
     else
       user = User.new(employee_params.except(:id, :role).merge(:role => 0))
-      user.entity.employee_company_id = current_user.admin? ? employee_params[:entity_attributes][:employee_company_id] : current_user.entity&.employee_company_id
+      user.entity.employee_company_id = current_user ? employee_params[:entity_attributes][:employee_company_id] : current_user.entity&.employee_company_id
     end
     user.valid?
     render json: user.errors.messages, status: 200

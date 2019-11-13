@@ -47,7 +47,7 @@ class EmployeeTripsDatatable
     tripType = filter_params_data['trip_type']
 
     #Do the step below in case transport desk manager has ability to approve/reject requests or in case it is employer or admin
-    if @current_user.admin? || @current_user.employer? || (@current_user.transport_desk_manager? && ENV["ENABLE_TRANSPORT_DESK_MANAGER_APPROVE"] == "true")
+    if @current_user || @current_user.employer? || (@current_user.transport_desk_manager? && ENV["ENABLE_TRANSPORT_DESK_MANAGER_APPROVE"] == "true")
       trip_change_request = TripChangeRequest
           .includes(:employee => [:site, :user])
           .where(:request_type => :new_trip)
@@ -246,7 +246,7 @@ class EmployeeTripsDatatable
     #  return trip, zones
     #else
     #  # trip = empl_trips
-    #  # if @current_user.admin? || @current_user.employer? || (@current_user.transport_desk_manager? && ENV["ENABLE_TRANSPORT_DESK_MANAGER_APPROVE"] == "true") || @current_user.line_manager?
+    #  # if @current_user || @current_user.employer? || (@current_user.transport_desk_manager? && ENV["ENABLE_TRANSPORT_DESK_MANAGER_APPROVE"] == "true") || @current_user.line_manager?
     #  #   # trip = Kaminari.paginate_array(trip).page(page).per(per_page)
     #  # else
     #  #   # trip = trip.page(page).per(per_page)

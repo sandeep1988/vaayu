@@ -176,7 +176,7 @@ div#site_html
         p[style="font-size:18px; font-weight:600; margin-left:10px"]
           | Billing Attributes
         .row
-          -if current_user.employer? || current_user.admin?
+          -if current_user.employer? || current_user
             .col-md-4.no-margin
               label.site_labels for="operator"
                 | Operator

@@ -17,7 +17,7 @@ class BusinessAssociatesController < ApplicationController
   end
 
   def create
-    if current_user.operator? || current_user.admin?      
+    if current_user.operator? || current_user      
       @business_associate = BusinessAssociate.new(
                           :admin_f_name => params[:ba]['admin_f_name'],
                           :admin_m_name => params[:ba]['admin_m_name'],
@@ -151,7 +151,7 @@ class BusinessAssociatesController < ApplicationController
   end
 
   def update
-    if current_user.admin? || current_user.operator?
+    if current_user || current_user.operator?
       if @business_associate.update(ba_params)
         flash[:notice] = 'Business Associate was successfully updated'
       else
@@ -164,7 +164,7 @@ class BusinessAssociatesController < ApplicationController
   end
 
   def update_ba
-    if current_user.operator? || current_user.admin?
+    if current_user.operator? || current_user
       @business_associate = BusinessAssociate.where(:id => params[:id]).first
       @business_associate.update!(
                           :admin_f_name => params[:ba]['admin_f_name'],
@@ -247,7 +247,7 @@ class BusinessAssociatesController < ApplicationController
   end
 
   def destroy
-    if current_user.admin? || current_user.operator?
+    if current_user || current_user.operator?
       @business_associate.destroy
       respond_to do |format|
         format.json { head :no_content }
