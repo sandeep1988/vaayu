@@ -203,10 +203,10 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
 
     $scope.fileNameChanged = function (e) {
         // console.log(e.files)
-        let file = e.files[0];
-        console.log('selected file', file)
+        $scope.fileObject = e.files[0];
+        console.log('selected file', $scope.fileObject)
         $timeout(()=>{
-            $scope.tempfileName = file.name;
+            $scope.tempfileName = $scope.fileObject.name;
         },50)
     }
 
@@ -276,7 +276,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         formData.append("customer_id", "1");
         
         formData.append("unique_identification", $scope.selectedUIDtoSend);
-        formData.append("billig_cycle", $scope.bcycle);
+        formData.append("billing_cycle", $scope.bcycle);
         formData.append("contract_type", $scope.ctype);
         formData.append("contract_file", $scope.fileObject);
         formData.append("site_id", $scope.selectedSiteId);
@@ -295,10 +295,34 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
             if (request.readyState === request.DONE) {
                 if (request.status === 200) {
                     // console.log(request.response);
-                    vm.submitResponse = request.response;                    
-                    ToasterService.showSuccess('Success', 'Contract created successfully.');
-                    console.log('Contract created successfully.');
-                    $scope.getContracts();
+                    vm.submitResponse = JSON.parse(request.response);   
+                    if (vm.submitResponse['success']) {
+                        ToasterService.showSuccess('Success', 'Contract created successfully.');
+                        console.log('Contract created successfully.');
+                        $scope.getContracts();
+                    } else {
+                        if (vm.submitResponse['message'] && vm.submitResponse.data['allowParameters']) {
+                            let msg = vm.submitResponse['message'] + "\n\n";
+                            let obj = vm.submitResponse.data.allowParameters
+                            for (var key in obj) {
+                                if (obj.hasOwnProperty(key)) {
+                                    let keyTemp="";
+                                    if(key=="billing_cycle"){
+                                        keyTemp="<b>Billing Cycle</b>";
+                                    }else if(key=="unique_identifier"){
+                                        keyTemp="<b>Unique Identifier</b>";
+                                    }else{
+                                        keyTemp=key;
+                                    }
+                                    msg +=  keyTemp+' must be '+obj[key] + "\n";
+                                }
+                            }
+                            ToasterService.showError1('Error', msg.replace(/(\r\n|\n|\r)/gm, "<br>"));   
+                        } else {
+                            ToasterService.showError('Error', vm.submitResponse['message']);   
+                        }
+                    }                
+                    
                 }
             } else {
                 ToasterService.showError('Error', 'Something went wrong, Try again later.');
@@ -381,10 +405,16 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
             },
             data: { test: 'test' }
         }).then(function (res) {
+            console.log('getcontracts', res);
             if (res.data['success']) {
-                $scope.contractList = res.data.data;
+                
+                if ($scope.tab === 'BA') {
+                    $scope.bacontractList = res.data.data;
+                } else {
+                    $scope.contractList = res.data.data;
+                }
                 // $scope.$broadcast('onSiteListReceived',res.data.data.list);
-                console.log(JSON.stringify($scope.contractList))
+                
             } else {
                 alert(res.data['message']);
             }
