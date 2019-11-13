@@ -317,9 +317,9 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
                                     msg +=  keyTemp+' must be '+obj[key] + "\n";
                                 }
                             }
-                            ToasterService.showError1('Error', msg.replace(/(\r\n|\n|\r)/gm, "<br>"));   
+                            ToasterService.showError_html('Error', msg.replace(/(\r\n|\n|\r)/gm, "<br>"));   
                         } else {
-                            ToasterService.showError('Error', vm.submitResponse['message']);   
+                            ToasterService.showError_html('Error', vm.submitResponse['message']);   
                         }
                     }                
                     
