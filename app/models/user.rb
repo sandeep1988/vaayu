@@ -100,7 +100,7 @@ class User < ApplicationRecord
     self.reset_password_sent_at = Time.now.utc
     self.username = self.email&.parameterize if self.username.blank?# && !self.driver?
     self.skip_password_validation = true unless self.driver?
-
+    self.entity.gender = "1" if self.entity.is_guard?
     result = save
     result = self.update_attribute("f_name",self.f_name)
     if result
