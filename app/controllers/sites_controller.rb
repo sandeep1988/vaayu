@@ -112,7 +112,7 @@ class SitesController < ApplicationController
   # end
 
   def create
-    if current_user.operator? || current_user.admin?
+    if current_user.operator? || current_user
       results = GoogleService.new.geocode(params[:site]['address']).first
       unless results.nil? || ! results.key?(:geometry)
         coordinates = results[:geometry][:location]
@@ -209,7 +209,7 @@ class SitesController < ApplicationController
   end
 
   def update_site
-    if current_user.admin? || current_user.operator?
+    if current_user || current_user.operator?
       results = GoogleService.new.geocode(params[:site]['address']).first
       unless results.nil? || ! results.key?(:geometry)
         coordinates = results[:geometry][:location]
@@ -311,7 +311,7 @@ class SitesController < ApplicationController
   end
 
   def destroy
-    if current_user.admin? || current_user.operator?
+    if current_user || current_user.operator?
       @site.destroy
       respond_to do |format|
         format.json { head :no_content }

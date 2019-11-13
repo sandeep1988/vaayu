@@ -12,7 +12,7 @@
         = f.input :email, label: 'Email', required: false, wrapper_html: { class: 'search-match' }, input_html: { data: { "match-user" => "email" } }
       .col-md-4
         = f.input :phone, as: :tel, label: 'Phone', required: true, wrapper_html: { class: 'search-match' }, input_html: { data: { "match-user" => "phone" } }
-      - if current_user.admin?
+      - if current_user
         .col-md-4
           = ui.association :logistics_company, label: 'Company', prompt: "Choose company", required: true
 

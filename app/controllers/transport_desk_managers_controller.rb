@@ -2,7 +2,7 @@ class TransportDeskManagersController < ApplicationController
 
   def index
     respond_to do |format|
-      if current_user.admin?
+      if current_user
         # @employer = Employer.all.order('id DESC')
         format.html
         format.json { render json: ManageUsers::ManageTransportDeskManagersDatatable.new(view_context)}

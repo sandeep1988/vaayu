@@ -72,7 +72,7 @@
       .modal-footer
         .row#delete_error_message[style="text-align:left; color:red; margin-left:0px"]
         .row
-          -if (current_user.operator? || current_user.admin?)
+          -if (current_user.operator? || current_user)
             .col-md-6.assign-guard-block
               - if trip.is_guard_required?
                 a.btn.btn-sm.btn-primary#assing-guard[href="/trips/guards_list?trip_id=#{trip.id}" data-remote="true"]

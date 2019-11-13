@@ -24,7 +24,7 @@ class ProvisioningController < ApplicationController
     def get_objects
       if (logistics_company = current_user.entity.try(:logistics_company))
         @employee_companies = EmployeeCompany.where(:logistics_company => logistics_company)
-      elsif current_user.admin?
+      else
         @employee_companies = EmployeeCompany.all.order('name ASC')
       end
 

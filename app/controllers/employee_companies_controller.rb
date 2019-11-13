@@ -1,7 +1,7 @@
 class EmployeeCompaniesController < ApplicationController
   before_action :set_company, only: [:update, :destroy]
   def index
-    if current_user.admin?
+    if current_user
       @employee_companies = EmployeeCompany.all.order('id DESC')
     elsif (logistics_company = current_user.entity.logistics_company)
       @employee_companies = EmployeeCompany.where(:logistics_company => logistics_company).order('id DESC')
@@ -28,7 +28,7 @@ class EmployeeCompaniesController < ApplicationController
   end
 
   def create
-    if current_user.operator? || current_user.admin?
+    if current_user.operator? || current_user
       # attr = company_params.merge!(:logistics_company_id => current_user.entity.logistics_company.id)
       @employee_company = EmployeeCompany.new(company_params)
       respond_to do |format|
@@ -47,7 +47,7 @@ class EmployeeCompaniesController < ApplicationController
 
   def update
     # TODO: use CanCan gem
-    if current_user.admin? || (current_user.operator? && current_user.entity.logistics_company.id == @employee_company.logistics_company_id)
+    if current_user || (current_user.operator? && current_user.entity.logistics_company.id == @employee_company.logistics_company_id)
       respond_to do |format|
         if @employee_company.update(company_params)
           format.json { render json: EmployeeCompanyDatatable.new(@employee_company), status: :ok, location: @employee_company }
@@ -61,7 +61,7 @@ class EmployeeCompaniesController < ApplicationController
   end
 
   def destroy
-    if current_user.admin? || (current_user.operator? && current_user.entity.logistics_company.id == @employee_company.logistics_company_id)
+    if current_user || (current_user.operator? && current_user.entity.logistics_company.id == @employee_company.logistics_company_id)
       @employee_company.destroy
       respond_to do |format|
         format.json { head :no_content }

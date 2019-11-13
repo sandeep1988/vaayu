@@ -1,4 +1,4 @@
--if !trip.book_ola.blank? && (trip.status != 'completed' && trip.status != 'canceled') && (current_user.operator? || current_user.admin?)
+-if !trip.book_ola.blank? && (trip.status != 'completed' && trip.status != 'canceled') && (current_user.operator? || current_user)
   = render :partial => 'trips/modals/book_ola_uber', :locals => {:trip => @trip, :employee_trips => @employee_trips, :submit => false, :notification => @notification, :show_cost => true}
 -else 
   .modal-dialog[style="width: 80%; max-width: 1100px;"]
@@ -404,7 +404,7 @@
                                 | #{@driver.f_name} #{@driver.l_name}
                               p.driver-name[style="color:grey; padding-left:5px; font-size:10px; display:inline-block; vertical-align:top"]
                                 | (pending)
-                              -if current_user.operator? || current_user.admin?
+                              -if current_user.operator? || current_user
                                 p#change-driver.driver-name.text-teal[style="font-size:10px; display:inline-block; float:right; cursor:pointer" data-trip_id='#{trip.id}' data-dismiss="modal"]
                                   | Change Driver
                           - if trip.assign_request_expired?
@@ -413,14 +413,14 @@
                                 | #{@driver.f_name} #{@driver.l_name}
                               p.driver-name[style="color:grey; padding-left:5px; font-size:10px; display:inline-block; vertical-align:top"]
                                 | (expired)
-                              -if current_user.operator? || current_user.admin?
+                              -if current_user.operator? || current_user
                                 p#change-driver.driver-name.text-teal[style="font-size:10px; display:inline-block; cursor:pointer; float:right" data-trip_id='#{trip.id}' data-dismiss="modal"]
                                   | Change Driver
                           - if trip.assigned?
                             div
                               p.driver-name.cf-label[style="display:inline-block; max-width:40%; text-overflow:ellipsis; white-space:nowrap; overflow:hidden"]
                                 | #{@driver.f_name} #{@driver.l_name}
-                              -if current_user.operator? || current_user.admin?
+                              -if current_user.operator? || current_user
                                 p#change-driver.driver-name.text-teal[style="font-size:10px; display:inline-block; cursor:pointer; float:right" data-trip_id='#{trip.id}' data-dismiss="modal"]
                                   | Change Driver
                           -if !trip.assign_requested? && !trip.assign_request_expired? && !trip.assigned?
@@ -447,7 +447,7 @@
                             div
                               p.driver-name.cf-label[style="display:inline-block; max-width:60%; text-overflow:ellipsis; white-space:nowrap; overflow:hidden"]
                                 | #{@vehicle.make} #{@vehicle.model}
-                              -if current_user.operator? || current_user.admin?
+                              -if current_user.operator? || current_user
                                 -if @vehicle.status == '' || @vehicle.status == 'vehicle_broke_down_pending' || @vehicle.status == 'vehicle_ok'
                                   a#car_broke_down.driver-name.text-teal[href="provisioning#vehicles" style="font-size:10px; display:inline-block; float:right; cursor:pointer" data-trip_id='#{trip.id}']
                                     | Car Broke Down
@@ -470,7 +470,7 @@
                           div
                             p.driver-name.cf-label[style="display:inline-block; max-width:40%; text-overflow:ellipsis; white-space:nowrap; overflow:hidden"]
                               | N/A
-                            -if current_user.operator? || current_user.admin?
+                            -if current_user.operator? || current_user
                               p#change-driver.driver-name.text-teal[style="font-size:10px; display:inline-block; float:right; cursor:pointer" data-trip_id='#{trip.id}' data-dismiss="modal"]
                                 | Assign Driver                          
                           div.driver-name
@@ -735,7 +735,7 @@
           a.btn.btn-sm.btn-danger#assign-driver-continue.hidden[href="#" data-trip-id='#{trip.id}' data-driver-trip-id='#{@driver.id}']
             | Continue
         -if trip.book_ola.blank?
-          -if (trip.status == 'assigned' || trip.status == "active" || trip.status == "assign_requested" || trip.status == "assign_request_expired") && (current_user.operator? || current_user.admin?)     
+          -if (trip.status == 'assigned' || trip.status == "active" || trip.status == "assign_requested" || trip.status == "assign_request_expired") && (current_user.operator? || current_user)     
             - if @notification.blank?              
               button#complete_with_exception.btn.btn-sm.btn-primary[type="button" data-trip_id='#{trip.id}']
                 | Complete with Exception
@@ -750,7 +750,7 @@
 
         -else
           -if trip.book_ola.blank?
-            -if (trip.status == 'assigned' || trip.status == "active" || trip.status == "assign_requested" || trip.status == "assign_request_expired") && (current_user.operator? || current_user.admin?)
+            -if (trip.status == 'assigned' || trip.status == "active" || trip.status == "assign_requested" || trip.status == "assign_request_expired") && (current_user.operator? || current_user)
               - if @notification.blank?
                 button#complete_with_exception.btn.btn-sm.btn-primary[type="button" data-trip_id='#{trip.id}']
                   | Complete with Exception
@@ -758,7 +758,7 @@
                 button#complete_with_exception.btn.btn-sm.btn-primary[type="button" data-trip_id='#{trip.id}' data-notification_id='#{@notification.id}']
                   | Complete with Exception
           -else
-            -if (trip.status != 'completed' && trip.status != 'canceled') && (current_user.operator? || current_user.admin?)
+            -if (trip.status != 'completed' && trip.status != 'canceled') && (current_user.operator? || current_user)
               .row
                 .col-md-4[style="margin-top: 15px;" id="ride_cost_div"]
                   input.form-control[type="text" name="name" placeholder=" Cost of the Ola/Uber ride" id="ride_cost"]
