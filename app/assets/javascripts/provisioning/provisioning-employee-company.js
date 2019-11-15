@@ -8,6 +8,12 @@ $(function () {
      * Employee Companies Operator Table
      */
 
+     $("#modal-employee-company").modal('show',{
+       backdrop:'static',
+       keyboard:false,
+     })
+    $.fn.modal.prototype.constructor.Constructor.DEFAULTS.backdrop="static";
+
     var table = '#employee-companies-table';
     /**
      * Init table
