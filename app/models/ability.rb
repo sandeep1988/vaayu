@@ -22,18 +22,26 @@ class Ability
       when 'mdm_admin'
         can :manage, :all
       when 'ct_manager'
-        can :manage, :all          
+        can :view , :trips_tab
+        can :view , :dashboard_tab
+        cannot :view, :provisioning_tab
+        cannot :view, :configurators_tab
+        cannot :view, :billing_tab
+        cannot :view, :reports_tab         
       when 'operator'
-        [:provisioning_tab, :trips_tab, :billing_tab, :reports_tab, :dashboard_tab, :configurators_tab].each { |page| can :view, page }
+         [:provisioning_tab, :configurators_tab].each { |page| can :view, page }
         [:people_tab, :places_tab, :things_tab].each { |page| can :view, page }
         can :crud, User do |usr|
           # employee_companies = current_user.entity&.logistics_company.employee_companies
         end
+        cannot :view, :dashboard_tab
+        cannot :view, :trips_tab
+        cannot :view, :reports_tab
+        cannot :view, :billing_tab
         can :update, Site
         can :crud, Driver
         can :read, :operator_shift_manager
         can :show, :reports
-        can :view, :all_reports
         can :manage, Configurator
         can :manage, OperatorShiftManager do |esm|
           user == esm.user
@@ -109,14 +117,10 @@ class Ability
           user == trip_route.trip.driver.user
         end
       when 'transport_desk_manager'
-        can :create, Employee
-        can [:update, :destroy], Employee do |employee|
-          user.entity.employee_company == employee.employee_company
-        end
-        can :manage, :guard
-        can :manage, EmployerShiftManager
-        [:provisioning_tab, :trips_tab, :dashboard_tab].each { |page| can :view, page }
-        can :view, :people_tab
+        [:trips_tab].each { |page| can :view, page }
+        cannot :view, :provisioning_tab
+        cannot :view, :dashboard_tab
+        cannot :view, :configurators_tab
         cannot :view, :billing_tab
         cannot :view, :reports_tab
       when 'employer_shift_manager'

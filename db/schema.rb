@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191112055139) do
+ActiveRecord::Schema.define(version: 20191115094408) do
 
   create_table "Induction_logs_WIP", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "resource_id",                    null: false
@@ -44,6 +44,11 @@ ActiveRecord::Schema.define(version: 20191112055139) do
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.index ["company_type", "company_id"], name: "index_ba_invoices_on_company_type_and_company_id", using: :btree
+  end
+
+  create_table "ba_managers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "ba_package_rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -516,6 +521,7 @@ ActiveRecord::Schema.define(version: 20191112055139) do
     t.datetime "bgc_doc_updated_at"
     t.string   "shift_start_time"
     t.string   "shift_end_time"
+    t.boolean  "submitted_by_qc",                                             default: false
     t.index ["business_associate_id"], name: "index_drivers_on_business_associate_id", using: :btree
     t.index ["logistics_company_id"], name: "index_drivers_on_logistics_company_id", using: :btree
     t.index ["site_id"], name: "index_drivers_on_site_id", using: :btree
@@ -1596,6 +1602,7 @@ ActiveRecord::Schema.define(version: 20191112055139) do
     t.string   "authorization_certificate_doc_content_type"
     t.integer  "authorization_certificate_doc_file_size"
     t.datetime "authorization_certificate_doc_updated_at"
+    t.boolean  "submitted_by_qc",                                          default: false
     t.index ["business_associate_id"], name: "index_vehicles_on_business_associate_id", using: :btree
     t.index ["driver_id"], name: "index_vehicles_on_driver_id", using: :btree
     t.index ["plate_number"], name: "index_vehicles_on_plate_number", using: :btree

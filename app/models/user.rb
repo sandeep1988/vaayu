@@ -13,7 +13,7 @@ class User < ApplicationRecord
     include DeviseTokenAuth::Concerns::User
   end
 
-  enum role: [:employee, :employer, :operator, :driver, :admin, :transport_desk_manager, :line_manager, :employer_shift_manager, :operator_shift_manager, :qc_data_entry, :operations_supervisor, :operations_admin, :commercial_manager, :qc_manager, :mdm_admin, :ct_manager]
+  enum role: [:employee, :employer, :operator, :driver, :admin, :transport_desk_manager, :line_manager, :employer_shift_manager, :operator_shift_manager, :qc_data_entry, :operations_supervisor, :operations_admin, :commercial_manager, :qc_manager, :mdm_admin, :ct_manager, :ba_manager]
   enum status: [:pending, :on_boarded, :active]
 
   # @TODO: add proper default images: default_url: '/images/:style/user.png'
@@ -50,7 +50,8 @@ class User < ApplicationRecord
     state :commercial_manager
     state :qc_manager
     state :mdm_admin
-    state :ct_manager   
+    state :ct_manager
+    state :ba_manager   
   end
 
   # validates :username, presence: true, uniqueness: true
@@ -192,7 +193,9 @@ class User < ApplicationRecord
           when 14
             MdmAdmin.new
           when 15
-            CtManager.new                                   
+            CtManager.new   
+          when 16
+            BaManager.new                                  
         end
     super
   end
@@ -228,7 +231,7 @@ class User < ApplicationRecord
 
   # Driver can access only drivers app through api, so do employee
   def has_access_to_app?(app_name)
-    (app_name == 'driver' && self.driver?) || (app_name == 'employee' && self.employee?) || (app_name == 'web' && self.qc_data_entry?) || (app_name == 'web' && self.mdm_admin?) || (app_name == 'web' && self.commercial_manager?) || (app_name == 'web' && self.operations_supervisor?) || (app_name == 'web' && self.operations_admin?) || (app_name == 'web' && self.qc_manager?) || (app_name == 'web' && self.ct_manager?)
+    (app_name == 'driver' && self.driver?) || (app_name == 'employee' && self.employee?) || (app_name == 'web' && self.qc_data_entry?) || (app_name == 'web' && self.mdm_admin?) || (app_name == 'web' && self.commercial_manager?) || (app_name == 'web' && self.operations_supervisor?) || (app_name == 'web' && self.operations_admin?) || (app_name == 'web' && self.qc_manager?) || (app_name == 'web' && self.ct_manager?) || (app_name == 'compliance_app' && self.ba_manager?) || (app_name == 'compliance_app' && self.operations_supervisor?) || (app_name == 'compliance_app' && self.operations_admin?)
   end
 
   # Sign in through username or email or phone

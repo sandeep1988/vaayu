@@ -14,7 +14,7 @@
           li
             a[href="#employee-change-request" data-toggle="tab"]
               | Requests
-        - if current_user.employer? || current_user.transport_desk_manager? || current_user.employer_shift_manager?
+        - if current_user.employer? || current_user.employer_shift_manager?
           li
             a[href="#operator-trip-board" data-toggle="tab"]
               | Trip Board
