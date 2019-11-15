@@ -204,6 +204,8 @@ class API::V2::DriversController < ApplicationController
       user.entity.business_associate_id = params[:business_associate_id] if params[:business_associate_id].present?
       user.entity.gender = params[:gender] if params[:gender].present?
       user.entity.profile_picture  = params[:profile_picture] if params[:profile_picture].present?
+      user.entity.shift_end_time = params[:shift_end_time] if params[:shift_end_time].present?
+      user.entity.shift_start_time = params[:shift_start_time] if params[:shift_start_time].present?
       user.entity.profile_picture_url = "#{user.entity.profile_picture.url.gsub("//",'')}" if user.entity.profile_picture.present?
       user.entity.business_state = "validate"
       user.entity.induction_status = "Draft"
@@ -213,7 +215,9 @@ class API::V2::DriversController < ApplicationController
       # user.entity.f_name = params[:f_name] if params[:f_name].present?
       # user.entity.l_name =  params[:l_name] if params[:l_name].present?
       user.entity.registration_steps = 'Step_1'
-      user.entity.driver_name = params[:f_name] + ' ' + (params[:l_name].present? ? params[:l_name] : '')
+      f_name = params[:f_name].present? ? params[:f_name] : ''
+      l_name = params[:l_name].present? ? params[:l_name] : ''
+      user.entity.driver_name = f_name + l_name
       user.save_with_notify_for_driver
       @errors = user.errors.full_messages.to_sentence
       @datatable_name = "drivers"
