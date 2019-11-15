@@ -55,9 +55,9 @@ class IngestEmployeeShiftWorker < IngestWorker
       gender: temp_gender,
       area: row['area'],
       process_code: row['process_code'],
-      site: Site.last,
-      zone: Zone.last,
-      employee_company: EmployeeCompany.first,
+      site: Site.where(name:row["site"]).first,
+      zone: Zone.where(name:row["zone"]).first,
+      employee_company: EmployeeCompany.where(name:row["employee_company"]).first,
       allow_update: true
     )
     employee
