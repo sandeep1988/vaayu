@@ -82,9 +82,145 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
   $scope.getRosters = (postData) => {
     RosterService.get(postData, function (data) {
-      if (data.data) {
-        $scope.rosters = data.data.shiftdetails;
-        $scope.stats = data.data.stats;
+      var staticData={
+        "success": true,
+        "data": {
+            "stats": {
+                "on_duty": 2,
+                "off_duty": 0,
+                "shift_count": 3,
+                "left_for_allocation": 0,
+                "tot_emp": 9
+            },
+            "shiftdetails": [
+                {
+                    "id": 237,
+                    "name": "Rishikesh Site 5pm",
+                    "trip_type": 0,
+                    "emp_id": 1155473,
+                    "start_time": "17:00:00",
+                    "et_date": "2019-11-25T18:30:00.000Z",
+                    "et_time": "17:00:00",
+                    "shift_start_time": "17:00:00",
+                    "shift_end_time": "22:00:00",
+                    "no_of_emp": 3,
+                    "shift_type": "Check In",
+                    "vehicle": {
+                        "SEDAN": 0,
+                        "SUV": 0,
+                        "BUS": 0,
+                        "MINI VAN": 0,
+                        "HATCHBACK": 0,
+                        "TRUCK": 0,
+                        "TT": 0
+                    },
+                    "vehicle_capacity": {
+                        "SEDAN": 4,
+                        "SUV": 2,
+                        "BUS": 12,
+                        "MINI VAN": 10,
+                        "HATCHBACK": 5,
+                        "TRUCK": 2,
+                        "TT": 4
+                    },
+                    "seats_left_for_alloc": 0,
+                    "empl_left_for_alloc": 3,
+                    "result": "REQUIRED MORE VEHICLE",
+                    "disableGenerate": false,
+                    "subtractedDate": "2019-11-26 15:00:00",
+                    "istDate": "2019-11-15 17:04:44",
+                    "shiftDate": "2019-11-26 17:00:00",
+                    "constraintTime": "120",
+                    "routesGenerated": false
+                },
+                {
+                    "id": 247,
+                    "name": "rushikesh shift 5pm",
+                    "trip_type": 0,
+                    "emp_id": 1155473,
+                    "start_time": "17:00:00",
+                    "et_date": "2019-11-25T18:30:00.000Z",
+                    "et_time": "17:00:00",
+                    "shift_start_time": "17:00:00",
+                    "shift_end_time": "19:00:00",
+                    "no_of_emp": 3,
+                    "shift_type": "Check In",
+                    "vehicle": {
+                        "HATCHBACK": 0,
+                        "SUV": 3,
+                        "TT": 0,
+                        "SEDAN": 0,
+                        "BUS": 0,
+                        "MINI VAN": 0,
+                        "TRUCK": 0
+                    },
+                    "vehicle_capacity": {
+                        "SEDAN": 8,
+                        "SUV": 2,
+                        "BUS": 10,
+                        "MINI VAN": 8,
+                        "HATCHBACK": 5,
+                        "TRUCK": 8,
+                        "TT": 10
+                    },
+                    "total_seats": 6,
+                    "total_vehicles": 3,
+                    "seats_left_for_alloc": 3,
+                    "result": "GOOD TO GO",
+                    "empl_left_for_alloc": 0,
+                    "disableGenerate": false,
+                    "routesGenerated": true
+                },
+                {
+                    "id": 247,
+                    "name": "rushikesh shift 5pm",
+                    "trip_type": 1,
+                    "emp_id": 1155472,
+                    "start_time": "19:00:00",
+                    "et_date": "2019-11-25T18:30:00.000Z",
+                    "et_time": "19:00:00",
+                    "shift_start_time": "17:00:00",
+                    "shift_end_time": "19:00:00",
+                    "no_of_emp": 3,
+                    "shift_type": "Check Out",
+                    "vehicle": {
+                        "SEDAN": 0,
+                        "SUV": 0,
+                        "BUS": 0,
+                        "MINI VAN": 0,
+                        "HATCHBACK": 0,
+                        "TRUCK": 0,
+                        "TT": 0
+                    },
+                    "vehicle_capacity": {
+                        "SEDAN": 4,
+                        "SUV": 2,
+                        "BUS": 12,
+                        "MINI VAN": 10,
+                        "HATCHBACK": 5,
+                        "TRUCK": 2,
+                        "TT": 4
+                    },
+                    "seats_left_for_alloc": 0,
+                    "empl_left_for_alloc": 3,
+                    "result": "REQUIRED MORE VEHICLE",
+                    "disableGenerate": false,
+                    "subtractedDate": "2019-11-26 17:00:00",
+                    "istDate": "2019-11-15 17:04:44",
+                    "shiftDate": "2019-11-26 19:00:00",
+                    "constraintTime": "120",
+                    "routesGenerated": false
+                }
+            ],
+            "site_id": 51,
+            "to_date": "2019-11-26"
+        },
+        "errors": {},
+        "message": ""
+    };
+      if (staticData.data) {
+        $scope.rosters = staticData.data.shiftdetails;
+        $scope.stats = staticData.data.stats;
         console.log('rosters', $scope.rosters);
 
       }
@@ -157,20 +293,21 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.addVehicleToRoster = function (roster) {
-    $scope.currentRoster = roster;
+    $scope.currentRoster = angular.copy(roster);
     // console.log($scope.currentRoster.vehicle);
     // console.log(angular.equals($scope.currentRoster.vehicle, {}));
     if (angular.equals($scope.currentRoster.vehicle, {})) {
-      $scope.currentRoster.vehicle = $scope.defaultVehiclesList;
-      $scope.currentRoster.vehicle_capacity = $scope.defaultVehiclesCapacityList;
       $scope.currentRoster.total_seats = 0;
       $scope.currentRoster.total_vehicles = 0;
-
+      $scope.currentRoster.vehicle = $scope.defaultVehiclesList;
+      $scope.currentRoster.vehicle_capacity = $scope.defaultVehiclesCapacityList;
+      
     } else if (!$scope.currentRoster.vehicle) {
-      $scope.currentRoster.vehicle = $scope.defaultVehiclesList;
-      $scope.currentRoster.vehicle_capacity = $scope.defaultVehiclesCapacityList;
       $scope.currentRoster.total_seats = 0;
       $scope.currentRoster.total_vehicles = 0;
+      $scope.currentRoster.vehicle = $scope.defaultVehiclesList;
+      $scope.currentRoster.vehicle_capacity = $scope.defaultVehiclesCapacityList;
+     
     }
     $scope.disableDone(roster);
 
@@ -199,8 +336,11 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     $scope.currentRoster.vehicle[key] = parseInt($scope.currentRoster.vehicle[key]) + 1;
     $scope.currentRoster.total_vehicles = parseInt($scope.currentRoster.total_vehicles) + 1;
     if ($scope.currentRoster.vehicle_capacity[key]) {
-      $scope.currentRoster.total_seats = parseInt($scope.currentRoster.total_seats) + parseInt($scope.currentRoster.vehicle_capacity[key]);
-    }
+        if(!!$scope.currentRoster.total_seats)$scope.currentRoster.total_seats = parseInt($scope.currentRoster.total_seats) + parseInt($scope.currentRoster.vehicle_capacity[key]);
+        else { $scope.currentRoster.total_seats = 0 + parseInt($scope.currentRoster.vehicle_capacity[key]);
+        }
+    
+      }
     $scope.disableDone($scope.currentRoster);
 
   }
