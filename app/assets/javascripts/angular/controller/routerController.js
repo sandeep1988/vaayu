@@ -302,9 +302,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         "site_id": parseInt($scope.siteId),
         "shift_id": parseInt($scope.selectedShift.id),
         "to_date": moment($scope.filterDate).format('YYYY-MM-DD'),
-        "shift_type": $scope.selectedShift.shift_type,
+        "shift_type":parseInt($scope.selectedShift.trip_type),
         "updated_routes": finalChangedRoutes,
-        "original_route": original_routes
+        "original_routes": original_routes
       }
 
       $scope.isDisabled = true;
