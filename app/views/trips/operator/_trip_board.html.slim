@@ -10,7 +10,7 @@
 		| All
 	  .helper-inline.bg-white.trip-board-button#trip_board_cab
 		| Cab Rides Only
-	- if current_user.employer? || current_user.admin?
+	- if current_user.employer? || current_user
 		.helper-inline.text-center.pull-right[style="width:270px"]
 			select#select_operators.form-control.selectboxit[placeholder="Select Operator" name="select_operators"]
 			    option[value="0"]

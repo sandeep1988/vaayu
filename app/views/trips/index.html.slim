@@ -59,7 +59,7 @@
               |  Status
               sup#new-notification.hidden
                 | *New
-        - if current_user.admin?
+        - if current_user
           li
             a[href="#operator-trip-board" data-toggle="tab"]
               | Trip Board
@@ -96,7 +96,7 @@
         = render 'trips/operator/assigned_trips'
         = render 'trips/trips_notifications'
 
-      - if current_user.admin?
+      - if current_user
         = render 'trips/trip_board'
         = render 'trips/employer/trip_requests'
         = render 'trips/operator/assigned_trips'
@@ -106,11 +106,11 @@
         = render 'trips/routing'
 
 
-  - if current_user.employer? || current_user.transport_desk_manager? || current_user.admin?
+  - if current_user.employer? || current_user.transport_desk_manager? || current_user
     #m-operator-unassigned-rosters
     = render 'trips/employer/modal_trip_roster_confirm'
 
-  - if current_user.operator? || current_user.admin?
+  - if current_user.operator? || current_user
     #m-operator-unassigned-rosters
     #m-operator-available-drivers
     #m-operator-complete-with-exception

@@ -64,7 +64,7 @@
             | Action
       tbody
   .table-controls.pull-left.tr-requests-controls
-    - if current_user.admin? || current_user.operator?
+    - if current_user || current_user.operator?
         button#auto-assign-driver.btn.btn-wide.btn-primary[type="button" data-toggle="modal"]
           | Auto Assign Driver
         button#auto-assign-guard.btn.btn-wide.btn-primary[type="button" data-toggle="modal"]

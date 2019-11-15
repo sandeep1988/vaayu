@@ -65,7 +65,7 @@ class EmployeeTripDatatable
       end
     end
 
-    if @current_user.admin? || @current_user.employer? || (@current_user.transport_desk_manager? && ENV["ENABLE_TRANSPORT_DESK_MANAGER_APPROVE"] == "true")
+    if @current_user || @current_user.employer? || (@current_user.transport_desk_manager? && ENV["ENABLE_TRANSPORT_DESK_MANAGER_APPROVE"] == "true")
       is_approver = true
       if @trip.has_attribute?(:status)
         # trip_change_request = TripChangeRequest.where(:employee_trip => @trip).where(:request_state => 'created').order('id desc').first

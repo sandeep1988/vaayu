@@ -24,14 +24,14 @@
     .col-md-12.margin-bottom.nav-actions-block
       .people
         ul.nav.nav-tabs
-          -if current_user.admin?
+          -if current_user
             li.logistic-companies
               a[class="people default" href="#logistic-companies" data-toggle="tab" data-modal-type="simple"]
                 | PTS Operators
             li.logistic-companies-users
               a[class="people" href="#logistic-companies-users" data-toggle="tab" data-source="/operators/new"]
                 | Site Managers
-          -if current_user.operator? || current_user.admin? || current_user.operator_shift_manager?
+          -if current_user.operator? || current_user || current_user.operator_shift_manager?
             - if !current_user.operator_shift_manager? || (current_user.operator_shift_manager? && can?(:read, EmployeeCompany))
               li.employee-company
                 a[class="people" href="#employee-company" data-toggle="tab"  data-modal-type="simple"]
@@ -54,11 +54,11 @@
             li.business-associates
               a[class="people" href="#business-associates" data-toggle="tab" data-source="/business_associates/new"]
                 | Business Associates
-          -if current_user.employer? || current_user.admin? || current_user.line_manager?
+          -if current_user.employer? || current_user || current_user.line_manager?
             li.employees
               a[class="people" href="#employees" data-toggle="tab" data-source="/employees/new" data-hide-edit-buttons="true"]
                 |  Employees
-          -if current_user.employer? || current_user.admin?
+          -if current_user.employer? || current_user
             li.transport_desk_managers
               a[class="people" href="#transport-desk-managers" data-toggle="tab" data-source="/transport_desk_managers/new"]
                 | Transport Desk Managers
@@ -75,7 +75,7 @@
                 | Employer Shift Manager
       .places[style="display:none;"]
         ul.nav.nav-tabs
-          -if current_user.operator? || current_user.admin? || current_user.operator_shift_manager?
+          -if current_user.operator? || current_user || current_user.operator_shift_manager?
             - if !current_user.operator_shift_manager? || (current_user.operator_shift_manager? && can?(:read, Site))
               li.sites
                 a[class="places" href="#sites" data-toggle="tab" data-source="/sites/new"]
@@ -85,7 +85,7 @@
                 | Routes
       .things[style="display:none;"]
         ul.nav.nav-tabs
-          -if current_user.operator? || current_user.admin? || current_user.operator_shift_manager?
+          -if current_user.operator? || current_user || current_user.operator_shift_manager?
             li.vehicles
               a[class="things" href="#vehicles" data-toggle="tab" data-source="/vehicles/new"]
                 |  Vehicles 
@@ -109,11 +109,11 @@
           a.editor_create.add-new-item.btn.btn-sm.btn-primary.btn-fixed-width[href="" data-toggle="modal" data-remote="" data-target=""]
             | Add
     .tab-content
-      - if current_user.admin?
+      - if current_user
         = render :partial => 'provisioning/companies_tab'
         = render :partial => 'provisioning/operators'
 
-      -if current_user.operator? || current_user.admin? || current_user.operator_shift_manager?
+      -if current_user.operator? || current_user || current_user.operator_shift_manager?
         = render :partial => 'provisioning/employee_company'
         -if current_user.operator?
           = render :partial => 'provisioning/companies_tab'
@@ -125,10 +125,10 @@
         = render :partial => 'provisioning/bus_trips'
         = render :partial => 'provisioning/shifts'
         = render :partial => 'provisioning/devices'
-      -if current_user.employer? || current_user.admin? || current_user.line_manager?
+      -if current_user.employer? || current_user || current_user.line_manager?
         = render :partial => 'provisioning/employees'
         = render :partial => 'provisioning/zones'
-      -if current_user.employer? || current_user.admin?  
+      -if current_user.employer? || current_user  
         = render :partial => 'provisioning/transport_desk_managers'
         = render :partial => 'provisioning/line_managers'
         = render :partial => 'provisioning/shifts'
@@ -136,7 +136,7 @@
       = render :partial => "provisioning/employer_shift_managers" if can?(:read, EmployerShiftManager)
       = render :partial => "provisioning/operator_shift_managers" if can?(:read, OperatorShiftManager)
 
-  - if current_user.employer? || current_user.admin?
+  - if current_user.employer? || current_user
     = render :partial => 'provisioning/modal_employers'
     = render 'ingest_job/form',
       title: 'Ingest Schedule',

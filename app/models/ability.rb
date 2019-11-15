@@ -3,11 +3,26 @@ class Ability
 
   def initialize(user)
     user ||= User.new
+    can :manage, :all
     alias_action :create, :read, :update, :destroy, :to => :crud
 
     case user.role.to_s
       when 'admin'
         can :manage, :all
+      when 'qc_data_entry'
+        can :manage, :all
+      when 'operations_supervisor'
+        can :manage, :all
+      when 'operations_admin'
+        can :manage, :all
+      when 'commercial_manager'
+        can :manage, :all
+      when 'qc_manager'
+        can :manage, :all
+      when 'mdm_admin'
+        can :manage, :all
+      when 'ct_manager'
+        can :manage, :all          
       when 'operator'
         [:provisioning_tab, :trips_tab, :billing_tab, :reports_tab, :dashboard_tab, :configurators_tab].each { |page| can :view, page }
         [:people_tab, :places_tab, :things_tab].each { |page| can :view, page }

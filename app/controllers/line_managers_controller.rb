@@ -3,7 +3,7 @@ class LineManagersController < ApplicationController
   before_action :load_line_manager, only: [:update, :destroy, :invite, :edit_list, :update_employee_list]
   def index
     respond_to do |format|
-      if current_user.admin?
+      if current_user
         # @employer = Employer.all.order('id DESC')
         format.html
         format.json { render json: ManageUsers::ManageLineManagersDatatable.new(view_context)}

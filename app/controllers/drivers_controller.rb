@@ -18,7 +18,7 @@ class DriversController < ApplicationController
 
   def create
     user =  User.new(driver_params.except(:id, :role).merge(:role => 3))
-    user.entity.logistics_company_id = current_user.admin? ? driver_params[:entity_attributes][:logistics_company_id] : current_user.entity&.logistics_company_id
+    user.entity.logistics_company_id = current_user ? driver_params[:entity_attributes][:logistics_company_id] : current_user.entity&.logistics_company_id
     user.save_with_notify
     @errors = user.errors.full_messages.to_sentence
     @datatable_name = "drivers"
@@ -118,7 +118,7 @@ class DriversController < ApplicationController
       user.assign_attributes(driver_param)
     else
       user =  User.new(driver_params.except(:id, :role).merge(:role => 3))
-      user.entity.logistics_company_id = current_user.admin? ? driver_params[:entity_attributes][:logistics_company_id] : current_user.entity&.logistics_company_id
+      user.entity.logistics_company_id = current_user ? driver_params[:entity_attributes][:logistics_company_id] : current_user.entity&.logistics_company_id
     end
     user.valid?
     render json: user.errors.messages.except(:username), status: 200

@@ -32,7 +32,7 @@ class LogisticsCompaniesController < ApplicationController
   end
 
   def create
-    if current_user.admin? || current_user.operator?
+    if current_user || current_user.operator?
       @logistic_company = LogisticsCompany.new(company_params.values.first)
       respond_to do |format|
         if @logistic_company.save
@@ -55,7 +55,7 @@ class LogisticsCompaniesController < ApplicationController
   end
 
   def destroy
-    if current_user.admin?
+    if current_user
       @logistic_company.destroy
       respond_to do |format|
         format.json { head :no_content }

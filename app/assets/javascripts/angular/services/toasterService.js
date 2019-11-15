@@ -17,6 +17,14 @@ angular.module('app').factory('ToasterService', (toaster) => {
         showError: (title, body) => {
             console.log('ToasterService');
             toaster.pop({type: 'error', title, body, timeout: 2000 });
+        },
+        showError_html: (title, body) => {
+            console.log('ToasterService');
+            toaster.pop({type: 'error', title, body, timeout: 2000, bodyOutputType: 'trustedHtml'});
+        },
+        showToast_html: (type, title, body) => {
+            console.log('ToasterService');
+            toaster.pop({type: type, title, body, timeout: 2000, bodyOutputType: 'trustedHtml'});
         }
     };
 });

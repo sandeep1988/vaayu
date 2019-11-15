@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191111145841) do
+ActiveRecord::Schema.define(version: 20191112055139) do
 
   create_table "Induction_logs_WIP", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "resource_id",                    null: false
@@ -250,6 +250,11 @@ ActiveRecord::Schema.define(version: 20191111145841) do
     t.index ["vehicle_id"], name: "index_cluster_vehicles_on_vehicle_id", using: :btree
   end
 
+  create_table "commercial_managers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "compliance_checks", unsigned: true, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "resource_id",                     null: false
     t.string   "resource_type",     limit: 7,     null: false
@@ -320,6 +325,11 @@ ActiveRecord::Schema.define(version: 20191111145841) do
     t.string   "updated_by"
     t.string   "customer_type",     limit: 8,     null: false
     t.text     "file_url",          limit: 65535
+  end
+
+  create_table "ct_managers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "devices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -841,6 +851,11 @@ ActiveRecord::Schema.define(version: 20191111145841) do
     t.index ["id"], name: "id_UNIQUE", unique: true, using: :btree
   end
 
+  create_table "mdm_admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "mll_audit_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -878,6 +893,16 @@ ActiveRecord::Schema.define(version: 20191111145841) do
     t.index ["employee_id"], name: "index_notifications_on_employee_id", using: :btree
     t.index ["employee_trip_id"], name: "index_notifications_on_employee_trip_id", using: :btree
     t.index ["trip_id"], name: "index_notifications_on_trip_id", using: :btree
+  end
+
+  create_table "operations_admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "operations_supervisors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "operator_shift_managers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -919,6 +944,11 @@ ActiveRecord::Schema.define(version: 20191111145841) do
   end
 
   create_table "qc_data_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+  end
+
+  create_table "qc_managers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "rate_contracts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -1004,9 +1034,11 @@ ActiveRecord::Schema.define(version: 20191111145841) do
     t.boolean "p_delete"
   end
 
-  create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
-    t.string "RoleName", null: false
-    t.string "name"
+  create_table "roles", id: :bigint, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.integer "role_case",            null: false
+    t.string  "role_name", limit: 45, null: false
+    t.index ["role_case"], name: "role_case_UNIQUE", unique: true, using: :btree
+    t.index ["role_name"], name: "role_name_UNIQUE", unique: true, using: :btree
   end
 
   create_table "services", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|

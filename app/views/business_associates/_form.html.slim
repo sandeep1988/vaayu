@@ -42,7 +42,7 @@
   p[style="font-size:18px; font-weight:600; margin-left:10px; display:none"]
     | Billing Attributes
   .row
-    -if current_user.admin?
+    -if current_user
       .col-md-4.no-margin[style="display:none"]
         label.site_labels for="ba_operator"
           | Operator
