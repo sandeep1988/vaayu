@@ -1,4 +1,4 @@
-angular.module('app').controller('rosterCtrl', function ($scope, RosterService, RouteService, ToasterService, SiteService, $http) {
+angular.module('app').controller('rosterCtrl', function ($scope, RosterService, RouteService, ToasterService, RosterStaticResponse, $http) {
 
 
   $scope.init = function () {
@@ -46,7 +46,11 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
     $scope.format = $scope.formats[0];
 
+    $scope.getAllSiteList();
 
+  }
+
+  $scope.getAllSiteList = () => {
     RosterService.getAllSiteList(function (data) {
       $scope.siteList = data.data.list;
       $scope.selectedSite = $scope.siteList[0];
@@ -57,10 +61,9 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
 
       $scope.getRosters(postData);
-    }
-      , function (error) {
+    } , function (error) {
         console.error(error);
-      });;
+      });
 
   }
 
@@ -74,7 +77,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     if ($scope.shift_type) {
       postData.shift_type = $scope.shift_type;
     }
-    console.log(postData)
+    // console.log(postData)
     $scope.getRosters(postData)
 
   }
@@ -84,9 +87,10 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     RosterService.get(postData, function (data) {
      
       if (data.data) {
+        // var data = RosterStaticResponse.staticResponse;
         $scope.rosters = data.data.shiftdetails;
         $scope.stats = data.data.stats;
-        console.log('rosters', $scope.rosters);
+        // console.log('rosters', $scope.rosters);
 
       }
     }
