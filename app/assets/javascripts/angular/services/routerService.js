@@ -6,7 +6,7 @@ function ($resource, BASE_URL_8002, SessionService) {
     // remove: { method: "DELETE" },
     // update: { method: "PUT" },
     getRoutes: { method: "POST" },
-    getVehicleList: {url: BASE_URL_8002 + 'getVehicleData', method: "GET"},
+    postVehicleList: {url: BASE_URL_8002 + 'getVehicleData', method: "POST"},
     getGuardList: {url: BASE_URL_8002 + 'getAllGuards', method: "GET"},
     assignVehicle: {url: BASE_URL_8002 + 'assignVehicleToTrip', method: "PATCH"},
     assignGuards: {url: BASE_URL_8002 + 'addGuardInTrip', method: "PATCH"},

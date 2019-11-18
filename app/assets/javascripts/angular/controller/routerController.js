@@ -151,7 +151,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   }
 
-  $scope.getVehicleAndGuardList = function (siteId, shiftId) {
+  $scope.getVehicleAndGuardList = function (siteId, shiftId, shiftType) {
     // let body = {shiftId:105, siteId:8} // { siteId, shiftId }
     RouteService.getGuardList({siteId, shiftId}, function (res) {
       console.log('guard list')
@@ -174,9 +174,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
 
     // let body1 = {shiftId:138, siteId:30}
-    RouteService.getVehicleList({siteId, shiftId}, function (res) {
+    let postVehicleData = {siteId, shiftId, shiftType, selectedDate: moment($scope.filterDate).format('YYYY-MM-DD')}
+    // console.log('postVehicleData', postVehicleData)
+    RouteService.postVehicleList(postVehicleData, function (res) {
       // $scope.vehicleList = res.data;
-      console.log('vehicle list')
+      // console.log('vehicle list')
       console.log(res.data);
       $scope.vehicleList = res.data;
 
@@ -388,7 +390,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // $scope.getVehicleAndGuardList(siteId, 92);
     // return;
 
-    $scope.getVehicleAndGuardList(siteId, shift.id);
+    $scope.getVehicleAndGuardList(siteId, shift.id, shift.trip_type);
 
     let postData = {
       "site_id": parseInt($scope.siteId),
