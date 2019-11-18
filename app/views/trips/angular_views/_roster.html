@@ -158,10 +158,20 @@
                 <td class="text-color-blue " style="color: #14a89e !important;"><b>{{roster.result}}</b></td>
                 <td>
                   <div class="">
-                    <button ng-if="roster.result!=='REQUIRED MORE VEHICLE'" ng-click="generateRoutes(roster)"
+                    <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && roster.routesGenerated" 
+                      type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-block">Routes Generated</button>
+                    <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated && roster.disableGenerate" 
+                      type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-block">Generate</button>
+                    <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated && !roster.disableGenerate" ng-click="generateRoutes(roster)"
                       type="button" class="btn btn-sm-vaayu btn-terniary-blue btn-block">Generate</button>
+                    
+                    
                     <button ng-if="roster.result=='REQUIRED MORE VEHICLE'" ng-click="addVehicleToRoster(roster)"
                       type="button" class="btn btn-sm-vaayu btn-terniary btn-block">Add Vehicle</button>
+                  <!-- <button ng-if="roster.result=='REQUIRED MORE VEHICLE' && !roster.disableGenerate" ng-click="addVehicleToRoster(roster)"
+                      type="button" class="btn btn-sm-vaayu btn-terniary btn-block">Add Vehicle</button>
+                    <button ng-if="roster.result=='REQUIRED MORE VEHICLE' && roster.disableGenerate" 
+                      type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-block">Add Vehicle</button> -->
                   </div>
                 </td>
               </tr>
@@ -208,13 +218,15 @@
                                     </div> -->
             <div class="add-vehicle-card-container">
               <div class="row add-vehicle-card card_flex" ng-repeat="(key, value) in currentRoster.vehicle">
+                
                 <div class="col-md-5">
                   <img ng-if="key== 'SUV'" src="../assets/angular_images/suv.png">
-                  <img ng-if="key== 'TT'" src="../assets/angular_images/tt.png">
+                  <img ng-if="key== 'TT'" src="../assets/angular_images/tt.png" style="width: auto !important; height: 80px;">
                   <img ng-if="key== 'SEDAN'" src="../assets/angular_images/sedan.png">
                   <img ng-if="key== 'HATCHBACK'" src="../assets/angular_images/hatchback.png">
+                  <img ng-if="key== 'MINI VAN'" src="../assets/angular_images/mini_van.png" >
                   <span class="text-center text-key-name"
-                    ng-if="!(key== 'SEDAN' || key== 'TT' || key== 'SUV' || key== 'HATCHBACK')"
+                    ng-if="!(key== 'SEDAN' || key== 'TT' || key== 'SUV' || key== 'HATCHBACK' || key== 'MINI VAN')"
                     style="display: block;">{{key}}</span>
                 </div>
                 <div class="col-md-2" ng-click="minusVehicle(key)"><i
