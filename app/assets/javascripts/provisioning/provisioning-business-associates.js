@@ -17,6 +17,15 @@ $(function () {
     var table = '#business-associates-table';
 
     $('a[href="#business-associates"]').on('shown.bs.tab', function (e) {
+
+        var addItemButton = $('.nav-actions .add-new-item');
+        var currentTab = $(this).text();
+
+        if (currentTab.toLowerCase() === "business associates") {
+            $('.provisioning .action-buttons').fadeIn(200);
+            addItemButton.hide();
+        }
+
         resetBillingParameters();        
         if (loadedTabs['business-associates']) return;
 
@@ -40,7 +49,8 @@ $(function () {
                     {
                         data: null,
                         render: function (data) {
-                            return '<a style="cursor:pointer" id="editBa" class="editor_edit" data-remote="true" data-ba_id="' + data.id + '">' + data.legal_name + '</a>'                            
+                            // return '<a style="cursor:pointer" id="editBa" class="editor_edit" data-remote="true" data-ba_id="' + data.id + '">' + data.legal_name + '</a>'
+                            return  data.legal_name 
                         }
                     },
                     {data: "hq_address"},
@@ -51,7 +61,8 @@ $(function () {
                     {
                         data: null,
                         render: function (data) {
-                            return '<a style="cursor:pointer" id="viewBa" class="editor_edit" data-remote="true" data-ba_id="' + data.id + '">View</a> | <a href="#" class="editor_remove text-danger">Delete</a>'
+                            // return '<a style="cursor:pointer" id="viewBa" class="editor_edit" data-remote="true" data-ba_id="' + data.id + '">View</a> | <a href="#" class="editor_remove text-danger">Delete</a>'
+                            return '<a style="cursor:pointer" id="viewBa" class="editor_edit" data-remote="true" data-ba_id="' + data.id + '">View</a>'
                         }
                     }
                 ],
