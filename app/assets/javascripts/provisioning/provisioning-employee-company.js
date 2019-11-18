@@ -8,6 +8,12 @@ $(function () {
      * Employee Companies Operator Table
      */
 
+     $("#modal-employee-company").modal('show',{
+       backdrop:'static',
+       keyboard:false,
+     })
+    $.fn.modal.prototype.constructor.Constructor.DEFAULTS.backdrop="static";
+
     var table = '#employee-companies-table';
     /**
      * Init table
@@ -315,7 +321,7 @@ $(function () {
                 .edit($(this).closest('tr'));
                 $('select').attr('disabled','disabled');
                 $('input').attr('disabled','disabled'); //Rushikesh added code here
-                $('.btn-primary').attr('disabled','disabled');//Rushikesh added code here
+                // $('.btn-primary').attr('disabled','disabled');//Rushikesh added code here
                 //$('input').css({
                 // 'background-color': 'red',
                 //'color': 'white',

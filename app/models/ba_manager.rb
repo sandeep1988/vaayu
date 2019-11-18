@@ -1,0 +1,2 @@
+class BaManager < ApplicationRecord
+end

@@ -46,11 +46,6 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
     $scope.format = $scope.formats[0];
 
-    // date function
-
-
-
-
 
     RosterService.getAllSiteList(function (data) {
       $scope.siteList = data.data.list;
@@ -59,6 +54,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
         "site_id": $scope.siteList[0].id,
         "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
       }
+
 
       $scope.getRosters(postData);
     }
@@ -86,10 +82,12 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
   $scope.getRosters = (postData) => {
     RosterService.get(postData, function (data) {
+     
       if (data.data) {
         $scope.rosters = data.data.shiftdetails;
         $scope.stats = data.data.stats;
         console.log('rosters', $scope.rosters);
+
       }
     }
       , function (error) {
@@ -160,20 +158,21 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.addVehicleToRoster = function (roster) {
-    $scope.currentRoster = roster;
+    $scope.currentRoster = angular.copy(roster);
     // console.log($scope.currentRoster.vehicle);
     // console.log(angular.equals($scope.currentRoster.vehicle, {}));
     if (angular.equals($scope.currentRoster.vehicle, {})) {
-      $scope.currentRoster.vehicle = $scope.defaultVehiclesList;
-      $scope.currentRoster.vehicle_capacity = $scope.defaultVehiclesCapacityList;
       $scope.currentRoster.total_seats = 0;
       $scope.currentRoster.total_vehicles = 0;
-
+      $scope.currentRoster.vehicle = $scope.defaultVehiclesList;
+      $scope.currentRoster.vehicle_capacity = $scope.defaultVehiclesCapacityList;
+      
     } else if (!$scope.currentRoster.vehicle) {
-      $scope.currentRoster.vehicle = $scope.defaultVehiclesList;
-      $scope.currentRoster.vehicle_capacity = $scope.defaultVehiclesCapacityList;
       $scope.currentRoster.total_seats = 0;
       $scope.currentRoster.total_vehicles = 0;
+      $scope.currentRoster.vehicle = $scope.defaultVehiclesList;
+      $scope.currentRoster.vehicle_capacity = $scope.defaultVehiclesCapacityList;
+     
     }
     $scope.disableDone(roster);
 
@@ -200,10 +199,13 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
   $scope.plusVehicle = function (key) {
     $scope.currentRoster.vehicle[key] = parseInt($scope.currentRoster.vehicle[key]) + 1;
-    $scope.currentRoster.total_vehicles = $scope.currentRoster.total_vehicles + 1;
+    $scope.currentRoster.total_vehicles = parseInt($scope.currentRoster.total_vehicles) + 1;
     if ($scope.currentRoster.vehicle_capacity[key]) {
-      $scope.currentRoster.total_seats = $scope.currentRoster.total_seats + $scope.currentRoster.vehicle_capacity[key];
-    }
+        if(!!$scope.currentRoster.total_seats)$scope.currentRoster.total_seats = parseInt($scope.currentRoster.total_seats) + parseInt($scope.currentRoster.vehicle_capacity[key]);
+        else { $scope.currentRoster.total_seats = 0 + parseInt($scope.currentRoster.vehicle_capacity[key]);
+        }
+    
+      }
     $scope.disableDone($scope.currentRoster);
 
   }
@@ -211,9 +213,9 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   $scope.minusVehicle = function (key) {
     if (parseInt($scope.currentRoster.vehicle[key]) > 0) {
       $scope.currentRoster.vehicle[key] = parseInt($scope.currentRoster.vehicle[key]) - 1
-      $scope.currentRoster.total_vehicles = $scope.currentRoster.total_vehicles - 1;
+      $scope.currentRoster.total_vehicles = parseInt($scope.currentRoster.total_vehicles) - 1;
       if ($scope.currentRoster.vehicle_capacity[key]) {
-        $scope.currentRoster.total_seats = $scope.currentRoster.total_seats - $scope.currentRoster.vehicle_capacity[key];
+        $scope.currentRoster.total_seats = parseInt($scope.currentRoster.total_seats) - parseInt($scope.currentRoster.vehicle_capacity[key]);
       }
 
       $scope.disableDone($scope.currentRoster);

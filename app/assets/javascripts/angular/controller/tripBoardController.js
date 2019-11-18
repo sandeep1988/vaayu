@@ -20,6 +20,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
     TripboardService.getAllSiteList(function (data) {
       $scope.siteList = data.data.list;
       $scope.selectedSiteID = $scope.siteList[0].id;
+      $scope.getAllTrips();
     }
       , function (error) {
         console.error(error);
@@ -71,7 +72,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
       }
       $scope.fullRoster = data.data.tripsdetails;
       $scope.rosters = $scope.fullRoster;
-      $scope.stats = $scope.rosters.stats;
+      $scope.stats =  data.data.stats;
 
     }, function (error) {
       console.error(error);
