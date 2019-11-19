@@ -77,45 +77,13 @@ class Ability
         # can [:read, :edit], User do |usr|
         #   user == usr
         # end
-        can :manage, :all
+        cannot :view , :trips_tab
+        cannot :view , :dashboard_tab
+        cannot :view, :provisioning_tab
+        cannot :view, :configurators_tab
+        cannot :view, :billing_tab
+        cannot :view, :reports_tab
         
-        can [:read, :edit], [ Employee, Driver ] do |usr|
-          user == usr.user
-        end
-
-        can [:read, :edit], EmployeeTrip do |employee_trip|
-          user == employee_trip.employee.user
-        end
-
-        can :read, Trip do |trip|
-          trip.employees.include?(user.entity) || trip.driver == user.entity
-        end
-
-        can [ :start_trip, :driver_arrived, :on_board, :not_on_board ], Trip do |trip|
-          trip.employees.include?(user.entity) || trip.driver == user.entity
-        end
-
-        can :send_trip_exception, TripRoute do |trip_route|
-          user == trip_route.employee.user
-        end
-
-        can :request_trip, Employee
-        can :manage_trip_request, Trip do |trip|
-          user == trip.driver.user
-        end
-
-        can :edit, TripRouteException do |trip_route_exception|
-          # only driver can close suspending exceptions, all other - for employee
-          if trip_route_exception.suspending?
-            user == trip_route_exception.trip_route.driver.try(:user)
-          else
-            user == trip_route_exception.trip_route.employee.try(:user)
-          end
-        end
-
-        can :submit_employee_no_show, TripRoute do |trip_route|
-          user == trip_route.trip.driver.user
-        end
       when 'transport_desk_manager'
         [:trips_tab].each { |page| can :view, page }
         cannot :view, :provisioning_tab
