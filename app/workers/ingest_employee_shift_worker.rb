@@ -40,7 +40,7 @@ class IngestEmployeeShiftWorker < IngestWorker
 
   def process_employee_details(row)
     f_name, l_name = row['employee_name']&.split
-    if row['gender'] == "MALE" || "male"
+    if row['gender'] == "MALE" || row['gender'] == "male"
       temp_gender = 1
     else
       temp_gender = 0  
@@ -121,7 +121,7 @@ class IngestEmployeeShiftWorker < IngestWorker
       schedule_date: schedule_date,
       date: check_in_date,
       trip_type: 'check_in',
-      site: Site.first
+      site: Site.where(name:row[10]).first
     ).first_or_create!
   end
 
@@ -138,7 +138,7 @@ class IngestEmployeeShiftWorker < IngestWorker
       schedule_date: schedule_date,
       date: check_out_date,
       trip_type: 'check_out',
-      site: Site.first
+      site: Site.where(name:row[10]).first
     ).first_or_create!
   end
 
