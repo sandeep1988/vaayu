@@ -10,6 +10,7 @@ function ($resource, BASE_URL_8002, SessionService) {
     getGuardList: {url: BASE_URL_8002 + 'getAllGuards', method: "GET"},
     assignVehicle: {url: BASE_URL_8002 + 'assignVehicleToTrip', method: "PATCH"},
     assignGuards: {url: BASE_URL_8002 + 'addGuardInTrip', method: "PATCH"},
+    removeVehicle: {url: BASE_URL_8002 + 'remove-trip-vehicle', method: "POST"},
   });
 }]);
 
