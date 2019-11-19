@@ -35,7 +35,7 @@
             - if !current_user.operator_shift_manager? || (current_user.operator_shift_manager? && can?(:read, EmployeeCompany))
               li.employee-company
                 a[class="people" href="#employee-company" data-toggle="tab"  data-modal-type="simple"]
-                  | PTS Customers
+                  | Customers
               -if current_user.operator?
                 li.logistic-companies
                   a[class="people" href="#logistic-companies" data-toggle="tab" data-modal-type="simple"]
