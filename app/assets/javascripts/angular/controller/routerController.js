@@ -219,6 +219,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
   }
 
+  $scope.onVehicleSearch = (plateNumber) => {
+    console.log(plateNumber)
+  }
+
   $scope.updateFilters = function () {
     let postData = {
       "site_id": $scope.siteId,
