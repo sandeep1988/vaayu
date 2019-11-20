@@ -151,13 +151,27 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   }
 
+  $scope.removeVehicle = (vehicle, route) => {
+    console.log('route', route.routeId, route)
+    RouteService.removeVehicle({routeId: route.routeId}, res => {
+      console.log(res)
+      if (res['success']) {
+        ToasterService.showSuccess('Success', res['message']);
+        $scope.resetRoute()
+      } else {
+        ToasterService.showError('Error', res['message']);
+      }
+    }, er =>  {
+      console.log(er);
+    });
+  }
+
   $scope.getVehicleAndGuardList = function (siteId, shiftId, shiftType) {
     // let body = {shiftId:105, siteId:8} // { siteId, shiftId }
     RouteService.getGuardList({siteId, shiftId}, function (res) {
-      console.log('guard list')
+      console.log('guard list', res.data)
       $scope.guardList = res.data;
       // $scope.guardList = RouteStaticResponse.all_guards_response;
-      console.log(res.data);
       angular.forEach($scope.guardList, function (item) {
         item.type = "guard";
       })
@@ -174,29 +188,39 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
 
     // let body1 = {shiftId:138, siteId:30}
-    let postVehicleData = {siteId, shiftId, shiftType, selectedDate: moment($scope.filterDate).format('YYYY-MM-DD')}
+    let postVehicleData = {
+      siteId, shiftId, shiftType, 
+      selectedDate: moment($scope.filterDate).format('YYYY-MM-DD')}
     // console.log('postVehicleData', postVehicleData)
     RouteService.postVehicleList(postVehicleData, function (res) {
-      // $scope.vehicleList = res.data;
-      // console.log('vehicle list')
-      console.log(res.data);
+      console.log('vehicle list', res)
       $scope.vehicleList = res.data;
 
-      // $scope.vehicleList = RouteStaticResponse.all_vehicle_response;
+      var allowtypes = [];
       angular.forEach($scope.vehicleList, function (item) {
-        item.type = "vehical";
+        // item.type = "vehical";
+        item.type = item.vehicleType;
+        if (!allowtypes.includes(item.type)) {
+          allowtypes.push(item.type)
+        }
       })
+      console.log('allowtypes', allowtypes);
+      
       $scope.vehicals = [
         {
           label: "Vehical",
-          allowedTypes: ['vehical'],
-          max: 4,
+          allowedTypes: allowtypes,
+          max: allowtypes.length+1,
           vehical: $scope.vehicleList
         }
       ];
     }, function (error) {
       console.log(error);
     });
+  }
+
+  $scope.onVehicleSearch = (plateNumber) => {
+    console.log(plateNumber)
   }
 
   $scope.updateFilters = function () {
@@ -412,7 +436,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
       if ($scope.routes.data) {
         try {
-          ToasterService.showToast('info', 'Response Received', $scope.routes.data.routes.length+' Routes found for this shift')
+          // ToasterService.showToast('info', 'Response Received', $scope.routes.data.routes.length+' Routes found for this shift')
           $scope.originalRoutes = angular.copy($scope.routes.data.routes);
           $scope.stats = $scope.routes.data.tats[0];
           console.log($scope.model2)
@@ -432,6 +456,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.showRouteData = () => {
     angular.forEach($scope.routes.data.routes, function (route, index, routeArray) {
       route.allowed = "all";
+    
       if (route.guard) {
         let guard = route.guard;
         guard.type = 'guard';
@@ -441,7 +466,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       }
       if (route.vehicle) {
         let vehical = route.vehicle;
-        vehical.type = 'vehical';
+        // vehical.type = "vehical";
+        vehical.type = route.vehicle_type;
+        // vehical.type = vehical.vehicleType;
         route.vehicle = [vehical]
       } else {
         route.vehicle = [];
@@ -575,7 +602,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   };
 
   $scope.dropVehicleCallback = function (container, index, item, external, type) {
-
+    console.log('modified route after drag', container);
     var isAssign = true;
     if (isAssign) {
       var postData = {
@@ -584,10 +611,15 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       };
 
       RouteService.assignVehicle(postData, function (data) {
-        console.log("Guard Assign");
-        isAssign = false;
+        console.log("Vehicle Assign", data);
+        if (data['success']) {
+          isAssign = false;
+        } else {
+          ToasterService.showError('Error', data['message']);
+        }
+        $scope.resetRoute();
       })
-      return container;
+      return item;
     }
 
   };
@@ -605,7 +637,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         $scope.resetRoute();
       })
 
-      return container;
+      return item;
     }
   };
 

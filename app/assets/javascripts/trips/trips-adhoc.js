@@ -89,8 +89,10 @@ $(function () {
                         }
                     },
                     {
-                        data: 'gender',
-                        className: 'text-center'
+                        data: null,
+                        render: function (data){
+                          return data.gender == 1 ? "Male" : "Female" ;
+                        }
                     },
                     {
                         data: "reason"
