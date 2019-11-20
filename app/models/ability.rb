@@ -9,27 +9,8 @@ class Ability
     case user.role.to_s
       when 'admin'
         can :manage, :all
-      when 'qc_data_entry'
-        can :manage, :all
-      when 'operations_supervisor'
-        can :manage, :all
-      when 'operations_admin'
-        can :manage, :all
-      when 'commercial_manager'
-        can :manage, :all
-      when 'qc_manager'
-        can :manage, :all
       when 'mdm_admin'
-        can :manage, :all
-      when 'ct_manager'
-        can :view , :trips_tab
-        can :view , :dashboard_tab
-        cannot :view, :provisioning_tab
-        cannot :view, :configurators_tab
-        cannot :view, :billing_tab
-        cannot :view, :reports_tab         
-      when 'operator'
-         [:provisioning_tab, :configurators_tab].each { |page| can :view, page }
+        [:provisioning_tab, :configurators_tab].each { |page| can :view, page }
         [:people_tab, :places_tab, :things_tab].each { |page| can :view, page }
         can :crud, User do |usr|
           # employee_companies = current_user.entity&.logistics_company.employee_companies
@@ -46,43 +27,52 @@ class Ability
         can :manage, OperatorShiftManager do |esm|
           user == esm.user
         end
-      when 'employer'
-        [:provisioning_tab, :trips_tab, :billing_tab, :reports_tab, :dashboard_tab, :configurators_tab].each { |page| can :view, page }
-        [:people_tab, :places_tab, :things_tab].each { |page| can :view, page }
-        can :create, Employee
-        can [:update, :destroy], Employee do |employee|
-          user.entity.employee_company == employee.employee_company
-        end
-        can :manage, :guard
-        can :manage, EmployerShiftManager
-        can :show, :reports
-        can :view, :all_reports
-        can :manage, Configurator
-      when 'line_manager'
-        [:provisioning_tab, :trips_tab].each { |page| can :view, page }
-        [:people_tab, :places_tab].each { |page| can :view, page }
-        can :create, Employee
-        can [:update, :destroy], Employee, employee_company: user.entity.employee_company
-        can :read, Employee, line_manager_id: user.entity.id
-        can(:view, :trips_tab) if ENV["ENABLE_LINE_MANAGER_APPROVE"] == "true"
-        can :view, :reports_tab
-        can :show, :reports
-        can :view, :send_report
-        can :view, :download
-        [:employee_logs, :employee_wise_no_show].each { |page| can :view, page }
-        cannot :view, :billing_tab
-        cannot :view, :dashboard_tab
-      when 'driver', 'employee'
-        # [:provisioning_tab, :trips_tab, :billing_tab, :dashboard_tab].each { |page| can :view, page }
-        # can [:read, :edit], User do |usr|
-        #   user == usr
-        # end
-        cannot :view , :trips_tab
-        cannot :view , :dashboard_tab
+      when 'ct_manager'
+        can :view , :trips_tab
+        can :view , :dashboard_tab
         cannot :view, :provisioning_tab
         cannot :view, :configurators_tab
         cannot :view, :billing_tab
-        cannot :view, :reports_tab
+        cannot :view, :reports_tab         
+      when 'operator'
+        can :manage_all
+      # when 'employer'
+      #   [:provisioning_tab, :trips_tab, :billing_tab, :reports_tab, :dashboard_tab, :configurators_tab].each { |page| can :view, page }
+      #   [:people_tab, :places_tab, :things_tab].each { |page| can :view, page }
+      #   can :create, Employee
+      #   can [:update, :destroy], Employee do |employee|
+      #     user.entity.employee_company == employee.employee_company
+      #   end
+      #   can :manage, :guard
+      #   can :manage, EmployerShiftManager
+      #   can :show, :reports
+      #   can :view, :all_reports
+      #   can :manage, Configurator
+      # when 'line_manager'
+      #   [:provisioning_tab, :trips_tab].each { |page| can :view, page }
+      #   [:people_tab, :places_tab].each { |page| can :view, page }
+      #   can :create, Employee
+      #   can [:update, :destroy], Employee, employee_company: user.entity.employee_company
+      #   can :read, Employee, line_manager_id: user.entity.id
+      #   can(:view, :trips_tab) if ENV["ENABLE_LINE_MANAGER_APPROVE"] == "true"
+      #   can :view, :reports_tab
+      #   can :show, :reports
+      #   can :view, :send_report
+      #   can :view, :download
+      #   [:employee_logs, :employee_wise_no_show].each { |page| can :view, page }
+      #   cannot :view, :billing_tab
+      #   cannot :view, :dashboard_tab
+      # when 'driver', 'employee'
+      #   # [:provisioning_tab, :trips_tab, :billing_tab, :dashboard_tab].each { |page| can :view, page }
+      #   # can [:read, :edit], User do |usr|
+      #   #   user == usr
+      #   # end
+      #   cannot :view , :trips_tab
+      #   cannot :view , :dashboard_tab
+      #   cannot :view, :provisioning_tab
+      #   cannot :view, :configurators_tab
+      #   cannot :view, :billing_tab
+      #   cannot :view, :reports_tab
         
       when 'transport_desk_manager'
         [:trips_tab].each { |page| can :view, page }
@@ -91,30 +81,30 @@ class Ability
         cannot :view, :configurators_tab
         cannot :view, :billing_tab
         cannot :view, :reports_tab
-      when 'employer_shift_manager'
-        can :view, :provisioning_tab
-        can :view, :trips_tab
-        can :read, EmployerShiftManager
-        can :manage, EmployerShiftManager do |esm|
-          user == esm.user
-        end
-        can :view, :people_tab
-        cannot :view, :billing_tab
-        cannot :view, :reports_tab
-      when 'operator_shift_manager'
-        can :update, Site
-        can :crud, Driver
-        can :read, :operator_shift_manager
-        can :manage, OperatorShiftManager do |esm|
-          user == esm.user
-        end
-        [:provisioning_tab, :trips_tab, :billing_tab, :dashboard_tab].each { |page| can :view, page }
-        [:people_tab, :places_tab, :things_tab].each { |page| can :view, page }
-        cannot :view, :reports_tab
-        cannot :read, Site
-        cannot :read, Employer
-        cannot :read, EmployeeCompany
-    end
+    #   when 'employer_shift_manager'
+    #     can :view, :provisioning_tab
+    #     can :view, :trips_tab
+    #     can :read, EmployerShiftManager
+    #     can :manage, EmployerShiftManager do |esm|
+    #       user == esm.user
+    #     end
+    #     can :view, :people_tab
+    #     cannot :view, :billing_tab
+    #     cannot :view, :reports_tab
+    #   when 'operator_shift_manager'
+    #     can :update, Site
+    #     can :crud, Driver
+    #     can :read, :operator_shift_manager
+    #     can :manage, OperatorShiftManager do |esm|
+    #       user == esm.user
+    #     end
+    #     [:provisioning_tab, :trips_tab, :billing_tab, :dashboard_tab].each { |page| can :view, page }
+    #     [:people_tab, :places_tab, :things_tab].each { |page| can :view, page }
+    #     cannot :view, :reports_tab
+    #     cannot :read, Site
+    #     cannot :read, Employer
+    #     cannot :read, EmployeeCompany
+     end
 
 
   end

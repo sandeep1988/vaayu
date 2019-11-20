@@ -214,8 +214,12 @@ $(function () {
                         orderable: false
                     },
                     {
-                        data: "entity_attributes.gender",
-                        orderable: false
+                        data: null,
+                        orderable: false,
+                        render: function (data) {
+                          console.log(data.entity_attributes.gender == 1 ? "Male" : "Female");
+                          return data.entity_attributes.gender == 1 ? "Male" : "Female" ;
+                        }
                     },
                     {
                         data: "entity_attributes.home_address",

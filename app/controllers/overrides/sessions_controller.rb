@@ -4,6 +4,7 @@ module Overrides
     # Changes:
     # - Use email/username/phone for login
     def create
+      
       # Check
       field = (resource_params.keys.map(&:to_sym) & resource_class.authentication_keys).first
 
