@@ -17,15 +17,11 @@ class ApplicationController < ActionController::Base
 
   # Overwriting the sign_in redirect path method
   def after_sign_in_path_for(resource_or_scope)
-    if current_user.driver? || current_user.employee?
+    if !(current_user.admin? || current_user.operator? || current_user.mdm_admin? || current_user.transport_desk_manager? || current_user.ct_manager?)
       sign_out current_user
       flash[:notice] = 'Sorry you have not permission for sign in'
     end
-    if current_user&.sign_in_count == 1
-      user_profile_edit_path
-    else
-      root_path
-    end
+   root_path
   end
 
   # Overwriting the sign_out redirect path method

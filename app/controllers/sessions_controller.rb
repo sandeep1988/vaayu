@@ -4,6 +4,19 @@ class SessionsController < Devise::SessionsController
   end
 
   def create
-    web_app_token = SecureRandom.urlsafe_base64(nil, false)
-  end
+  	user = User.find_by_email(params[:user][:username])
+  	user = User.find_by_username(params[:user][:username]) if user.nil?
+
+  	if user.present?
+	  	if !( user.admin? || user.operator? || user.mdm_admin? || user.transport_desk_manager? || user.ct_manager?)
+	  		flash[:notice] = 'You are not Authorised to Sign In'
+	  		self.resource = resource_class.new(sign_in_params)	
+	  		render :new
+	  	else		
+	  		super
+	  	end
+	else
+		super
+	end  	
+  end	
 end
