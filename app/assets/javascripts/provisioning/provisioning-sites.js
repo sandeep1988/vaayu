@@ -20,6 +20,7 @@ $(function () {
      */
     var table = '#sites-table';
     $('a[href="#sites"]').on('shown.bs.tab', function () {
+        
         resetBillingParameters()        
         if (loadedTabs['sites']) {
             if(current_user == 'Operator'){
@@ -179,6 +180,7 @@ $(function () {
             return validationError
         }
         $(document).on('click', '#editSite', function(e){
+            //  
           $('input').removeAttr('disabled');
           $('.btn-primary').removeAttr('disabled'); 
             if(current_user == 'Operator'){
@@ -249,6 +251,7 @@ $(function () {
         });
 
         $(document).on('click', ".submit-btn", function(e){
+            // $('.submit-btn').prop('disabled', true)    
             // if(e.target.baseURI.indexOf("sites") != -1){ failing save event
                 if(0 != 1){
                 var site = {
@@ -332,6 +335,7 @@ $(function () {
                         });
                     }
                     else{
+                        $('.submit-btn').prop('disabled', true)
                         console.log(site);
                         $.ajax({
                             type: "POST",
@@ -350,6 +354,7 @@ $(function () {
                             $(".add-new-item").show()
                         });
                     }
+                    // $('.submit-btn').prop('disabled', false)    
                 }    
             }
         })
