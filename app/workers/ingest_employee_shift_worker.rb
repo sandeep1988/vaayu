@@ -40,10 +40,10 @@ class IngestEmployeeShiftWorker < IngestWorker
 
   def process_employee_details(row)
     f_name, l_name = row['employee_name']&.split
-    if row['gender'] == "MALE" || row['gender'] == "male"
-      temp_gender = 1
+    if row['gender'] == "Male" || row['gender'] == "male"
+      @temp_gender = '1'
     else
-      temp_gender = 0  
+      @temp_gender = '0'
     end  
     employee = provision_employee(
       email: row['email'],
@@ -52,7 +52,7 @@ class IngestEmployeeShiftWorker < IngestWorker
       l_name: l_name,
       employee_id: get_employee_id(row),
       address: row['address'],
-      gender: temp_gender,
+      gender: @temp_gender,
       area: row['area'],
       process_code: row['process_code'],
       site: Site.where(name:row["site"]).first,
