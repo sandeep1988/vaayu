@@ -165,9 +165,12 @@
                     <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated && !roster.disableGenerate" ng-click="generateRoutes(roster)"
                       type="button" class="btn btn-sm-vaayu btn-terniary-blue btn-block">Generate</button>
                     
+                    <!-- <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated" ng-click="generateRoutes(roster)"
+                      type="button" class="btn btn-sm-vaayu btn-terniary-blue btn-block">Generate</button> -->
                     
                     <button ng-if="roster.result=='REQUIRED MORE VEHICLE'" ng-click="addVehicleToRoster(roster)"
                       type="button" class="btn btn-sm-vaayu btn-terniary btn-block">Add Vehicle</button>
+
                   <!-- <button ng-if="roster.result=='REQUIRED MORE VEHICLE' && !roster.disableGenerate" ng-click="addVehicleToRoster(roster)"
                       type="button" class="btn btn-sm-vaayu btn-terniary btn-block">Add Vehicle</button>
                     <button ng-if="roster.result=='REQUIRED MORE VEHICLE' && roster.disableGenerate" 

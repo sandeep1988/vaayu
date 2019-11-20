@@ -16,9 +16,29 @@ angular.module('app')
     };
   });
 
+
+app.directive('focusMe', function($timeout) {
+  return {
+    link: function(scope, ele, attrs) {
+      scope.$watch(attrs.focusMe, function(value) {
+        // if(value === true) { 
+          // scope[attrs.value] = 'default';
+          console.log('value=',value, ele, attrs);
+          //$timeout(function() {
+            ele[0].focus();
+            // scope[attrs.focusMe] = false;
+          //});
+        // }
+      });
+    }
+  };
+});
+
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService,
   AutoAllocationService,
   FinalizeService, RouteStaticResponse, ToasterService, SessionService) {
+
+   
 
   $scope.place = {};
   // Map.init();
@@ -219,10 +239,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
   }
 
-  $scope.onVehicleSearch = (plateNumber) => {
-    console.log(plateNumber)
-  }
-
   $scope.updateFilters = function () {
     let postData = {
       "site_id": $scope.siteId,
@@ -345,6 +361,44 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     $scope.routeChangedIds = [];
 
     $scope.generateRoute($scope.siteId, $scope.selectedShift.id, $scope.filterDate, $scope.selectedShift.trip_type);
+  }
+
+  $scope.plateNumber = '';
+
+  $scope.onVehicleSearch = (plateNumber) => {
+    $scope.plateNumber = plateNumber;
+    let shift = JSON.parse($scope.selectedShift);
+    let params = {shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber};
+    RouteService.searchVechicle(params, function (res) {
+      // console.log('vehicle search response', res)
+      if (res['success']) {
+        $scope.vehicleList = res.data;
+        var allowtypes = [];
+        angular.forEach($scope.vehicleList, function (item) {
+          // item.type = "vehical";
+          item.type = item.vehicleType;
+          if (!allowtypes.includes(item.type)) {
+            allowtypes.push(item.type)
+          }
+        })
+        console.log('allowtypes', allowtypes);
+        
+        $scope.vehicals = [
+          {
+            label: "Vehical",
+            allowedTypes: allowtypes,
+            max: allowtypes.length+1,
+            vehical: $scope.vehicleList
+          }
+        ];
+      } else {
+        //ToasterService.showError('Error', res['message']);
+        console.log(res['message']);
+      }
+    }, function (error) {
+      console.log(error);
+    });
+
   }
 
   $scope.showStaticData = (res) => {

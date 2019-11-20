@@ -1,4 +1,4 @@
-angular.module('app').controller('tripboardCtrl', function ($scope, TripboardService, TripboardResponse, $timeout) {
+angular.module('app').controller('tripboardCtrl', function ($scope, TripboardService, TripboardResponse, $timeout, ToasterService) {
 
 
   $scope.init = function () {
@@ -67,7 +67,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
     TripboardService.get(postData, (data) => {
       console.log('TripboardService data', data);
       if (!data['success']) {
-        ToasterService.showError('Error', result['message']);
+        ToasterService.showError('Error', data['message']);
         return;
       }
       $scope.fullRoster = data.data.tripsdetails;
