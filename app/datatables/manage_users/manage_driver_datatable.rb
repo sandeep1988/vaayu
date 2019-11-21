@@ -33,6 +33,9 @@ class ManageUsers::ManageDriverDatatable
         :leave_request_dates => leave_request_dates,
         :on_leave_dates => on_leave_dates,
         :checklist_attributes => { id: @driver&.active_checklist_id, status: checklist_status[:title], notification_type: checklist_status[:notification] },
+        :induction_status=> @driver.induction_status,
+        :compliance_status=> @driver.compliance_status,
+        :driver_name=> @driver.driver_name,
         :entity_attributes => {
             :id => @driver.id,
             :company => @driver.logistics_company&.name,

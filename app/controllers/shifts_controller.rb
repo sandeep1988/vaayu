@@ -28,9 +28,16 @@ class ShiftsController < ApplicationController
   # POST /shifts.json
   def create
     @shift = Shift.new(shift_params)
-    @shift.save
-    @errors = @shift.errors.full_messages.to_sentence
-    @datatable_name = "shifts"
+    shift = Shift.where(start_time: params[:shift][:start_time], end_time:params[:shift][:end_time],site_id: params[:shift][:site_id] )
+    if shift.present?
+      @datatable_name = "shifts"
+      render js: "alert('Shift is already present for this site.')"
+      return false
+    else
+      @shift.save
+      @errors = @shift.errors.full_messages.to_sentence
+      @datatable_name = "shifts"
+    end
 
     respond_to do |format|
       format.js { render file: "shared/create" }
