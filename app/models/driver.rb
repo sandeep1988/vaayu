@@ -38,7 +38,7 @@ class Driver < ApplicationRecord
   # validates_uniqueness_of :aadhaar_mobile_number, :message=>"Mobile Number is already taken" , :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # validates :aadhaar_mobile_number, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # validates :aadhaar_mobile_number, uniqueness: true, length: { is: 10 }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
-  # validates :aadhaar_mobile_number, presence: true, uniqueness: {message: "Mobile number already taken"}, :if => Proc.new{|f| f.registration_steps == "Step_1"}
+  validates :aadhaar_mobile_number, presence: true, uniqueness: {message: "already taken"}, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :ifsc_code, length: { is: 11 }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :ifsc_code, format: { with: /[a-zA-Z0-9]/, message: "only allows alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :licence_number, format: { with: /[a-zA-Z0-9]/, message: "licence number only allows alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
