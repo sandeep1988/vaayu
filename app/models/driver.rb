@@ -8,7 +8,7 @@ class Driver < ApplicationRecord
 
   DATATABLE_PREFIX = 'driver'
   NOTIFICATION_FIELDS = { badge_expire_date: "Badge", licence_validity: "Licence" }
-  STEP_DRIVER = { Step_1: [:business_associate_id,:licence_number, :date_of_birth, :aadhaar_mobile_number, :gender, :blood_group], Step_2: [:licence_type, :badge_number, :badge_expire_date, :licence_validity, :ifsc_code,:bank_no,:bank_name], Step_3: [:driving_registration_form_doc,:driver_badge_doc,:driving_license_doc,:id_proof_doc] }
+  STEP_DRIVER = { Step_1: [:business_associate_id,:licence_number, :date_of_birth, :aadhaar_mobile_number, :gender, :blood_group], Step_2: [:ifsc_code,:bank_no,:bank_name], Step_3: [:driving_registration_form_doc,:driver_badge_doc,:driving_license_doc,:id_proof_doc] }
   has_one :user, :as => :entity
   has_one    :vehicle
 
@@ -29,7 +29,7 @@ class Driver < ApplicationRecord
   # validates :badge_number, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :badge_number, numericality: { only_integer: true }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :badge_number, numericality: { only_integer: true }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
-  validates :badge_number, length: { is: 10 }, format: { with: /\A\d+\z/, message: "Integer only. No sign allowed." }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  # validates :badge_number, length: { is: 10 }, format: { with: /\A\d+\z/, message: "Integer only. No sign allowed." }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates_numericality_of :badge_number, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :aadhaar_mobile_number, uniqueness: true, length: { is: 10 }, :if => Proc.new{|f| f.registration_steps.blank? }
   # validates_format_of :aadhaar_mobile_number, with: /\A\+?[1-9]\d{1,14}\z/, :if => Proc.new{|f| f.registration_steps.blank? }
@@ -47,17 +47,17 @@ class Driver < ApplicationRecord
   # validates :driving_license_doc_url, attachment_presence: true
   # validates :id_proof_doc_url, attachment_presence: true
   # validates :driving_registration_form_doc_url, attachment_presence: true
-  validates :badge_expire_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
-  validates :badge_number, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  # validates :badge_expire_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  # validates :badge_number, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :blood_group, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :ifsc_code, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :gender, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
-  validates :licence_type, :licence_validity, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  # validates :licence_type, :licence_validity, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :bank_no  , uniqueness: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :bank_no, length: { is: 16 }, format: { with: /\A\d+\z/, message: "Please enter only Number." }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :licence_number, format: { with: /\A(?=.*[a-z])[a-z\d]+\Z/i, message: "Please enter alphanumeric ." }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # validates :licence_number, format: { with: ^[a-zA-Z0-9]+$ }
-  validates_length_of :licence_number, maximum: 15 , :if => Proc.new{|f| f.registration_steps == "Step_1"}
+  validates_length_of :licence_number, maximum: 16 , :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :bank_name, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :bank_name, format: { with: /[a-zA-Z0-9]/, message: "Please enter alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :date_of_birth, presence: true , :if => Proc.new{|f| f.registration_steps == "Step_1"}
@@ -97,8 +97,8 @@ class Driver < ApplicationRecord
    validates_attachment :bgc_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
   validate :validate_birth_date, :if => Proc.new{|f| f.registration_steps == "Step_1"}
-  before_save :validate_licence_expiry_date#, :if => Proc.new{|f| f.registration_steps == "Step_2"}
-  before_save :validate_badge_expire_date, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  # before_save :validate_licence_expiry_date#, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  # before_save :validate_badge_expire_date, :if => Proc.new{|f| f.registration_steps == "Step_2"}
 
   after_update :update_notification
 
@@ -139,17 +139,17 @@ class Driver < ApplicationRecord
     end
   end
 
-  def validate_licence_expiry_date
-    if self.licence_validity.present? && Date.today > self.licence_validity 
-        errors.add(:licence_validity, 'Your Licence has expired.')
-    end
-  end
+  # def validate_licence_expiry_date
+  #   if self.licence_validity.present? && Date.today > self.licence_validity 
+  #       errors.add(:licence_validity, 'Your Licence has expired.')
+  #   end
+  # end
 
-  def validate_badge_expire_date
-    if self.badge_expire_date.present? && self.badge_expire_date > Date.today
-        errors.add(:badge_expire_date, 'Your badge has expired.')
-    end
-  end
+  # def validate_badge_expire_date
+  #   if self.badge_expire_date.present? && self.badge_expire_date > Date.today
+  #       errors.add(:badge_expire_date, 'Your badge has expired.')
+  #   end
+  # end
 
   def paired_vehicle
     if vehicle.blank?
