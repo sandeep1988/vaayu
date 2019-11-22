@@ -1,11 +1,11 @@
 class API::V2::DriversController < ApplicationController
   before_action :set_driver, only: [:edit, :update, :destroy, :show]
-  skip_before_action :authenticate_user!
-  before_action :check_date_validation, only: [:create]
+  # skip_before_action :authenticate_user!
+  # before_action :check_date_validation, only: [:create]
   before_action :check_date_of_birth, only: [:create]
-  before_action :check_badge_expire_date, :validate_birth_date, only: [:create]
-  before_action :check_gender, :validate_birth_date, only: [:create]
-  before_action :check_badge_number, :validate_birth_date, only: [:create]
+  before_action :validate_birth_date, only: [:create]
+  # before_action :check_gender, :validate_birth_date, only: [:create]
+  # before_action :check_badge_number, :validate_birth_date, only: [:create]
   # before_action :check_f_name_validate, only: [:create]
   # GET /api/v2/drivers
   # GET /api/v2/drivers.json
@@ -55,7 +55,7 @@ class API::V2::DriversController < ApplicationController
       end
     elsif params[:registration_steps] == "Step_3"
       @driver = Driver.find(params[:driver_id]) if params[:driver_id].present?
-        if params[:driving_registration_form_doc].blank? or params[:driver_badge_doc].blank? or params[:driving_license_doc].blank? or params[:id_proof_doc].blank? or params[:medically_certified_doc].blank? or params[:bgc_doc].blank? or params[:sexual_policy_doc].blank? or params[:police_verification_vailidty_doc].blank?
+        if params[:driving_registration_form_doc].blank? or params[:driver_badge_doc].blank? or params[:driving_license_doc].blank? or params[:id_proof_doc].blank? or params[:medically_certified_doc].blank? or params[:sexual_policy_doc].blank?
          render json: {success: false , message: "Please Upload all docs", data: {}, errors: {},status: :ok }
       else
         if validate_first_and_second_step(@driver) == true
@@ -296,13 +296,13 @@ class API::V2::DriversController < ApplicationController
       render json: {status: :ok} unless @driver
     end
 
-    def check_badge_expire_date
-      if params[:registration_steps] == "Step_2"
-        if params[:badge_expire_date].present? && params[:badge_expire_date].to_date < Date.today 
-          render json: {success: false , message: "Your Badge has expired", data: {}, errors: "Record not updated",status: :ok}
-        end
-      end
-    end
+    # def check_badge_expire_date
+    #   if params[:registration_steps] == "Step_2"
+    #     if params[:badge_expire_date].present? && params[:badge_expire_date].to_date < Date.today 
+    #       render json: {success: false , message: "Your Badge has expired", data: {}, errors: "Record not updated",status: :ok}
+    #     end
+    #   end
+    # end
 
   ### Step1 date validation 
     def validate_birth_date
@@ -313,15 +313,15 @@ class API::V2::DriversController < ApplicationController
       end
     end
 
-    def check_date_validation
-      if params[:registration_steps] == "Step_2"
-        if params[:licence_validity].present? && params[:licence_validity].to_date < Date.today 
-          render json: {success: false , message: "Your Licence has expired", data: {}, errors: "Record not updated",status: :ok }
-        elsif params[:licence_validity].blank?
-          render json: {success: false , message: "Please enter licence validity.", data: {}, errors: "Record not updated",status: :ok }
-        end
-      end
-    end
+    # def check_date_validation
+    #   if params[:registration_steps] == "Step_2"
+    #     if params[:licence_validity].present? && params[:licence_validity].to_date < Date.today 
+    #       render json: {success: false , message: "Your Licence has expired", data: {}, errors: "Record not updated",status: :ok }
+    #     elsif params[:licence_validity].blank?
+    #       render json: {success: false , message: "Please enter licence validity.", data: {}, errors: "Record not updated",status: :ok }
+    #     end
+    #   end
+    # end
 
     def check_date_of_birth
       if params[:registration_steps] == "Step_1"
@@ -342,13 +342,13 @@ class API::V2::DriversController < ApplicationController
     end
 
 
-    def check_badge_number
-      if params[:registration_steps] == "Step_2"
-        if params[:badge_number].blank?
-          render json: {success: false , message: "Please enter Badge number.", data: {}, errors: "Record not updated",status: :ok }
-        end
-      end
-    end
+    # def check_badge_number
+    #   if params[:registration_steps] == "Step_2"
+    #     if params[:badge_number].blank?
+    #       render json: {success: false , message: "Please enter Badge number.", data: {}, errors: "Record not updated",status: :ok }
+    #     end
+    #   end
+    # end
 
     # def check_f_name_validate
     #   if params[:registration_steps] == "Step_1"
