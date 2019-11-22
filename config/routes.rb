@@ -410,6 +410,7 @@ Rails.application.routes.draw do
           post 'update_current_location'
           get 'last_trip_request'
           post 'vehicle_info'
+          get 'blacklist_driver'
         end
       end
     end
