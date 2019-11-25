@@ -240,7 +240,8 @@ class API::V2::DriversController < ApplicationController
       l_name = params[:l_name].present? ? params[:l_name] : ''
       user.entity.f_name = params[:f_name].present? ? params[:f_name] : ''
       user.entity.l_name = params[:l_name].present? ? params[:l_name] : ''
-      user.entity.driver_name = f_name + l_name
+      user.entity.driver_name = "#{f_name} #{l_name}"
+
       # upload_profile_picture_url(user.entity) if user.entity.present?
       user.save_with_notify_for_driver
       @errors = user.errors.full_messages.to_sentence
