@@ -411,6 +411,7 @@ Rails.application.routes.draw do
           get 'last_trip_request'
           post 'vehicle_info'
           get 'blacklist_driver'
+          get 'active_driver'
         end
       end
     end

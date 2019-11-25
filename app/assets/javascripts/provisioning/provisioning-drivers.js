@@ -14,7 +14,7 @@ $(function () {
         table: table,
         ajax: {
             remove: {
-                type: 'DELETE',
+                type: 'update_driver_listingp',
                 url: '/drivers/_id_'
             }
         }
@@ -151,7 +151,6 @@ $(function () {
                       data: null,
                       orderable: false,
                       render: function (data) {
-                        console.log(data.induction_status);
                         return data.induction_status
                         }
                     },
@@ -159,8 +158,23 @@ $(function () {
                       data: null,
                       orderable: false,
                       render: function (data) {
-                        console.log(data.compliance_status);
                         return data.compliance_status
+                        }
+                    },
+                    {
+                      data: null,
+                      orderable: false,
+                      render: function (data) {
+                        console.log(data.site_id);
+                        return data.site
+                        }
+                    },
+                    {
+                      data: null,
+                      orderable: false,
+                      render: function (data) {
+                        console.log(data.shift);
+                        return data.shift
                         }
                     },
                     {
@@ -169,7 +183,14 @@ $(function () {
                       render: function (data) {
                         return '<a href="/api/v2/drivers/' + data.id + '/blacklist_driver" id= "blacklist_driver" data-remote="true"><div style="float:left">' + data.blacklisted + '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
                         }
-                    },                  
+                    },
+                    {
+                      data: null,
+                      orderable: false,
+                      render: function (data) {
+                        return '<a href="/api/v2/drivers/' + data.id + '/active_driver" id= "active_driver" data-remote="true"><div style="float:left">' + data.active + '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
+                        }
+                    },                   
                     
                     // {
                     //     data: null,
@@ -378,8 +399,22 @@ $(function () {
         e.preventDefault();
     });
     
-    $("#drivers-table").on("click", function (e) {
+    $("#drivers-table").on('click', 'a', function (e) {
       e.preventDefault();
+      var table = $('#drivers-table').DataTable();
+      table.ajax.reload();
+    });
+
+    $("#active_driver").on('click', 'a', function (e) {
+      alert("Are you sure you want to active/deactivate driver!")
+      var table = $('#drivers-table').DataTable();
+      table.ajax.reload();
+      e.preventDefault();
+    });
+
+    $("#blacklist_driver").on('click', 'a', function (e) {
+      e.preventDefault();
+      alert("Are you sure you want to blacklist driver!")
       var table = $('#drivers-table').DataTable();
       table.ajax.reload();
     });
