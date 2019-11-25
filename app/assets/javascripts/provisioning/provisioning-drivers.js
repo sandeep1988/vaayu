@@ -56,7 +56,8 @@ $(function () {
                         data: null,
                         orderable: false,                        
                         render: function (data) {
-                            return '<a href="/drivers/' + data.id + '/edit" data-remote="true" class="edit driver_edit"><div style="float:left">' + data.name + '</div></a>'  + ' <div style="float:right; top:2px; position:relative"><a href="#" id="call-person" data-number="' + data.phone + '">'+
+                          console.log(data);
+                            return '<a href="/drivers/' + data.id + '/edit" data-remote="true" class="edit driver_edit"><div style="float:left">' + data.driver_name + '</div></a>'  + ' <div style="float:right; top:2px; position:relative"><a href="#" id="call-person" data-number="' + data.phone + '">'+
                             '<svg width="13px" height="14px" viewBox="0 0 13 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">'+
                                     '<title>FEFA6A57-5826-4C2D-9960-CC14C19563A2</title>'+
                                     '<desc>Created with sketchtool.</desc>'+
@@ -79,40 +80,48 @@ $(function () {
                         }
                     },
                     {
-                        data: "entity_attributes.business_associate",
-                        orderable: false
-                    },
-                    {
-                        data: "entity_attributes.licence_number",
-                        orderable: false
-                    },
-                    {
-                        data: "entity_attributes.aadhaar_number",
-                        orderable: false
-                    },
-                    {
-                        data: null,
-                        orderable: false,
-                        className: "center",
-                        render: function (data) {
-                            var checklistId = data.checklist_attributes.id == null ? "" : data.checklist_attributes.id;
-                            var className = "";
-                            if(checklistId == ''){
-                                return '<p class="text-primary" data-remote="true">'+ data.checklist_attributes.status +'</p>';
-                            }
-                            else{
-                                if (data.checklist_attributes.notification_type === "checklist") {
-                                    var className = "checklist-status" 
-                                    return '<a href="/drivers/'+ checklistId +'/checklist" class="'+ className +'" data-remote="true">'+ data.checklist_attributes.status +'</a>';
-                                }
-                                if (data.checklist_attributes.notification_type === "provisioning") {
-                                    var className = "notification-status"
-                                    return '<a href="/drivers/' + data.id + '/edit" class="'+ className +' edit driver_edit" data-remote="true">'+ data.checklist_attributes.status +'</a>';
-                                }
-                                return '<a href="/drivers/'+ checklistId +'/checklist" class="'+ className +'" data-remote="true">'+ data.checklist_attributes.status +'</a>';
-                            }                            
+                      data: null,
+                      orderable: false,
+                      render: function (data) {
+                        console.log(data.entity_attributes.vehicle_number);
+                        return data.entity_attributes.vehicle_number
                         }
                     },
+                    // {
+                    //     data: "entity_attributes.business_associate",
+                    //     orderable: false
+                    // },
+                    // {
+                    //     data: "entity_attributes.licence_number",
+                    //     orderable: false
+                    // },
+                    // {
+                    //     data: "entity_attributes.aadhaar_number",
+                    //     orderable: false
+                    // },
+                    // {
+                    //     data: null,
+                    //     orderable: false,
+                    //     className: "center",
+                    //     render: function (data) {
+                    //         var checklistId = data.checklist_attributes.id == null ? "" : data.checklist_attributes.id;
+                    //         var className = "";
+                    //         if(checklistId == ''){
+                    //             return '<p class="text-primary" data-remote="true">'+ data.checklist_attributes.status +'</p>';
+                    //         }
+                    //         else{
+                    //             if (data.checklist_attributes.notification_type === "checklist") {
+                    //                 var className = "checklist-status" 
+                    //                 return '<a href="/drivers/'+ checklistId +'/checklist" class="'+ className +'" data-remote="true">'+ data.checklist_attributes.status +'</a>';
+                    //             }
+                    //             if (data.checklist_attributes.notification_type === "provisioning") {
+                    //                 var className = "notification-status"
+                    //                 return '<a href="/drivers/' + data.id + '/edit" class="'+ className +' edit driver_edit" data-remote="true">'+ data.checklist_attributes.status +'</a>';
+                    //             }
+                    //             return '<a href="/drivers/'+ checklistId +'/checklist" class="'+ className +'" data-remote="true">'+ data.checklist_attributes.status +'</a>';
+                    //         }                            
+                    //     }
+                    // },
                     {
                         data: null,
                         orderable: false,
@@ -137,30 +146,43 @@ $(function () {
                     {
                         data: "status",
                         orderable: false
-                    },                    
+                    },  
                     {
-                        data: "last_active_time",
-                        orderable: false
+                      data: null,
+                      orderable: false,
+                      render: function (data) {
+                        console.log(data.induction_status);
+                        return data.induction_status
+                        }
                     },
                     {
-                        data: null,
-                        orderable: false,
-                        className: "center",
-                        render: function (data) {
-                            var txt = ''
-                            if(data.status === "Pending") {
-                                txt = '<a href="#" data-url="/drivers/'+ data.id +'/invite" class="invite-count"><span>Invite('+ data.invite_count +')</span></a> '
-                                txt += '<a href="#" class="editor_remove driver_remove text-danger">Delete</a>';
-                            } else if (data.status == "On leave"){
-                                txt += '<a data-id="' + data.id + '" data-request-id="' + data.driver_request.id + '" href="#" class="stop_on_leave text-danger">Stop On Leave</a> '
-                            } else {
-                                if(data.driver_request) {
-                                    txt += '<a href="#" data-type="decline" data-request-id="' + data.driver_request.id + '" class="update_driver_request text-danger">Decline</a>   <a data-request-id="' + data.driver_request.id + '" href="#" data-type="approve" class="update_driver_request text-teal">Accept</a> '
-                                }
-                            }                            
-                            return txt;
+                      data: null,
+                      orderable: false,
+                      render: function (data) {
+                        console.log(data.compliance_status);
+                        return data.compliance_status
                         }
-                    }
+                    },                    
+                    
+                    // {
+                    //     data: null,
+                    //     orderable: false,
+                    //     className: "center",
+                    //     render: function (data) {
+                    //         var txt = ''
+                    //         if(data.status === "Pending") {
+                    //             txt = '<a href="#" data-url="/drivers/'+ data.id +'/invite" class="invite-count"><span>Invite('+ data.invite_count +')</span></a> '
+                    //             txt += '<a href="#" class="editor_remove driver_remove text-danger">Delete</a>';
+                    //         } else if (data.status == "On leave"){
+                    //             txt += '<a data-id="' + data.id + '" data-request-id="' + data.driver_request.id + '" href="#" class="stop_on_leave text-danger">Stop On Leave</a> '
+                    //         } else {
+                    //             if(data.driver_request) {
+                    //                 txt += '<a href="#" data-type="decline" data-request-id="' + data.driver_request.id + '" class="update_driver_request text-danger">Decline</a>   <a data-request-id="' + data.driver_request.id + '" href="#" data-type="approve" class="update_driver_request text-teal">Accept</a> '
+                    //             }
+                    //         }                            
+                    //         return txt;
+                    //     }
+                    // }
                 ],
                 initComplete: function () {
                     loadedDatatables[table] = true;

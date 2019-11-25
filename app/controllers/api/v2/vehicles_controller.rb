@@ -85,9 +85,11 @@ class API::V2::VehiclesController < ApplicationController
 
   def validate_plate_number
     if params[:plate_number].present?
+      vehicle = Vehicle.where(plate_number: params[:plate_number]).last
       result = Vehicle.pluck(:plate_number).include? params[:plate_number]
-      render json: {success: true , message: "Vehicle registration number should not be duplicate", data:{ plate_number: params[:plate_number] }, errors: {} }, status: :ok if result
-      render json: { success: false , message: "Plate number is unique", data: { plate_number: params[:plate_number] } , errors: {} }, status: :ok if result == false
+      render json: {success: true , message: "Vehicle registration number should not be duplicate", data:{ plate_number: params[:plate_number] }, errors: {} }, status: :ok if result && vehicle.induction_status != "Draft" && vehicle.present?
+      render json: { success: false , message: "Registration number is unique", data: { plate_number: params[:plate_number] } , errors: {} }, status: :ok if result == false
+      render json: { success: true , message: "Registration number is unique", data: { plate_number: params[:plate_number] } , errors: {} }, status: :ok if result &&  vehicle.induction_status == "Draft" && vehicle.present?
     end
   end
 

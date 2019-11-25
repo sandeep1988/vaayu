@@ -29,7 +29,7 @@ class Vehicle < ApplicationRecord
   validates :category, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :fuel_type, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :seats, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
-  validates :ac, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
+  # validates :ac, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
 
   # validates :rc_book_no, presence: true , :if => Proc.new{|f| f.registration_steps != "Step_1" or f.registration_steps != "Step_2" }
   # validates :registration_date, presence: true , :if => Proc.new{|f| f.registration_steps != "Step_1" or f.registration_steps != "Step_2" }

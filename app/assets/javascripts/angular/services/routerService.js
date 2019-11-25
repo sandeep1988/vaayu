@@ -12,7 +12,7 @@ function ($resource, BASE_URL_8002, SessionService) {
     assignGuards: {url: BASE_URL_8002 + 'addGuardInTrip', method: "PATCH"},
     removeVehicle: {url: BASE_URL_8002 + 'remove-trip-vehicle', method: "POST"},
     searchVechicle: {
-        url: BASE_URL + 'searchVehicles', 
+        url: BASE_URL_8002 + 'searchVehicles', 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
     },
