@@ -167,7 +167,7 @@ $(function () {
                       data: null,
                       orderable: false,
                       render: function (data) {
-                        return '<a href="/api/v2/drivers/' + data.id + '/blacklist_driver" data-remote="true"><div style="float:left">' + data.blacklisted + '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
+                        return '<a href="/api/v2/drivers/' + data.id + '/blacklist_driver" id= "blacklist_driver" data-remote="true"><div style="float:left">' + data.blacklisted + '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
                         }
                     },                  
                     
@@ -377,7 +377,8 @@ $(function () {
         driversTable.draw(false);
         e.preventDefault();
     });
-    $("#drivers-table").on("click", function(){
+    
+    $("#drivers-table").on("click", function (e) {
       e.preventDefault();
       var table = $('#drivers-table').DataTable();
       table.ajax.reload();
