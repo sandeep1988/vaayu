@@ -50,8 +50,10 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="basic-url" class="leb_color">Zipcode</label>
+                        <!-- onKeyPress="if (this.value.length == 6) return false; else setInputFilter(this, function(value) {return /^\d*?\d*$/.test(value);});" -->
                         <input type="text" class="form-control" name="zipcode" required ng-model="zipcode"
-                        onKeyPress="if (this.value.length == 6) return false; else setInputFilter(this, function(value) {return /^\d*?\d*$/.test(value);});"
+                        
+                        onKeyPress="setInputFilter(this, function(value) {return /^([0-9]*,*)*$/.test(value);});"
                             pattern="[0-9]{6}" onKeyPress="">
                         
                         <span ng-show="hasError('zipcode', 'required')" class="help-block">Zipcode
