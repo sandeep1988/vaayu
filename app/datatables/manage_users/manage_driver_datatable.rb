@@ -16,6 +16,7 @@ class ManageUsers::ManageDriverDatatable
   end
 
   def data
+    @site = Site.find_by_id(@driver.site_id) if @driver.site_id.present?
     {
         "DT_RowId" => @driver.id,
         :id => @driver.id,
@@ -36,7 +37,10 @@ class ManageUsers::ManageDriverDatatable
         :induction_status=> @driver.induction_status,
         :compliance_status=> @driver.compliance_status,
         :driver_name=> @driver.driver_name,
+        :site=> Site.where(id: @driver.site_id).last.present? ?  Site.where(id: @driver.site_id).last.name : '',
+        :shift => [@driver.shift_start_time, @driver.shift_end_time],
         :blacklisted=> @driver.blacklisted,
+        :active=> @driver.active,
         :entity_attributes => {
             :id => @driver.id,
             :company => @driver.logistics_company&.name,

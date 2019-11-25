@@ -41,6 +41,9 @@ class API::V2::DriversController < ApplicationController
       user =  User.new
       user.role = 3
       set_driver_user_field(user,params)
+      user.entity.profile_picture  = params[:profile_picture] if params[:profile_picture].present?
+      user.entity.profile_picture_url = "#{user.entity.profile_picture.url.gsub("//",'')}" if user.entity.profile_picture.present?
+      user.entity.update(profile_picture_url: user.entity.profile_picture_url)
     elsif params[:registration_steps] == "Step_2"
       @driver = Driver.find(params[:driver_id]) if params[:driver_id].present?
       if validate_first_step(@driver) == true
@@ -189,7 +192,15 @@ class API::V2::DriversController < ApplicationController
       else
         driver.update_attribute('blacklisted', '1')
       end
-      # redirect_back(fallback_location: root_path)
+    end
+
+    def active_driver
+      driver = Driver.find(params[:id])
+      if driver.active?
+        driver.update_attribute('active', '0')
+      else
+        driver.update_attribute('active', '1')
+      end
     end
 
     def validate_licence_number
@@ -212,8 +223,8 @@ class API::V2::DriversController < ApplicationController
       user.entity.blood_group = params[:blood_group] if params[:blood_group].present?
       user.entity.business_associate_id = params[:business_associate_id] if params[:business_associate_id].present?
       user.entity.gender = params[:gender] if params[:gender].present?
-      user.entity.profile_picture  = params[:profile_picture] if params[:profile_picture].present?
-      user.entity.profile_picture_url = "#{user.entity.profile_picture.url.gsub("//",'')}" if user.entity.profile_picture.present?
+      # user.entity.profile_picture  = params[:profile_picture] if params[:profile_picture].present?
+      # user.entity.profile_picture_url = "#{user.entity.profile_picture.url.gsub("//",'')}" if user.entity.profile_picture.present?
       user.entity.shift_end_time = params[:shift_end_time] if params[:shift_end_time].present?
       user.entity.shift_start_time = params[:shift_start_time] if params[:shift_start_time].present?
       user.entity.site_id = params[:site_id].to_i if params[:site_id].present?
