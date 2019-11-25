@@ -25,13 +25,11 @@ app.controller('createGuard', function ($scope, $http, SessionService, ToasterSe
 
       $scope.submitForm = function (isValid) {
         console.log($scope.$parent.siteID)
-        console.log($scope.for)
-        console.log($scope.when)
-        console.log($scope.event)
-        console.log($scope.from_time)
-        console.log($scope.to_time)
-
-        console.log(moment($scope.to_time))
+        console.log('for', $scope.for)
+        console.log('when', $scope.when)
+        console.log('event', $scope.event)
+        console.log('from_time', moment($scope.from_time).format('HH:mm'))
+        console.log('to_time',  moment($scope.to_time).format('HH:mm'))
 
         $scope.submitted = true;
         if ($scope.$parent.siteID == null) {
@@ -60,8 +58,8 @@ app.controller('createGuard', function ($scope, $http, SessionService, ToasterSe
             for : $scope.for, //male
             event: $scope.event, // pick drop
             when: $scope.when, // first last
-            fromTime: $scope.from_time,
-            toTime: $scope.to_time,
+            fromTime: moment($scope.from_time).format('HH:mm'),
+            toTime: moment($scope.to_time).format('HH:mm'),
           }
         })
           .then(function (res) {

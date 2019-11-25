@@ -154,7 +154,7 @@ $(function () {
                 document.getElementById("city").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            var phone_1 = $("#phone_1");
+            var phone_1 = $("#phone_1").val().trim();
             if (phone_1 == '' || phone_1.length < 10) {
                 document.getElementById("phone_1").classList.add("border-danger")
                 validationError = true
@@ -274,6 +274,7 @@ $(function () {
                     'address_3': $("#address_3").val(),
                     'pin': $("#pin").val(),
                     'city': $("#city").val(),
+                    'state': $("#state").val(),
                     'phone_1': $("#phone_1").val(),
 
                     'phone_2': $("#phone_2").val(),
@@ -302,6 +303,7 @@ $(function () {
                     'party_gstin_no': $("#party_gstin_no").val()
 
                 }
+                console.log('site adding', site);
                 if (current_user == 'Operator') {
                     site['logistics_company_id'] = $("#operator_id").val()
                 }
