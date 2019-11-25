@@ -172,6 +172,15 @@ angular.
       return name;
   }
 
+  // $scope.zoneOnKeyPress = (value) => {
+  //   var array = value.split(",");
+  //   console.log(array)
+  //   // if (value.length == ((6 * array.length)+)) return false; 
+  //   // if (/^([0-9]){0,6}(,){1}+$/.test(panValue1)) {
+      
+  //   // }
+  // }
+
     // // Restricts input for the given textbox to the given inputFilter.
     // $scope.setInputFilter = (textbox, inputFilterRegex) => {
     //   ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
