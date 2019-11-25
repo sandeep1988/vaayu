@@ -65,13 +65,16 @@
 | });
 
 | $(".schedule-content").on("click", function(){
+|   	
 |   selectedDate = $(this).closest(".schedule-column").find(".selected_date:first").val();
-|   if (selectedDate >= dateFormatter(new Date(), "YYYY-MM-DD")){
-|     removeScheduleHighlight();
-|     $(this).hide();
-|     $(this).next().show();
-|     $(this).closest("td").addClass("green-background");
-|   }
+|   selectedTime = $(this).closest(".schedule-column").find(".check_in").val();
+|	selectedDateTime = selectedDate + " " + selectedTime;
+|	   if (new Date(selectedDateTime) > new Date()){
+|	     removeScheduleHighlight();
+|	     $(this).hide();
+|	     $(this).next().show();
+|	     $(this).closest("td").addClass("green-background");
+|	   }
 | });
 
 | $(".datepicker table tr:has(td.today)").addClass("datepicker-current-week");
