@@ -162,7 +162,14 @@ $(function () {
                         console.log(data.compliance_status);
                         return data.compliance_status
                         }
-                    },                    
+                    },
+                    {
+                      data: null,
+                      orderable: false,
+                      render: function (data) {
+                        return '<a href="/api/v2/drivers/' + data.id + '/blacklist_driver" id= "blacklist_driver" data-remote="true"><div style="float:left">' + data.blacklisted + '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
+                        }
+                    },                  
                     
                     // {
                     //     data: null,
@@ -369,5 +376,11 @@ $(function () {
     $("#drivers.tab-pane").on('click', 'a.reload-button', function (e) {
         driversTable.draw(false);
         e.preventDefault();
+    });
+    
+    $("#drivers-table").on("click", function (e) {
+      e.preventDefault();
+      var table = $('#drivers-table').DataTable();
+      table.ajax.reload();
     });
 });

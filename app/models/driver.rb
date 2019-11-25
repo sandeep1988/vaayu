@@ -58,7 +58,7 @@ class Driver < ApplicationRecord
   validates :bank_no, length: { is: 16 }, format: { with: /\A\d+\z/, message: "Please enter only Number." }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :licence_number, format: { with: /\A(?=.*[a-z])[a-z\d]+\Z/i, message: "Please enter alphanumeric ." }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # validates :licence_number, format: { with: ^[a-zA-Z0-9]+$ }
-  validates_length_of :licence_number, maximum: 16 , :if => Proc.new{|f| f.registration_steps == "Step_1"}
+  validates_length_of :licence_number, maximum: 25 , :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :bank_name, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :bank_name, format: { with: /[a-zA-Z0-9]/, message: "Please enter alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :date_of_birth, presence: true , :if => Proc.new{|f| f.registration_steps == "Step_1"}

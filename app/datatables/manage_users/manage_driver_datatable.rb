@@ -36,6 +36,7 @@ class ManageUsers::ManageDriverDatatable
         :induction_status=> @driver.induction_status,
         :compliance_status=> @driver.compliance_status,
         :driver_name=> @driver.driver_name,
+        :blacklisted=> @driver.blacklisted,
         :entity_attributes => {
             :id => @driver.id,
             :company => @driver.logistics_company&.name,
