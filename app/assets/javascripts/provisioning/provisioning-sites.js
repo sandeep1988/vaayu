@@ -20,20 +20,20 @@ $(function () {
      */
     var table = '#sites-table';
     $('a[href="#sites"]').on('shown.bs.tab', function () {
-        
-        resetBillingParameters()        
+
+        resetBillingParameters()
         if (loadedTabs['sites']) {
-            if(current_user == 'Operator'){
+            if (current_user == 'Operator') {
                 $(".action-buttons")[0].style.display = "none"
             }
-            else{
+            else {
                 $(".action-buttons")[0].style.display = "block"
             }
             return;
         }
 
         // set loaded state
-        loadedTabs['sites'] = true;        
+        loadedTabs['sites'] = true;
         if (!loadedDatatables[table]) {
             siteTable = $(table).DataTable({
                 serverSide: true,
@@ -45,16 +45,16 @@ $(function () {
                 info: false,
                 processing: true,
                 columns: [
-                    {data: "id"},
+                    { data: "id" },
                     {
                         data: null,
                         render: function (data) {
                             return '<a style="cursor:pointer" id="editSite" class="editor_edit" data-remote="true" data-site_id="' + data.id + '">' + data.name + '</a>'
                         }
                     },
-                    {data: "company"},
-                    {data: "address"},
-                    {data: "phone"},
+                    { data: "company" },
+                    { data: "address" },
+                    { data: "phone" },
                     {
                         data: null,
                         render: function (data) {
@@ -65,107 +65,110 @@ $(function () {
                 ],
                 initComplete: function () {
                     loadedDatatables[table] = true;
-                     var info = this.api().page.info();
-                     $('#sites-count').text("Total Sites: " + info.recordsTotal);
-                     current_user = this.api().ajax.json().user.entity_type
-                     if(current_user == 'Operator'){
+                    var info = this.api().page.info();
+                    $('#sites-count').text("Total Sites: " + info.recordsTotal);
+                    current_user = this.api().ajax.json().user.entity_type
+                    if (current_user == 'Operator') {
                         choose_operator = false
                         $(".action-buttons")[0].style.display = "none"
-                     }
-                     else{
+                    }
+                    else {
                         $(".action-buttons")[0].style.display = "block"
-                     }
+                    }
                 }
             });
         }
 
 
-        function validateSite(site, validationError){
-            if($("#siteName").val() == '' || $("#siteName").val() == undefined || $("#siteName").val() == null){
+        function validateSite(site, validationError) {
+            if ($("#siteName").val() == '' || $("#siteName").val() == undefined || $("#siteName").val() == null) {
                 document.getElementById("siteName").classList.add("border-danger")
                 validationError = true
             }
-            else{
+            else {
                 document.getElementById("siteName").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if($("#company").val() == 0 || $("#company").val() == undefined || $("#company").val() == null){
+            if ($("#company").val() == 0 || $("#company").val() == undefined || $("#company").val() == null) {
                 document.getElementById("company").classList.add("border-danger")
                 validationError = true
             }
-            else{
+            else {
                 document.getElementById("company").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if($("#contact_name").val() == '' || $("#contact_name").val() == undefined || $("#contact_name").val() == null){
+            if ($("#contact_name").val() == '' || $("#contact_name").val() == undefined || $("#contact_name").val() == null) {
                 document.getElementById("contact_name").classList.add("border-danger")
                 validationError = true
             }
-            else{
+            else {
                 document.getElementById("contact_name").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if($("#address").val() == '' || $("#address").val() == undefined || $("#address").val() == null){
+            if ($("#address").val() == '' || $("#address").val() == undefined || $("#address").val() == null) {
                 document.getElementById("address").classList.add("border-danger")
                 validationError = true
             }
-            else{
+            else {
                 document.getElementById("address").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if($("#address_1").val() == '' || $("#address_1").val() == undefined || $("#address_1").val() == null){
+            if ($("#address_1").val() == '' || $("#address_1").val() == undefined || $("#address_1").val() == null) {
                 document.getElementById("address_1").classList.add("border-danger")
                 validationError = true
             }
-            else{
+            else {
                 document.getElementById("address_1").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if($("#address_2").val() == '' || $("#address_2").val() == undefined || $("#address_2").val() == null){
+            if ($("#address_2").val() == '' || $("#address_2").val() == undefined || $("#address_2").val() == null) {
                 document.getElementById("address_2").classList.add("border-danger")
                 validationError = true
             }
-            else{
+            else {
                 document.getElementById("address_2").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if($("#pin").val() == '' || $("#pin").val() == undefined || $("#pin").val() == null){
+            var pincode = $("#pin").val().trim();
+            if (pincode == '' || pincode.length < 6) {
                 document.getElementById("pin").classList.add("border-danger")
                 validationError = true
             }
-            else{
+            else {
                 document.getElementById("pin").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if($("#state").val() == 0 || $("#state").val() == undefined || $("#state").val() == null){
+            if ($("#state").val() == 0 || $("#state").val() == undefined || $("#state").val() == null) {
                 document.getElementById("state").classList.add("border-danger")
                 validationError = true
             }
-            else{
+            else {
                 document.getElementById("state").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if($("#city").val() == 0 || $("#city").val() == undefined || $("#city").val() == null){
+            if ($("#city").val() == 0 || $("#city").val() == undefined || $("#city").val() == null) {
                 document.getElementById("city").classList.add("border-danger")
                 validationError = true
             }
-            else{
+            else {
                 document.getElementById("city").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if($("#phone_1").val() == '' || $("#phone_1").val() == undefined || $("#phone_1").val() == null){
+            var phone_1 = $("#phone_1").val().trim();
+            if (phone_1 == '' || phone_1.length < 10) {
                 document.getElementById("phone_1").classList.add("border-danger")
                 validationError = true
-            }
-            else{
+            } else {
                 document.getElementById("phone_1").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if($("#pan_no").val() == '' || $("#pan_no").val() == undefined || $("#pan_no").val() == null){
+            
+            var pan_number = $("#pan_no").val();
+            if (pan_number == '' || !(/^([a-zA-Z]){0,5}([0-9]){0,4}([a-zA-Z]){1}?$/.test(pan_number))) {
                 document.getElementById("pan_no").classList.add("border-danger")
                 validationError = true
             }
-            else{
+            else {
                 document.getElementById("pan_no").classList.remove("border-danger")
                 validationError = validationError || false
             }
@@ -179,13 +182,13 @@ $(function () {
             // }
             return validationError
         }
-        $(document).on('click', '#editSite', function(e){
+        $(document).on('click', '#editSite', function (e) {
             //  
-          $('input').removeAttr('disabled');
-          $('.btn-primary').removeAttr('disabled'); 
-            if(current_user == 'Operator'){
+            $('input').removeAttr('disabled');
+            $('.btn-primary').removeAttr('disabled');
+            if (current_user == 'Operator') {
                 $(".provisioning .edit-buttons .submit-btn").fadeOut()
-                $(".provisioning .edit-buttons").fadeIn()                
+                $(".provisioning .edit-buttons").fadeIn()
             }
 
             site_id = e.target.dataset.site_id
@@ -200,24 +203,24 @@ $(function () {
                     data: {
                         'id': site_id
                     }
-                }).done(function(response){
+                }).done(function (response) {
                     orig_service_html = $("#services").html()
                     edit_site = true
                     var html = generate_edit(response, 'site', response.logistics_company_id, orig_service_html)
                     $("#site_html").html(html)
-                    if(response.logistics_company_id == null){
+                    if (response.logistics_company_id == null) {
                         $("#cgst_1").parent().css("display", "none")
                         $("#sgst_1").parent().css("display", "none")
                         $("#addServicesDiv").css("display", "none")
                         $("#services").css("display", "none")
                     }
-                })            
-            });        
+                })
+            });
         });
-        $(document).on('click', '#viewSite', function(e){
-            if(current_user == 'Operator'){
+        $(document).on('click', '#viewSite', function (e) {
+            if (current_user == 'Operator') {
                 $(".provisioning .edit-buttons .submit-btn").fadeOut()
-                $(".provisioning .edit-buttons").fadeIn()                
+                $(".provisioning .edit-buttons").fadeIn()
             }
 
             site_id = e.target.dataset.site_id
@@ -232,28 +235,28 @@ $(function () {
                     data: {
                         'id': site_id
                     }
-                }).done(function(response){
+                }).done(function (response) {
                     orig_service_html = $("#services").html()
                     edit_site = true
                     var html = generate_edit(response, 'site', response.logistics_company_id, orig_service_html)
                     $("#site_html").html(html)
-                    if(response.logistics_company_id == null){
+                    if (response.logistics_company_id == null) {
                         $("#cgst_1").parent().css("display", "none")
                         $("#sgst_1").parent().css("display", "none")
                         $("#addServicesDiv").css("display", "none")
                         $("#services").css("display", "none")
-                        $('input').attr('disabled','disabled');
-                        $('.btn-primary').attr('disabled','disabled');
-                        $('#company').attr('disabled','disabled');
+                        $('input').attr('disabled', 'disabled');
+                        $('.btn-primary').attr('disabled', 'disabled');
+                        $('#company').attr('disabled', 'disabled');
                     }
-                })            
-            });        
+                })
+            });
         });
 
-        $(document).on('click', ".submit-btn", function(e){
+        $(document).on('click', ".submit-btn", function (e) {
             // $('.submit-btn').prop('disabled', true)    
             // if(e.target.baseURI.indexOf("sites") != -1){ failing save event
-                if(0 != 1){
+            if (0 != 1) {
                 var site = {
                     'name': $("#siteName").val(),
                     'employee_company_id': $("#company").val(),
@@ -271,6 +274,7 @@ $(function () {
                     'address_3': $("#address_3").val(),
                     'pin': $("#pin").val(),
                     'city': $("#city").val(),
+                    'state': $("#state").val(),
                     'phone_1': $("#phone_1").val(),
 
                     'phone_2': $("#phone_2").val(),
@@ -299,23 +303,24 @@ $(function () {
                     'party_gstin_no': $("#party_gstin_no").val()
 
                 }
-                if(current_user == 'Operator'){
+                console.log('site adding', site);
+                if (current_user == 'Operator') {
                     site['logistics_company_id'] = $("#operator_id").val()
                 }
-                else{
+                else {
                     site['logistics_company_id'] = $("#operator").val()
                 }
                 var validationError = false
                 var services = getServiceData()
                 validationError = validateSite(site, validationError)
-                if(!choose_operator){
-                    validationError = validateServices(services, validationError)    
+                if (!choose_operator) {
+                    validationError = validateServices(services, validationError)
                 }
-                
-                if(!validationError){
+
+                if (!validationError) {
                     $('.submit-btn').prop('disabled', true)
                     console.log(edit_site)
-                    if(edit_site){
+                    if (edit_site) {
                         console.log('before ajax call ')
                         $.ajax({
                             type: "PUT",
@@ -326,7 +331,7 @@ $(function () {
                             url: '/sites/' + site_id + '/update_site'
                         }).done(function (e) {
                             $('.submit-btn').prop('disabled', false)
-                            site_id = ''                        
+                            site_id = ''
                             edit_site = false;
                             resetBillingParameters();
                             restoreDefaultTabState();
@@ -334,7 +339,7 @@ $(function () {
                             $(".add-new-item").show()
                         });
                     }
-                    else{
+                    else {
                         $('.submit-btn').prop('disabled', true)
                         console.log(site);
                         $.ajax({
@@ -355,71 +360,71 @@ $(function () {
                         });
                     }
                     // $('.submit-btn').prop('disabled', false)    
-                }    
+                }
             }
         })
 
-        $(document).on('click', '.editor_remove', function(e){
-            if(e.target.baseURI.indexOf("sites") != -1){
+        $(document).on('click', '.editor_remove', function (e) {
+            if (e.target.baseURI.indexOf("sites") != -1) {
                 site_id = e.target.dataset.site_id
             }
         })
 
         $('#modal-confirm-remove-site').on('show.bs.modal', function (e) {
-            $(document).on('click', '#submit-remove-site', function(e){
+            $(document).on('click', '#submit-remove-site', function (e) {
                 $.ajax({
-                    type: "DELETE",                
+                    type: "DELETE",
                     url: '/sites/' + site_id
-                }).done(function (e) {                
+                }).done(function (e) {
                     $('.submit-btn').prop('disabled', false)
-                    site_id = ''                
+                    site_id = ''
                     restoreDefaultTabState();
                     siteTable.draw();
                     $('#modal-confirm-remove-site').modal('hide');
-                });   
-            })        
+                });
+            })
         })
 
-        $(document).on('click', '.editor_create ', function(e){
+        $(document).on('click', '.editor_create ', function (e) {
             // if(e.target.baseURI.indexOf("sites") != -1){ //Onload dropdown condition check
-                if (0 != 1){
+            if (0 != 1) {
                 $.ajax({
                     type: "GET",
                     url: '/employee_companies/get_all'
                 }).done(function (response) {
                     orig_service_html = $("#services").html()
                     allCompanies = response.employee_companies
-                    
+
                     logisticsCompanies = response.logistics_companies
                     current_user = response.current_user.entity_type
-                    setTimeout(function(){                     
-                        for(var i = 0; i < allCompanies.length; i++){
+                    setTimeout(function () {
+                        for (var i = 0; i < allCompanies.length; i++) {
                             $('#company').append($('<option>', {
                                 value: allCompanies[i].id,
                                 text: allCompanies[i].name
                             }));
                         }
-                        for(var i = 0; i < logisticsCompanies.length; i++){
+                        for (var i = 0; i < logisticsCompanies.length; i++) {
                             $('#operator').append($('<option>', {
                                 value: logisticsCompanies[i].id,
                                 text: logisticsCompanies[i].name
                             }));
-                        }   
-                        if(current_user == 'Operator') {
+                        }
+                        if (current_user == 'Operator') {
                             $("#cgst_1").parent().css("display", "block")
                             $("#sgst_1").parent().css("display", "block")
                             $("#addServicesDiv").css("display", "block")
                             $("#services").css("display", "block")
                         }
-                    }, 500);            
-                });        
+                    }, 500);
+                });
             }
         })
 
-//  listing for state
-        $(document).on('click', '.editor_create ', function(e){
-           // if(e.target.baseURI.indexOf("sites") != -1){  // Onload Dropdown condition failing
-            if(0 != -1){
+        //  listing for state
+        $(document).on('click', '.editor_create ', function (e) {
+            // if(e.target.baseURI.indexOf("sites") != -1){  // Onload Dropdown condition failing
+            if (0 != -1) {
                 $.ajax({
                     type: "GET",
                     url: '/employee_companies/get_all'
@@ -427,76 +432,131 @@ $(function () {
                     orig_service_html = $("#site_html").html()
                     states = response.states
                     console.log(states);
-                    setTimeout(function(){                     
-                        for(var i = 0; i < states.length; i++){
+                    setTimeout(function () {
+                        for (var i = 0; i < states.length; i++) {
                             $('#state, #party_state').append($('<option>', {
                                 value: states[i].state,
                                 text: states[i].state
                             }));
                         }
-                        if(current_user == 'Operator') {
+                        if (current_user == 'Operator') {
                             $("#cgst_1").parent().css("display", "block")
                             $("#sgst_1").parent().css("display", "block")
                             $("#addServicesDiv").css("display", "block")
                             $("#services").css("display", "block")
                         }
-                    }, 500);            
-                });        
+                    }, 500);
+                });
             }
         })
 
-      //  listing for city
-        $(document).on('click', '.editor_create ', function(e){
+        //  listing for city
+        $(document).on('click', '.editor_create ', function (e) {
             // if(e.target.baseURI.indexOf("sites") != -1){ // Onload Dropdown condition failing
-                if(0 != -1){
+            if (0 != -1) {
                 $.ajax({
                     type: "GET",
                     url: '/employee_companies/get_all'
                 }).done(function (response) {
                     orig_service_html = $("#site_html").html()
                     cities = response.cities
-                    setTimeout(function(){                     
-                        for(var i = 0; i < cities.length; i++){
+                    setTimeout(function () {
+                        for (var i = 0; i < cities.length; i++) {
                             $('#city, #party_city, #party_business_area, #business_area , #branch_name ').append($('<option>', {
                                 value: cities[i].city_name,
                                 text: cities[i].city_name
                             }));
                         }
-                        if(current_user == 'Operator') {
+                        if (current_user == 'Operator') {
                             $("#cgst_1").parent().css("display", "block")
                             $("#sgst_1").parent().css("display", "block")
                             $("#addServicesDiv").css("display", "block")
                             $("#services").css("display", "block")
                         }
-                    }, 500);            
-                });        
+
+                        setInputFilter(document.getElementById("phone_1"), function(value) {
+                            if (value.trim().length > 10) {
+                                return false;
+                            }
+                            return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+                        });
+                        setInputFilter(document.getElementById("phone_2"), function(value) {
+                            if (value.trim().length > 10) {
+                                return false;
+                            }
+                            return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+                        });
+                        setInputFilter(document.getElementById("party_phone_1"), function(value) {
+                            if (value.trim().length > 10) {
+                                return false;
+                            }
+                            return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+                        });
+                        setInputFilter(document.getElementById("party_phone_2"), function(value) {
+                            if (value.trim().length > 10) {
+                                return false;
+                            }
+                            return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+                        });
+                        setInputFilter(document.getElementById("pin"), function(value) {
+                            if (value.trim().length > 6) {
+                                return false;
+                            }
+                            return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+                        });
+                        setInputFilter(document.getElementById("party_pin"), function(value) {
+                            if (value.trim().length > 6) {
+                                return false;
+                            }
+                            return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+                        });
+                        setInputFilter(document.getElementById("pan_no"), function(value) {
+                            if (value.trim().length > 10) {
+                                return false;
+                            }
+                            $("#pan_no").val(value.toUpperCase())
+                            return true;
+                        });
+                        setInputFilter(document.getElementById("party_pan_no"), function(value) {
+                            if (value.trim().length >= 10) {
+                                return false;
+                            }
+                            $("#party_pan_no").val(value.toUpperCase())
+                            return true;
+                        });
+                        
+                    }, 500);
+                });
             }
+
+            
+
         })
 
 
-        $(document).on('change', '#operator', function(e){
+        $(document).on('change', '#operator', function (e) {
             choose_operator = false
             logistics_company_id = $("#operator").val()
-            if(edit_site){
+            if (edit_site) {
                 getService('site', site_id, logistics_company_id, orig_service_html)
             }
-            else{
+            else {
                 $("#cgst_1").parent().css("display", "block")
                 $("#sgst_1").parent().css("display", "block")
                 $("#addServicesDiv").css("display", "block")
                 $("#services").css("display", "block")
             }
-        })    
+        })
 
 
-        $(document).on('click', '.cancel', function(e){
-            if(e.target.baseURI.indexOf("sites") != -1){
+        $(document).on('click', '.cancel', function (e) {
+            if (e.target.baseURI.indexOf("sites") != -1) {
                 edit_site = false
                 site_id = ''
                 logistics_company_id = ''
             }
         })
 
-    });    
+    });
 
 });

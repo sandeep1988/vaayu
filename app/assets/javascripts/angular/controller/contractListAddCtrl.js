@@ -25,7 +25,8 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         { name: 'PER HEAD', value: 'Per head', },
         { name: 'PER ZONE', value: 'Per zone', },
         { name: 'PER SLAB', value: 'Per slab', },
-        { name: 'PER PACKAGE', value: 'Per package', }
+        { name: 'PER PACKAGE', value: 'Per package', },
+        { name: 'PER TRIP',   value: 'Per trip' },
     ];
 
     $scope.uniqueId = [

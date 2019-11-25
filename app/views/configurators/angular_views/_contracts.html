@@ -144,7 +144,7 @@
                                         <label class="input-group-btn">
                                             <span class="btn btn-primary">
                                                 Choose File&hellip; <input type="file" style="display: none;"
-                                                    accept=".csv, text/csv, .xls, .xlsx" id="file" name='file'
+                                                    accept=".xls, .xlsx" id="file" name='file'
                                                     onchange="angular.element(this).scope().fileNameChanged(this)">
                                             </span>
                                         </label>
@@ -225,7 +225,7 @@
                                         <label class="input-group-btn">
                                             <span class="btn btn-primary">
                                                 Choose File&hellip; <input type="file" style="display: none;"
-                                                accept=".csv, text/csv, .xls, .xlsx" id="file" name='file'
+                                                accept=".xls, .xlsx" id="file" name='file'
                                                     onchange="angular.element(this).scope().fileNameChanged(this)">
                                             </span>
                                         </label>
@@ -272,7 +272,7 @@
                     </thead>
                     <tbody class="pop-table-body">
                         <tr class="active" ng-repeat="contract in contractList track by $index">
-                            <td>{{contract.customerId}}</td>
+                            <td>{{contract.customer_name}}</td>
                             <td>{{contract.siteName.toUpperCase()}}</td>
                             <td>
                                 <div class="contractListMenu">
@@ -302,7 +302,7 @@
                     <tbody class="pop-table-body">
                         <tr class="active" ng-repeat="contract in bacontractList track by $index">
                             <!-- <td>{{contract.customerId}}</td> -->
-                            <td>{{getSelectedBA()}}</td>
+                            <td>{{contract.ba_name}}</td>
                             <td>
                                 <div class="contractListMenu">
                                     <a ng-repeat="uid in contract.uniqueId.split('|')">{{uid}} </a>

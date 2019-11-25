@@ -26,8 +26,6 @@ $(function () {
       states = response.states.map(item => { return {label: item.state, value: item.id}} );
       cities = response.cities.map(item => { return {label: item.city_name, value: item.id}} );
       // {label, value}
-      console.log('umar-states', cities);
-
         employeeCompaniesTableEditor = new $.fn.dataTable.Editor({
           table: table,
           ajax: {
@@ -45,9 +43,9 @@ $(function () {
               }
           },
           fields: [{
-              label: "Name",
+              label: "Name *",
               className: "col-md-4",
-              name: "name"
+              name: "name",
           },
           {
               label: "HQ Address",
@@ -58,9 +56,10 @@ $(function () {
               className: "col-md-4",
               name: "business_type"
           }, {
-              label: 'PAN',
+              label: 'PAN *',
               className: "col-md-4 clear",
-              name: "pan"
+              name: "pan",
+              attr: { maxlength: 10, id:'pan' }
           }, {
               label: 'Service Tax No.',
               className: "col-md-4",
@@ -70,64 +69,67 @@ $(function () {
               className: "col-md-4",
               name: "zone"
           }, {
-              label: 'Category',
+              label: 'Category*',
               className: "col-md-4",
               name: "category",
              
            } , {
-              label: 'Billing To',
+              label: 'Billing To*',
               className: "col-md-4",
               name: "billing_to"
            } ,
   
             {
-              label: 'Contact Name',
+              label: 'Home Contact Name*',
               className: "col-md-4",
               name: "home_address_contact_name"
             },
             {
-              label: 'Address 1',
+              label: 'Home Address 1*',
               className: "col-md-4",
               name: "home_address_address_1"
             },
             {
-              label: 'Address 2',
+              label: 'Home Address 2*',
               className: "col-md-4",
               name: "home_address_address_2"
             },
             {
-              label: 'Address 3',
+              label: 'Home Address 3*',
               className: "col-md-4",
               name: "home_address_address_3"
             },
             {
-              label: 'PIN',
+              label: 'Home PIN*',
               className: "col-md-4",
-              name: "home_address_pin"
+              name: "home_address_pin",
+              attr: { maxlength: 6, id:'home_address_pin' }
             },
             {
-              label: 'State',
+              label: 'Home State*',
               className: "col-md-4 home_address_state",
               name: "home_address_state",
               type:"select",
               options:states
             },
             {
-              label: 'City',
+              label: 'Home City*',
               className: "col-md-4",
               name: "home_address_city",
               type:"select",
               options:cities
             },
             {
-              label: 'Phone 1',
+              label: 'Home Phone 1*',
               className: "col-md-4",
-              name: "home_address_phone_1"
+              name: "home_address_phone_1",
+              attr: { maxlength: 10, id:'home_address_phone_1' }
             },
             {
               label: 'Phone 2',
               className: "col-md-4",
-              name: "home_address_phone_2"
+              name: "home_address_phone_2",
+              attr: { maxlength: 10, id:'home_address_phone_2' }
             },
             {
               label: 'Business Area ',
@@ -135,9 +137,10 @@ $(function () {
               name: "home_address_business_area"
             },
             {
-              label: 'PAN No ',
+              label: 'Home PAN No*',
               className: "col-md-4",
-              name: "home_address_pan_no"
+              name: "home_address_pan_no",
+              attr: { maxlength: 10, id:'home_address_pan_no' }
             },
             {
               label: 'GSTIN No ',
@@ -145,63 +148,67 @@ $(function () {
               name: "home_address_gstin_no"
             },
             {
-              label: 'Registered Contact Name',
+              label: 'Registered Contact Name*',
               className: "col-md-4",
               name: "registered_contact_name"
             },
             {
-              label: 'Registered Address 1',
+              label: 'Registered Address 1*',
               className: "col-md-4",
               name: "registered_address1"
             },
             {
-              label: 'Registered Address 2',
+              label: 'Registered Address 2*',
               className: "col-md-4",
               name: "registered_address2"
             },
             {
-              label: 'Registered Address 3',
+              label: 'Registered Address 3*',
               className: "col-md-4",
               name: "registered_address3"
             },
             {
-              label: 'Registered Pin',
+              label: 'Registered Pin*',
               className: "col-md-4",
-              name: "registered_pin"
+              name: "registered_pin",
+              attr: { maxlength: 6, id:'registered_pin' }
             },
             {
-              label: 'Registered State',
+              label: 'Registered State*',
               className: "col-md-4",
               name: "registered_state",
               type:"select",
               options:states
             },
             {
-              label: 'Registered City',
+              label: 'Registered City*',
               className: "col-md-4",
               name: "registered_city",
               type:"select",
               options:cities
             },
             {
-              label: 'Registered Phone1',
+              label: 'Registered Phone1*',
               className: "col-md-4",
-              name: "registered_phone1"
+              name: "registered_phone1",
+              attr: { maxlength: 10, id:'registered_phone1' }
             },
             {
               label: 'Registered Phone2',
               className: "col-md-4",
-              name: "registered_phone2"
-            },
-            {
-              label: 'Registered Phone2',
-              className: "col-md-4",
-              name: "registered_phone3"
+              name: "registered_phone2",
+              attr: { maxlength: 10, id:'registered_phone2' }
             },
             {
               label: 'Registered Business Area',
               className: "col-md-4",
               name: "registered_business_area"
+            },
+            {
+              label: 'Registered PAN No *',
+              className: "col-md-4",
+              name: "registered_pan_no",
+              attr: { maxlength: 10, id:'registered_pan_no' }
             },
             {
               label: 'Registered GSTIN No',
@@ -223,6 +230,9 @@ $(function () {
       employeeCompaniesTableEditor.on('preSubmit', function (e, o, action) {
           if (action !== 'remove') {
               var name = employeeCompaniesTableEditor.field('name');
+              var pan = employeeCompaniesTableEditor.field('pan');
+              var category = employeeCompaniesTableEditor.field('category');
+              var billing_to = employeeCompaniesTableEditor.field('billing_to');
   
               if (!name.isMultiValue()) {
                   if (!name.val()) {
@@ -232,6 +242,118 @@ $(function () {
                       name.error('The company name length must be more than 3 characters');
                   }
               }
+              var panValue = pan.val().trim();
+              if (panValue.length == 0) {
+                pan.error('Pan number must be given.');
+              } else {
+                if (/^([a-zA-Z]){0,5}([0-9]){0,4}([a-zA-Z]){1}?$/.test(panValue)){
+
+                } else {
+                  pan.error('Invalid Pan number.');
+                }
+              }
+
+              if (category.val().trim().length == 0) {
+                category.error('Category must be given.');
+              } 
+              if (billing_to.val().trim().length == 0) {
+                billing_to.error('Billing must be given.');
+              } 
+
+              var home_address_contact_name = employeeCompaniesTableEditor.field('home_address_contact_name');
+              var home_address_address_1 = employeeCompaniesTableEditor.field('home_address_address_1');
+              var home_address_address_2 = employeeCompaniesTableEditor.field('home_address_address_2');
+              var home_address_address_3 = employeeCompaniesTableEditor.field('home_address_address_3');
+              var home_address_pin = employeeCompaniesTableEditor.field('home_address_pin');
+              var home_address_state = employeeCompaniesTableEditor.field('home_address_state');
+              var home_address_city = employeeCompaniesTableEditor.field('home_address_city');
+              var home_address_phone_1 = employeeCompaniesTableEditor.field('home_address_phone_1');
+              var home_address_pan_no = employeeCompaniesTableEditor.field('home_address_pan_no');
+              
+              if (home_address_contact_name.val().trim().length == 0) {
+                home_address_contact_name.error('Home Contact Name must be given.');
+              }
+              if (home_address_address_1.val().trim().length == 0) {
+                home_address_address_1.error('Home Address 1 must be given.');
+              }
+              if (home_address_address_2.val().trim().length == 0) {
+                home_address_address_2.error('Home Address 2 must be given.');
+              }
+              if (home_address_address_3.val().trim().length == 0) {
+                home_address_address_3.error('Home Address 3 must be given.');
+              }
+              if (home_address_pin.val().trim().length == 0) {
+                home_address_pin.error('Home pincode must be given.');
+              }
+              if (home_address_state.val() == null) {
+                home_address_state.error('Home State must be given.');
+              }
+              if (home_address_city.val() == null) {
+                home_address_city.error('Home City must be given.');
+              }
+              if (home_address_phone_1.val().trim().length == 0) {
+                home_address_phone_1.error('Home Phone 1 must be given.');
+              }
+
+              var panValue2 = home_address_pan_no.val().trim();
+              if (panValue2.length == 0) {
+                home_address_pan_no.error('Home Address Pan number must be given.');
+              } else {
+                if (/^([a-zA-Z]){0,5}([0-9]){0,4}([a-zA-Z]){1}?$/.test(panValue2)){
+
+                } else {
+                  home_address_pan_no.error('Invalid Home Address Pan number.');
+                }
+              }
+
+              
+              var registered_contact_name = employeeCompaniesTableEditor.field('registered_contact_name');
+              var registered_address1 = employeeCompaniesTableEditor.field('registered_address1');
+              var registered_address2 = employeeCompaniesTableEditor.field('registered_address2');
+              var registered_address3 = employeeCompaniesTableEditor.field('registered_address3');
+              var registered_pin = employeeCompaniesTableEditor.field('registered_pin');
+              var registered_state = employeeCompaniesTableEditor.field('registered_state');
+              var registered_city = employeeCompaniesTableEditor.field('registered_city');
+              var registered_phone1 = employeeCompaniesTableEditor.field('registered_phone1');
+              var registered_pan_no = employeeCompaniesTableEditor.field('registered_pan_no');
+              
+
+              if (registered_contact_name.val().trim().length == 0) {
+                registered_contact_name.error('Registered Contact Name must be given.');
+              }
+              if (registered_address1.val().trim().length == 0) {
+                registered_address1.error('Registered Address 1 must be given.');
+              }
+              if (registered_address2.val().trim().length == 0) {
+                registered_address2.error('Registered Address 2 must be given.');
+              }
+              if (registered_address3.val().trim().length == 0) {
+                registered_address3.error('Registered Address 3 must be given.');
+              }
+              if (registered_pin.val().length == 0) {
+                registered_pin.error('Registered pincode must be given.');
+              }
+              if (registered_state.val() == null) {
+                registered_state.error('Registered State must be given.');
+              }
+              if (registered_city.val() == null) {
+                registered_state.error('Registered City must be given.');
+              }
+              if (registered_phone1.val().trim().length == 0) {
+                registered_phone1.error('Registered Phone 1 must be given.');
+              }
+
+              var panValue1 = registered_pan_no.val().trim();
+              if (panValue1.length == 0) {
+                registered_pan_no.error('Registered Address Pan number must be given.');
+              } else {
+                if (/^([a-zA-Z]){0,5}([0-9]){0,4}([a-zA-Z]){1}?$/.test(panValue1)){
+
+                } else {
+                  registered_pan_no.error('Invalid Registered Address Pan number.');
+                }
+              }
+
   
               if (this.inError()) {
                   return false;
@@ -239,11 +361,12 @@ $(function () {
           }
       });
     });  
+
+
   
 
     $('a[href="#employee-company"]').on('shown.bs.tab', function () {
         if (!loadedDatatables[table]) {
-           console.log("I am here umar ", states);
             $(table).dataTable({
                 serverSide: true,
                 ajax: "/employee_companies",
@@ -333,6 +456,9 @@ $(function () {
     $(document).on('click', '.provisioning a.editor_create.employee-company', function (e) {
         e.preventDefault();
 
+       
+        // $("#home_address_pin").rules("add", { regex: "^[0-9]{1,6}$" })
+        
         employeeCompaniesTableEditor
             .title('Add New Company')
             .buttons([{
@@ -350,7 +476,45 @@ $(function () {
             }])
             .create();
             $('input').removeAttr('disabled'); //Rushikesh added code here
+
+            setInputFilter(document.getElementById("home_address_pin"), function(value) {
+              return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+            });
+            setInputFilter(document.getElementById("home_address_pin"), function(value) {
+              return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+            });
+            setInputFilter(document.getElementById("home_address_phone_1"), function(value) {
+              return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+            });
+            setInputFilter(document.getElementById("home_address_phone_2"), function(value) {
+              return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+            });
+            setInputFilter(document.getElementById("registered_phone1"), function(value) {
+              return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+            });
+            setInputFilter(document.getElementById("registered_phone2"), function(value) {
+              return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+            });
+            setInputFilter(document.getElementById("pan"), function(value) {
+              $("#pan").val(value.toUpperCase())
+              // return /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/.test(value); // Allow digits and '.' only, using a RegExp
+              return true;
+            });
+            setInputFilter(document.getElementById("home_address_pan_no"), function(value) {
+              $("#home_address_pan_no").val(value.toUpperCase())
+              return true;
+              // return /^([a-zA-Z]){0,5}([0-9]){0,4}([a-zA-Z]){1}?$/.test(value); // Allow digits and '.' only, using a RegExp
+            });
+            setInputFilter(document.getElementById("registered_pan_no"), function(value) {
+              $("#registered_pan_no").val(value.toUpperCase())
+              return true;
+              // return /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/.test(value); // Allow digits and '.' only, using a RegExp
+            });
+            
+            
     });
+
+    
 
     // Delete record
     $(table).on('click', 'a.editor_remove', function (e) {

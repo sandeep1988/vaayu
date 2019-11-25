@@ -43,7 +43,7 @@ $(function () {
 
         $('.provisioning .edit-buttons').hide();
         // Display add button
-        if(currentTab.toLowerCase() != "general settings" && currentTab.toLowerCase() != 'system settings' && currentTab.toLowerCase() != 'compliances') { 
+        if (currentTab.toLowerCase() != "general settings" && currentTab.toLowerCase() != 'system settings' && currentTab.toLowerCase() != 'compliances') {
             if (!$addItemButton.is(":visible")) {
                 $('.provisioning .action-buttons').fadeIn(200);
                 $addItemButton.show();
@@ -55,7 +55,7 @@ $(function () {
         $addItemButton
             .removeClass($prevTabWrap.attr('class'))
             .addClass($nextTabWrap.attr('class'));
-        submitBtn.removeClass (function (index, className) { return (className.match (/\bform-\S+/g) || []).join(' ');});
+        submitBtn.removeClass(function (index, className) { return (className.match(/\bform-\S+/g) || []).join(' '); });
         submitBtn.addClass('form-' + $nextTabWrap.attr('class'));
 
         // change data attr depend on tab type
@@ -77,7 +77,7 @@ $(function () {
                     .attr('data-toggle', '')
                     .attr('data-remote', 'true')
                     .attr('href', source);
-                    console.log(source);
+                console.log(source);
                 submitBtn.attr('form', 'form-' + $nextTabWrap.attr('class'));
         }
 
@@ -98,13 +98,13 @@ $(function () {
         }
     });
 
-    $(".resource-headers a").on("click", function(){
+    $(".resource-headers a").on("click", function () {
         $(".resource-headers a.active").removeClass("active");
         $('.provisioning .action-buttons .ingest').addClass('hide', 200);
-        $.each($(".nav-tabs li.active"), function(i, e) { $(e).removeClass("active") });
+        $.each($(".nav-tabs li.active"), function (i, e) { $(e).removeClass("active") });
         switch ($(this).attr("href")) {
             case '#places':
-                if($(".places ul li a").size() > 1) {
+                if ($(".places ul li a").size() > 1) {
                     showPlaces();
                     $(".places ul li a")[1].click();
                 } else {
@@ -112,7 +112,7 @@ $(function () {
                 }
                 break;
             case '#things':
-                if($(".things ul li a").size() > 1) {
+                if ($(".things ul li a").size() > 1) {
                     showThings();
                     $(".things ul li a")[1].click();
                 } else {
@@ -173,11 +173,11 @@ function hideSaveButton() {
 /**
  * Restore default tab state
  */
-function restoreDefaultTabState(currentTab="") {
-    switch(currentTab.toLowerCase()){
+function restoreDefaultTabState(currentTab = "") {
+    switch (currentTab.toLowerCase()) {
         case 'compliances':
             $('.provisioning .save-button').hide()
-            $('.provisioning .action-buttons').show()        
+            $('.provisioning .action-buttons').show()
             break;
         case 'general settings':
             hideEditActions();
@@ -237,9 +237,9 @@ function enableCurrentTab(activeTab) {
 
     if (places.includes(activeTab)) {
         showPlaces();
-    }else if (things.includes(activeTab)) {
+    } else if (things.includes(activeTab)) {
         showThings();
-    }else {
+    } else {
         $(".resource-headers a:first-child").addClass("active");
         $(".things").hide();
         $(".places").hide();
@@ -275,4 +275,22 @@ function showErrorMessage(msg) {
 
 function removeErrorMessage(msg) {
     $('#error-placement').html('');
+}
+
+
+function setInputFilter(textbox, inputFilter) {
+    ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
+        textbox.addEventListener(event, function () {
+            if (inputFilter(this.value)) {
+                this.oldValue = this.value;
+                this.oldSelectionStart = this.selectionStart;
+                this.oldSelectionEnd = this.selectionEnd;
+            } else if (this.hasOwnProperty("oldValue")) {
+                this.value = this.oldValue;
+                this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+            } else {
+                this.value = "";
+            }
+        });
+    });
 }

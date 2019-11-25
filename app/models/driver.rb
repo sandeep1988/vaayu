@@ -58,7 +58,7 @@ class Driver < ApplicationRecord
   validates :bank_no, length: { is: 16 }, format: { with: /\A\d+\z/, message: "Please enter only Number." }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :licence_number, format: { with: /\A(?=.*[a-z])[a-z\d]+\Z/i, message: "Please enter alphanumeric ." }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # validates :licence_number, format: { with: ^[a-zA-Z0-9]+$ }
-  validates_length_of :licence_number, maximum: 16 , :if => Proc.new{|f| f.registration_steps == "Step_1"}
+  validates_length_of :licence_number, maximum: 25 , :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :bank_name, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :bank_name, format: { with: /[a-zA-Z0-9]/, message: "Please enter alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :date_of_birth, presence: true , :if => Proc.new{|f| f.registration_steps == "Step_1"}
@@ -82,8 +82,8 @@ class Driver < ApplicationRecord
    has_attached_file :driving_registration_form_doc
    validates_attachment :driving_registration_form_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
-   has_attached_file :profile_picture
-   validates_attachment :profile_picture, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
+    has_attached_file :profile_picture
+   validates_attachment :profile_picture, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_1"}
 
    has_attached_file :sexual_policy_doc
    validates_attachment :sexual_policy_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
