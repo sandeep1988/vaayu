@@ -84,7 +84,7 @@
                 </thead>
                 <tbody class="pop-table-body">
                     <tr ng-repeat="item in zoneList track by $index">
-                        <td>{{item.site_id}}</td>
+                        <td>{{getSelectedSite(item.site_id)}}</td>
                         <td>{{item.name}}</td>
                         <!-- <td>{{item.latitude}}</td>
                         <td>{{item.longitude }}</td> -->

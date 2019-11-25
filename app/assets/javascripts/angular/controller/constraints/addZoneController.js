@@ -158,6 +158,20 @@ angular.
       });
     }
 
+    $scope.getSelectedSite = (siteID) => {
+      var name = 'NA';
+      for (const item of $scope.site_list) {
+        if(item.id == siteID){
+          name = item.name;
+          break;
+        }
+      }
+      // angular.forEach($scope.site_list,function(item,idx,shiftArray){
+        
+      // });
+      return name;
+  }
+
     // // Restricts input for the given textbox to the given inputFilter.
     // $scope.setInputFilter = (textbox, inputFilterRegex) => {
     //   ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
