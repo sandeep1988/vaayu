@@ -30,6 +30,8 @@ module Overrides
       app = resource_params[:app]
       if app.blank? 
         render_create_error_app_not_specified
+      elsif resource_params[:app] == "driver" && @resource.entity.present? && (@resource.entity.blacklisted? || !@resource.entity.active?)
+        render_blocked_user
       elsif @resource and valid_params?(field, q_value) and @resource.valid_password?(resource_params[:password]) and (!@resource.respond_to?(:active_for_authentication?) or @resource.active_for_authentication?) and @resource.has_access_to_app?(resource_params[:app])
 
         # create client id
@@ -81,6 +83,13 @@ module Overrides
                  success: false,
                  errors: ['Please specify app type in your request: driver or employee']
              }, status: 422
+    end
+
+    def render_blocked_user
+      render json: {
+        success: false,
+        errors: ['Your account has blocked']
+        }, status: 422
     end
 
     private

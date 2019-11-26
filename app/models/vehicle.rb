@@ -159,7 +159,7 @@ class Vehicle < ApplicationRecord
 
   def validate_authorization_certificate_validity_date
     if self.authorization_certificate_validity_date.present? && Date.today > self.authorization_certificate_validity_date 
-        errors.add(:authorization_certificate_validity_date, 'Your fitness validity date has expired.')
+        errors.add(:authorization_certificate_validity_date, 'Your authorization validity date has expired.')
     end
   end
 

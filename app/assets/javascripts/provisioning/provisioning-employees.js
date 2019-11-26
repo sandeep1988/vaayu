@@ -308,6 +308,8 @@ $(function () {
         clearTimeout(focusOutTimer);
         $.call("/employees/validate", $("#form-employees"), "", "", true);
         $("select.required").focusout();
+        var table = $('#dataTables_wrapper').DataTable();
+        table.ajax.reload();
         e.preventDefault();
     })
 

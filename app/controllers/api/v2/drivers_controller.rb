@@ -86,7 +86,7 @@ class API::V2::DriversController < ApplicationController
       end
     end
     else 
-      render json: {success: true , message: "You have not used", data: { driver: @driver } },status: :ok
+      render json: {success: true , message: "You have not used registration steps ", data: { driver: @driver } },status: :ok
     end
   end
 
