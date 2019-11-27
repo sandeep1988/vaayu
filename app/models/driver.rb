@@ -97,6 +97,9 @@ class Driver < ApplicationRecord
    has_attached_file :bgc_doc
    validates_attachment :bgc_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
+    has_attached_file :other_doc
+     validates_attachment :other_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
+
   validate :validate_birth_date, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # before_save :validate_licence_expiry_date#, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # before_save :validate_badge_expire_date, :if => Proc.new{|f| f.registration_steps == "Step_2"}
