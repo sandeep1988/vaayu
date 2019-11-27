@@ -74,6 +74,7 @@ class API::V2::DriversController < ApplicationController
             upload_police_verification_vailidty_doc(@driver) if @driver.present?
             upload_bgc_doc(@driver) if @driver.present?
             upload_medically_certified_doc(@driver) if @driver.present?
+            upload_other_docs_url(@driver) if @driver.present?
             @driver.update(induction_status: "Registered")
             @driver.update(compliance_status: "Ready For Allocation")
             @driver.update(date_of_registration: Time.now )
@@ -310,11 +311,11 @@ class API::V2::DriversController < ApplicationController
     end
   end
 
-  # def upload_profile_picture_url(driver)
-  #   if driver.profile_picture.url.present?
-  #     driver.update(profile_picture_url: driver.profile_picture.url.gsub("//",''))
-  #   end
-  # end
+  def upload_other_docs_url(driver)
+    if driver.other_doc.url.present?
+      driver.update(other_docs_url: driver.other_doc.url.gsub("//",''))
+    end
+  end
 
     def set_driver
       @driver = Driver.find_by(params[:id])
@@ -405,6 +406,6 @@ class API::V2::DriversController < ApplicationController
     def driver_params
       # params.permit(:business_associate_id, :licence_number, :aadhaar_mobiformat: { with: /\A[a-z]*\z/i, message:  "Name must only contain letters." },le_number,:date_of_birth,:marital_status,:gender,:blood_group, :driver_name, :father_spouse_name, :alternate_number, :licence_type, :licence_validity, :local_address, :permanent_address, :total_experience,:business_state, :business_city, :qualification, :date_of_registration, :badge_number, :badge_issue_date,:badge_expiry_date, :verified_by_police, :police_verification_vailidty,:date_of_police_verification, :criminal_offence, :bgc_date, :bgc_agency_id, :medically_certified_date, :sexual_policy, :bank_name, :bank_no, :ifsc_code, :status, :blacklisted, :driving_license_doc_url, :driver_badge_doc_url, :id_proof_doc_url, :sexual_policy_doc_url,:police_verification_vailidty_doc_url,:medically_certified_doc_url, :bgc_doc_url,:profile_picture_url,:other_docs_url,:driving_registration_form_doc_url, :created_by, :updated_by,
       #   :site_id )
-      params.permit(:business_associate_id, :licence_number, :driver_name, :alternate_number,:date_of_birth,:father_spouse_name, :gender, :blood_group, :licence_type, :licence_validity, :badge_number, :badge_expire_date, :ifsc_code,:bank_name, :bank_no,:profile_picture_url,:driver_badge_doc_url,:driving_license_doc_url,:id_proof_doc_url,:driving_registration_form_doc_url,:business_city,:business_state,:registration_steps, :aadhaar_mobile_number,:driving_license_doc, :driver_badge_doc, :id_proof_doc, :driving_registration_form_doc,  :profile_picture, :police_verification_vailidty_doc, :police_verification_vailidty_doc_url, :sexual_policy_doc, :sexual_policy_doc_url, :medically_certified_doc, :medically_certified_doc_url, :bgc_doc, :bgc_doc_url, :f_name, :l_name, :blacklisted,:site_id )
+      params.permit(:business_associate_id, :licence_number, :driver_name, :alternate_number,:date_of_birth,:father_spouse_name, :gender, :blood_group, :licence_type, :licence_validity, :badge_number, :badge_expire_date, :ifsc_code,:bank_name, :bank_no,:profile_picture_url,:driver_badge_doc_url,:driving_license_doc_url,:id_proof_doc_url,:driving_registration_form_doc_url,:business_city,:business_state,:registration_steps, :aadhaar_mobile_number,:driving_license_doc, :driver_badge_doc, :id_proof_doc, :driving_registration_form_doc,  :profile_picture, :police_verification_vailidty_doc, :police_verification_vailidty_doc_url, :sexual_policy_doc, :sexual_policy_doc_url, :medically_certified_doc, :medically_certified_doc_url, :bgc_doc, :bgc_doc_url, :f_name, :l_name, :blacklisted,:site_id, :other_doc, :other_docs_url)
     end
 end
