@@ -23,6 +23,10 @@ angular.module('app').factory('RosterService', ['$resource', 'BASE_URL_8002', 'B
         url: BASE_URL_8002 + 'get_all_employees',
         method: "POST"
       },
+      getEmployeesInRoster: {
+        url: BASE_URL_8002 + 'getRosterEmpDetails',
+        method: "POST"
+      },
     });
 
   }]);

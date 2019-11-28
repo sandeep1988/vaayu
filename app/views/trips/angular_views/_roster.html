@@ -142,7 +142,7 @@
             <tbody ng-show="rosters.length">
               <tr ng-class="{'active': ($index % 2) === 0}" ng-repeat="roster in rosters">
                 <th scope="row">
-                  <a href="">{{roster.name}}</a>
+                  <a href="" ng-click="showPopupWindow(roster)">{{roster.name}}</a>
                 </th>
                 <td>{{roster.start_time}}</td>
                 <td>{{roster.shift_type}}</td>
@@ -158,23 +158,29 @@
                 <td class="text-color-blue " style="color: #14a89e !important;"><b>{{roster.result}}</b></td>
                 <td>
                   <div class="">
-                    <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && roster.routesGenerated" 
-                      type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-block">Routes Generated</button>
+
+                      <!-- <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated"
+                      ng-click="generateRoutes(roster)" type="button"
+                      class="btn btn-sm-vaayu btn-terniary-blue btn-block">Generate</button> -->
+
+                    <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && roster.routesGenerated" type="button"
+                      class="btn btn-sm-vaayu btn-terniary-disable btn-block">Routes Generated</button>
                     <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated && roster.disableGenerate" 
                       type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-block">Generate</button>
                     <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated && !roster.disableGenerate" ng-click="generateRoutes(roster)"
                       type="button" class="btn btn-sm-vaayu btn-terniary-blue btn-block">Generate</button>
-                    
-                    <!-- <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated" ng-click="generateRoutes(roster)"
-                      type="button" class="btn btn-sm-vaayu btn-terniary-blue btn-block">Generate</button> -->
-                    
+
+                  
+
+                      
                     <!-- <button ng-if="roster.result=='REQUIRED MORE VEHICLE'" ng-click="addVehicleToRoster(roster)"
                       type="button" class="btn btn-sm-vaayu btn-terniary btn-block">Add Vehicle</button> -->
 
-                  <button ng-if="roster.result=='REQUIRED MORE VEHICLE' && !roster.disableGenerate" ng-click="addVehicleToRoster(roster)"
-                      type="button" class="btn btn-sm-vaayu btn-terniary btn-block">Add Vehicle</button>
-                    <button ng-if="roster.result=='REQUIRED MORE VEHICLE' && roster.disableGenerate" 
-                      type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-block">Add Vehicle</button>
+                    <button ng-if="roster.result=='REQUIRED MORE VEHICLE' && !roster.disableGenerate"
+                      ng-click="addVehicleToRoster(roster)" type="button"
+                      class="btn btn-sm-vaayu btn-terniary btn-block">Add Vehicle</button>
+                    <button ng-if="roster.result=='REQUIRED MORE VEHICLE' && roster.disableGenerate" type="button"
+                      class="btn btn-sm-vaayu btn-terniary-disable btn-block">Add Vehicle</button>
                   </div>
                 </td>
               </tr>
@@ -221,16 +227,24 @@
                                     </div> -->
             <div class="add-vehicle-card-container">
               <div class="row add-vehicle-card card_flex" ng-repeat="(key, value) in currentRoster.vehicle">
-                
+
                 <div class="col-md-5">
-                  <img ng-if="key== 'SUV'" src="../assets/angular_images/suv.png">
-                  <img ng-if="key== 'TT'" src="../assets/angular_images/tt.png" style="width: auto !important; height: 80px;">
-                  <img ng-if="key== 'SEDAN'" src="../assets/angular_images/sedan.png">
-                  <img ng-if="key== 'HATCHBACK'" src="../assets/angular_images/hatchback.png">
-                  <img ng-if="key== 'MINI VAN'" src="../assets/angular_images/mini_van.png" >
+                  <img ng-if="key== 'SUV'" src="../assets/angular_images/ic_suv.png" style="padding: 15px; height: 75px;">
+                  <img ng-if="key== 'TT'" src="../assets/angular_images/ic_tt.png"
+                  style="padding: 15px; height: 75px;"
+                    >
+                  <img ng-if="key== 'SEDAN'" src="../assets/angular_images/ic_sedan.png"
+                  style="padding: 15px; height: 75px;"
+                  >
+                  <img ng-if="key== 'HATCHBACK'" src="../assets/angular_images/ic_hatchback.png"
+                  style="height: 42px;"
+                  >
+                  <img ng-if="key== 'MINI VAN'" src="../assets/angular_images/ic_minivan.png"
+                  style="padding: 15px; height: 75px;"
+                  >
                   <span class="text-center text-key-name"
                     ng-if="!(key== 'SEDAN' || key== 'TT' || key== 'SUV' || key== 'HATCHBACK' || key== 'MINI VAN')"
-                    style="display: block;">{{key}}</span>
+                    style="display: block; margin-left: 35px; text-align: left !important;">{{key}}</span>
                 </div>
                 <div class="col-md-2" ng-click="minusVehicle(key)"><i
                     class="pointer fa fa-minus-circle add-vehicle-plus-minus-button" aria-hidden="true"></i></div>
@@ -321,10 +335,9 @@
             </div>
             <div class="row">
               <div class="col-md-12">
-                <div ng-dropdown-multiselect="" class="form-control ml_selec" options="EmpList" selected-model="SelectedEmp "
-                  checkboxes="true" extra-settings="example14settings" validation="required"
-                  search-placeholder="   Search Employee's    "
-                  validation-result="SelectedEmp">
+                <div ng-dropdown-multiselect="" class="form-control ml_selec" options="EmpList"
+                  selected-model="SelectedEmp " checkboxes="true" extra-settings="example14settings"
+                  validation="required" search-placeholder="   Search Employee's    " validation-result="SelectedEmp">
                 </div>
               </div>
               <span ng-show="SelectedEmp .$error.required" class="help-block">Employee is
@@ -381,4 +394,49 @@
     </div>
   </div>
 
-</div>
+  <div id="myModal" class="vaayu-modal" style="display: block;z-index: 4;" ng-show="showPopup">
+
+    <!-- Modal content -->
+    <div class="vaayu-modal-content">
+      <div class="vaayu-modal-header">
+
+        <span>{{selectedRoster.name}}</span>
+        <span class="vaayu-pop-close closepop" ng-click="showPopup=false">&times;</span>
+      </div>
+      <div class="vaayu-modal-body">
+        <div class="row container-fluid">
+          <div class="col-md-12">
+              <!-- table table-bordered table-striped table-condensed -->
+              <div class="filter-block" style="margin-bottom: 10px;">
+                  <input class="form-control"  ng-model="employee_name_search" placeholder="Search Employee Name" style="width:350px; display: inline;" type="text" ng-change="onEmployeeSearch()">
+                  <a class="btn btn-sm" href="#" id="change-request-search" style="margin-left:10px; border:1px solid #E0E4E8; height:30px"><i aria-hidden="true" class="fa fa-search"></i></a>
+              </div>
+              <table class="table table-scroll table-bordered table-striped table-condensed">
+                <thead class="pop-table-head">
+                  <tr>
+                    <th >Employee Name</th>
+                    <th>Gender</th>
+                    <th>Home Address</th>
+                    <th>Lat</th>
+                    <th>Long</th>
+                  </tr>
+                </thead>
+                <tbody class="pop-table-body">
+                  <tr class="active" ng-repeat="item in roster_employees track by $index">
+                    <td><a href="">{{item.empName}}</a></td>
+                    <td>{{item.gender}}</td>
+                    <td>{{item.home_address}}</td>
+                    <td>{{item.lat}}</td>
+                    <td>{{item.lng}}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+        <div class="vaayu-modal-footer">
+          <button type="button" class="vaayu-pop-action-btn" ng-click="showPopup=false"> Close</button>
+        </div>
+      </div>
+    </div>
+
+  </div>

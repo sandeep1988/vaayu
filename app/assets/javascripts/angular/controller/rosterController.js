@@ -82,6 +82,51 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
   }
 
+  $scope.showPopup = false;
+  
+  $scope.showPopupWindow = (roster) => {
+    $scope.showPopup = true;
+    console.log('selectedRoster',roster)
+    $scope.selectedRoster = roster;
+    let postData = {
+      siteId: $scope.selectedSite.id+'',
+      to_date: moment($scope.filterDate).format('YYYY-MM-DD'),
+      shiftId: roster.id+'',
+      tripType: roster.trip_type+''
+    }
+    $scope.real_roster_employees = [];
+    RosterService.getEmployeesInRoster(postData,  (res) => {
+      console.log('getEmployeesInRoster',res);
+
+      if (res['success']) {
+        $scope.real_roster_employees = res.data;
+        $scope.roster_employees = res.data;
+      } else {
+        ToasterService.showError('Error', res['message']);
+      }
+
+    }, (error) => {
+      ToasterService.showError('Error', 'Something went wrong, Try again later.');
+      console.error(error);
+    });
+  }
+
+  
+  $scope.onEmployeeSearch = () => {
+    var searchString = $scope.employee_name_search.trim().toLowerCase();
+
+    if (searchString === "") {
+      $scope.roster_employees = $scope.real_roster_employees;
+      return ;
+    }
+    var array = [];
+    for (let item of $scope.real_roster_employees) {
+      if (item.empName.trim().toLowerCase().startsWith(searchString)) {
+        array.push(item)
+      }
+    }
+    $scope.roster_employees = array;
+  }
 
   $scope.getRosters = (postData) => {
     RosterService.get(postData, function (data) {
