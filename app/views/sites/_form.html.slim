@@ -12,10 +12,14 @@ div#site_html
             label.site_labels for="site_code"
               | site_code
             input#site_code[class="form-control" type="text" name="site_code" value=""]
-          .col-md-4.no-margin
+          .col-md-4.margin-top
             label.site_labels for="sezNonSez"
-              |SEZ-Non SEZ*    
-            input#sezNonSez[class="form-control" type="radio" name="sezNonSez" value="Bike" required= "true"]
+              | Sez / Non Sez
+            select.form-control.sezNonSez#billingModel_1[data-vehicleNumber="1"]
+              option [value="non sez"]
+                | SEZ-Non SEZ
+              option [value="sez"]
+                | SEZ
           .col-md-4.no-margin
             label.site_labels for="lutNo"
               |LUT No    
