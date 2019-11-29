@@ -59,7 +59,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // {lat: -27.467, lng: 153.027}
     // ];
 
-    var directionsService = new google.maps.DirectionsService();
+    // var directionsService = new google.maps.DirectionsService();
     var directionsRenderer = new google.maps.DirectionsRenderer();
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
@@ -492,9 +492,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         try {
           // ToasterService.showToast('info', 'Response Received', $scope.routes.data.routes.length+' Routes found for this shift')
           $scope.originalRoutes = angular.copy($scope.routes.data.routes);
-          $scope.stats = $scope.routes.data.tats[0];
+          $scope.stats  = $scope.routes.data.tats[0];
           console.log($scope.model2)
         } catch (err) {
+          $scope.stats = {no_of_routes: 0, kilometres: 0, male_count: 0, female_count: 0, special: 0};
           $scope.routes = RouteStaticResponse.emptyResponse;
           $scope.routes.data.routes = [];
           ToasterService.showToast('info', 'Response Received', 'No Routes found for this shift')
