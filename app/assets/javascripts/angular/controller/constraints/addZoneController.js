@@ -71,7 +71,7 @@ angular.
         });
     }
 
-    $scope.submitZone = (isValid) => {
+    $scope.submitZone = (form) => {
       console.log($scope.site_list);
       console.log(SessionService.uid)
       $scope.submitted = true;
@@ -79,14 +79,23 @@ angular.
       if ($scope.siteID == null) {
         // alert('Select Site Name');
         ToasterService.showError('Error', 'Select Site Name');
-      } else if (isValid) {
+      } else if (form.$valid && $scope.isValidZipcodes()) {
         $scope.addZone();
       }
 
     };
 
 
-
+    $scope.isValidZipcodes = () => {
+      let array = $scope.zipcode.split(',');
+      for (let item of array) {
+         if (item.trim().length != 6) {
+            ToasterService.showError('Error', 'Invalid zipcode, must contain exact 6 digits.');
+            return false;
+         }
+      }
+      return true;
+    }
 
     $scope.addZone = () => {
 
@@ -107,6 +116,7 @@ angular.
       $http({
         method: 'POST',
         url: 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com/' + 'createZones',
+        // url: 'http://localhost:8002/api/v1/' + 'createZones',
         headers: {
           'content-type': 'application/json',
           'uid': SessionService.uid,
