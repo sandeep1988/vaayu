@@ -1,5 +1,5 @@
 json.extract! @driver, :user_id, :username, :email, :f_name, :m_name, :l_name, :phone
-json.profile_picture @driver.full_avatar_url
+json.profile_picture @driver.profile_picture_url
 
 json.operating_organization do
   json.name @driver.operating_organization_name
