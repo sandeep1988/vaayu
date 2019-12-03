@@ -127,7 +127,7 @@ $(function () {
             {
               label: 'Reference Number *',
               className: "col-md-4",
-              name: "ref_no"
+              name: "reference_no1"
             },
             {
               label: 'Contact Name*',
@@ -148,7 +148,7 @@ $(function () {
             {
               label: 'Active/Inactive',
               className: "col-md-4",
-              name: "active_in_active",
+              name: "active",
               type: "select",
               options: ['Yes', 'No']
             }
@@ -164,7 +164,7 @@ $(function () {
       });
   
       // validate fields
-      employeeCompaniesTableEditor.on('preSubmit', function (e, o, action) {
+      employeeCompaniesTableEditor.on('Submit', function (e, o, action) {
           if (action !== 'remove') {
               var name = employeeCompaniesTableEditor.field('name');
               var pan = employeeCompaniesTableEditor.field('pan');
@@ -179,7 +179,7 @@ $(function () {
                       name.error('The company name length must be more than 3 characters');
                   }
               }
-              var panValue = pan.val().trim();
+              var panValue = $("#pan").val().trim();
               if (panValue.length == 0) {
                 pan.error('Pan number must be given.');
               } else {
@@ -320,10 +320,18 @@ $(function () {
                     {
                         data: "name",
                         render: function (data) {
+                          console.log(data)
                             return '<a href="" class="modal_view">' + data + '</a>'
                         }
                     },
-                    {data: 'hq_address'},
+                    // {data: 'home_address_address_1'},
+                    {
+                        data: null,
+                        render: function (data) {
+
+                            return data.home_address_address_1 + ', ' + data.home_address_address_2
+                        }
+                    },
                     {data: 'business_type'},
                     {data: 'pan'},
                     {data: 'service_tax_no'},
