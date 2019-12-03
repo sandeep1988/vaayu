@@ -8,11 +8,16 @@
 | $("#shift_start_time").timepicker({
 |   showMeridian: false,
 |   defaultTime: false,
+	showInputs: false,
+	disableFocus: true
+
 | }).on('changeTime.timepicker', function(e){ timepickerChangeEvent(e, $('#shift_start_time')) });
 
 | $("#shift_end_time").timepicker({
 |   showMeridian: false,
 |   defaultTime: false,
+	showInputs: false,
+	disableFocus: true
 | }).on('changeTime.timepicker', function(e){ timepickerChangeEvent(e, $('#shift_end_time')) });
 
 | // setDefaultTime();

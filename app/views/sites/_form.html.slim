@@ -9,56 +9,36 @@ div#site_html
               |Site Name*    
             input#siteName[class="form-control" type="text" name="siteName" value="" required= "true"]
           .col-md-4.no-margin.siteFieldsHide
-            label.site_labels for="phone"
-              | Phone    
-            input#phone[class="form-control" type="text" name="phone" value=""]      
-          .col-md-4.no-margin
-            label.site_labels for="company"
-              | Company*    
-            select.form-control#company required="true"
-              option [value="0"] 
-              | Choose Company  
-          .col-md-4.no-margin
-            label.site_labels for="contact_name"
-              | Contact Name*
-            input#contact_name[class="form-control" type="text" name="contact_name" value="" required="true"]    
-          .col-md-4.no-margin
-            label.site_labels for="branch_name"
-              | Branch Name    
-            select.form-control#branch_name
-              option [value="0"]
-                | Choose Branch
-          .col-md-4.no-margin
-            label.site_labels for="address"
-              | Address*
-            input#address[class="form-control" type="text" name="address" value=""]
-          .col-md-4.no-margin.siteFieldsHide
-            label.site_labels for="admin_name"
-              | Adminname
-            input#admin_name[class="form-control" type="text" name="admin_name" value=""]
-          .col-md-4.no-margin.siteFieldsHide
-            label.site_labels for="admin_email_id"
-              | Admin email id
-            input#admin_email_id[class="form-control" type="text" name="admin_email_id" value=""]
-          .col-md-4.no-margin.siteFieldsHide
             label.site_labels for="site_code"
               | site_code
             input#site_code[class="form-control" type="text" name="site_code" value=""]
+          .col-md-4.margin-top
+            label.site_labels for="sezNonSez"
+              | Sez / Non Sez
+            select.form-control.sezNonSez#billingModel_1[data-vehicleNumber="1"]
+              option [value="non sez"]
+                | SEZ-Non SEZ
+              option [value="sez"]
+                | SEZ
           .col-md-4.no-margin
-            label.site_labels for="address_1"
-              | Address Line 1*
-            input#address_1[class="form-control" type="text" name="address_1" value="" required="true"]
+            label.site_labels for="lutNo"
+              |LUT No    
+            input#siteName[class="form-control" type="text" name="lutNo" value="" required= "true"]
           .col-md-4.no-margin
-            label.site_labels for="address_2"
-              | Address Line 2*
-            input#address_2[class="form-control" type="text" name="address_2" value="" required="true"]
+            label.site_labels for="lutDate"
+              |LUT Date    
+            input#siteName[class="form-control" type="text" name="lutDate" value="" required= "true"]        
           .col-md-4.no-margin
-            label.site_labels for="address_3"
-              | Address Line 3
-            input#address_3[class="form-control" type="text" name="address_3" value=""]
+            label.site_labels for="address"
+              | Address 1*
+            input#address[class="form-control" type="text" name="address" value=""]
+          .col-md-4.no-margin
+            label.site_labels for="address2"
+              | Address 2
+            input#address[class="form-control" type="text" name="address2" value=""]
           .col-md-4.no-margin
             label.site_labels for="pin"
-              | Pincode*
+              | PIN*
             input#pin[class="form-control" type="text" name="pin" value="" required="true"]
           .col-md-4.no-margin
             label.site_labels for="state"
@@ -71,7 +51,7 @@ div#site_html
               | City*    
             select.form-control#city
               option [value="0"]
-                | Choose City
+                | Choose City          
           .col-md-4.no-margin
             label.site_labels for="phone_1"
               | Phone 1*
@@ -81,19 +61,43 @@ div#site_html
               | Phone 2
             input#phone_2[class="form-control" type="text" name="phone_2" value=""]
           .col-md-4.no-margin
-            label.site_labels for="pan_no"
-              | PAN No*
-            input#pan_no[class="form-control" type="text" name="pan_no" value="" required="true"]
-          .col-md-4.no-margin
-            label.site_labels for="business_area"
-              | Business Area    
-            select.form-control#business_area
+            label.site_labels for="party_business_area"
+              | MLL Business Area *    
+            select.form-control#party_business_area
               option [value="0"]
-                | Choose Business Area
+                | Choose party business area
+          .col-md-4.no-margin
+            label.site_labels for="pan_no"
+              | PAN *
+            input#pan_no[class="form-control" type="text" name="pan_no" value="" required="true"]   
           .col-md-4.no-margin
             label.site_labels for="gstin_no"
-              | GSTIN No
-            input#gstin_no[class="form-control" type="text" name="gstin_no" value=""]
+              | GSTIN *
+            input#gstin_no[class="form-control" type="text" name="gstin_no" value=""]     
+          .col-md-4.no-margin
+            label.site_labels for="lat"
+              | Lat *
+            input#gstin_no[class="form-control" type="text" name="lat" value=""]
+          .col-md-4.no-margin
+            label.site_labels for="long"
+              | LONG *
+            input#gstin_no[class="form-control" type="text" name="long" value=""]  
+          .col-md-4.no-margin
+            label.site_labels for="proximity_radius"
+              | Proximity Radius (metres)
+            input#gstin_no[class="form-control" type="text" name="proximity_radius" value=""]
+          .col-md-4.no-margin
+            label.site_labels for="party_contact_name"
+              | Contact Name
+            input#party_contact_name[class="form-control" type="text" name="party_contact_name" value=""]
+          .col-md-4.no-margin
+            label.site_labels for="party_phone_1"
+              | Contact Phone
+            input#party_phone_1[class="form-control" type="text" name="party_phone_1" value=""]  
+          .col-md-4.no-margin.siteFieldsHide
+            label.site_labels for="admin_email_id"
+              | Contact Email
+            input#admin_email_id[class="form-control" type="text" name="admin_email_id" value=""]      
           .col-md-4.no-margin
             label.site_labels for="cost_centre"
               | Cost Centre
@@ -113,28 +117,32 @@ div#site_html
           .col-md-12[style="font-size: medium;text-align: center;padding: 10px;font-weight: bold;"] 
               | Party Details
           .col-md-4.no-margin
+            label.site_labels for="party_name"
+              | Party Name *
+            input#party_name[class="form-control" type="text" name="party_name" value=""]
+          .col-md-4.no-margin
             label.site_labels for="party_code"
-              | Party Code
+              | Party Code *
             input#party_code[class="form-control" type="text" name="party_code" value=""]
           .col-md-4.no-margin
-            label.site_labels for="party_contact_name"
-              | Party Contact Name
-            input#party_contact_name[class="form-control" type="text" name="party_contact_name" value=""]
+            label.site_labels for="sap_control_number"
+              | SAP Control Number *
+            input#party_code[class="form-control" type="text" name="sap_control_number" value=""]
+          .col-md-4.no-margin
+            label.site_labels for="contact_name"
+              | Contact Name *
+            input#party_code[class="form-control" type="text" name="contact_name" value=""]    
           .col-md-4.no-margin
             label.site_labels for="party_address_1"
-              | Party Address 1
+              | Address 1 *
             input#party_address_1[class="form-control" type="text" name="party_address_1" value=""]
           .col-md-4.no-margin
             label.site_labels for="party_address_2"
-              | Party Address 2
+              | Address 2
             input#party_address_2[class="form-control" type="text" name="party_address_2" value=""]
           .col-md-4.no-margin
-            label.site_labels for="party_address_3"
-              | Party Address 3
-            input#party_address_3[class="form-control" type="text" name="party_address_3" value=""]
-          .col-md-4.no-margin
             label.site_labels for="party_pin"
-              | Pincode
+              | PIN
             input#party_pin[class="form-control" type="text" name="party_pin" value=""]
           .col-md-4.no-margin
             label.site_labels for="party_state"
@@ -150,26 +158,20 @@ div#site_html
                 | Choose City
           .col-md-4.no-margin
             label.site_labels for="party_phone_1"
-              | Phone 1
+              | Phone 1 *
             input#party_phone_1[class="form-control" type="text" name="party_phone_1" value=""]
           .col-md-4.no-margin
             label.site_labels for="party_phone_2"
               | Phone 2
             input#party_phone_2[class="form-control" type="text" name="party_phone_2" value=""]
           .col-md-4.no-margin
-            label.site_labels for="party_business_area"
-              | Business Area    
-            select.form-control#party_business_area
-              option [value="0"]
-                | Choose party business area
-          .col-md-4.no-margin
             label.site_labels for="party_pan_no"
-              | PAN No
+              | PAN *
             input#party_pan_no[class="form-control" type="text" name="party_pan_no" value=""]
           .col-md-4.no-margin
             label.site_labels for="party_gstin_no"
               | 
-               GSTIN No
+               GSTIN *
             input#party_gstin_no[class="form-control" type="text" name="party_gstin_no" value=""]
 
       /!

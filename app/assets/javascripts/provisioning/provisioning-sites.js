@@ -180,6 +180,24 @@ $(function () {
             //     document.getElementById("operator").classList.remove("border-danger")
             //     validationError = validationError || false
             // }
+
+            if ($("#sezNonSez").val() == 0 || $("#sezNonSez").val() == undefined || $("#sezNonSez").val() == null) {
+                document.getElementById("sezNonSez").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("sezNonSez").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+            if ($("#sap_control_number").val() == '' || $("#sap_control_number").val() == undefined || $("#sap_control_number").val() == null) {
+                document.getElementById("sap_control_number").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("sap_control_number").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+
             return validationError
         }
         $(document).on('click', '#editSite', function (e) {
@@ -300,7 +318,19 @@ $(function () {
                     'party_business_area': $("#party_business_area").val(),
 
                     'party_pan_no': $("#party_pan_no").val(),
-                    'party_gstin_no': $("#party_gstin_no").val()
+                    'party_gstin_no': $("#party_gstin_no").val(),
+
+
+                    // newly added fields//
+                    'party_gstin_no': $("#sezNonSez").val(),
+                    'party_gstin_no': $("#lutNo").val(),
+                    'party_gstin_no': $("#lutNo").val(),
+                    'party_gstin_no': $("#lutDate").val(),
+                    'party_gstin_no': $("#proximity_radius").val(),
+
+                    'party_gstin_no': $("#sap_control_number").val(),
+
+
 
                 }
                 console.log('site adding', site);

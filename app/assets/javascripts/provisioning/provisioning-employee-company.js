@@ -43,84 +43,54 @@ $(function () {
               }
           },
           fields: [{
-              label: "Name *",
+              label: "Customer Name *",
               className: "col-md-4",
               name: "name",
-          },
-          {
-              label: "HQ Address",
-              className: "col-md-4",
-              name: "hq_address"
+          },  {
+                label: "Customer Code *",
+                className: "col-md-4",
+                name: "customer_code"
           }, {
-              label: "Business Type",
-              className: "col-md-4",
-              name: "business_type"
+              label: 'Business Type*',
+              className: "col-md-4 home_address_state",
+              name: "business_type",
+              type:"select",
+              options: ['Telecom', 'IT Services', 'Consulting Firm', 'Other']
           }, {
-              label: 'PAN *',
-              className: "col-md-4 clear",
-              name: "pan",
-              attr: { maxlength: 10, id:'pan' }
-          }, {
-              label: 'Service Tax No.',
-              className: "col-md-4",
-              name: "service_tax_no"
-          }, {
-              label: 'Zone',
-              className: "col-md-4",
-              name: "zone"
-          }, {
-              label: 'Category*',
-              className: "col-md-4",
-              name: "category",
-             
-           } , {
-              label: 'Billing To*',
+              label: 'Billing Party Name*',
               className: "col-md-4",
               name: "billing_to"
-           } ,
-  
-            {
-              label: 'Home Contact Name*',
-              className: "col-md-4",
-              name: "home_address_contact_name"
-            },
-            {
-              label: 'Home Address 1*',
+          },{
+              label: 'Address 1*',
               className: "col-md-4",
               name: "home_address_address_1"
             },
             {
-              label: 'Home Address 2*',
+              label: 'Address 2',
               className: "col-md-4",
               name: "home_address_address_2"
-            },
-            {
-              label: 'Home Address 3*',
-              className: "col-md-4",
-              name: "home_address_address_3"
-            },
-            {
-              label: 'Home PIN*',
+            },{
+              label: 'PIN*',
               className: "col-md-4",
               name: "home_address_pin",
               attr: { maxlength: 6, id:'home_address_pin' }
             },
             {
-              label: 'Home State*',
+              label: 'State*',
               className: "col-md-4 home_address_state",
               name: "home_address_state",
               type:"select",
               options:states
             },
             {
-              label: 'Home City*',
+              label: 'City*',
               className: "col-md-4",
               name: "home_address_city",
               type:"select",
               options:cities
             },
             {
-              label: 'Home Phone 1*',
+              label: 'Phone 1*',
               className: "col-md-4",
               name: "home_address_phone_1",
               attr: { maxlength: 10, id:'home_address_phone_1' }
@@ -132,88 +102,55 @@ $(function () {
               attr: { maxlength: 10, id:'home_address_phone_2' }
             },
             {
-              label: 'Business Area ',
+              label: 'MLL Business Area * ',
               className: "col-md-4",
-              name: "home_address_business_area"
+              name: "home_address_business_area",
+              type:"select",
+              options:cities
+            },
+             { 
+              label: 'PAN *',
+              className: "col-md-4 clear",
+              name: "pan",
+              attr: { maxlength: 10, id:'pan' }
             },
             {
-              label: 'Home PAN No*',
-              className: "col-md-4",
-              name: "home_address_pan_no",
-              attr: { maxlength: 10, id:'home_address_pan_no' }
-            },
-            {
-              label: 'GSTIN No ',
+              label: 'GSTIN * ',
               className: "col-md-4",
               name: "home_address_gstin_no"
             },
             {
-              label: 'Registered Contact Name*',
+              label: 'SAP Control Number * ',
+              className: "col-md-4",
+              name: "sap_control_number"
+            },
+            {
+              label: 'Reference Number *',
+              className: "col-md-4",
+              name: "ref_no"
+            },
+            {
+              label: 'Contact Name*',
               className: "col-md-4",
               name: "registered_contact_name"
             },
             {
-              label: 'Registered Address 1*',
-              className: "col-md-4",
-              name: "registered_address1"
-            },
-            {
-              label: 'Registered Address 2*',
-              className: "col-md-4",
-              name: "registered_address2"
-            },
-            {
-              label: 'Registered Address 3*',
-              className: "col-md-4",
-              name: "registered_address3"
-            },
-            {
-              label: 'Registered Pin*',
-              className: "col-md-4",
-              name: "registered_pin",
-              attr: { maxlength: 6, id:'registered_pin' }
-            },
-            {
-              label: 'Registered State*',
-              className: "col-md-4",
-              name: "registered_state",
-              type:"select",
-              options:states
-            },
-            {
-              label: 'Registered City*',
-              className: "col-md-4",
-              name: "registered_city",
-              type:"select",
-              options:cities
-            },
-            {
-              label: 'Registered Phone1*',
+              label: 'Contact Phone*',
               className: "col-md-4",
               name: "registered_phone1",
               attr: { maxlength: 10, id:'registered_phone1' }
             },
             {
-              label: 'Registered Phone2',
+              label: 'Contact Email',
               className: "col-md-4",
-              name: "registered_phone2",
-              attr: { maxlength: 10, id:'registered_phone2' }
+              name: "contact_email"
             },
             {
-              label: 'Registered Business Area',
+              label: 'Active/Inactive',
               className: "col-md-4",
-              name: "registered_business_area"
-            },
-            {
-              label: 'Registered PAN No *',
-              className: "col-md-4",
-              name: "registered_pan_no",
-              attr: { maxlength: 10, id:'registered_pan_no' }
-            },
-            {
-              label: 'Registered GSTIN No',
-              className: "col-md-4",
-              name: "registered_gstin_no"
+              name: "active_in_active",
+              type: "select",
+              options: ['Yes', 'No']
             }
   
           ]
