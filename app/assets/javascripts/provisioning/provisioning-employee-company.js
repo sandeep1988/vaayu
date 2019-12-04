@@ -150,7 +150,7 @@ $(function () {
               className: "col-md-4",
               name: "active",
               type: "select",
-              options: ['Yes', 'No']
+              options: ['Active', 'Inactive']
             }
   
           ]
