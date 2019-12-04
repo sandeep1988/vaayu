@@ -154,7 +154,7 @@ function generate_edit(response, type, operator_id, orig_service_html){
                         '<input class="form-control" id="city" name="city" type="text" value="' + response.site.city + '" required="true">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="phone_1">phone 1*</label>' + 
+                        '<label class="site_labels" for="phone_1">Phone 1*</label>' + 
                         '<input class="form-control" id="phone_1" name="phone_1" type="text" value="' + response.site.phone_1 + '" required="true">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
@@ -213,11 +213,11 @@ function generate_edit(response, type, operator_id, orig_service_html){
                 '<div style="border: 1px solid #8d8e90;display: inline-block;margin-top: 20px;padding-top: 10px;padding-bottom: 20px;">' + 
                     '<div class="col-md-12" style="font-size: medium;text-align: center;padding: 10px;font-weight: bold;"> Party Details </div>'+            
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_code">Party Code</label>' + 
+                        '<label class="site_labels" for="party_code">Party Code *</label>' + 
                         '<input class="form-control" id="party_code" name="party_code" type="text" value="' + response.site.party_code + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_name">Party  Name</label>' + 
+                        '<label class="site_labels" for="party_name">Party Name*</label>' + 
                         '<input class="form-control" id="party_name" name="party_name" type="text" value="' + response.site.party_name + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
@@ -225,11 +225,11 @@ function generate_edit(response, type, operator_id, orig_service_html){
                         '<input class="form-control" id="sap_control_number" name="sap_control_number" type="text" value="' + response.site.sap_control_number + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_contact_name">Contact Name</label>' + 
+                        '<label class="site_labels" for="party_contact_name">Contact Name *</label>' + 
                         '<input class="form-control" id="party_contact_name" name="party_contact_name" type="text" value="' + response.site.party_contact_name + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_address_1">Party Address 1</label>' + 
+                        '<label class="site_labels" for="party_address_1">Party Address 1 *</label>' + 
                         '<input class="form-control" id="party_address_1" name="party_address_1" type="text" value="' + response.site.party_address_1 + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
@@ -241,15 +241,15 @@ function generate_edit(response, type, operator_id, orig_service_html){
                         '<input class="form-control" id="party_pin" name="party_pin" type="text" value="' + response.site.party_pin + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_city">Party City</label>' + 
+                        '<label class="site_labels" for="party_city">Party City *</label>' + 
                         '<input class="form-control" id="party_pin" name="party_city" type="text" value="' + response.site.party_city + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_state">Party State</label>' + 
+                        '<label class="site_labels" for="party_state">Party State *</label>' + 
                         '<input class="form-control" id="party_state" name="party_state" type="text" value="' + response.site.party_state + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_phone_1">Party Phone 1</label>' + 
+                        '<label class="site_labels" for="party_phone_1">Party Phone 1 *</label>' + 
                         '<input class="form-control" id="party_phone_1" name="party_phone_1" type="text" value="' + response.site.party_phone_1 + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
@@ -257,11 +257,11 @@ function generate_edit(response, type, operator_id, orig_service_html){
                         '<input class="form-control" id="party_phone_2" name="party_phone_2" type="text" value="' + response.site.party_phone_2 + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_pan_no">Party Pan no</label>' + 
+                        '<label class="site_labels" for="party_pan_no">Party Pan no *</label>' + 
                         '<input class="form-control" id="party_pan_no" name="party_pan_no" type="text" value="' + response.site.party_pan_no + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_gstin_no">Party GSTIN * no</label>' + 
+                        '<label class="site_labels" for="party_gstin_no">Party GSTIN *</label>' + 
                         '<input class="form-control" id="party_gstin_no" name="party_gstin_no" type="text" value="' + response.site.party_gstin_no + '">' + 
                     '</div>' +
                     '<div class="col-md-4 margin-top"><label class="site_labels" for="active">Active/Inactive</label><select class="form-control sezNonSez" data-vehiclenumber="1" id="active"><option value="yes">Yes</option><option value="no">No</option></select></div>'
