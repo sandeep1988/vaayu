@@ -5,29 +5,35 @@ div#site_html
           .col-md-12[style="font-size: medium;text-align: center;padding: 10px;font-weight: bold;"] 
               | Primary Details
           .col-md-4.no-margin
-            label.site_labels for="siteName"
+            label.site_labels for="name"
               |Site Name*    
             input#siteName[class="form-control" type="text" name="siteName" value="" required= "true"]
-          .col-md-4.no-margin.siteFieldsHide
+          .col-md-4.no-margin
+            label.site_labels for="company"
+              | Company
+            select.form-control#company
+              option [value="0"]
+                | Choose Company
+          .col-md-4.no-margin
             label.site_labels for="site_code"
               | site_code
             input#site_code[class="form-control" type="text" name="site_code" value=""]
           .col-md-4.margin-top
             label.site_labels for="sezNonSez"
               | Sez / Non Sez
-            select.form-control.sezNonSez#billingModel_1[data-vehicleNumber="1"]
+            select.form-control.sezNonSez#sezNonSez[data-vehicleNumber="1"]
               option [value="non sez"]
                 | SEZ-Non SEZ
               option [value="sez"]
                 | SEZ
           .col-md-4.no-margin
-            label.site_labels for="lutNo"
+            label.site_labels for="lut_no"
               |LUT No    
-            input#siteName[class="form-control" type="text" name="lutNo" value="" required= "true"]
+            input#lut_no[class="form-control" type="text" name="lutNo" value="" required= "true"]
           .col-md-4.no-margin
-            label.site_labels for="lutDate"
+            label.site_labels for="lut_date"
               |LUT Date    
-            input#siteName[class="form-control" type="text" name="lutDate" value="" required= "true"]        
+            input#lut_date[class="form-control" type="text" name="lutDate" value="" required= "true"]        
           .col-md-4.no-margin
             label.site_labels for="address"
               | Address 1*
@@ -35,7 +41,7 @@ div#site_html
           .col-md-4.no-margin
             label.site_labels for="address2"
               | Address 2
-            input#address[class="form-control" type="text" name="address2" value=""]
+            input#address2[class="form-control" type="text" name="address2" value=""]
           .col-md-4.no-margin
             label.site_labels for="pin"
               | PIN*
@@ -75,25 +81,29 @@ div#site_html
               | GSTIN *
             input#gstin_no[class="form-control" type="text" name="gstin_no" value=""]     
           .col-md-4.no-margin
-            label.site_labels for="lat"
+            label.site_labels for="latitude"
               | Lat *
-            input#gstin_no[class="form-control" type="text" name="lat" value=""]
+            input#latitude[class="form-control" type="text" name="latitude" value=""]
           .col-md-4.no-margin
-            label.site_labels for="long"
+            label.site_labels for="longitude"
               | LONG *
-            input#gstin_no[class="form-control" type="text" name="long" value=""]  
+            input#longitude[class="form-control" type="text" name="longitude" value=""]  
           .col-md-4.no-margin
             label.site_labels for="proximity_radius"
               | Proximity Radius (metres)
-            input#gstin_no[class="form-control" type="text" name="proximity_radius" value=""]
+            input#proximity_radius[class="form-control" type="text" name="proximity_radius" value=""]
           .col-md-4.no-margin
-            label.site_labels for="party_contact_name"
+            label.site_labels for="contact_name"
               | Contact Name
-            input#party_contact_name[class="form-control" type="text" name="party_contact_name" value=""]
+            input#contact_name[class="form-control" type="text" name="contact_name" value=""]
           .col-md-4.no-margin
-            label.site_labels for="party_phone_1"
+            label.site_labels for="contact_phone"
               | Contact Phone
-            input#party_phone_1[class="form-control" type="text" name="party_phone_1" value=""]  
+            input#contact_phone[class="form-control" type="text" name="contact_phone" value=""]  
+          .col-md-4.no-margin
+            label.site_labels for="contact_email"
+              | Contact Email
+            input#contact_email[class="form-control" type="text" name="contact_email" value=""]  
           .col-md-4.no-margin.siteFieldsHide
             label.site_labels for="admin_email_id"
               | Contact Email
@@ -127,11 +137,11 @@ div#site_html
           .col-md-4.no-margin
             label.site_labels for="sap_control_number"
               | SAP Control Number *
-            input#party_code[class="form-control" type="text" name="sap_control_number" value=""]
+            input#sap_control_number[class="form-control" type="text" name="sap_control_number" value=""]
           .col-md-4.no-margin
-            label.site_labels for="contact_name"
+            label.site_labels for="party_contact_name"
               | Contact Name *
-            input#party_code[class="form-control" type="text" name="contact_name" value=""]    
+            input#party_contact_name[class="form-control" type="text" name="party_contact_name" value=""]    
           .col-md-4.no-margin
             label.site_labels for="party_address_1"
               | Address 1 *
@@ -142,7 +152,7 @@ div#site_html
             input#party_address_2[class="form-control" type="text" name="party_address_2" value=""]
           .col-md-4.no-margin
             label.site_labels for="party_pin"
-              | PIN
+              | PIN *
             input#party_pin[class="form-control" type="text" name="party_pin" value=""]
           .col-md-4.no-margin
             label.site_labels for="party_state"
