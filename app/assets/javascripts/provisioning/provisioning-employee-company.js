@@ -164,11 +164,11 @@ $(function () {
       });
   
       // validate fields
-      employeeCompaniesTableEditor.on('Submit', function (e, o, action) {
+      employeeCompaniesTableEditor.on('preSubmit', function (e, o, action) {
           if (action !== 'remove') {
               var name = employeeCompaniesTableEditor.field('name');
               var pan = employeeCompaniesTableEditor.field('pan');
-              var category = employeeCompaniesTableEditor.field('category');
+              // var category = employeeCompaniesTableEditor.field('category');
               var billing_to = employeeCompaniesTableEditor.field('billing_to');
   
               if (!name.isMultiValue()) {
@@ -190,37 +190,57 @@ $(function () {
                 }
               }
 
-              if (category.val().trim().length == 0) {
-                category.error('Category must be given.');
-              } 
+              // if (category.val().trim().length == 0) {
+              //   category.error('Category must be given.');
+              // } 
               if (billing_to.val().trim().length == 0) {
                 billing_to.error('Billing must be given.');
               } 
 
-              var home_address_contact_name = employeeCompaniesTableEditor.field('home_address_contact_name');
+              // var home_address_contact_name = employeeCompaniesTableEditor.field('home_address_contact_name');
               var home_address_address_1 = employeeCompaniesTableEditor.field('home_address_address_1');
               var home_address_address_2 = employeeCompaniesTableEditor.field('home_address_address_2');
-              var home_address_address_3 = employeeCompaniesTableEditor.field('home_address_address_3');
+              // var home_address_address_3 = employeeCompaniesTableEditor.field('home_address_address_3');
               var home_address_pin = employeeCompaniesTableEditor.field('home_address_pin');
               var home_address_state = employeeCompaniesTableEditor.field('home_address_state');
               var home_address_city = employeeCompaniesTableEditor.field('home_address_city');
               var home_address_phone_1 = employeeCompaniesTableEditor.field('home_address_phone_1');
-              var home_address_pan_no = employeeCompaniesTableEditor.field('home_address_pan_no');
+              var home_address_gstin_no = employeeCompaniesTableEditor.field('home_address_gstin_no');
+
+              var customer_code = employeeCompaniesTableEditor.field('customer_code');
+              var sap_control_number = employeeCompaniesTableEditor.field('sap_control_number');
+              var reference_no1 = employeeCompaniesTableEditor.field('reference_no1');
+
+              // var home_address_pan_no = employeeCompaniesTableEditor.field('home_address_pan_no');
               
-              if (home_address_contact_name.val().trim().length == 0) {
-                home_address_contact_name.error('Home Contact Name must be given.');
-              }
+              // if (home_address_contact_name.val().trim().length == 0) {
+              //   home_address_contact_name.error('Home Contact Name must be given.');
+              // }
               if (home_address_address_1.val().trim().length == 0) {
                 home_address_address_1.error('Home Address 1 must be given.');
               }
               if (home_address_address_2.val().trim().length == 0) {
                 home_address_address_2.error('Home Address 2 must be given.');
               }
-              if (home_address_address_3.val().trim().length == 0) {
-                home_address_address_3.error('Home Address 3 must be given.');
+              if (home_address_gstin_no.val().trim().length == 0) {
+                home_address_gstin_no.error('GSTIN must be given.');
               }
+              if (customer_code.val().trim().length == 0) {
+                customer_code.error('Customer Code must be given.');
+              }
+              if (sap_control_number.val().trim().length == 0) {
+                sap_control_number.error('SAP control number must be given.');
+              }
+              if (reference_no1.val().trim().length == 0) {
+                reference_no1.error('Reference number must be given.');
+              }
+              // if (home_address_address_3.val().trim().length == 0) {
+              //   home_address_address_3.error('Home Address 3 must be given.');
+              // } home_address_gstin_no customer_code reference_no1
               if (home_address_pin.val().trim().length == 0) {
                 home_address_pin.error('Home pincode must be given.');
+              } else if (home_address_pin.val().trim().length < 6) {
+                home_address_pin.error('Home pincode must contain 6 digts.');
               }
               if (home_address_state.val() == null) {
                 home_address_state.error('Home State must be given.');
@@ -232,64 +252,64 @@ $(function () {
                 home_address_phone_1.error('Home Phone 1 must be given.');
               }
 
-              var panValue2 = home_address_pan_no.val().trim();
-              if (panValue2.length == 0) {
-                home_address_pan_no.error('Home Address Pan number must be given.');
-              } else {
-                if (/^([a-zA-Z]){0,5}([0-9]){0,4}([a-zA-Z]){1}?$/.test(panValue2)){
+              // var panValue2 = home_address_pan_no.val().trim();
+              // if (panValue2.length == 0) {
+              //   home_address_pan_no.error('Home Address Pan number must be given.');
+              // } else {
+              //   if (/^([a-zA-Z]){0,5}([0-9]){0,4}([a-zA-Z]){1}?$/.test(panValue2)){
 
-                } else {
-                  home_address_pan_no.error('Invalid Home Address Pan number.');
-                }
-              }
+              //   } else {
+              //     home_address_pan_no.error('Invalid Home Address Pan number.');
+              //   }
+              // }
 
               
               var registered_contact_name = employeeCompaniesTableEditor.field('registered_contact_name');
-              var registered_address1 = employeeCompaniesTableEditor.field('registered_address1');
-              var registered_address2 = employeeCompaniesTableEditor.field('registered_address2');
-              var registered_address3 = employeeCompaniesTableEditor.field('registered_address3');
-              var registered_pin = employeeCompaniesTableEditor.field('registered_pin');
-              var registered_state = employeeCompaniesTableEditor.field('registered_state');
-              var registered_city = employeeCompaniesTableEditor.field('registered_city');
+              // var registered_address1 = employeeCompaniesTableEditor.field('registered_address1');
+              // var registered_address2 = employeeCompaniesTableEditor.field('registered_address2');
+              // var registered_address3 = employeeCompaniesTableEditor.field('registered_address3');
+              // var registered_pin = employeeCompaniesTableEditor.field('registered_pin');
+              // var registered_state = employeeCompaniesTableEditor.field('registered_state');
+              // var registered_city = employeeCompaniesTableEditor.field('registered_city');
               var registered_phone1 = employeeCompaniesTableEditor.field('registered_phone1');
-              var registered_pan_no = employeeCompaniesTableEditor.field('registered_pan_no');
+              // var registered_pan_no = employeeCompaniesTableEditor.field('registered_pan_no');
               
 
               if (registered_contact_name.val().trim().length == 0) {
                 registered_contact_name.error('Registered Contact Name must be given.');
               }
-              if (registered_address1.val().trim().length == 0) {
-                registered_address1.error('Registered Address 1 must be given.');
-              }
-              if (registered_address2.val().trim().length == 0) {
-                registered_address2.error('Registered Address 2 must be given.');
-              }
-              if (registered_address3.val().trim().length == 0) {
-                registered_address3.error('Registered Address 3 must be given.');
-              }
-              if (registered_pin.val().length == 0) {
-                registered_pin.error('Registered pincode must be given.');
-              }
-              if (registered_state.val() == null) {
-                registered_state.error('Registered State must be given.');
-              }
-              if (registered_city.val() == null) {
-                registered_state.error('Registered City must be given.');
-              }
+              // if (registered_address1.val().trim().length == 0) {
+              //   registered_address1.error('Registered Address 1 must be given.');
+              // }
+              // if (registered_address2.val().trim().length == 0) {
+              //   registered_address2.error('Registered Address 2 must be given.');
+              // }
+              // if (registered_address3.val().trim().length == 0) {
+              //   registered_address3.error('Registered Address 3 must be given.');
+              // }
+              // if (registered_pin.val().length == 0) {
+              //   registered_pin.error('Registered pincode must be given.');
+              // }
+              // if (registered_state.val() == null) {
+              //   registered_state.error('Registered State must be given.');
+              // }
+              // if (registered_city.val() == null) {
+              //   registered_state.error('Registered City must be given.');
+              // }
               if (registered_phone1.val().trim().length == 0) {
                 registered_phone1.error('Registered Phone 1 must be given.');
               }
 
-              var panValue1 = registered_pan_no.val().trim();
-              if (panValue1.length == 0) {
-                registered_pan_no.error('Registered Address Pan number must be given.');
-              } else {
-                if (/^([a-zA-Z]){0,5}([0-9]){0,4}([a-zA-Z]){1}?$/.test(panValue1)){
+              // var panValue1 = registered_pan_no.val().trim();
+              // if (panValue1.length == 0) {
+              //   registered_pan_no.error('Registered Address Pan number must be given.');
+              // } else {
+              //   if (/^([a-zA-Z]){0,5}([0-9]){0,4}([a-zA-Z]){1}?$/.test(panValue1)){
 
-                } else {
-                  registered_pan_no.error('Invalid Registered Address Pan number.');
-                }
-              }
+              //   } else {
+              //     registered_pan_no.error('Invalid Registered Address Pan number.');
+              //   }
+              // }
 
   
               if (this.inError()) {
@@ -425,9 +445,6 @@ $(function () {
             setInputFilter(document.getElementById("home_address_pin"), function(value) {
               return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
             });
-            setInputFilter(document.getElementById("home_address_pin"), function(value) {
-              return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
-            });
             setInputFilter(document.getElementById("home_address_phone_1"), function(value) {
               return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
             });
@@ -437,24 +454,24 @@ $(function () {
             setInputFilter(document.getElementById("registered_phone1"), function(value) {
               return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
             });
-            setInputFilter(document.getElementById("registered_phone2"), function(value) {
-              return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
-            });
+            // setInputFilter(document.getElementById("registered_phone2"), function(value) {
+            //   return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+            // });
             setInputFilter(document.getElementById("pan"), function(value) {
               $("#pan").val(value.toUpperCase())
               // return /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/.test(value); // Allow digits and '.' only, using a RegExp
               return true;
             });
-            setInputFilter(document.getElementById("home_address_pan_no"), function(value) {
-              $("#home_address_pan_no").val(value.toUpperCase())
-              return true;
-              // return /^([a-zA-Z]){0,5}([0-9]){0,4}([a-zA-Z]){1}?$/.test(value); // Allow digits and '.' only, using a RegExp
-            });
-            setInputFilter(document.getElementById("registered_pan_no"), function(value) {
-              $("#registered_pan_no").val(value.toUpperCase())
-              return true;
-              // return /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/.test(value); // Allow digits and '.' only, using a RegExp
-            });
+            // setInputFilter(document.getElementById("home_address_pan_no"), function(value) {
+            //   $("#home_address_pan_no").val(value.toUpperCase())
+            //   return true;
+            //   // return /^([a-zA-Z]){0,5}([0-9]){0,4}([a-zA-Z]){1}?$/.test(value); // Allow digits and '.' only, using a RegExp
+            // });
+            // setInputFilter(document.getElementById("registered_pan_no"), function(value) {
+            //   $("#registered_pan_no").val(value.toUpperCase())
+            //   return true;
+            //   // return /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/.test(value); // Allow digits and '.' only, using a RegExp
+            // });
             
             
     });
