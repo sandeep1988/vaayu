@@ -59,7 +59,12 @@ class EmployeeCompanyDatatable
        :agreement_date => @employee_company.agreement_date,
        :swachh_bharat_cess => @employee_company.swachh_bharat_cess,
        :krishi_kalyan_cess => @employee_company.krishi_kalyan_cess,
-       :profit_centre => @employee_company.profit_centre
+       :profit_centre => @employee_company.profit_centre,
+       :contact_email => @employee_company.contact_email,
+       :reference_no1 => @employee_company.reference_no1,
+       :sap_control_number=> @employee_company.sap_control_number,
+       :customer_code => @employee_company.customer_code,
+       :active => @employee_company.active == true ? "Active" : "Inactive"
     }
   end
 end

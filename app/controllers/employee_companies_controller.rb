@@ -33,6 +33,7 @@ class EmployeeCompaniesController < ApplicationController
       @employee_company = EmployeeCompany.new(company_params)
       respond_to do |format|
         if @employee_company.save
+          @employee_company.update(active: company_params[:active] == "Inactive" ? false : true)
           format.json { render json: EmployeeCompanyDatatable.new(@employee_company), status: :created, location: @employee_companies}
         else
           format.json { render json: @employee_company.errors, status: '404' }
@@ -50,6 +51,7 @@ class EmployeeCompaniesController < ApplicationController
     if current_user || (current_user.operator? && current_user.entity.logistics_company.id == @employee_company.logistics_company_id)
       respond_to do |format|
         if @employee_company.update(company_params)
+          @employee_company.update(active: company_params[:active] == "Inactive" ? false : true)
           format.json { render json: EmployeeCompanyDatatable.new(@employee_company), status: :ok, location: @employee_company }
         else
           format.json { render json: @employee_company.errors, status: :unprocessable_entity }
