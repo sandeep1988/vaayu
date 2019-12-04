@@ -142,11 +142,13 @@
             <tbody ng-show="rosters.length">
               <tr ng-class="{'active': ($index % 2) === 0}" ng-repeat="roster in rosters">
                 <th scope="row">
-                  <a href="" ng-click="showPopupWindow(roster)">{{roster.name}}</a>
+                  {{roster.name}}
                 </th>
                 <td>{{roster.start_time}}</td>
                 <td>{{roster.shift_type}}</td>
-                <td>{{roster.no_of_emp}}</td>
+                <td>
+                <a href="" ng-click="showPopupWindow(roster)">{{roster.no_of_emp}}</a>
+                </td>
                 <td>
                   <span ng-repeat="(key, value) in roster.vehicle" roster> {{key}}:{{ value }} | </span>
 
