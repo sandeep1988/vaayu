@@ -89,14 +89,14 @@ $(function () {
                 document.getElementById("siteName").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if ($("#company").val() == 0 || $("#company").val() == undefined || $("#company").val() == null) {
-                document.getElementById("company").classList.add("border-danger")
-                validationError = true
-            }
-            else {
-                document.getElementById("company").classList.remove("border-danger")
-                validationError = validationError || false
-            }
+            // if ($("#company").val() == 0 || $("#company").val() == undefined || $("#company").val() == null) {
+            //     document.getElementById("company").classList.add("border-danger")
+            //     validationError = true
+            // }
+            // else {
+            //     document.getElementById("company").classList.remove("border-danger")
+            //     validationError = validationError || false
+            // }
             if ($("#contact_name").val() == '' || $("#contact_name").val() == undefined || $("#contact_name").val() == null) {
                 document.getElementById("contact_name").classList.add("border-danger")
                 validationError = true
@@ -113,22 +113,96 @@ $(function () {
                 document.getElementById("address").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if ($("#address_1").val() == '' || $("#address_1").val() == undefined || $("#address_1").val() == null) {
-                document.getElementById("address_1").classList.add("border-danger")
+            if ($("#party_name").val() == '' || $("#party_name").val() == undefined || $("#party_name").val() == null) {
+                document.getElementById("party_name").classList.add("border-danger")
                 validationError = true
             }
             else {
-                document.getElementById("address_1").classList.remove("border-danger")
+                document.getElementById("party_name").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if ($("#address_2").val() == '' || $("#address_2").val() == undefined || $("#address_2").val() == null) {
-                document.getElementById("address_2").classList.add("border-danger")
+
+            if ($("#party_code").val() == '' || $("#party_code").val() == undefined || $("#party_code").val() == null) {
+                document.getElementById("party_code").classList.add("border-danger")
                 validationError = true
             }
             else {
-                document.getElementById("address_2").classList.remove("border-danger")
+                document.getElementById("party_code").classList.remove("border-danger")
                 validationError = validationError || false
             }
+
+            if ($("#sap_control_number").val() == '' || $("#sap_control_number").val() == undefined || $("#sap_control_number").val() == null) {
+                document.getElementById("sap_control_number").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("sap_control_number").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+
+            if ($("#party_contact_name").val() == '' || $("#party_contact_name").val() == undefined || $("#party_contact_name").val() == null) {
+                document.getElementById("party_contact_name").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("party_contact_name").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+
+            if ($("#party_pin").val() == '' || $("#party_pin").val() == undefined || $("#party_pin").val() == null) {
+                document.getElementById("party_pin").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("party_pin").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+
+            if ($("#party_pan_no").val() == '' || $("#party_pan_no").val() == undefined || $("#party_pan_no").val() == null) {
+                document.getElementById("party_pan_no").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("party_pan_no").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+
+            if ($("#party_phone_1").val() == '' || $("#party_phone_1").val() == undefined || $("#party_phone_1").val() == null) {
+                document.getElementById("party_phone_1").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("party_phone_1").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+
+            if ($("#party_pan_no").val() == '' || $("#party_pan_no").val() == undefined || $("#party_pan_no").val() == null) {
+                document.getElementById("party_pan_no").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("party_pan_no").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+
+            if ($("#party_gstin_no").val() == '' || $("#party_gstin_no").val() == undefined || $("#party_gstin_no").val() == null) {
+                document.getElementById("party_gstin_no").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("party_gstin_no").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+
+            if ($("#party_phone_1").val() == '' || $("#party_phone_1").val() == undefined || $("#party_phone_1").val() == null) {
+                document.getElementById("party_phone_1").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("party_phone_1").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+
             var pincode = $("#pin").val().trim();
             if (pincode == '' || pincode.length < 6) {
                 document.getElementById("pin").classList.add("border-danger")
@@ -197,6 +271,28 @@ $(function () {
                 document.getElementById("sap_control_number").classList.remove("border-danger")
                 validationError = validationError || false
             }
+
+            if ($("#lut_date").val() == '' || $("#lut_date").val() == undefined || $("#lut_date").val() == null) {
+                document.getElementById("lut_date").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("lut_date").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+
+          $(document).on('click', ".submit-btn", function (e) {
+            var value = $("#lut_date").val()
+            var formt = /^\d{1,2}\-\d{1,2}\-\d{4}$/
+            if (formt.test(value)) {
+                return true;
+            }
+            else {
+                document.getElementById("lut_date").classList.add("border-danger")
+                alert("Please enter LUT date in dd-mm-yyyy format.")
+                return false;
+            }
+          })        
 
             return validationError
         }
@@ -319,19 +415,19 @@ $(function () {
 
                     'party_pan_no': $("#party_pan_no").val(),
                     'party_gstin_no': $("#party_gstin_no").val(),
-
+                    'party_name': $("#party_name").val(),
 
                     // newly added fields//
-                    'party_gstin_no': $("#sezNonSez").val(),
-                    'party_gstin_no': $("#lutNo").val(),
-                    'party_gstin_no': $("#lutNo").val(),
-                    'party_gstin_no': $("#lutDate").val(),
-                    'party_gstin_no': $("#proximity_radius").val(),
-
-                    'party_gstin_no': $("#sap_control_number").val(),
-
-
-
+                    'sezNonSez': $("#sezNonSez").val(),
+                    'lut_no': $("#lut_no").val(),
+                    'lut_date': $("#lut_date").val(),
+                    'active': $("#active").val(),
+                    'proximity_radius': $("#proximity_radius").val(),
+                    'sap_control_number': $("#sap_control_number").val(),
+                    'contact_email': $("#contact_email").val(),
+                    'address2' : $("#address2").val(),
+                    'latitude' : $("#latitude").val(),
+                    'longitude' : $("#longitude").val(),
                 }
                 console.log('site adding', site);
                 if (current_user == 'Operator') {

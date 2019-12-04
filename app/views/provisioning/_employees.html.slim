@@ -38,3 +38,129 @@
 
 script type="text/javascript"
   | var shiftsCollection = #{Shift.all.to_json.html_safe}
+javascript:
+  function get_current_date()
+  {
+  var date = new Date();
+  var newDate = date.toString('dd-MM-yy');
+  var myDate = new Date(newDate);
+  var local_date=myDate.toLocaleString();
+  var local_date_string=local_date.toString();
+  var split_arr=local_date_string.split(",");
+  var final_local_date;
+  if(typeof(split_arr[0]) != "undefined" && split_arr[0] !== null)
+   {
+   final_local_date=split_arr[0];
+   }
+  return final_local_date;
+  }
+ 
+  function change_date_format(p1) {
+   var string_date=p1.toLocaleString();
+  var d = new Date();
+  var current_year = d.getFullYear();
+  var complete_string_date=string_date+'/'+current_year;
+  var first_date = moment(complete_string_date).format('DD/MM/YYYY');
+  return first_date;
+  }
+ 
+  function get_header_id()
+  {
+  var th_id=0 ;
+  var current_date= get_current_date();
+  var i=0;
+  var custom_date;
+  var temp_date;
+  $(".employee-schedule-table tbody tr th").each(function() {
+   
+   custom_date = $(this).text();
+   temp_date = change_date_format(custom_date);
+   if(current_date.toString()==temp_date.toString())
+   {
+   th_id=i; 
+   }
+   i++;
+   });
+  return th_id; 
+  }
+ 
+  function getCurrentTime() {
+   var today = new Date();
+   var h = today.getHours();
+   var m = today.getMinutes();
+   currTimeNew = h + ":" + m;
+   momTimeCurr=moment(currTimeNew, 'HH:mm');
+   var currTimeFinal;
+   if(typeof(momTimeCurr._i) != "undefined" && momTimeCurr._i !== null)
+   {
+   currTimeFinal=momTimeCurr._i;
+   } 
+   return currTimeFinal;
+  }
+ 
+  function disable_lapsed_shifts()
+  {
+  var shift_times; 
+  var curr_time=getCurrentTime();
+  var finalshiftTime;
+  var head_id=get_header_id();
+  $("#employee_check_in_attributes_"+head_id+"__shift_id option").each(function() {
+   
+   shift_times = $(this).text();
+   
+   if(shift_times != 'Clear'){ 
+   var momTime=moment(shift_times, 'hh:mm');
+   finalshiftTime=momTime._i;
+   
+   var d1= new Date();
+   var curDay=moment(d1).format('MMMM dd , YYYY ');
+   
+   var stt = new Date(curDay + curr_time);
+   stt = stt.getTime();
+   
+   var endt = new Date(curDay + finalshiftTime);
+   endt = endt.getTime();
+   
+   //by this you can see time stamp value in console via firebug
+   console.log("Time1: "+ stt + " Time2: " + endt);
+   
+   if(stt >= endt)
+   {
+   console.log('Inside Looped--->current time--->'+curr_time+'--Compare time--------->'+finalshiftTime);
+   $(this).prop('disabled', true);
+   
+   }
+   }
+   
+   });
+   $("#employee_check_out_attributes_"+head_id+"__shift_id option").each(function() {
+   
+   shift_times_checkout = $(this).text();
+   
+   if(shift_times_checkout != 'Clear'){ 
+   var momTime_checkout=moment(shift_times_checkout, 'hh:mm');
+   finalshiftTime_checkout=momTime_checkout._i;
+   
+   var d1_checkout= new Date();
+   var curDay_checkout=moment(d1_checkout).format('MMMM dd , YYYY ');
+   
+   var stt_checkout = new Date(curDay_checkout + curr_time);
+   stt_checkout = stt_checkout.getTime();
+   
+   var endt_checkout = new Date(curDay_checkout + finalshiftTime_checkout);
+   endt_checkout = endt_checkout.getTime();
+
+ 
+
+   console.log("Checkout Time1: "+ stt_checkout + " Checkout Time2: " + endt_checkout);
+   
+   if(stt_checkout >= endt_checkout)
+   {
+   console.log('Inside Checkout Looped--->current Checkout time--->'+curr_time+'--Compare Checkout time--------->'+finalshiftTime_checkout);
+   $(this).prop('disabled', true);
+   
+   }
+   }
+   
+   });
+  }

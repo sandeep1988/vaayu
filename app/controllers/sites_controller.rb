@@ -113,17 +113,17 @@ class SitesController < ApplicationController
 
   def create
     if current_user.operator? || current_user
-      results = GoogleService.new.geocode(params[:site]['address']).first
-      unless results.nil? || ! results.key?(:geometry)
-        coordinates = results[:geometry][:location]
-        latitude = coordinates[:lat]
-        longitude = coordinates[:lng]
-      end
+      # results = GoogleService.new.geocode(params[:site]['address']).first
+      # unless results.nil? || ! results.key?(:geometry)
+      #   coordinates = results[:geometry][:location]
+      #   latitude = coordinates[:lat]
+      #   longitude = coordinates[:lng]
+      # end
       @site = Site.new(:name => params[:site]['name'], 
                       :employee_company_id => params[:site]['employee_company_id'],
                       :address  => params[:site]['address'],
-                      :latitude => latitude,
-                      :longitude => longitude,
+                      :latitude => params[:site]['latitude'],
+                      :longitude => params[:site]['longitude'],
                       :created_by => current_user.full_name,
                       :phone => params[:site]['phone'],
                       :city => params[:site]['city'],
@@ -134,6 +134,7 @@ class SitesController < ApplicationController
                       :address_1 => params[:site]['address_1'],
                       :address_2 => params[:site]['address_2'],
                       :address_3 => params[:site]['address_3'],
+                      :site_code => params[:site][:site_code],
                       :pin => params[:site]['pin'],
                       :state => params[:site]['state'],
                       :pan_no => params[:site]['pan_no'],
@@ -153,7 +154,16 @@ class SitesController < ApplicationController
                       :party_phone_2 => params[:site]['party_phone_2'],
                       :party_business_area => params[:site]['party_business_area'],
                       :party_pan_no => params[:site]['party_pan_no'],
-                      :party_gstin_no => params[:site]['party_gstin_no']
+                      :party_gstin_no => params[:site]['party_gstin_no'],
+                      :sez => params[:site]['sezNonSez'],
+                      :lut_no => params[:site]['lut_no'],
+                      :active => params[:site]['active'],
+                      :proximity_radius => params[:site]['proximity_radius'],
+                      :sap_control_number => params[:site]['sap_control_number'],
+                      :lut_date => params[:site]['lut_date'],
+                      :party_name => params[:site]['party_name'],
+                      :address2 => params[:site]['address2'],
+                      :contact_phone => params[:site]['contact_phone']
                       )
       if @site.save
         params[:services].each do |service|
@@ -210,20 +220,20 @@ class SitesController < ApplicationController
 
   def update_site
     if current_user || current_user.operator?
-      results = GoogleService.new.geocode(params[:site]['address']).first
-      unless results.nil? || ! results.key?(:geometry)
-        coordinates = results[:geometry][:location]
-        latitude = coordinates[:lat]
-        longitude = coordinates[:lng]
-      end
+      # results = GoogleService.new.geocode(params[:site]['address']).first
+      # unless results.nil? || ! results.key?(:geometry)
+      #   coordinates = results[:geometry][:location]
+      #   latitude = coordinates[:lat]
+      #   longitude = coordinates[:lng]
+      # end
       @site = Site.where(:id => params[:id]).first
       @site.update!(:name => params[:site]['name'], 
           :employee_company_id => params[:site]['employee_company_id'],
           :address  => params[:site]['address'],
           :phone  => params[:site]['phone'],
           :city => params[:site]['city'],
-          :latitude => latitude,
-          :longitude => longitude,
+          :latitude => params[:site]['latitude'],
+          :longitude => params[:site]['longitude'],
           :admin_name => params[:site][:admin_name],
           :admin_email_id => params[:site][:admin_email_id],
           :site_code => params[:site][:site_code],
@@ -254,7 +264,21 @@ class SitesController < ApplicationController
           :party_phone_2 => params[:site][:party_phone_2],
           :party_business_area => params[:site][:party_business_area],
           :party_pan_no => params[:site][:party_pan_no],
-          :party_gstin_no => params[:site][:party_gstin_no]
+          :party_gstin_no => params[:site][:party_gstin_no],
+          :active => params[:site][:active] == "yes" ? true : false,
+          :sap_control_number => params[:site][:sap_control_number],
+          :party_name => params[:site][:party_name],
+          :party_code => params[:site]['party_code'],
+          :sez => params[:site]['sezNonSez'],
+          :lut_no => params[:site]['lut_no'],
+          :active => params[:site]['active'],
+          :proximity_radius => params[:site]['proximity_radius'],
+          :sap_control_number => params[:site]['sap_control_number'],
+          :lut_date => params[:site]['lut_date'],
+          :party_name => params[:site]['party_name'],
+          :address2 => params[:site]['address2'],
+          :contact_phone => params[:site]['contact_phone']
+
   )
       @site.updated_by = current_user.full_name if current_user.full_name.present?
       if !params[:site]['logistics_company_id'].blank?
@@ -331,6 +355,6 @@ class SitesController < ApplicationController
       if params['data']
         params['site'] = params['data'].values.first
       end
-      params.require(:site).permit(:id, :name, :address, :latitude, :longitude, :employee_company_id, :admin_name, :admin_email_id, :created_by, :updated_by, :phone, :site_code, :branch_name, :contact_name, :address_1, :address_2, :address_3, :pin, :state, :city, :phone_1, :phone_2, :pan_no, :business_area, :gstin_no, :cost_centre, :profit_centre, :gl_acc_no, :party_code, :party_contact_name, :party_address_1, :party_address_3, :party_address_2, :party_address_3, :party_pin, :party_city, :party_state, :party_phone_1, :party_phone_2, :party_business_area, :party_pan_no, :party_gstin_no)
+      params.require(:site).permit(:id, :name, :address, :latitude, :longitude, :employee_company_id, :admin_name, :admin_email_id, :created_by, :updated_by, :phone, :site_code, :branch_name, :contact_name, :address_1, :address_2, :address_3, :pin, :state, :city, :phone_1, :phone_2, :pan_no, :business_area, :gstin_no, :cost_centre, :profit_centre, :gl_acc_no, :party_code, :party_contact_name, :party_address_1, :party_address_3, :party_address_2, :party_address_3, :party_pin, :party_city, :party_state, :party_phone_1, :party_phone_2, :party_business_area, :party_pan_no, :party_gstin_no, :contact_email, :active, :sez, :lut_date, :lut_no, :party_name, :sap_control_number, :address2, :proximity_radius, :contact_phone)
       end
 end

@@ -92,49 +92,50 @@ function generate_edit(response, type, operator_id, orig_service_html){
                         '<input class="form-control" id="siteName" name="siteName" type="text" value="' + response.site.name + '" required="true">' + 
                     '</div>' + 
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="company">Company*    </label>' + 
-                        '<select class="form-control" id="company" required="true">' + 
-                            '<option value="' + response.site.employee_company_id + '">' + response.company.name + '</option>'
-                        for(var i = 0; i < response.employee_companies.length; i++){             
-                            if(response.employee_companies[i].id != response.site.employee_company_id){
-                                html = html + 
-                            '<option value="' + response.employee_companies[i].id + '">' + response.employee_companies[i].name + '</option>'
-                            }                                   
-                        }
-                    html = html + 
+                '<label class="site_labels" for="company">Company    </label>' + 
+                '<select class="form-control" id="company">' + 
+                    '<option value="' + response.site.employee_company_id + '">' + response.company.name + '</option>'
+                for(var i = 0; i < response.employee_companies.length; i++){             
+                    if(response.employee_companies[i].id != response.site.employee_company_id){
+                        html = html + 
+                    '<option value="' + response.employee_companies[i].id + '">' + response.employee_companies[i].name + '</option>'
+                    }                                   
+                }
+            html = html + 
                         '</select>' + 
                     '</div>' + 
+            '<div class="col-md-4 margin-top"><label class="site_labels" for="sezNonSez">Sez / Non Sez</label><select class="form-control sezNonSez" data-vehiclenumber="1" id="sezNonSez"><option value="non sez">SEZ-Non SEZ</option><option value="sez">SEZ</option></select></div>' + 
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="contact_name">contact name*</label>' + 
-                        '<input class="form-control" id="contact_name" name="contact_name" type="text" value="' + response.site.contact_name + '" required="true">' + 
+                        '<label class="site_labels" for="site_code">site code*</label>' + 
+                        '<input class="form-control" id="site_code" name="site_code" type="text" value="' + response.site.site_code + '" required="true">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="branch_name">branch name</label>' + 
-                        '<input class="form-control" id="branch_name" name="branch_name" type="text" value="' + response.site.branch_name + '">' + 
+                        '<label class="site_labels" for="lut_no">LUT No</label>' + 
+                        '<input class="form-control" id="lut_no" name="branch_name" type="text" value="' + response.site.lut_no + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="address">Address*</label>' + 
-                        '<input class="form-control" id="address" name="address" type="text" value="' + response.site.address + '" required="true">' + 
+                        '<label class="site_labels" for="lut_date">LUT Date </label>' + 
+                        '<input class="form-control" id="lut_date" name="lut_date" type="text" value="' + response.site.lut_date + '" required="true">' + 
                     '</div>' + 
-                    '<div class="col-md-4 no-margin siteFieldsHide">' + 
-                        '<label class="site_labels" for="admin_name">admin_name</label>' + 
-                        '<input class="form-control" id="admin_name" name="admin_name" type="text" value="' + response.site.admin_name + '">' + 
-                    '</div>' +
-                    '<div class="col-md-4 no-margin siteFieldsHide">' + 
-                        '<label class="site_labels" for="admin_name">admin_email_id</label>' + 
-                        '<input class="form-control" id="admin_email_id" name="admin_email_id" type="text" value="' + response.site.admin_email_id + '">' + 
-                    '</div>' +
-                    '<div class="col-md-4 no-margin siteFieldsHide">' + 
-                        '<label class="site_labels" for="site_code">site_code</label>' + 
-                        '<input class="form-control" id="site_code" name="site_code" type="text" value="' + response.site.site_code + '">' + 
+                    '<div class="col-md-4 no-margin">' + 
+                        '<label class="site_labels" for="address">Address 1</label>' + 
+                        '<input class="form-control" id="address" name="address" type="text" value="' + response.site.address + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="address_1">address 1*</label>' + 
-                        '<input class="form-control" id="address_1" name="address_1" type="text" value="' + response.site.address_1 + '" required="true">' + 
+                        '<label class="site_labels" for="address2">Address2</label>' + 
+                        '<input class="form-control" id="address2" name="address2" type="text" value="' + response.site.address2 + '">' + 
+                    '</div>' +
+                    '<div class="col-md-4 no-margin ">' + 
+                        '<label class="site_labels" for="pin">Pin</label>' + 
+                        '<input class="form-control" id="pin" name="pin" type="text" value="' + response.site.pin + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="address_2">address 2*</label>' + 
-                        '<input class="form-control" id="address_2" name="address_2" type="text" value="' + response.site.address_2 + '" required="true">' + 
+                        '<label class="site_labels" for="state">State *</label>' + 
+                        '<input class="form-control" id="state" name="state" type="text" value="' + response.site.state + '" required="true">' + 
+                    '</div>' +
+                    '<div class="col-md-4 no-margin">' + 
+                        '<label class="site_labels" for="city">City </label>' + 
+                        '<input class="form-control" id="city" name="city" type="text" value="' + response.site.city + '" required="true">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="address_3">address 3</label>' + 
@@ -161,27 +162,47 @@ function generate_edit(response, type, operator_id, orig_service_html){
                         '<input class="form-control" id="phone_2" name="phone_2" type="text" value="' + response.site.phone_2 + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="pan_no">pan no*</label>' + 
+                        '<label class="site_labels" for="party_business_area">MLL Business Area *</label>' + 
+                        '<input class="form-control" id="party_business_area" name="party_business_area" type="text" value="' + response.site.party_business_area + '">' + 
+                    '</div>' +
+                    '<div class="col-md-4 no-margin">' + 
+                        '<label class="site_labels" for="pan_no">PAN *</label>' + 
                         '<input class="form-control" id="pan_no" name="pan_no" type="text" value="' + response.site.pan_no + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="business_area">business area</label>' + 
-                        '<input class="form-control" id="business_area" name="business_area" type="text" value="' + response.site.business_area + '">' + 
-                    '</div>' +
+                        '<label class="site_labels" for="latitude">Lat *</label>' + 
+                        '<input class="form-control" id="latitude" name="latitude" type="text" value="' + response.site.latitude + '">' + 
+                    '</div>' + 
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="gstin_no">gstin no</label>' + 
-                        '<input class="form-control" id="gstin_no" name="gstin_no" type="text" value="' + response.site.gstin_no + '">' + 
-                    '</div>' +
+                        '<label class="site_labels" for="longitude">LONG *</label>' + 
+                        '<input class="form-control" id="longitude" name="longitude" type="text" value="' + response.site.longitude + '">' + 
+                    '</div>' + 
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="cost_centre">cost centre</label>' + 
+                        '<label class="site_labels" for="proximity_radius">Proximity Radius (metres) *</label>' + 
+                        '<input class="form-control" id="proximity_radius" name="proximity_radius" type="text" value="' + response.site.proximity_radius + '">' + 
+                    '</div>' + 
+                    '<div class="col-md-4 no-margin">' + 
+                        '<label class="site_labels" for="contact_name">Contact Name </label>' + 
+                        '<input class="form-control" id="contact_name" name="contact_name" type="text" value="' + response.site.contact_name + '">' + 
+                    '</div>' + 
+                    '<div class="col-md-4 no-margin">' + 
+                        '<label class="site_labels" for="contact_phone">Contact Phone </label>' + 
+                        '<input class="form-control" id="contact_phone" name="contact_phone" type="text" value="' + response.site.contact_phone + '">' + 
+                    '</div>' + 
+                    '<div class="col-md-4 no-margin">' + 
+                        '<label class="site_labels" for="contact_email">Contact Email </label>' + 
+                        '<input class="form-control" id="contact_email" name="contact_email" type="text" value="' + response.site.contact_email + '">' + 
+                    '</div>' + 
+                    '<div class="col-md-4 no-margin">' + 
+                        '<label class="site_labels" for="cost_centre">Cost Centre</label>' + 
                         '<input class="form-control" id="cost_centre" name="cost_centre" type="text" value="' + response.site.cost_centre + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="profit_centre">profit centre</label>' + 
+                        '<label class="site_labels" for="profit_centre">Profit Centre</label>' + 
                         '<input class="form-control" id="profit_centre" name="profit_centre" type="text" value="' + response.site.profit_centre + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="gl_acc_no">gl acc no</label>' + 
+                        '<label class="site_labels" for="gl_acc_no">GL Acc No </label>' + 
                         '<input class="form-control" id="gl_acc_no" name="gl_acc_no" type="text" value="' + response.site.gl_acc_no + '">' + 
                     '</div>' +
                 '</div>' +  
@@ -192,66 +213,67 @@ function generate_edit(response, type, operator_id, orig_service_html){
                 '<div style="border: 1px solid #8d8e90;display: inline-block;margin-top: 20px;padding-top: 10px;padding-bottom: 20px;">' + 
                     '<div class="col-md-12" style="font-size: medium;text-align: center;padding: 10px;font-weight: bold;"> Party Details </div>'+            
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_code">party code</label>' + 
+                        '<label class="site_labels" for="party_code">Party Code</label>' + 
                         '<input class="form-control" id="party_code" name="party_code" type="text" value="' + response.site.party_code + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_contact_name">party contact name</label>' + 
+                        '<label class="site_labels" for="party_name">Party  Name</label>' + 
+                        '<input class="form-control" id="party_name" name="party_name" type="text" value="' + response.site.party_name + '">' + 
+                    '</div>' +
+                    '<div class="col-md-4 no-margin">' + 
+                        '<label class="site_labels" for="sap_control_number">SAP Control Number</label>' + 
+                        '<input class="form-control" id="sap_control_number" name="sap_control_number" type="text" value="' + response.site.sap_control_number + '">' + 
+                    '</div>' +
+                    '<div class="col-md-4 no-margin">' + 
+                        '<label class="site_labels" for="party_contact_name">Contact Name</label>' + 
                         '<input class="form-control" id="party_contact_name" name="party_contact_name" type="text" value="' + response.site.party_contact_name + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_address_1">party address 1</label>' + 
+                        '<label class="site_labels" for="party_address_1">Party Address 1</label>' + 
                         '<input class="form-control" id="party_address_1" name="party_address_1" type="text" value="' + response.site.party_address_1 + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_address_3">party address 3</label>' + 
-                        '<input class="form-control" id="party_address_3" name="party_address_3" type="text" value="' + response.site.party_address_3 + '">' + 
-                    '</div>' +
-                    '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_address_2">party address 2</label>' + 
+                        '<label class="site_labels" for="party_address_2">Party Address 2</label>' + 
                         '<input class="form-control" id="party_address_2" name="party_address_2" type="text" value="' + response.site.party_address_2 + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_pin">party pin</label>' + 
+                        '<label class="site_labels" for="party_pin">Party Pin</label>' + 
                         '<input class="form-control" id="party_pin" name="party_pin" type="text" value="' + response.site.party_pin + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_city">party city</label>' + 
+                        '<label class="site_labels" for="party_city">Party City</label>' + 
                         '<input class="form-control" id="party_pin" name="party_city" type="text" value="' + response.site.party_city + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_state">party state</label>' + 
+                        '<label class="site_labels" for="party_state">Party State</label>' + 
                         '<input class="form-control" id="party_state" name="party_state" type="text" value="' + response.site.party_state + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_phone_1">party phone 1</label>' + 
+                        '<label class="site_labels" for="party_phone_1">Party Phone 1</label>' + 
                         '<input class="form-control" id="party_phone_1" name="party_phone_1" type="text" value="' + response.site.party_phone_1 + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_phone_2">party phone 2</label>' + 
+                        '<label class="site_labels" for="party_phone_2">Party Phone 2</label>' + 
                         '<input class="form-control" id="party_phone_2" name="party_phone_2" type="text" value="' + response.site.party_phone_2 + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_business_area">party business area</label>' + 
-                        '<input class="form-control" id="party_business_area" name="party_business_area" type="text" value="' + response.site.party_business_area + '">' + 
-                    '</div>' +
-                    '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_pan_no">party pan no</label>' + 
+                        '<label class="site_labels" for="party_pan_no">Party Pan no</label>' + 
                         '<input class="form-control" id="party_pan_no" name="party_pan_no" type="text" value="' + response.site.party_pan_no + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="party_gstin_no">party gstin no</label>' + 
+                        '<label class="site_labels" for="party_gstin_no">Party GSTIN * no</label>' + 
                         '<input class="form-control" id="party_gstin_no" name="party_gstin_no" type="text" value="' + response.site.party_gstin_no + '">' + 
                     '</div>' +
-                '</div>' +   
+                    '<div class="col-md-4 margin-top"><label class="site_labels" for="active">Active/Inactive</label><select class="form-control sezNonSez" data-vehiclenumber="1" id="active"><option value="yes">Yes</option><option value="no">No</option></select></div>'
+                        '</div>' +
             '</div>' +       
         '</div>' +  
-        '<div class="siteFieldsHide">' +
-            '<p style="font-size:18px; font-weight:600; margin-left:10px ;">Billing Attributes</p>' + 
+        '<div style="display:none">' +
+            '<p style="font-size:18px; font-weight:600; margin-left:10px ; display: none">Billing Attributes</p>' + 
             '<div class="row">'
                 if(response.current_user_type != 'Operator'){
                     html = html + 
-                '<div class="col-md-4 no-margin">' + 
+                '<div class="col-md-4 no-margin siteFieldsHide">' + 
                     '<label class="site_labels" for="operator">Operator</label>' + 
                     '<select class="form-control" id="operator">' +
                     '<option value="">Choose Operator</option>'
