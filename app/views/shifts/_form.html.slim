@@ -6,7 +6,7 @@
         /!= f.association :site, label_method: :site_name, value_method: :id, prompt: false, required: true, prompt: "Choose a Site"
         = f.input :site_id, collection: @site, label: "Site", prompt: "Choose a Site"
       .col-md-3
-        = f.input :working_day, label: 'Weekday/Weekend', required: true, prompt: false, collection: [['Weekday', "Weekend"], ['weekday', "weekend"]], prompt: "Choose Day"
+        = f.input :working_day, label: 'Weekday/Weekend', required: true, prompt: false, collection: ['Weekday',"Weekend"], prompt: "Choose Day"
       .col-md-3
         = f.input :start_time, required: true, input_html: {:'data-mask' => 'time'}
       .col-md-3
