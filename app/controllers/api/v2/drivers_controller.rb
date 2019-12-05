@@ -1,6 +1,6 @@
 class API::V2::DriversController < ApplicationController
   before_action :set_driver, only: [:edit, :update, :destroy, :show]
-  # skip_before_action :authenticate_user!
+  skip_before_action :authenticate_user!
   # before_action :check_date_validation, only: [:create]
   before_action :check_date_of_birth, only: [:create]
   before_action :validate_birth_date, only: [:create]
