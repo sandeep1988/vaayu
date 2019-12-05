@@ -1,8 +1,4 @@
 .content-header
-  - if current_user.operator?
-    h2.content-title
-      | Jobs
-  -else
     h2.content-title
       | Trips
 .content-body
@@ -10,55 +6,6 @@
   .row.margin-top
     .col-md-12.margin-bottom.nav-actions-block
       ul.nav.nav-tabs.trips-tabs
-        - if ENV["ENABLE_LINE_MANAGER_APPROVE"] == "true" && current_user.line_manager?
-          li
-            a[href="#employee-change-request" data-toggle="tab"]
-              | Requests
-        - if current_user.employer? || current_user.employer_shift_manager?
-          li
-            a[href="#operator-trip-board" data-toggle="tab"]
-              | Trip Board
-          li
-            a[href="#employee-change-request" data-toggle="tab"]
-              | Requests
-         
-          .nav-actions
-            a#export-clusters.hidden.btn.btn-sm.btn-default[type="button"]
-              | Export Clusters
-            a#ingest-manifest.hidden.btn.btn-sm.btn-primary[type="button" data-toggle="modal" data-target="#modal-ingest-job-form"]
-              | Import Manifest
-
-        - if current_user.operator? || current_user.operator_shift_manager?
-          li
-            a[href="#operator-trip-board" data-toggle="tab"]
-              | Trip Board
-          li
-            a[href="#operator-assigned-trips" data-toggle="tab"]
-              span.hidden.center[style="margin-bottom: 2px;" class="badge badge-primary" id="badge-assigned-trips"]
-              |  Manifest
-          /!
-            li
-              a[href="#operator-unassigned-rosters" data-toggle="tab"]
-                span.hidden.center[style="margin-bottom: 2px;" class="badge badge-primary" id="badge-unassigned-trips"]
-                |  Unassigned Rosters
-            li
-              a[href="#operator-assigned-trips" data-toggle="tab"]
-                span.hidden.center[style="margin-bottom: 2px;" class="badge badge-primary" id="badge-assigned-trips"]              
-                |  Assigned Trips
-            li
-              a[href="#operator-active-trips" data-toggle="tab"]
-                span.hidden.center[style="margin-bottom: 2px;" class="badge badge-primary" id="badge-active-trips"]
-                |  Active Trips
-            li
-              a[href="#operator-completed-trips" data-toggle="tab"]
-                span.hidden.center[style="margin-bottom: 2px;" class="badge badge-primary" id="badge-completed-trips"]
-                |  Completed Trips
-          li
-            a[href="#trips-notifications" data-toggle="tab"]
-              span.hidden.center[style="margin-bottom: 2px;" class="badge badge-danger" id="badge-unresolved-notification"]
-              |  Status
-              sup#new-notification.hidden
-                | *New
         - if current_user
           li
             a[href="#operator-trip-board" data-toggle="tab"]
