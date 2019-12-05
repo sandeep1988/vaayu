@@ -10,6 +10,13 @@ angular.module('app').factory('TripboardService',['$resource','BASE_URL_8002','B
     });
 }]);
 
+angular.module('app').factory('TripboardBoardCallService',['$resource','BASE_URL_8002','BASE_URL',
+ function($resource,BASE_URL_8002,BASE_URL) {
+    return $resource(BASE_URL_8002+'tripBoardList',{},{
+        get: { method: "POST"},
+    });
+}]);
+
 
 angular.module('app').factory('TripboardResponse', function () {
   return {
