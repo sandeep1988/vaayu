@@ -4,7 +4,7 @@ class Site < ApplicationRecord
   extend AdditionalFinders
   DATATABLE_PREFIX = 'site'
 
-  belongs_to :employee_company
+  belongs_to :employee_company, -> { where(active: true) }
   has_many :employees
   has_many :drivers
   has_many :trips

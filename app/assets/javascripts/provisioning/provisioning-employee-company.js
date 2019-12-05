@@ -359,7 +359,8 @@ $(function () {
                         data: null,
                         render: function (data) {
 
-                            return '<a href="" class="modal_edit">Edit</a>&nbsp<a href="" class="modal_view">View</a>&nbsp<a href="" class="editor_remove text-danger">Delete</a>' //Rushikesh made changes here
+                            return '<a href="" class="modal_edit">Edit |</a>&nbsp<a href="" class="modal_view">View | </a>&nbsp<a href="/employee_companies/' + data.id + '/active_customer" id= "active_customer" data-remote="true"><div style="float:left">' + data.active + '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
+                            // return '<a href="/api/v2/drivers/' + data.id + '/active_driver" id= "active_driver" data-remote="true"><div style="float:left">' + data.active + '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
                         }
                     }
                 ],
@@ -476,7 +477,11 @@ $(function () {
             
     });
 
-    
+    $("#employee-companies-table").on('click', 'a', function (e) {
+      e.preventDefault();
+      var table = $('#employee-companies-table').DataTable();
+      table.ajax.reload();
+    });    
 
     // Delete record
     $(table).on('click', 'a.editor_remove', function (e) {
