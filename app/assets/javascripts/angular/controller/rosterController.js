@@ -198,6 +198,11 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
           ToasterService.showSuccess('Success', 'Route generated successfully.');
         } else {
           ToasterService.showError('Error', res['message']);
+          
+          if (res['is_routes_generated']) {
+            roster.result = 'REQUIRED MORE VEHICLE';
+            roster.disableGenerate = false;
+          }
         }
 
       }, (error) => {
