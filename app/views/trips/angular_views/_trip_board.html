@@ -133,7 +133,7 @@
 
 
             <tbody>
-              <tr ng-class="{'active': ($index % 2) === 0}" ng-repeat="roster in rosters track by $index">
+              <tr ng-class="{'panic':roster.is_panic}" ng-repeat="roster in rosters track by $index">
                 <td> {{$index+1}}</td>
                 <td>
                   <a href="">{{roster.trip_type}}</a>
@@ -200,7 +200,7 @@
     </div>
     <div class="vaayu-modal-body">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-5">
           <div class="pop-img-card">
             <table class="table table-scroll table-bordered table-striped table-condensed">
               <thead class="pop-table-head">
@@ -208,13 +208,37 @@
                   <th>Employee</th>
                   <th>ETA</th>
                   <th>Call</th>
+                  <th>Emergency</th>
                 </tr>
               </thead>
               <tbody class="pop-table-body">
-                <tr class="active" ng-repeat="item in modelData.employees_nodes_addresses track by $index">
+                <tr class="active" ng-repeat="item in modelData.employees_nodes_addresses track by $index" ng-class="{'panic':item.is_panic}">
                   <td>{{item.empName}}</td>
-                  <td></td>
-                  <td><i class="fa fa-phone callIcon"></i></td>
+                  <td>{{item.eta}}</td>
+                  <td><button ng-click="panicCallSesion()"  class="btn btn-sm vaayu-pop-action-btn"><i class="fa fa-phone callIcon"></i></button></td>
+                  <td>
+                    <div class="input-group" ng-if=item.is_panic>
+                        <form class="form-inline">
+                            <div class="form-group">
+                              <div class="input-group">
+                                <input type="text" class="form-control" ng-model="item.comment"  placeholder="Comment">
+                                <div ng-click="updateCallStatus(item)"  ng-class="{'panic':modelData.is_panic}" class="input-group-addon btn vaayu-pop-action-btn">Done</div>
+                              </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="input-group" ng-if="!item.is_panic">
+                        <form class="form-inline">
+                            <div class="form-group">
+                              <div class="input-group">
+                                <input type="text" class="form-control" disabled placeholder="Comment">
+                                <div  class="input-group-addon btn vaayu-pop-action-btn">Done</div>
+                              </div>
+                            </div>
+                        </form>                
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -226,23 +250,23 @@
               </div>
               <div>
                 <span class="pop-name">Arrival Time</span>
-                <span class="pop-status">{{modelData.tripInfo[0].tripStartTime}}</span>
+                <span class="pop-status">{{modelData.trip_end_time}}</span>
               </div>
             </div>
           </div>
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="pop-img-card">
             <div id="googleMap" style="width:100%;height:200px;"></div>
             <div class="container" style="width:100%;">
               <div>
                 <span class="pop-name">Duration</span>
-                <span class="pop-status">{{modelData.tripInfo[0].total_time}} Mins</span>
+                <span class="pop-status">{{modelData.total_trip_time_minutes}} Mins</span>
               </div>
               <div>
                 <span class="pop-name">Distance</span>
-                <span class="pop-status">{{modelData.tripInfo[0].total_distabce}} Kms</span>
+                <span class="pop-status">{{modelData.total_trip_distance}} Kms</span>
               </div>
             </div>
           </div>
@@ -250,10 +274,31 @@
         <div class="col-md-4">
           <div class="pop-img-card">
             <img src="../assets/angular_images/img_avatar.png" alt="Avatar" style="width:100%">
-            <div class="container" style="width:100%;">
-              <span class="pop-name">{{modelData.driver_name}}</span>
-              <span class="pop-status">{{modelData.tripInfo[0].vehicle_type}}</span>
-              <span class="pop-carNumber"> {{modelData.vehicle_number}}</span>
+            <div style="width:100%;">
+              <div class="panic-call">
+                <span class="pop-name">{{modelData.driver_name}}</span>
+                <span class="pop-status">{{modelData.vehicle_type}}</span>
+                <span class="pop-carNumber"> {{modelData.vehicle_number}}</span>
+              </div>
+
+              <div class="input-group label-default pad-2" style="width:100%;" ng-class="{'panic':modelData.is_panic}">
+                  <form class="form-inline">
+                      <div class="form-group" ng-if="modelData.is_panic">
+                        <div class="input-group" >
+                          <input type="text" class="form-control" ng-model="modelData.comment" placeholder="Comment">
+                          <div ng-click="updateCallStatus(modelData)" class="input-group-addon btn vaayu-pop-action-btn">Done</div>
+                        </div>
+                        <button type="button" ng-click="panicCallSesion()" class="btn vaayu-pop-action-btn"><i class="fa fa-phone callIcon"></i></button>
+                      </div>
+                      <div class="form-group" ng-if="!modelData.is_panic">
+                          <div class="input-group" >
+                            <input type="text" class="form-control" disabled placeholder="Comment">
+                            <div ng-class="{'panic':modelData.is_panic}" class="input-group-addon btn vaayu-pop-action-btn">Done</div>
+                          </div>
+                          <button type="button" ng-class="{'panic':modelData.is_panic}" class="btn vaayu-pop-action-btn"><i class="fa fa-phone callIcon"></i></button>
+                        </div>
+                  </form>                
+              </div>
             </div>
           </div>
         </div>`

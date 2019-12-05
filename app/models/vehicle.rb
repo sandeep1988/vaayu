@@ -6,7 +6,7 @@ class Vehicle < ApplicationRecord
   DATATABLE_PREFIX = 'vehicle'
   NOTIFICATION_FIELDS = {insurance_date: "Insurance", puc_validity_date: "PUC", permit_validity_date: "Permit", fc_validity_date: "FC"}
 
-  STEP_VEHICLE = { Step_2: [:insurance_date, :puc_validity_date, :authorization_certificate_validity_date, :fitness_validity_date, :road_tax_validity_date,:permit_validity_date ] }
+  STEP_VEHICLE = { Step_2: [:insurance_date, :puc_validity_date, :fitness_validity_date, :road_tax_validity_date,:permit_validity_date ] }
   VEHICLE_STEP = { Step_1: [:business_associate_id,:plate_number, :model, :category, :fuel_type, :seats, :ac] }
   belongs_to :driver
   belongs_to :business_associate
@@ -24,6 +24,10 @@ class Vehicle < ApplicationRecord
   validates :plate_number, format: { with: /[a-zA-Z0-9]/, message: " only alphanumeric." }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates_length_of :plate_number, maximum: 12
   # validates :make, presence: true, :unless => Proc.new{|f| f.registration_steps.present? }
+  validates :device_id, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
+  validates :gps_provider_id, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
+  validates :km_at_induction, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
+
   validates :model, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   #validates :colour, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :category, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
@@ -35,7 +39,7 @@ class Vehicle < ApplicationRecord
   # validates :registration_date, presence: true , :if => Proc.new{|f| f.registration_steps != "Step_1" or f.registration_steps != "Step_2" }
   validates :insurance_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :puc_validity_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
-  validates :authorization_certificate_validity_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  # validates :authorization_certificate_validity_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :fitness_validity_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :road_tax_validity_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :permit_type, presence: true, :if => Proc.new{|f| f.registration_steps != "Step_1" or f.registration_steps != "Step_2" }
@@ -62,14 +66,17 @@ class Vehicle < ApplicationRecord
   has_attached_file :road_tax_doc
     validates_attachment :road_tax_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
-  has_attached_file :authorization_certificate_doc
-    validates_attachment :authorization_certificate_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
+  # has_attached_file :authorization_certificate_doc
+  #   validates_attachment :authorization_certificate_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
   has_attached_file :vehicle_picture_doc
     validates_attachment :vehicle_picture_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
   has_attached_file :fitness_doc
     validates_attachment :fitness_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
+    
+  has_attached_file :km_doc_upload
+    validates_attachment :km_doc_upload, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
   after_update :update_notification
 
@@ -82,7 +89,7 @@ class Vehicle < ApplicationRecord
   before_save :validate_commercial_expiry_date, unless: :first_registration_steps
   before_save :validate_road_tax_validity_date, unless: :first_registration_steps
   before_save :validate_fitness_validity_date, unless: :first_registration_steps
-  before_save :validate_authorization_certificate_validity_date, unless: :first_registration_steps
+  # before_save :validate_authorization_certificate_validity_date, unless: :first_registration_steps
 
   aasm column: :status do
     state :vehicle_ok, initial: true
@@ -157,11 +164,11 @@ class Vehicle < ApplicationRecord
     end
   end
 
-  def validate_authorization_certificate_validity_date
-    if self.authorization_certificate_validity_date.present? && Date.today > self.authorization_certificate_validity_date 
-        errors.add(:authorization_certificate_validity_date, 'Your authorization validity date has expired.')
-    end
-  end
+  # def validate_authorization_certificate_validity_date
+  #   if self.authorization_certificate_validity_date.present? && Date.today > self.authorization_certificate_validity_date 
+  #       errors.add(:authorization_certificate_validity_date, 'Your authorization validity date has expired.')
+  #   end
+  # end
 
 
 

@@ -52,6 +52,21 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
     $scope.opened = true;
   };
 
+  $scope.panicCallSesion = function(){
+    TripboardBoardCallService.get( (data) => {
+     
+      if (!data['success']) {
+        ToasterService.showError('Error', data['message']);
+        return;
+      }else{
+        ToasterService.showSuccess('Success','Call Ended');
+      }
+
+    }, function (error) {
+      console.error(error);
+    });
+  }
+
   $scope.getAllTrips = function () {
 
     // $scope.fullRoster = TripboardResponse.tempResponse.tripsdetails;

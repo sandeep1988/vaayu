@@ -8,7 +8,7 @@ class Driver < ApplicationRecord
 
   DATATABLE_PREFIX = 'driver'
   NOTIFICATION_FIELDS = { badge_expire_date: "Badge", licence_validity: "Licence" }
-  STEP_DRIVER = { Step_1: [:business_associate_id,:licence_number, :date_of_birth, :aadhaar_mobile_number, :gender, :blood_group], Step_2: [:ifsc_code,:bank_no,:bank_name], Step_3: [:driving_registration_form_doc,:driver_badge_doc,:driving_license_doc,:id_proof_doc] }
+  STEP_DRIVER = { Step_1: [:business_associate_id,:licence_number, :date_of_birth, :aadhaar_mobile_number, :gender, :blood_group], Step_2: [:ifsc_code,:bank_no,:bank_name], Step_3: [:driving_registration_form_doc,:driving_license_doc,:id_proof_doc] }
   has_one :user, :as => :entity
   has_one    :vehicle
 
@@ -43,7 +43,7 @@ class Driver < ApplicationRecord
   validates :ifsc_code, format: { with: /[a-zA-Z0-9]/, message: "only allows alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :licence_number, format: { with: /[a-zA-Z0-9]/, message: "licence number only allows alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   ###validation for upload docs
-  # validates :profile_picture_url, attachment_presence: true
+  validates :father_spouse_name, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # validates :driver_badge_doc_url, attachment_presence: true
   # validates :driving_license_doc_url, attachment_presence: true
   # validates :id_proof_doc_url, attachment_presence: true
@@ -73,8 +73,8 @@ class Driver < ApplicationRecord
   has_attached_file :driving_license_doc
    validates_attachment :driving_license_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
-   has_attached_file :driver_badge_doc
-   validates_attachment :driver_badge_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
+   # has_attached_file :driver_badge_doc
+   # validates_attachment :driver_badge_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
    has_attached_file :id_proof_doc
    validates_attachment :id_proof_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}

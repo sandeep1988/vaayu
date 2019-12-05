@@ -3,6 +3,9 @@ require_relative '../lib/tests/random_address'
 include ActionDispatch::TestProcess
 
 FactoryGirl.define do
+  factory :auditor do
+    
+  end
   factory :ba_manager do
     
   end
