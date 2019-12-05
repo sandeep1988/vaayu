@@ -196,12 +196,8 @@ div#site_html
                 option [value="0"]
                   | Choose Operator      
 
-      -if current_user.operator?
-        .col-md-4.no-margin[style="display:none"]
-          label.site_labels for="operator_id"
-            | Operator
-          input#operator_id[class="form-control" type="text" name="operator_id" value=current_user.entity.logistics_company.id]
-    div.services#services[style="display:none"]
+     
+    .div.services#services[style="display:none"]
       .row.vehicle-div#service_1      
         .col-md-4.margin-top
           label.site_labels for="serviceType"

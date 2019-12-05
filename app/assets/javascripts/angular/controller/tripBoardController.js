@@ -1,4 +1,4 @@
-angular.module('app').controller('tripboardCtrl', function ($scope, TripboardService, TripboardResponse, $timeout, ToasterService) {
+angular.module('app').controller('tripboardCtrl', function ($scope, TripboardService, TripboardResponse, $timeout, ToasterService,TripboardBoardCallService) {
 
 
   $scope.init = function () {
@@ -52,8 +52,14 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
     $scope.opened = true;
   };
 
-  $scope.panicCallSesion = function(){
-    TripboardBoardCallService.get( (data) => {
+  $scope.panicCallSesion = function(id,type){
+    var postdata={
+      "toId":id,
+      "callToType":type,
+      "callRequestDateTime":moment().format('YYYY-MM-DD hh:mm:ss')
+    };
+    
+    TripboardBoardCallService.get(postdata, (data) => {
      
       if (!data['success']) {
         ToasterService.showError('Error', data['message']);
@@ -80,7 +86,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
     }
     console.log(postData)
     TripboardService.get(postData, (data) => {
-      console.log('TripboardService data', data);
+      console.log('all trips data', data);
       if (!data['success']) {
         ToasterService.showError('Error', data['message']);
         return;
