@@ -19,7 +19,7 @@ $(function () {
      * Init table
      */
 
-    $.ajax({
+    $.ajax({ 
       type: "GET",
       url: '/employee_companies/get_all'
     }).done(function (response) {
@@ -49,7 +49,8 @@ $(function () {
           },  {
                 label: "Customer Code *",
                 className: "col-md-4",
-                name: "customer_code"
+                name: "customer_code",
+                attr:{"readonly":"readonly"}
           }, {
               label: 'Business Type*',
               className: "col-md-4 home_address_state",
@@ -57,7 +58,7 @@ $(function () {
               type:"select",
               options: ['Telecom', 'IT Services', 'Consulting Firm', 'Other']
           }, {
-              label: 'Billing Party Name*',
+              label: 'Billing Party Name',
               className: "col-md-4",
               name: "billing_to"
           },{
@@ -169,7 +170,7 @@ $(function () {
               var name = employeeCompaniesTableEditor.field('name');
               var pan = employeeCompaniesTableEditor.field('pan');
               // var category = employeeCompaniesTableEditor.field('category');
-              var billing_to = employeeCompaniesTableEditor.field('billing_to');
+              // var billing_to = employeeCompaniesTableEditor.field('billing_to');
   
               if (!name.isMultiValue()) {
                   if (!name.val()) {
@@ -193,9 +194,9 @@ $(function () {
               // if (category.val().trim().length == 0) {
               //   category.error('Category must be given.');
               // } 
-              if (billing_to.val().trim().length == 0) {
-                billing_to.error('Billing must be given.');
-              } 
+              // if (billing_to.val().trim().length == 0) {
+              //   billing_to.error('Billing must be given.');
+              // } 
 
               // var home_address_contact_name = employeeCompaniesTableEditor.field('home_address_contact_name');
               var home_address_address_1 = employeeCompaniesTableEditor.field('home_address_address_1');
@@ -207,8 +208,8 @@ $(function () {
               var home_address_phone_1 = employeeCompaniesTableEditor.field('home_address_phone_1');
               var home_address_gstin_no = employeeCompaniesTableEditor.field('home_address_gstin_no');
 
-              var customer_code = employeeCompaniesTableEditor.field('customer_code');
-              var sap_control_number = employeeCompaniesTableEditor.field('sap_control_number');
+              // var customer_code = employeeCompaniesTableEditor.field('customer_code');
+              // var sap_control_number = employeeCompaniesTableEditor.field('sap_control_number');
               var reference_no1 = employeeCompaniesTableEditor.field('reference_no1');
 
               // var home_address_pan_no = employeeCompaniesTableEditor.field('home_address_pan_no');
@@ -225,9 +226,9 @@ $(function () {
               if (home_address_gstin_no.val().trim().length == 0) {
                 home_address_gstin_no.error('GSTIN must be given.');
               }
-              if (customer_code.val().trim().length == 0) {
-                customer_code.error('Customer Code must be given.');
-              }
+              // if (customer_code.val().trim().length == 0) {
+              //   customer_code.error('Customer Code must be given.');
+              // }
               if (sap_control_number.val().trim().length == 0) {
                 sap_control_number.error('SAP control number must be given.');
               }
