@@ -11,10 +11,7 @@ aside.side-left
           =link_to trips_path
             = inline_svg 'trips-icon.svg', class: 'sidebar-icon'
             span.sidebar-text
-              - if !current_user.operator?
                 | Trips
-              -else
-                | Jobs
       - if can? :view, :billing_tab
         li[class="#{active_class(invoices_path)}"]
           =link_to invoices_path
