@@ -33,6 +33,7 @@ class EmployeeCompaniesController < ApplicationController
       @employee_company = EmployeeCompany.new(company_params)
       respond_to do |format|
         if @employee_company.save
+          @employee_company.update(:customer_code => rand(1..100000000))
           @employee_company.update(active: company_params[:active] == "Inactive" ? false : true)
           format.json { render json: EmployeeCompanyDatatable.new(@employee_company), status: :created, location: @employee_companies}
         else
