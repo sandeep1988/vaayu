@@ -63,6 +63,9 @@ Rails.application.routes.draw do
     collection do
       get :get_all
     end
+    member do
+      get 'active_customer'
+    end
   end
 
   resources :business_associates do

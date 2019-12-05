@@ -86,7 +86,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
     }
     console.log(postData)
     TripboardService.get(postData, (data) => {
-      console.log('TripboardService data', data);
+      console.log('all trips data', data);
       if (!data['success']) {
         ToasterService.showError('Error', data['message']);
         return;

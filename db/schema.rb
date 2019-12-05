@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191115094408) do
+ActiveRecord::Schema.define(version: 20191205115333) do
 
   create_table "Induction_logs_WIP", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "resource_id",                    null: false
@@ -23,6 +23,11 @@ ActiveRecord::Schema.define(version: 20191115094408) do
     t.string   "created_by",                     null: false
     t.datetime "updated_at",                     null: false
     t.string   "updated_by",                     null: false
+  end
+
+  create_table "auditors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "authentications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -522,6 +527,12 @@ ActiveRecord::Schema.define(version: 20191115094408) do
     t.string   "shift_start_time"
     t.string   "shift_end_time"
     t.boolean  "submitted_by_qc",                                             default: false
+    t.boolean  "active",                                                      default: true
+    t.string   "other_doc_file_name"
+    t.string   "other_doc_content_type"
+    t.integer  "other_doc_file_size"
+    t.datetime "other_doc_updated_at"
+    t.date     "training_date"
     t.index ["business_associate_id"], name: "index_drivers_on_business_associate_id", using: :btree
     t.index ["logistics_company_id"], name: "index_drivers_on_logistics_company_id", using: :btree
     t.index ["site_id"], name: "index_drivers_on_site_id", using: :btree
@@ -601,6 +612,8 @@ ActiveRecord::Schema.define(version: 20191115094408) do
     t.string   "registered_business_area"
     t.string   "registered_pan_no"
     t.string   "registered_gstin_no"
+    t.string   "sap_control_number"
+    t.string   "contact_email"
     t.index ["logistics_company_id"], name: "index_employee_companies_on_logistics_company_id", using: :btree
   end
 
@@ -660,7 +673,7 @@ ActiveRecord::Schema.define(version: 20191115094408) do
     t.integer  "site_id"
     t.integer  "zone_id"
     t.string   "employee_id"
-    t.string   "gender",                  limit: 1
+    t.integer  "gender"
     t.string   "home_address"
     t.decimal  "home_address_latitude",                 precision: 10, scale: 6
     t.decimal  "home_address_longitude",                precision: 10, scale: 6
@@ -1080,12 +1093,14 @@ ActiveRecord::Schema.define(version: 20191115094408) do
     t.string   "start_time"
     t.string   "end_time"
     t.string   "status"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
     t.integer  "site_id"
     t.string   "name_2"
-    t.string   "name_3",      limit: 15
-    t.integer  "adhoc_shift",            default: 0, null: false
+    t.string   "name_3",                     limit: 15
+    t.integer  "adhoc_shift",                           default: 0, null: false
+    t.string   "working_day"
+    t.date     "adhoc_shift_generated_date"
   end
 
   create_table "sites", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -1093,8 +1108,8 @@ ActiveRecord::Schema.define(version: 20191115094408) do
     t.decimal  "latitude",                          precision: 10, scale: 6
     t.decimal  "longitude",                         precision: 10, scale: 6
     t.integer  "employee_company_id"
-    t.datetime "created_at",                                                 null: false
-    t.datetime "updated_at",                                                 null: false
+    t.datetime "created_at",                                                                null: false
+    t.datetime "updated_at",                                                                null: false
     t.string   "address"
     t.text     "phone",               limit: 65535
     t.string   "created_by"
@@ -1131,6 +1146,16 @@ ActiveRecord::Schema.define(version: 20191115094408) do
     t.string   "party_business_area"
     t.string   "party_pan_no"
     t.string   "party_gstin_no"
+    t.string   "contact_email"
+    t.boolean  "active",                                                     default: true
+    t.string   "sez"
+    t.datetime "lut_date"
+    t.string   "lut_no"
+    t.string   "party_name"
+    t.string   "proximity_radius"
+    t.string   "sap_control_number"
+    t.string   "address2"
+    t.string   "contact_phone"
     t.index ["employee_company_id"], name: "index_sites_on_employee_company_id", using: :btree
   end
 
@@ -1220,6 +1245,7 @@ ActiveRecord::Schema.define(version: 20191115094408) do
     t.integer  "exception_type"
     t.string   "status"
     t.datetime "resolved_date"
+    t.text     "message",        limit: 4294967295
   end
 
   create_table "trip_routes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -1349,8 +1375,8 @@ ActiveRecord::Schema.define(version: 20191115094408) do
     t.integer  "shift_id"
     t.string   "status"
     t.datetime "planned_date"
-    t.datetime "created_at",                                                                      null: false
-    t.datetime "updated_at",                                                                      null: false
+    t.datetime "created_at",                                                                           null: false
+    t.datetime "updated_at",                                                                           null: false
     t.integer  "trip_type"
     t.integer  "planned_approximate_duration"
     t.datetime "start_date"
@@ -1366,28 +1392,28 @@ ActiveRecord::Schema.define(version: 20191115094408) do
     t.integer  "scheduled_approximate_distance"
     t.datetime "scheduled_date"
     t.text     "cancel_status",                      limit: 65535
-    t.boolean  "book_ola",                                                        default: false
+    t.boolean  "book_ola",                                                             default: false
     t.text     "ola_fare",                           limit: 65535
-    t.boolean  "bus_rider",                                                       default: false
-    t.decimal  "toll",                                             precision: 10, default: 0
-    t.decimal  "penalty",                                          precision: 10, default: 0
-    t.decimal  "amount",                                           precision: 10, default: 0
-    t.boolean  "paid",                                                            default: false
-    t.boolean  "is_manual",                                                       default: false
+    t.boolean  "bus_rider",                                                            default: false
+    t.decimal  "toll",                                                  precision: 10, default: 0
+    t.decimal  "penalty",                                               precision: 10, default: 0
+    t.decimal  "amount",                                                precision: 10, default: 0
+    t.boolean  "paid",                                                                 default: false
+    t.boolean  "is_manual",                                                            default: false
     t.integer  "employee_cluster_id"
     t.text     "trip_accept_location",               limit: 65535
-    t.decimal  "ba_toll",                                          precision: 10, default: 0
-    t.decimal  "ba_penalty",                                       precision: 10, default: 0
-    t.decimal  "ba_amount",                                        precision: 10, default: 0
-    t.boolean  "ba_paid",                                                         default: false
-    t.integer  "actual_mileage",                                                  default: 0
+    t.decimal  "ba_toll",                                               precision: 10, default: 0
+    t.decimal  "ba_penalty",                                            precision: 10, default: 0
+    t.decimal  "ba_amount",                                             precision: 10, default: 0
+    t.boolean  "ba_paid",                                                              default: false
+    t.integer  "actual_mileage",                                                       default: 0
     t.datetime "driver_should_start_trip_time"
     t.text     "driver_should_start_trip_location",  limit: 65535
     t.datetime "driver_should_start_trip_timestamp"
     t.datetime "trip_assign_date"
     t.datetime "shift_date"
     t.text     "search_index",                       limit: 65535
-    t.boolean  "verified_driver_image",                                           default: false
+    t.boolean  "verified_driver_image",                                                default: false
     t.integer  "guard_id"
     t.string   "vehicle_type"
     t.string   "vehicle_model"
@@ -1406,6 +1432,9 @@ ActiveRecord::Schema.define(version: 20191115094408) do
     t.boolean  "is_distance_exceeded"
     t.boolean  "is_time_exceeded"
     t.text     "routeresponse",                      limit: 65535
+    t.string   "current_lat",                        limit: 45
+    t.string   "current_lng",                        limit: 45
+    t.text     "route_lat_lng_json",                 limit: 4294967295
     t.index ["driver_id"], name: "index_trips_on_driver_id", using: :btree
     t.index ["scheduled_date"], name: "index_trips_on_scheduled_date", using: :btree
     t.index ["site_id"], name: "index_trips_on_site_id", using: :btree
@@ -1537,8 +1566,8 @@ ActiveRecord::Schema.define(version: 20191115094408) do
     t.date     "fitness_validity_date"
     t.date     "road_tax_validity_date"
     t.date     "last_service_date"
-    t.date     "last_service_km"
-    t.date     "km_at_induction"
+    t.integer  "last_service_km",                                          default: 0
+    t.integer  "km_at_induction",                                          default: 0
     t.date     "authorization_certificate_validity_date"
     t.datetime "date_of_registration"
     t.string   "gps_provider_id",                                                                                                comment: "1.ARYA OMNITALK)\n2.AUTOCOP\n3.FALCON AVL SYSTEM\n4.MAP MY INDIA\n5.MOVE IN SYNC\n6.NIVAATA"
@@ -1603,6 +1632,13 @@ ActiveRecord::Schema.define(version: 20191115094408) do
     t.integer  "authorization_certificate_doc_file_size"
     t.datetime "authorization_certificate_doc_updated_at"
     t.boolean  "submitted_by_qc",                                          default: false
+    t.string   "shift_start_time"
+    t.string   "shift_end_time"
+    t.string   "km_doc_upload_file_name"
+    t.string   "km_doc_upload_content_type"
+    t.integer  "km_doc_upload_file_size"
+    t.datetime "km_doc_upload_updated_at"
+    t.string   "km_doc_upload_url"
     t.index ["business_associate_id"], name: "index_vehicles_on_business_associate_id", using: :btree
     t.index ["driver_id"], name: "index_vehicles_on_driver_id", using: :btree
     t.index ["plate_number"], name: "index_vehicles_on_plate_number", using: :btree
