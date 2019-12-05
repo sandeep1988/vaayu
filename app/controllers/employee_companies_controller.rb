@@ -71,6 +71,15 @@ class EmployeeCompaniesController < ApplicationController
     end
   end
 
+  def active_customer
+    emp_customer = EmployeeCompany.find(params[:id])
+    if emp_customer.active?
+      emp_customer.update_attribute('active', '0')
+    else
+      emp_customer.update_attribute('active', '1')
+    end
+    end
+
 
   private
     def set_company
