@@ -351,7 +351,15 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       $scope.isDisabled = true;
 
       RouteUpdateService.query(postData, function (res) {
-        $scope.resetRoute();
+        console.log('save button cick res', res)
+        $scope.isDisabled = false;
+        if (res['success']) {
+          $scope.resetRoute(); 
+        } else {
+          
+          ToasterService.showError('Error', res['message']);
+          return;
+        }
       })
     }
   }

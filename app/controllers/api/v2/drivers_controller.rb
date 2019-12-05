@@ -58,13 +58,13 @@ class API::V2::DriversController < ApplicationController
       end
     elsif params[:registration_steps] == "Step_3"
       @driver = Driver.find(params[:driver_id]) if params[:driver_id].present?
-        if params[:driving_registration_form_doc].blank? or params[:driver_badge_doc].blank? or params[:driving_license_doc].blank? or params[:id_proof_doc].blank? or params[:medically_certified_doc].blank? or params[:sexual_policy_doc].blank?
+        if params[:driving_registration_form_doc].blank? or params[:driving_license_doc].blank? or params[:id_proof_doc].blank? or params[:medically_certified_doc].blank? or params[:sexual_policy_doc].blank? or params[:police_verification_vailidty_doc].blank?
          render json: {success: false , message: "Please Upload all docs", data: {}, errors: {},status: :ok }
       else
         if validate_first_and_second_step(@driver) == true
           if @driver.update(driver_params)
             @driver.update_attribute('registration_steps', 'Step_3')
-            upload_driver_badge_doc(@driver) if @driver.present?
+            # upload_driver_badge_doc(@driver) if @driver.present?
             upload_driving_license_doc(@driver) if @driver.present?
             upload_id_proof_doc(@driver) if @driver.present?
             upload_driving_registration_form_doc(@driver) if @driver.present?
@@ -224,6 +224,7 @@ class API::V2::DriversController < ApplicationController
       user.entity.blood_group = params[:blood_group] if params[:blood_group].present?
       user.entity.business_associate_id = params[:business_associate_id] if params[:business_associate_id].present?
       user.entity.gender = params[:gender] if params[:gender].present?
+      user.entity.training_date = params[:training_date] if params[:training_date].present?
       # user.entity.profile_picture  = params[:profile_picture] if params[:profile_picture].present?
       # user.entity.profile_picture_url = "#{user.entity.profile_picture.url.gsub("//",'')}" if user.entity.profile_picture.present?
       user.entity.shift_end_time = params[:shift_end_time] if params[:shift_end_time].present?
@@ -255,12 +256,12 @@ class API::V2::DriversController < ApplicationController
 
     end
 
-  def upload_driver_badge_doc(driver)
-    if driver.driver_badge_doc.url.present?
-      driver.update(driver_badge_doc_url: driver.driver_badge_doc.url.gsub("//",''))
-      DocumentRenewalRequest.create(status: "New", resource_id: driver.id, document_id: "7", document_url: "#{driver.driver_badge_doc.url.gsub("//",'')}", expiry_date: driver.badge_expire_date , created_by: 0, resource_type: "Driver" ) if driver.badge_expire_date.present?
-    end 
-  end
+  # def upload_driver_badge_doc(driver)
+  #   if driver.driver_badge_doc.url.present?
+  #     driver.update(driver_badge_doc_url: driver.driver_badge_doc.url.gsub("//",''))
+  #     DocumentRenewalRequest.create(status: "New", resource_id: driver.id, document_id: "7", document_url: "#{driver.driver_badge_doc.url.gsub("//",'')}", expiry_date: driver.badge_expire_date , created_by: 0, resource_type: "Driver" ) if driver.badge_expire_date.present?
+  #   end 
+  # end
 
   def upload_driving_license_doc(driver)
     if driver.driving_license_doc.url.present?

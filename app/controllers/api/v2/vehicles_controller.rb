@@ -4,7 +4,7 @@ class API::V2::VehiclesController < ApplicationController
   # before_action :validate_plate_number, only: [:create]
   before_action :check_insurance_date, only: [:create]
   before_action :check_puc_validity_date, only: [:create] 
-  before_action :check_permit_validity_date, :check_authorization_certificate_validity_date, :check_fitness_validity_date, :check_road_tax_validity_date, only: [:create]
+  before_action :check_permit_validity_date, :check_fitness_validity_date, :check_road_tax_validity_date, only: [:create]
   respond_to :json
   # GET /api/v2/vehicles
   # GET /api/v2/vehicles.json
@@ -103,7 +103,7 @@ class API::V2::VehiclesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def vehicle_params
       # params.permit(:business_associate_id, :plate_number, :model,:seats,:ac,:fuel_type,:colour,:registration_date, :fitness_doc_url, :insurance_date, :authorization_certificate_validity_date, :business_area_id, :make_year, :puc_validity_date, :fitness_validity_date, :permit_validity_date, :road_tax_validity_date, :ac,:fuel_type, :driver_id, :last_service_date, :last_service_km, :km_at_induction, :permit_type, :authorization_certificate_validity_date, :date_of_registration, :status, :device_id, :gps_provider_id, :insurance_doc_url, :rc_book_doc_url, :puc_doc_url, :commercial_permit_doc_url, :road_tax_doc_url, :vehicle_picture_url, :authorization_certificate_doc_url, :site_id, :created_by, :updated_by )
-      params.permit(:business_associate_id, :plate_number, :model,:category,:seats,:ac, :colour,:puc_validity_date,:insurance_date,:permit_validity_date,:road_tax_validity_date,:authorization_certificate_validity_date,:fitness_validity_date, :fuel_type, :induction_status, :registration_steps, :insurance_doc, :insurance_doc_url, :rc_book_doc, :rc_book_doc_url, :puc_doc_url, :puc_doc, :commercial_permit_doc_url, :commercial_permit_doc, :road_tax_doc_url, :road_tax_doc, :fitness_doc_url, :fitness_doc, :vehicle_picture_url, :vehicle_picture_doc, :authorization_certificate_doc, :authorization_certificate_doc_url,:site_id, :shift_end_time, :shift_start_time )
+      params.permit(:business_associate_id, :plate_number, :model,:category,:seats,:ac, :colour,:puc_validity_date,:insurance_date,:permit_validity_date,:road_tax_validity_date,:authorization_certificate_validity_date,:fitness_validity_date, :fuel_type, :induction_status, :registration_steps, :insurance_doc, :insurance_doc_url, :rc_book_doc, :rc_book_doc_url, :puc_doc_url, :puc_doc, :commercial_permit_doc_url, :commercial_permit_doc, :road_tax_doc_url, :road_tax_doc, :fitness_doc_url, :fitness_doc, :vehicle_picture_url, :vehicle_picture_doc, :authorization_certificate_doc, :authorization_certificate_doc_url,:site_id, :shift_end_time, :shift_start_time, :device_id, :gps_provider_id, :km_at_induction, :km_doc_upload_url, :km_doc_upload )
     end
 
     def save_draft(params)
@@ -134,7 +134,7 @@ class API::V2::VehiclesController < ApplicationController
           end
       elsif params[:registration_steps] == "Step_3"
         @vehicle = Vehicle.find(params[:vehicle_id]) if params[:vehicle_id].present?
-          if params[:insurance_doc].blank? or params[:rc_book_doc].blank? or params[:puc_doc].blank? or  params[:commercial_permit_doc].blank? or params[:road_tax_doc].blank? or params[:authorization_certificate_doc].blank?  or params[:vehicle_picture_doc].blank? or params[:fitness_doc].blank?
+          if params[:insurance_doc].blank? or params[:rc_book_doc].blank? or params[:puc_doc].blank? or  params[:commercial_permit_doc].blank? or params[:road_tax_doc].blank? or params[:vehicle_picture_doc].blank? or params[:fitness_doc].blank? or params[:km_doc_upload].blank?
               render json: {success: false , message: "Please Upload all docs", data: {}, errors: {},status: :ok }
           else  
             if validate_first_and_second_step(@vehicle)== true
@@ -145,8 +145,8 @@ class API::V2::VehiclesController < ApplicationController
                 upload_puc_doc(@vehicle) if @vehicle.present?
                 upload_commercial_permit_doc(@vehicle) if @vehicle.present?
                 upload_road_tax_doc(@vehicle) if @vehicle.present?
-
-                upload_authorization_certificate_doc(@vehicle) if @vehicle.present?
+                km_doc_upload(@vehicle) if @vehicle.present?
+                # upload_authorization_certificate_doc(@vehicle) if @vehicle.present?
                 upload_vehicle_picture_doc(@vehicle) if @vehicle.present?
                 upload_fitness_doc(@vehicle) if @vehicle.present?
 
@@ -216,18 +216,25 @@ class API::V2::VehiclesController < ApplicationController
     end 
   end 
 
-  def upload_authorization_certificate_doc(vehicle)
-    if vehicle.authorization_certificate_doc.url.present?
-      vehicle.update(authorization_certificate_doc_url: vehicle.authorization_certificate_doc.url.gsub("//",''))
-      DocumentRenewalRequest.create(status: "New", resource_id: vehicle.id, document_id: "18", document_url: "#{vehicle.authorization_certificate_doc.url.gsub("//",'')}", expiry_date: vehicle.road_tax_validity_date , created_by: 0, resource_type: "Vehicle" ) if vehicle.authorization_certificate_validity_date.present?
-      logger.info "authorization certificate doc done"
-    end 
-  end 
+  # def upload_authorization_certificate_doc(vehicle)
+  #   if vehicle.authorization_certificate_doc.url.present?
+  #     vehicle.update(authorization_certificate_doc_url: vehicle.authorization_certificate_doc.url.gsub("//",''))
+  #     DocumentRenewalRequest.create(status: "New", resource_id: vehicle.id, document_id: "18", document_url: "#{vehicle.authorization_certificate_doc.url.gsub("//",'')}", expiry_date: vehicle.road_tax_validity_date , created_by: 0, resource_type: "Vehicle" ) if vehicle.authorization_certificate_validity_date.present?
+  #     logger.info "authorization certificate doc done"
+  #   end 
+  # end 
 
   def upload_vehicle_picture_doc(vehicle)
     if vehicle.vehicle_picture_doc.url.present?
       vehicle.update(vehicle_picture_url: vehicle.vehicle_picture_doc.url.gsub("//",''))
       logger.info "vehicle picture doc done"
+    end 
+  end 
+
+  def km_doc_upload(vehicle)
+    if vehicle.km_doc_upload.url.present?
+      vehicle.update(km_doc_upload_url: vehicle.km_doc_upload.url.gsub("//",''))
+      logger.info "km_doc_upload picture doc done"
     end 
   end 
 
@@ -265,13 +272,13 @@ class API::V2::VehiclesController < ApplicationController
     end
   end
 
-  def check_authorization_certificate_validity_date
-    if params[:registration_steps] == "Step_2"
-      if params[:authorization_certificate_validity_date].present? && params[:authorization_certificate_validity_date].to_date < Date.today 
-        render json: {success: false , message: "Your authorization certificate validity date has expired", data: {}, errors: { errors: "Record not updated" },status: :ok }
-      end
-    end
-  end
+  # def check_authorization_certificate_validity_date
+  #   if params[:registration_steps] == "Step_2"
+  #     if params[:authorization_certificate_validity_date].present? && params[:authorization_certificate_validity_date].to_date < Date.today 
+  #       render json: {success: false , message: "Your authorization certificate validity date has expired", data: {}, errors: { errors: "Record not updated" },status: :ok }
+  #     end
+  #   end
+  # end
 
   def check_fitness_validity_date
     if params[:registration_steps] == "Step_2"
