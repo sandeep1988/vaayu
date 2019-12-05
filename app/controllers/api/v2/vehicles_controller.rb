@@ -1,6 +1,6 @@
 class API::V2::VehiclesController < ApplicationController
   before_action :set_vehicle, only: [:show, :edit, :update, :destroy]
-  # skip_before_action :authenticate_user!
+  skip_before_action :authenticate_user!
   # before_action :validate_plate_number, only: [:create]
   before_action :check_insurance_date, only: [:create]
   before_action :check_puc_validity_date, only: [:create] 
