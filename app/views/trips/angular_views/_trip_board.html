@@ -257,7 +257,10 @@
         </div>
         <div class="col-md-4">
           <div class="pop-img-card">
-            <img src="../assets/angular_images/img_avatar.png" alt="Avatar" style="width:100%">
+            <img src="{{modelData.driver_profile_picture_url}}" alt="Avatar" style="width:100%" ng-if="modelData.driver_profile_picture_url !== 'NA'">
+            <img src="../assets/angular_images/img_avatar.png" alt="Avatar" style="width:100%" ng-if="modelData.driver_profile_picture_url === 'NA'">
+            <!-- <img src="../assets/angular_images/img_avatar.png" alt="Avatar" style="width:100%"> -->
+            <!-- driver_profile_picture_url -->
             <div style="width:100%;">
               <div class="panic-call">
                 <span class="pop-name">{{modelData.driver_name}}</span>
