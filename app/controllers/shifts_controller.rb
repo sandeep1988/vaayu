@@ -35,6 +35,12 @@ class ShiftsController < ApplicationController
       return false
     else
       @shift.save
+      @site = Site.find(params[:shift][:site_id]) 
+       if @site.employees.present?
+        @site.employees.each do |emp|
+          ShiftUser.create(shift_id: @shift.id, user_id:emp.user_id )
+        end
+       end
       @errors = @shift.errors.full_messages.to_sentence
       @datatable_name = "shifts"
     end
