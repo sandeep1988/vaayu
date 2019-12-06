@@ -89,22 +89,22 @@ $(function () {
                 document.getElementById("siteName").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            // if ($("#company").val() == 0 || $("#company").val() == undefined || $("#company").val() == null) {
-            //     document.getElementById("company").classList.add("border-danger")
-            //     validationError = true
-            // }
-            // else {
-            //     document.getElementById("company").classList.remove("border-danger")
-            //     validationError = validationError || false
-            // }
-            if ($("#contact_name").val() == '' || $("#contact_name").val() == undefined || $("#contact_name").val() == null) {
-                document.getElementById("contact_name").classList.add("border-danger")
+            if ($("#company").val() == 0 || $("#company").val() == undefined || $("#company").val() == null) {
+                document.getElementById("company").classList.add("border-danger")
                 validationError = true
             }
             else {
-                document.getElementById("contact_name").classList.remove("border-danger")
+                document.getElementById("company").classList.remove("border-danger")
                 validationError = validationError || false
             }
+            // if ($("#contact_name").val() == '' || $("#contact_name").val() == undefined || $("#contact_name").val() == null) {
+            //     document.getElementById("contact_name").classList.add("border-danger")
+            //     validationError = true
+            // }
+            // else {
+            //     document.getElementById("contact_name").classList.remove("border-danger")
+            //     validationError = validationError || false
+            // }
             if ($("#address").val() == '' || $("#address").val() == undefined || $("#address").val() == null) {
                 document.getElementById("address").classList.add("border-danger")
                 validationError = true
