@@ -131,12 +131,12 @@ $(function () {
               name: "reference_no1"
             },
             {
-              label: 'Contact Name*',
+              label: 'Contact Name',
               className: "col-md-4",
               name: "registered_contact_name"
             },
             {
-              label: 'Contact Phone*',
+              label: 'Contact Phone',
               className: "col-md-4",
               name: "registered_phone1",
               attr: { maxlength: 10, id:'registered_phone1' }
