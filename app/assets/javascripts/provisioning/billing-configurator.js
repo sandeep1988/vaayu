@@ -101,21 +101,40 @@ function generate_edit(response, type, operator_id, orig_service_html){
                     '<option value="' + response.employee_companies[i].id + '">' + response.employee_companies[i].name + '</option>'
                     }                                   
                 }
+
+                let strSelectedNon = '';
+                if( response.site.sez == "non sez" ){
+                    strSelectedNon = "selected";
+
+                }
+                let strSelectedSez = '';
+                let strSelectedSezHide ='none';
+                if( response.site.sez == "sez" ){
+                    strSelectedSez = "selected";
+
+                    strSelectedSezHide = "block";
+
+                }
+
             html = html + 
                         '</select>' + 
                     '</div>' + 
-            '<div class="col-md-4 margin-top"><label class="site_labels" for="sezNonSez">Sez / Non Sez</label><select class="form-control sezNonSez" data-vehiclenumber="1" id="sezNonSez"><option value="non sez">SEZ-Non SEZ</option><option value="sez">SEZ</option></select></div>' + 
+            '<div class="col-md-4 margin-top"><label class="site_labels" for="sezNonSez">Sez / Non Sez</label>\
+                <select class="form-control sezNonSez" data-vehiclenumber="1" id="sezNonSez" >\
+                <option '+strSelectedNon+' value="non sez" >SEZ-Non SEZ</option>\
+                <option  '+strSelectedSez+' value="sez"> SEZ </option>\
+                </select></div>' + 
                     '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="site_code">site code*</label>' + 
                         '<input class="form-control" id="site_code" name="site_code" type="text" value="' + response.site.site_code + '" required="true" readonly>' + 
                     '</div>' +
-                    '<div class="col-md-4 no-margin">' + 
+                    '<div class="col-md-4 no-margin lut_sez" style="display:'+strSelectedSezHide+'">' + 
                         '<label class="site_labels" for="lut_no">LUT No</label>' + 
                         '<input class="form-control" id="lut_no" name="branch_name" type="text" value="' + response.site.lut_no + '">' + 
                     '</div>' +
-                    '<div class="col-md-4 no-margin">' + 
+                    '<div class="col-md-4 no-margin lut_sez" style="display:'+strSelectedSezHide+'">' + 
                         '<label class="site_labels" for="lut_date">LUT Date </label>' + 
-                        '<input class="form-control" id="lut_date" name="lut_date" type="text" value="' + response.site.lut_date + '" required="true">' + 
+                        '<input class="form-control" id="lut_date" name="lut_date" type="text" value="' + moment(response.site.lut_date).format("DD-MM-YYYY") + '" required="true">' + 
                     '</div>' + 
                     '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="address">Address 1</label>' + 
@@ -123,7 +142,7 @@ function generate_edit(response, type, operator_id, orig_service_html){
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="address2">Address2</label>' + 
-                        '<input class="form-control" id="address2" name="address2" type="text" value="' + response.site.address2 + '">' + 
+                        '<input class="form-control" id="address2" name="address2" type="text" value="' + response.site.address_2 + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin ">' + 
                         '<label class="site_labels" for="pin">Pin</label>' + 
@@ -242,7 +261,7 @@ function generate_edit(response, type, operator_id, orig_service_html){
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="party_city">Party City *</label>' + 
-                        '<input class="form-control" id="party_pin" name="party_city" type="text" value="' + response.site.party_city + '">' + 
+                        '<input class="form-control" id="party_city" name="party_city" type="text" value="' + response.site.party_city + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="party_state">Party State *</label>' + 

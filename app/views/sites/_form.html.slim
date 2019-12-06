@@ -26,14 +26,14 @@ div#site_html
                 | SEZ-Non SEZ
               option [value="sez"]
                 | SEZ
-          .col-md-4.no-margin
+          .col-md-4.no-margin.lut_sez
             label.site_labels for="lut_no"
               |LUT No    
-            input#lut_no[class="form-control" type="text" name="lutNo" value="" required= "true"]
-          .col-md-4.no-margin
+            input#lut_no[class="form-control" type="text" name="lutNo" value="" required]
+          .col-md-4.no-margin.lut_sez
             label.site_labels for="lut_date"
               |LUT Date    
-            input#lut_date[class="form-control" type="text" name="lutDate" value="" required= "true"]        
+            input#lut_date[class="form-control"  placeholder="DD-MM-YYYY" type="text" name="lutDate" value="" required= "true"]        
           .col-md-4.no-margin
             label.site_labels for="address"
               | Address 1*
@@ -130,13 +130,13 @@ div#site_html
             label.site_labels for="party_name"
               | Party Name *
             input#party_name[class="form-control" type="text" name="party_name" value=""]
-          .col-md-4.no-margin
-            label.site_labels for="party_code"
-              | Party Code *
-            input#party_code[class="form-control" type="text" name="party_code" value="" readonly]
+          /.col-md-4.no-margin
+            /label.site_labels for="party_code"
+              /| Party Code *
+            /input#party_code[class="form-control" type="text" name="party_code" value="" readonly]
           .col-md-4.no-margin
             label.site_labels for="sap_control_number"
-              | SAP Control Number *
+              | SAP Control Number
             input#sap_control_number[class="form-control" type="text" name="sap_control_number" value=""]
           .col-md-4.no-margin
             label.site_labels for="party_contact_name"
