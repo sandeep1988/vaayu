@@ -103,7 +103,7 @@ class API::V2::VehiclesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def vehicle_params
       # params.permit(:business_associate_id, :plate_number, :model,:seats,:ac,:fuel_type,:colour,:registration_date, :fitness_doc_url, :insurance_date, :authorization_certificate_validity_date, :business_area_id, :make_year, :puc_validity_date, :fitness_validity_date, :permit_validity_date, :road_tax_validity_date, :ac,:fuel_type, :driver_id, :last_service_date, :last_service_km, :km_at_induction, :permit_type, :authorization_certificate_validity_date, :date_of_registration, :status, :device_id, :gps_provider_id, :insurance_doc_url, :rc_book_doc_url, :puc_doc_url, :commercial_permit_doc_url, :road_tax_doc_url, :vehicle_picture_url, :authorization_certificate_doc_url, :site_id, :created_by, :updated_by )
-      params.permit(:business_associate_id, :plate_number, :model,:category,:seats,:ac, :colour,:puc_validity_date,:insurance_date,:permit_validity_date,:road_tax_validity_date,:authorization_certificate_validity_date,:fitness_validity_date, :fuel_type, :induction_status, :registration_steps, :insurance_doc, :insurance_doc_url, :rc_book_doc, :rc_book_doc_url, :puc_doc_url, :puc_doc, :commercial_permit_doc_url, :commercial_permit_doc, :road_tax_doc_url, :road_tax_doc, :fitness_doc_url, :fitness_doc, :vehicle_picture_url, :vehicle_picture_doc, :authorization_certificate_doc, :authorization_certificate_doc_url,:site_id, :shift_end_time, :shift_start_time, :device_id, :gps_provider_id, :km_at_induction, :km_doc_upload_url, :km_doc_upload )
+      params.permit(:business_associate_id, :plate_number, :model,:category,:seats,:ac, :colour,:puc_validity_date,:insurance_date,:permit_validity_date,:road_tax_validity_date,:authorization_certificate_validity_date,:fitness_validity_date, :fuel_type, :induction_status, :registration_steps, :insurance_doc, :insurance_doc_url, :rc_book_doc, :rc_book_doc_url, :puc_doc_url, :puc_doc, :commercial_permit_doc_url, :commercial_permit_doc, :road_tax_doc_url, :road_tax_doc, :fitness_doc_url, :fitness_doc, :vehicle_picture_url, :vehicle_picture_doc, :authorization_certificate_doc, :authorization_certificate_doc_url,:site_id, :shift_end_time, :shift_start_time, :device_id, :gps_provider_id, :km_at_induction, :km_doc_upload_url, :km_doc_upload, :created_by, :updated_by )
     end
 
     def save_draft(params)
@@ -114,6 +114,8 @@ class API::V2::VehiclesController < ApplicationController
         @vehicle.site_id = params[:site_id].to_i if params[:site_id].present?
         @vehicle.shift_start_time = params[:shift_start_time] if params[:shift_start_time].present?
         @vehicle.shift_end_time = params[:shift_end_time] if params[:shift_end_time].present?
+        login_user = User.where(:uid => request.headers["uid"]).first
+        @vehicle.update(created_by: login_user.id) if login_user.present?
         if @vehicle.save
           @vehicle.update_attribute('registration_steps', 'Step_1')
            render json: { success: true , message: "Success First step", data: { vehicle_id: @vehicle.id }, errors: {} }, status: :ok
@@ -153,6 +155,7 @@ class API::V2::VehiclesController < ApplicationController
                 @vehicle.update(induction_status: "Registered") if @vehicle.present?
                 @vehicle.update(compliance_status: "Ready For Allocation") if @vehicle.present?
                 @vehicle.update(date_of_registration: Time.now )
+                @vehicle.update(created_by: current_user.id) if current_user.present?
                 render json: {success: true , message: "Success Final step", data:{vehicle_id: @vehicle.id } , errors: {} }, status: :ok if @vehicle.id.present?
               else
                 render json: {success: false , message: "Fail Final step", data: {}, errors: { errors: @vehicle.errors.full_messages  } },status: :ok if @vehicle.id.blank?

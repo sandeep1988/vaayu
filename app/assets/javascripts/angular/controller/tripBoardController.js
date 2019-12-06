@@ -1,4 +1,4 @@
-angular.module('app').controller('tripboardCtrl', function ($scope, TripboardService, TripboardResponse, $timeout, ToasterService,TripboardBoardCallService) {
+angular.module('app').controller('tripboardCtrl', function ($scope, TripboardService, TripboardResponse, $timeout, ToasterService,TripboardBoardCallService,$interval,$filter,TripboardBoardCommentService) {
 
 
   $scope.init = function () {
@@ -52,6 +52,31 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
     $scope.opened = true;
   };
 
+
+  $scope.FilterStat = function(item){
+    $scope.search=  $filter('uppercase')(item);
+  }
+
+  $scope.updateCallStatus =function(modelData){
+    var postdata={
+      "msg":modelData.comment,
+      "panic_id":modelData.panic_id
+    };
+    
+    TripboardBoardCommentService.get(postdata, (data) => {
+     
+      if (!data['success']) {
+        ToasterService.showError('Error', data['message']);
+        return;
+      }else{
+        ToasterService.showSuccess('Success','Response Recorded Succesfully');
+      }
+
+    }, function (error) {
+      console.error(error);
+    });
+  }
+
   $scope.panicCallSesion = function(id,type){
     var postdata={
       "toId":id,
@@ -93,6 +118,10 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
       }
       $scope.fullRoster = data.data.tripsdetails;
       $scope.rosters = $scope.fullRoster;
+      
+      angular.forEach($scope.rosters, function (item) {
+        item.current_status =  $filter('uppercase')(item.current_status);
+      })
       $scope.stats =  data.data.stats;
 
     }, function (error) {
@@ -100,7 +129,11 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
     });
 
   }
-  //date picker function
+  // Refresh Trip Board after Every 1 Minute;
+
+  $interval(function() {
+    $scope.getAllTrips();
+  }, 1000*60);
 
 
   $scope.showPopup = false;

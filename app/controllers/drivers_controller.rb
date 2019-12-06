@@ -41,6 +41,7 @@ class DriversController < ApplicationController
       attr["password"] = attr['entity_attributes']["licence_number"].last(6)
     end
     user.update(attr)
+    @driver.update(created_by: current_user.id) if current_user.present?
     @errors = user.errors.full_messages.to_sentence
     @datatable_name = "drivers"
 
