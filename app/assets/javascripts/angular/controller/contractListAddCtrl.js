@@ -438,6 +438,12 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
             type = 'BA'
             return;
         }
+
+        if ($scope.ctype == null) {
+            ToasterService.showError('Error', 'Please select Contract Type *');
+            return;
+        }
+
         var id = $scope.selectedSiteId
         var type = 'SITE'
         if ($scope.tab === 'BA') {
@@ -446,7 +452,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         }
 
         var a = document.createElement("a");
-        let url = 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8003/api/v1/contract/download-samplefile/'+id+'/'+type
+        let url = 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8003/api/v1/contract/download-samplefile/'+id+'/'+type+'/'+$scope.ctype
         a.href = url;
         a.download = 'contract_sample.xlsx';
         a.click();   

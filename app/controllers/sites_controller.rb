@@ -134,7 +134,7 @@ class SitesController < ApplicationController
                       :address_1 => params[:site]['address_1'],
                       :address_2 => params[:site]['address_2'],
                       :address_3 => params[:site]['address_3'],
-                      :site_code => params[:site][:site_code],
+                      # :site_code => params[:site][:site_code],
                       :pin => params[:site]['pin'],
                       :state => params[:site]['state'],
                       :pan_no => params[:site]['pan_no'],
@@ -163,9 +163,14 @@ class SitesController < ApplicationController
                       :lut_date => params[:site]['lut_date'],
                       :party_name => params[:site]['party_name'],
                       :address2 => params[:site]['address2'],
-                      :contact_phone => params[:site]['contact_phone']
+                      :contact_phone => params[:site]['contact_phone'],
+                      :phone_2 => params[:site][:phone_2],
+                      :phone_1 => params[:site][:phone_1],
+                      :contact_email => params[:site][:contact_email]
                       )
       if @site.save
+        @site.update(:site_code => rand(1..100000000)) 
+        @site.update(:party_code => rand(1..100000000))
         params[:services].each do |service|
           @service = Service.create(:site_id => @site.id,
                                  :service_type => params[:services][service]['service_type'],
@@ -277,7 +282,8 @@ class SitesController < ApplicationController
           :lut_date => params[:site]['lut_date'],
           :party_name => params[:site]['party_name'],
           :address2 => params[:site]['address2'],
-          :contact_phone => params[:site]['contact_phone']
+          :contact_phone => params[:site]['contact_phone'],
+          :contact_email => params[:site][:contact_email]
 
   )
       @site.updated_by = current_user.full_name if current_user.full_name.present?
