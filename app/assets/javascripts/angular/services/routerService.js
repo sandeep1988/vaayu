@@ -121,6 +121,16 @@ function ($resource, BASE_URL_8002, SessionService) {
 
 
 
+angular.module('app').factory('VehicleListResponse', function () {
+
+    return {
+    
+      listResponse: {"success":true,"message":"success","data":[{"id":791,"vehicleId":791,"vehicleName":null,"model":"MarutiAlto","vehicleNumber":"GGHHKKLL4567","vehicleType":"SUV","seatingCapacity":4,"ownershipType":"BA","trip_type":0,"towardsHome":"false","fromHome":"false","driverName":"Babu Garu","driverId":957,"driverStatus":"on_duty"},{"id":827,"vehicleId":827,"vehicleName":null,"model":"Renault Duster","vehicleNumber":"HLFL474747","vehicleType":"SUV","seatingCapacity":6,"ownershipType":"BA","trip_type":0,"towardsHome":"false","fromHome":"false","driverName":"micro","driverId":1087,"driverStatus":"on_duty"},{"id":837,"vehicleId":837,"vehicleName":null,"model":"Toyota Etios","vehicleNumber":"VSVS81997543","vehicleType":"SUV","seatingCapacity":2,"ownershipType":"BA","trip_type":0,"towardsHome":"false","fromHome":"false","driverName":null,"driverId":null,"driverStatus":"off_duty"},{"id":848,"vehicleId":848,"vehicleName":null,"model":"Innova","vehicleNumber":"GSIGSITST0000","vehicleType":"SUV","seatingCapacity":2,"ownershipType":"BA","trip_type":0,"towardsHome":"false","fromHome":"false","driverName":null,"driverId":null,"driverStatus":"off_duty"}],"errors":null}
+    }
+});
+
+
+
 
 angular.module('app').factory('RouteStaticResponse', function () {
 

@@ -398,7 +398,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     let shift = JSON.parse($scope.selectedShift);
     let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber };
     RouteService.searchVechicle(params, function (res) {
-      // console.log('vehicle search response', res)
+      console.log('vehicle search response', res)
+      console.log('vehicle search response', JSON.stringify(res))
       if (res['success']) {
         $scope.vehicleList = res.data;
         var allowtypes = [];
