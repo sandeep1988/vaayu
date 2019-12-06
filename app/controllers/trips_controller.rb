@@ -1,4 +1,5 @@
 require 'services/google_service'
+require 'httparty'
 
 class TripsController < ApplicationController
   before_action :is_guard_configuration_enabled, only: [:add_guard_to_trip, :guards_list]
@@ -328,7 +329,7 @@ class TripsController < ApplicationController
     if @trip.driver.present?
       #Send unassign driver notification to already assigned driver in case of change driver
       @trip.unassign_driver!
-
+      
       #Resolve driver didn't start notification
       @notification = Notification.where(:trip => @trip, :message => 'trip_should_start', :resolved_status => false)
       @notification.each do |notification|
@@ -370,6 +371,9 @@ class TripsController < ApplicationController
     else
       if @trip.update(:driver => driver, :vehicle => driver.vehicle)
         if @trip.assign_driver!
+          to = driver.user.phone.to_i
+          message = "Hello! New trip has been assigned to you, kindly sign into app to accept the trip."
+          sms = HTTParty.get("http://mahindrasms.com:8080/mConnector/dispatchapi?cname=mnmlog&tname=mnmlog&login=mnmlog&to=#{to}&text=#{message}")
           render :json => { :success => 'Driver successfully assigned' }
         else
           render :json => { :error => 'Something wrong' }
