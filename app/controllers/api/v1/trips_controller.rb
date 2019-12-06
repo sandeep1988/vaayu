@@ -1,10 +1,11 @@
 require 'services/trip_validation_service'
+require 'httparty'
 
 module API::V1
   class TripsController < BaseController
     before_filter :authenticate_user!, :unless => :is_from_sms?
-    # skip_before_filter :authenticate_user!, :if => :assign_driver
-    before_action :set_trip
+    skip_before_filter :authenticate_user!, :only => :panic_sms
+    before_action :set_trip, :except => :panic_sms
     before_action :set_trip_routes, only: [ :driver_arrived, :on_board, :completed, :missed, :resolve_exception, :not_on_board ]
 
     api :GET, '/trips/:id'
@@ -520,6 +521,14 @@ module API::V1
       end
     end
 
+    def panic_sms
+      to = params[:ph].to_i
+      message = "PANIC ALERT raised by Emp:#{params[:emp]}, ID:#{params[:id]}, PH:#{params[:ph]} on #{params[:vehicle_no]}, #{params[:name]}, #{params[:ph2]} on #{params[:dateTime]}"
+      response = HTTParty.get("http://mahindrasms.com:8080/mConnector/dispatchapi?cname=mnmlog&tname=mnmlog&login=mnmlog&to=#{to}&text=#{message}")
+      puts "#{response}"
+      p "#{message}"
+    end
+
     protected
     def set_trip
       @trip = Trip.find(params[:id])
@@ -540,6 +549,8 @@ module API::V1
     def set_trip_routes
       @trip_routes = @trip.trip_routes.where(id: params[:trip_routes])
     end
+
+
 
     def is_from_sms?
       if params[:is_from_sms] == "true"

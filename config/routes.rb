@@ -375,6 +375,7 @@ Rails.application.routes.draw do
       end
       get :verify_email, to: "users#verify_email"
       post :set_password, to: "users#set_password"
+      post "/panic_sms", to: "trips#panic_sms"
     end
   end
 
