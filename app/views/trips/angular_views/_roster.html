@@ -7,7 +7,7 @@
         <form class="form-inline" ng-submit="updateFilters()">
           <div class="form-group pr-2">
             <select ng-model="selectedSite" ng-options="site.name for site in siteList track by site.id"
-              ng-change="getEmployeeList()" class="form-control" placeholder="Select Shift">
+              ng-change="updateFilters()" class="form-control" placeholder="Select Shift">
               <!-- <option value="" >Site</option> -->
             </select>
           </div>
@@ -15,7 +15,7 @@
             <p class="input-group custom-date date_style">
               <input type="text" class="form-control data_in_style" datepicker-popup="{{format}}" ng-model="filterDate"
                 is-open="opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
-                ng-change="getEmployeeList()" ng-required="true" close-text="Close" />
+                ng-change="updateFilters()" ng-required="true" close-text="Close" />
               <span class="input-group-btn-datePicket">
                 <button type="button" class="btn btn-default data_in_style" ng-click="open($event)"><i
                     class="fa fa-calendar" aria-hidden="true"></i>
@@ -42,9 +42,12 @@
                             </select>
                         </div> -->
 
-          <button type="submit" class="btn btn-terniary-disable fa-search-custom"><i
-              class="fa fa-search fa-search-custom" aria-hidden="true"></i>
-          </button>
+          <!-- <button type="button" class="btn btn-terniary fa-search-custom" ng-click="updateFilters()">
+            <i class="fa fa-search fa-search-custom" aria-hidden="true" ng-click="updateFilters()"></i>
+          </button> -->
+          <button type="button"
+          ng-click="updateFilters()"
+          class="btn btn-terniary-blue">OK</button>
         </form>
       </div>
 
@@ -160,10 +163,10 @@
                 <td class="text-color-blue " style="color: #14a89e !important;"><b>{{roster.result}}</b></td>
                 <td>
                   <div class="">
-
-                      <!-- <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated"
-                      ng-click="generateRoutes(roster)" type="button"
-                      class="btn btn-sm-vaayu btn-terniary-blue btn-block">Generate</button> -->
+                      <!-- && !roster.routesGenerated -->
+                    <!-- <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' "
+                    ng-click="generateRoutes(roster)" type="button"
+                    class="btn btn-sm-vaayu btn-terniary-blue btn-block">Generate</button> -->
 
                     <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && roster.routesGenerated" type="button"
                       class="btn btn-sm-vaayu btn-terniary-disable btn-block">Routes Generated</button>
@@ -416,7 +419,7 @@
               <table class="table table-scroll table-bordered table-striped table-condensed">
                 <thead class="pop-table-head">
                   <tr>
-                    <th >Employee Name</th>
+                    <th>Employee Name</th>
                     <th>Gender</th>
                     <th>Home Address</th>
                     <th>Lat</th>

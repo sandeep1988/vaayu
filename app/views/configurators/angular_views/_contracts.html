@@ -8,7 +8,7 @@
 
             <div class="col-md-6">
                 <div class="form-group" ng-show="tab === 'CUSTOMER'">
-                    <label for="usr" class="leb_color">Site Name *</label>
+                    <label for="usr" class="leb_color">Site Name <span class="required">*</span></label>
                     <!-- <input type="text" class="form-control" id="usr"> -->
                     <select class="custom-select form-control" ng-model="selectedSiteId" ng-change="getContracts()"
                         >
@@ -33,7 +33,7 @@
 
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="usr" class="leb_color">Unique Identifier *</label>
+                    <label for="usr" class="leb_color">Unique Identifier <span class="required">*</span></label>
                     <div ng-dropdown-multiselect="" 
                         checkboxes="true" 
                         search-placeholder="   Search UDID's    " options="uniqueId" selected-model="selectedUIDs" extra-settings="example2settings">
@@ -128,8 +128,9 @@
                             </div>
                             <div class="col-md-6 ">
                                 <div class="form-group">
-                                    <label class="leb_color" for="basic-url">Contract Type<span
-                                            class="required">*</span></label>
+                                    <label class="leb_color" for="basic-url">Contract Type
+                                        <span class="required">*</span>
+                                    </label>
                                     <select class="custom-select form-control" ng-model="ctype"
                                         >
                                         <option value="">Choose Options</option>

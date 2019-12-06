@@ -27,11 +27,10 @@ module Overrides
         @resource = resource_class.where('email = ? OR username = ? OR phone = ?', q_value, q_value, q_value).first
 
       end
-
       app = resource_params[:app]
       if app.blank? 
         render_create_error_app_not_specified
-      elsif resource_params[:app] == "driver" && @resource.entity.present? && (@resource.entity.blacklisted? || !@resource.entity.active?)
+      elsif resource_params[:app] == "driver" && @resource.entity.present? && (@resource.entity.blacklisted? || !@resource.entity.active? || (@resource.entity.induction_status.present? && @resource.entity.induction_status != "Inducted"))
         render_blocked_user
       elsif @resource and valid_params?(field, q_value) and @resource.valid_password?(resource_params[:password]) and (!@resource.respond_to?(:active_for_authentication?) or @resource.active_for_authentication?) and @resource.has_access_to_app?(resource_params[:app])
 
@@ -89,7 +88,7 @@ module Overrides
     def render_blocked_user
       render json: {
         success: false,
-        errors: ['Your account has blocked']
+        errors: ['Your account has Blocked or not Inducted']
         }, status: 422
     end
 

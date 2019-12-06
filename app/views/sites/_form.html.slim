@@ -10,14 +10,14 @@ div#site_html
             input#siteName[class="form-control" type="text" name="siteName" value="" required= "true"]
           .col-md-4.no-margin
             label.site_labels for="company"
-              | Company
+              | Company *
             select.form-control#company
               option [value="0"]
                 | Choose Company
           .col-md-4.no-margin
             label.site_labels for="site_code"
-              | site_code
-            input#site_code[class="form-control" type="text" name="site_code" value="" readonly]
+              | Site_Code
+            input#site_code[class="form-control" type="text" name="site_code" value="" readonly ]
           .col-md-4.margin-top
             label.site_labels for="sezNonSez"
               | Sez / Non Sez
@@ -48,13 +48,13 @@ div#site_html
             input#pin[class="form-control" type="text" name="pin" value="" required="true"]
           .col-md-4.no-margin
             label.site_labels for="state"
-              | State*    
+              | State *    
             select.form-control#state required="true"
               option [value="0"]
                 | Choose State
           .col-md-4.no-margin
             label.site_labels for="city" required="true"
-              | City*    
+              | City *    
             select.form-control#city
               option [value="0"]
                 | Choose City          
@@ -140,7 +140,7 @@ div#site_html
             input#sap_control_number[class="form-control" type="text" name="sap_control_number" value=""]
           .col-md-4.no-margin
             label.site_labels for="party_contact_name"
-              | Contact Name *
+              | Contact Name
             input#party_contact_name[class="form-control" type="text" name="party_contact_name" value=""]    
           .col-md-4.no-margin
             label.site_labels for="party_address_1"
@@ -156,13 +156,13 @@ div#site_html
             input#party_pin[class="form-control" type="text" name="party_pin" value=""]
           .col-md-4.no-margin
             label.site_labels for="party_state"
-              | State    
+              | State *
             select.form-control#party_state
               option [value="0"]
                 | Choose Party State 
           .col-md-4.no-margin
             label.site_labels for="party_city"
-              | City    
+              | City * 
             select.form-control#party_city
               option [value="0"]
                 | Choose City

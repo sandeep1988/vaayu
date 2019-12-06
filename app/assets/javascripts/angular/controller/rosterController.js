@@ -135,7 +135,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
         // var data = RosterStaticResponse.staticResponse;
         $scope.rosters = data.data.shiftdetails;
         $scope.stats = data.data.stats;
-        // console.log('rosters', $scope.rosters);
+        console.log('rosters', $scope.rosters);
 
       }
     }
@@ -189,17 +189,18 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       "search": '0',
       "shift_type": shift_type // 0 -checkin 1-checout
     }
-    console.log(postData)
+    console.log('route generate req', postData)
 
     RouteService.getRoutes(postData,
       (res) => {
-        console.log(res);
+        console.log('route generate res', res);
         if (res['success']) {
           ToasterService.showSuccess('Success', 'Route generated successfully.');
         } else {
           ToasterService.showError('Error', res['message']);
           
-          if (res['is_routes_generated']) {
+          // if (res['is_routes_generated']) {
+          if (true) {
             roster.result = 'REQUIRED MORE VEHICLE';
             roster.disableGenerate = false;
           }
@@ -337,9 +338,13 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     }
     console.log(postData);
     RosterService.getEmployeeList(postData, function (res) {
-      console.log('Emp list')
-      $scope.EmpList = res.data.employeeList;
-      console.log(res.data);
+      console.log('Emp list', res)
+      if (res['success']) {
+        $scope.EmpList = res.data.employeeList;
+      } else {
+        ToasterService.showError('Error', res['message']);
+        return;
+      }
     }, function (error) {
       console.log(error);
     });
