@@ -29,7 +29,7 @@
                                 <option>Disabled select</option>
                             </select>
                         </div> -->
-          <div class="form-group pr-2">
+          <div class="form-group pr-2" ng-init="showDropdown=false">
             <div class="form-group pr-2">
               <p class="input-group custom-date date_style ">
                 <input type="text"  
@@ -41,6 +41,30 @@
                   <button type="button" class="btn btn-default data_in_style" ng-click="open($event)"><i
                       class="fa fa-calendar"></i></button>
                 </span>
+                 <!-- <div class="btn-group" uib-dropdown>
+                    <button id="split-button" type="button" class="btn btn-">Action</button>
+                    <button type="button" class="btn btn-danger" ng-click="showDropdown=!showDropdown">
+                      <span class="caret"></span>
+                      <span class="sr-only">Split button!</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="split-button"
+                      ng-if="showDropdown"
+                    >
+                    <li role="menuitem"><a href="#">Action</a></li>
+                     
+                      <li class="divider"></li>
+                      <li role="menuitem" >
+                        <div style="display: flex; justify-content:center">
+                          <button class="btn btn-default"
+                            ng-click="showDropdown=!showDropdown"
+                          >Cancel</button>
+                          <button class="btn btn-primary" style="margin-left: 5px;"
+                            ng-click="showDropdown=!showDropdown"
+                          >Allocate</button>
+                        </div>
+                    </li>
+                    </ul>
+                  </div> -->
               </p>
             </div>
           </div>
@@ -180,6 +204,12 @@
     <div class="vaayu-modal-header">
 
       <span>All Routes</span>
+      <!-- <span style="float: right;">
+          <div ng-dropdown-multiselect=""  options="vehicleList" style="display: inline-block;"
+          selected-model="SelectedEmp " checkboxes="true" extra-settings="example14settings"
+          validation="required" search-placeholder="   Change Allocation    " validation-result="selectedVehicle">
+          </div>  
+      </span> -->
       <span class="vaayu-pop-close closepop" ng-click="showPopup=false">&times;</span>
     </div>
     <div class="vaayu-modal-body">
@@ -201,7 +231,7 @@
                   <td>{{item.eta}}</td>
                   <td><button ng-click="panicCallSesion(item.empId,'Employee')"  class="btn btn-sm vaayu-pop-action-btn"><i class="fa fa-phone callIcon"></i></button></td>
                   <td>
-                    <div class="input-group" ng-if=item.is_panic>
+                    <div class="input-group" ng-if="item.is_panic">
                         <form class="form-inline">
                             <div class="form-group">
                               <div class="input-group">
@@ -293,8 +323,33 @@
 
     </div>
     <div class="vaayu-modal-footer">
-      <button type="button" class="vaayu-pop-action-btn"> Change Allocation</button>
-      <button type="button" class="vaayu-pop-action-btn"> Call Driver</button>
+      <!-- <button type="button" class="vaayu-pop-action-btn"> Change Allocation</button> -->
+      <div ng-dropdown-multiselect="" 
+        ng-if="isDisable1(modelData)"
+        options="vehicleList" style="display: inline-block;"
+        selected-model="selectedVehicle " checkboxes="true" extra-settings="example14settings"
+        validation="required" search-placeholder="   Change Allocation    " validation-result="selectedVehicle">
+      </div>  
+      <button type="button" class="vaayu-pop-action-btn" ng-click="changeAllocation()"
+        ng-if="isDisable()"
+        > Submit</button>
+      <!-- <button type="button" class="vaayu-pop-action-btn" ng-if='selectedVehicle!=null'> Change Allocation</button> -->
+      <!-- Split button -->
+      <!-- <div class="btn-group" uib-dropdown>
+        <button id="split-button" type="button" class="btn btn-">Action</button>
+        <button type="button" class="btn btn-danger" uib-dropdown-toggle>
+          <span class="caret"></span>
+          <span class="sr-only">Split button!</span>
+        </button>
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
+          <li role="menuitem"><a href="#">Action</a></li>
+          <li role="menuitem"><a href="#">Another action</a></li>
+          <li role="menuitem"><a href="#">Something else here</a></li>
+          <li class="divider"></li>
+          <li role="menuitem"><a href="#">Separated link</a></li>
+        </ul>
+      </div> -->
+      
 
     </div>
   </div>

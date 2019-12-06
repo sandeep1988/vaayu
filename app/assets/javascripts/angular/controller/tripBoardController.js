@@ -1,5 +1,19 @@
-angular.module('app').controller('tripboardCtrl', function ($scope, TripboardService, TripboardResponse, $timeout, ToasterService,TripboardBoardCallService,$interval,$filter,TripboardBoardCommentService) {
+angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListResponse, RouteService, TripboardService, TripboardResponse, $timeout, ToasterService,TripboardBoardCallService,$interval,$filter,TripboardBoardCommentService) {
 
+  // $scope.toggled = function(open) {
+  //   // $log.log('Dropdown is now: ', open);
+  // };
+  // $scope.status = {
+  //   isopen: false
+  // };
+
+  // $scope.toggleDropdown = function($event) {
+  //   $event.preventDefault();
+  //   $event.stopPropagation();
+  //   $scope.status.isopen = !$scope.status.isopen;
+  // };
+
+  
 
   $scope.init = function () {
     $scope.today();
@@ -10,6 +24,15 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
     $scope.dateOptions = {
       formatYear: 'yy',
       startingDay: 1
+    };
+
+    $scope.selectedVehicle = {};
+    $scope.example14settings = {
+      scrollableHeight: '200px',
+      scrollable: true,
+      enableSearch: true,
+      width: '300px',
+      selectionLimit: 1
     };
 
     $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
@@ -141,6 +164,12 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
     console.log('showModal', row);
     $scope.modelData = row;
     $scope.showPopup = true;
+    $scope.selectedVehicle = {};
+    var trip_status = row.current_status.toLowerCase().trim();
+    if (trip_status === 'pending acceptance' || trip_status === 'accepted', trip_status === 'delayed') {
+      $scope.getVehicleListForTrip(row);
+    } 
+      
     return ;
 
     // var mapProp = {
@@ -211,5 +240,56 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
     $scope.rosters = $scope.fullRoster.filter(item => item.current_status === status)
   }
 
+  $scope.getVehicleListForTrip = function (trip) {
+    var siteId = $scope.selectedSiteID
+    var shiftId = trip.shift_id
+    var shiftType = trip.trip_type_status
+
+    let postVehicleData = {
+      siteId, shiftId, shiftType,
+      selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
+      driverStatus: 'on_duty' //$scope.selected_vehicle_status
+    }
+    console.log('postVehicleData', postVehicleData)
+    RouteService.postVehicleList(postVehicleData, function (res) {
+      console.log('vehicle list', res)
+      if (!res['success']) {
+        ToasterService.showError('Error', res['message']);
+        return;
+      } else {
+        // $scope.vehicleList = res.data;
+        var array = VehicleListResponse.listResponse.data;
+        var newarray = [];
+        for (let item of array) {
+          newarray.push({id: item.id, name: item.vehicleNumber})
+        }
+        $scope.vehicleList = newarray;
+      }
+      console.log('$scope.vehicleList', $scope.vehicleList)
+    }, function (error) {
+      console.log(error);
+    });
+  }
+
+  $scope.isDisable = () => {
+    if (Object.keys($scope.selectedVehicle).length === 0) {
+      return false;
+    }
+    return true;
+  }
+  $scope.isDisable1 = (row) => {
+    if (row == undefined) {
+      return false;
+    }
+    var trip_status = row.current_status.toLowerCase().trim();
+    if (trip_status === 'pending acceptance' || trip_status === 'accepted', trip_status === 'delayed') {
+      return true;
+    } 
+    return false;
+  }
+  $scope.changeAllocation = () => {
+    console.log('selected vehicle', $scope.selectedVehicle)
+  }
+  
 
 });
