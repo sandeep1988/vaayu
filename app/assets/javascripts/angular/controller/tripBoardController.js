@@ -60,14 +60,14 @@ angular.module('app').controller('tripboardCtrl', function ($scope, TripboardSer
   $scope.updateCallStatus =function(modelData){
     var postdata={
       "msg":modelData.comment,
-      "panic_id":modelData.panic_id
+      "panic_id":modelData.panic_id,
+      "date":moment().format('YYYY-MM-DD hh:mm:ss')
     };
     
     TripboardBoardCommentService.get(postdata, (data) => {
      
       if (!data['success']) {
         ToasterService.showError('Error', data['message']);
-        return;
       }else{
         ToasterService.showSuccess('Success','Response Recorded Succesfully');
       }

@@ -142,7 +142,7 @@
 
             <tbody>
               
-              <tr ng-class="{'panic':roster.is_panic}" ng-repeat="roster in rosters  | filter :{current_status:search} track by $index">
+              <tr ng-class="{'panic':roster.trip_is_panic}" ng-repeat="roster in rosters  | filter :{current_status:search} track by $index">
                 <td> {{$index+1}}</td>
                 <td>
                   <a href="">{{roster.trip_type}}</a>
@@ -186,7 +186,7 @@
       <div class="row">
         <div class="col-md-5">
           <div class="pop-img-card">
-            <table class="table table-scroll table-bordered table-striped table-condensed">
+            <table class="table table-scroll table-bordered  table-condensed">
               <thead class="pop-table-head">
                 <tr>
                   <th>Employee</th>
@@ -196,7 +196,7 @@
                 </tr>
               </thead>
               <tbody class="pop-table-body">
-                <tr class="active" ng-repeat="item in modelData.employees_nodes_addresses track by $index" ng-class="{'panic':item.is_panic}">
+                <tr class="" ng-repeat="item in modelData.employees_nodes_addresses track by $index" ng-class="{'panic':item.is_panic}">
                   <td>{{item.empName}}</td>
                   <td>{{item.eta}}</td>
                   <td><button ng-click="panicCallSesion(item.empId,'Employee')"  class="btn btn-sm vaayu-pop-action-btn"><i class="fa fa-phone callIcon"></i></button></td>

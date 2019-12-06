@@ -83,7 +83,7 @@
     padding: 10px 16px;
   }
   .panic {
-    background: red !important;
+    background: pink !important;
   }
   .stat-item {
     cursor: pointer;
