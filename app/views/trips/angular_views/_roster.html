@@ -17,8 +17,8 @@
                 is-open="opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
                 ng-change="updateFilters()" ng-required="true" close-text="Close" />
               <span class="input-group-btn-datePicket">
-                <button type="button" class="btn btn-default data_in_style" ng-click="open($event)"><i
-                    class="fa fa-calendar" aria-hidden="true"></i>
+                <button type="button" class="btn btn-default data_in_style" ng-click="open($event)">
+                  <i class="fa fa-calendar" aria-hidden="true"></i>
                 </button>
               </span>
             </p>
@@ -203,6 +203,9 @@
     </section>
 
   </div>
+
+
+
   <div class="row vayau-sidebar filter-sidebar" ng-if="isAddMenuOpen">
     <div class="col-md-12">
       <div class="vaayu-sidebar-panel">
@@ -308,92 +311,91 @@
           </div>
         </div>
         <div class="">
-          <form class="" ng-submit="submitAddCustomRoute(selectedShift,to_time)">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <!-- <input class="form-control" type="number" id="appt" min="0" max="23"  ng-model="to_time" name='to_time' placeholder="Time" required>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <!-- <input class="form-control" type="number" id="appt" min="0" max="23"  ng-model="to_time" name='to_time' placeholder="Time" required>
                                                           <span ng-show="hasError('to_time', 'required')" class="help-block">To Time is
                                                               required.</span>
-                                                              </div> -->
-                  <input type="time" id="to_time" name="to_time" class="form-control" ng-model="to_time"
-                    placeholder="Time" required />
-                  <span ng-show="hasError('to_time', 'required')" class="help-block">To Time is
-                    required.</span>
-                </div>
+                                                              -->
               </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <select name="selectedShift" class="form-control" ng-model="selectedShift" required>
-                    <option value="">Select Shift</option>
-                    <option value="0">Check In</option>
-                    <option value="1">Check Out</option>
-                  </select>
-                  <span ng-show="selectedShift.$error.required" class="help-block">Shift is
-                    required.</span>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div ng-dropdown-multiselect="" class="form-control ml_selec" options="EmpList"
-                  selected-model="SelectedEmp " checkboxes="true" extra-settings="example14settings"
-                  validation="required" search-placeholder="   Search Employee's    " validation-result="SelectedEmp">
-                </div>
-              </div>
-              <span ng-show="SelectedEmp .$error.required" class="help-block">Employee is
+              <input type="time" id="to_time" name="to_time" class="form-control" ng-model="to_time" placeholder="Time"
+                required />
+              <span ng-show="hasError('to_time', 'required')" class="help-block">To Time is
                 required.</span>
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="vaayu-sidebar-body form-group" set-height style="overflow-y: auto">
-                  <ul class="emplyoee-list-group" dnd-list="SelectedEmp " dnd-effect-allowed="copy"
-                    dnd-allowed-types="list.allowedTypes" dnd-disable-if="SelectedEmp .length >= SelectedEmp .max"
-                    dnd-dragover="dragoverCallback(SelectedEmp ,index, external, type)"
-                    dnd-drop="dropCallback(SelectedEmp ,index, item, external, type)">
-                    <li ng-repeat="emp in SelectedEmp " no-drop dnd-draggable="emp" dnd-effect-allowed="move"
-                      class="background-{{emp.type}} input-group employee-list-group-item">
-                      <span class="input-group-addon addon-prepend">
-                        <div class="inner-addon">
-                          <i class="fa fa-shield" aria-hidden="true"></i>
-                        </div>
-                      </span>
-
-                      <div class="inner-text">
-                        <div class="text-small">Selected Employee</div>
-                        <div class="text-big"> {{emp.label}}</div>
-                      </div>
-
-                      <div class="input-group-addon addon-append">
-                        <i class="fa fa-bars" aria-hidden="true"></i>
-                      </div>
-                    </li>
-
-                  </ul>
-
-                </div>
-              </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <select name="selectedShift" class="form-control" ng-model="selectedShift" required>
+                <option value="">Select Shift</option>
+                <option value="0">Check In</option>
+                <option value="1">Check Out</option>
+              </select>
+              <span ng-show="selectedShift.$error.required" class="help-block">Shift is
+                required.</span>
             </div>
-
-
-
-            <div class="row" style="margin:70px">
-              <div class="col-md-6">
-                <button type="button" style="width:100%" ng-click="hideAddMenu2()"
-                  class="btn btn-cancel ">Cancel</button>
-              </div>
-              <div class="col-md-6"><button style="width:100%" type="submit"
-                  class="btn btn-primary add-vehicle-btn-done">Submit</button>
-              </div>
-            </div>
-
-
-            <!-- </div> -->
-          </form>
+          </div>
         </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div ng-dropdown-multiselect="" class="form-control ml_selec" options="EmpList"
+              selected-model="SelectedEmp " checkboxes="true" extra-settings="example14settings" validation="required"
+              search-placeholder="   Search Employee's    " validation-result="SelectedEmp">
+            </div>
+          </div>
+          <span ng-show="SelectedEmp .$error.required" class="help-block">Employee is
+            required.</span>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="vaayu-sidebar-body form-group" set-height style="overflow-y: auto">
+              <ul class="emplyoee-list-group" dnd-list="SelectedEmp " dnd-effect-allowed="copy"
+                dnd-allowed-types="list.allowedTypes" dnd-disable-if="SelectedEmp .length >= SelectedEmp .max"
+                dnd-dragover="dragoverCallback(SelectedEmp ,index, external, type)"
+                dnd-drop="dropCallback(SelectedEmp ,index, item, external, type)">
+                <li ng-repeat="emp in SelectedEmp " no-drop dnd-draggable="emp" dnd-effect-allowed="move"
+                  class="background-{{emp.type}} input-group employee-list-group-item">
+                  <span class="input-group-addon addon-prepend">
+                    <div class="inner-addon">
+                      <i class="fa fa-shield" aria-hidden="true"></i>
+                    </div>
+                  </span>
+
+                  <div class="inner-text">
+                    <div class="text-small">Selected Employee</div>
+                    <div class="text-big"> {{emp.label}}</div>
+                  </div>
+
+                  <div class="input-group-addon addon-append">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                  </div>
+                </li>
+
+              </ul>
+
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="row" style="margin:70px">
+          <div class="col-md-6">
+            <button type="button" style="width:100%" class="btn btn-cancel ">Cancel</button>
+          </div>
+          <div class="col-md-6">
+            <button style="width:100%" type="button" ng-click="submitAddCustomRoute(selectedShift,to_time)"
+              class="btn btn-primary add-vehicle-btn-done">Submit
+            </button>
+          </div>
+        </div>
+
+
       </div>
     </div>
   </div>
+
 
   <div id="myModal" class="vaayu-modal" style="display: block;z-index: 4;" ng-show="showPopup">
 
@@ -444,3 +446,5 @@
     </div>
 
   </div>
+
+</div>
