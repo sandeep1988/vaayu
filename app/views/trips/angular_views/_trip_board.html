@@ -29,6 +29,7 @@
                                 <option>Disabled select</option>
                             </select>
                         </div> -->
+          <toaster-container></toaster-container>
           <div class="form-group pr-2" ng-init="showDropdown=false">
             <div class="form-group pr-2">
               <p class="input-group custom-date date_style ">
@@ -321,6 +322,25 @@
         </div>`
       </div>
 
+
+      <!-- <div class="row">
+          <div class="pop-img-card">
+              <table class="table table-scroll table-bordered  table-condensed">
+                <thead class="pop-table-head">
+                  <tr>
+                    <th>Employee</th>
+                    <th>ETA</th>
+                    <th>Call</th>
+                    <th>Emergency</th>
+                  </tr>
+                </thead>
+                <tbody class="pop-table-body">
+
+                </tbody>
+                </table>
+            </div>
+      </div> -->
+
     </div>
     <div class="vaayu-modal-footer">
       <!-- <button type="button" class="vaayu-pop-action-btn"> Change Allocation</button> -->
@@ -330,7 +350,7 @@
         selected-model="selectedVehicle " checkboxes="true" extra-settings="example14settings"
         validation="required" search-placeholder="   Change Allocation    " validation-result="selectedVehicle">
       </div>  
-      <button type="button" class="vaayu-pop-action-btn" ng-click="changeAllocation()"
+      <button type="button" class="vaayu-pop-action-btn" ng-click="changeAllocation(modelData)"
         ng-if="isDisable()"
         > Submit</button>
       <!-- <button type="button" class="vaayu-pop-action-btn" ng-if='selectedVehicle!=null'> Change Allocation</button> -->

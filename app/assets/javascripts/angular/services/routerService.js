@@ -16,6 +16,11 @@ function ($resource, BASE_URL_8002, SessionService) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
     },
+    changeAllocation: {
+        url: BASE_URL_8002 + 'reallocationDriverToTrip',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+    }
   });
 }]);
 

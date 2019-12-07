@@ -28,7 +28,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
     $scope.selectedVehicle = {};
     $scope.example14settings = {
-      scrollableHeight: '200px',
+      scrollableHeight: '150px',
       scrollable: true,
       enableSearch: true,
       width: '300px',
@@ -245,28 +245,60 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     var shiftId = trip.shift_id
     var shiftType = trip.trip_type_status
 
-    let postVehicleData = {
+    let params = {
       siteId, shiftId, shiftType,
       selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
       driverStatus: 'on_duty' //$scope.selected_vehicle_status
     }
-    console.log('postVehicleData', postVehicleData)
-    RouteService.postVehicleList(postVehicleData, function (res) {
+    console.log('getVehicleListForTrip req', params)
+    RouteService.postVehicleList(params, function (res) {
       console.log('vehicle list', res)
       if (!res['success']) {
         ToasterService.showError('Error', res['message']);
         return;
       } else {
+        $scope.searchAllVehicles(res.data, trip);
         // $scope.vehicleList = res.data;
-        var array = VehicleListResponse.listResponse.data;
+
+        // var array = VehicleListResponse.listResponse.data;
+        // var newarray = [];
+        // for (let item of array) {
+        //   newarray.push({id: item.id, name: item.vehicleNumber})
+        // }
+        // $scope.vehicleList = newarray;
+      }
+      
+    }, function (error) {
+      console.log(error);
+    });
+  }
+
+  $scope.searchAllVehicles = (vehicleList, trip) => {
+    var shiftId = trip.shift_id
+    var shiftType = trip.trip_type_status
+
+    let params = { shiftId , shift_type: shiftType, searchBy: '' };
+    console.log('searchAllVehicles req', params)
+    RouteService.searchVechicle(params, function (res) {
+      console.log('searchAllVehicles res', res)
+      if (res['success']) {
+        //vehicleList.push(res.data);
+        // var array = VehicleListResponse.listResponse.data;
         var newarray = [];
-        for (let item of array) {
-          newarray.push({id: item.id, name: item.vehicleNumber})
+        for (let item of vehicleList) {
+          newarray.push({id: item.id, name: item.vehicleNumber+' - On Site'})
         }
+        for (let item of res.data) {
+          newarray.push({id: item.id, name: item.vehicleNumber+' - Off Site'})
+        }
+       
         $scope.vehicleList = newarray;
+      } else {
+        console.log(res['message']);
       }
       console.log('$scope.vehicleList', $scope.vehicleList)
-    }, function (error) {
+    },
+    function (error) {
       console.log(error);
     });
   }
@@ -287,8 +319,21 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     } 
     return false;
   }
-  $scope.changeAllocation = () => {
+  $scope.changeAllocation = (trip) => {
     console.log('selected vehicle', $scope.selectedVehicle)
+    let params = {trip_id: trip.trip_id, vehicleId: $scope.selectedVehicle.id}
+    console.log('changeAllocation params', params);
+    RouteService.changeAllocation (params, function(res) {
+      console.log('changeAllocation res', res)
+      if (res['success']) {
+        ToasterService.showSuccess('Success', res['message']);
+        $scope.showPopup = false;
+      } else {
+        ToasterService.showError('Error', res['message']);
+      }
+    }, function (er) {
+      ToasterService.showError('Error', 'Something went wrong, Try Later.');
+    });
   }
   
 

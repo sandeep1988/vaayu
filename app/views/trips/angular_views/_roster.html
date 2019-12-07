@@ -45,9 +45,7 @@
           <!-- <button type="button" class="btn btn-terniary fa-search-custom" ng-click="updateFilters()">
             <i class="fa fa-search fa-search-custom" aria-hidden="true" ng-click="updateFilters()"></i>
           </button> -->
-          <button type="button"
-          ng-click="updateFilters()"
-          class="btn btn-terniary-blue">OK</button>
+          <button type="button" ng-click="updateFilters()" class="btn btn-terniary-blue">OK</button>
         </form>
       </div>
 
@@ -163,21 +161,24 @@
                 <td class="text-color-blue " style="color: #14a89e !important;"><b>{{roster.result}}</b></td>
                 <td>
                   <div class="">
-                      <!-- && !roster.routesGenerated -->
+                    <!-- && !roster.routesGenerated -->
                     <!-- <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' "
                     ng-click="generateRoutes(roster)" type="button"
                     class="btn btn-sm-vaayu btn-terniary-blue btn-block">Generate</button> -->
 
                     <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && roster.routesGenerated" type="button"
                       class="btn btn-sm-vaayu btn-terniary-disable btn-block">Routes Generated</button>
-                    <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated && roster.disableGenerate" 
+                    <button
+                      ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated && roster.disableGenerate"
                       type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-block">Generate</button>
-                    <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated && !roster.disableGenerate" ng-click="generateRoutes(roster)"
-                      type="button" class="btn btn-sm-vaayu btn-terniary-blue btn-block">Generate</button>
+                    <button
+                      ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated && !roster.disableGenerate"
+                      ng-click="generateRoutes(roster)" type="button"
+                      class="btn btn-sm-vaayu btn-terniary-blue btn-block">Generate</button>
 
-                  
 
-                      
+
+
                     <!-- <button ng-if="roster.result=='REQUIRED MORE VEHICLE'" ng-click="addVehicleToRoster(roster)"
                       type="button" class="btn btn-sm-vaayu btn-terniary btn-block">Add Vehicle</button> -->
 
@@ -234,19 +235,14 @@
               <div class="row add-vehicle-card card_flex" ng-repeat="(key, value) in currentRoster.vehicle">
 
                 <div class="col-md-5">
-                  <img ng-if="key== 'SUV'" src="../assets/angular_images/ic_suv.png" style="padding: 15px; height: 75px;">
-                  <img ng-if="key== 'TT'" src="../assets/angular_images/ic_tt.png"
-                  style="padding: 15px; height: 75px;"
-                    >
+                  <img ng-if="key== 'SUV'" src="../assets/angular_images/ic_suv.png"
+                    style="padding: 15px; height: 75px;">
+                  <img ng-if="key== 'TT'" src="../assets/angular_images/ic_tt.png" style="padding: 15px; height: 75px;">
                   <img ng-if="key== 'SEDAN'" src="../assets/angular_images/ic_sedan.png"
-                  style="padding: 15px; height: 75px;"
-                  >
-                  <img ng-if="key== 'HATCHBACK'" src="../assets/angular_images/ic_hatchback.png"
-                  style="height: 42px;"
-                  >
+                    style="padding: 15px; height: 75px;">
+                  <img ng-if="key== 'HATCHBACK'" src="../assets/angular_images/ic_hatchback.png" style="height: 42px;">
                   <img ng-if="key== 'MINI VAN'" src="../assets/angular_images/ic_minivan.png"
-                  style="padding: 15px; height: 75px;"
-                  >
+                    style="padding: 15px; height: 75px;">
                   <span class="text-center text-key-name"
                     ng-if="!(key== 'SEDAN' || key== 'TT' || key== 'SUV' || key== 'HATCHBACK' || key== 'MINI VAN')"
                     style="display: block; margin-left: 35px; text-align: left !important;">{{key}}</span>
@@ -411,31 +407,34 @@
       <div class="vaayu-modal-body">
         <div class="row container-fluid">
           <div class="col-md-12">
-              <!-- table table-bordered table-striped table-condensed -->
-              <div class="filter-block" style="margin-bottom: 10px;">
-                  <input class="form-control"  ng-model="employee_name_search" placeholder="Search Employee Name" style="width:350px; display: inline;" type="text" ng-change="onEmployeeSearch()">
-                  <a class="btn btn-sm" href="#" id="change-request-search" style="margin-left:10px; border:1px solid #E0E4E8; height:30px"><i aria-hidden="true" class="fa fa-search"></i></a>
-              </div>
-              <table class="table table-scroll table-bordered table-striped table-condensed">
-                <thead class="pop-table-head">
-                  <tr>
-                    <th>Employee Name</th>
-                    <th>Gender</th>
-                    <th>Home Address</th>
-                    <th>Lat</th>
-                    <th>Long</th>
-                  </tr>
-                </thead>
-                <tbody class="pop-table-body">
-                  <tr class="active" ng-repeat="item in roster_employees track by $index">
-                    <td><span style="color:#49A49C;">{{item.empName}}</span></td>
-                    <td>{{item.gender}}</td>
-                    <td>{{item.home_address}}</td>
-                    <td>{{item.lat}}</td>
-                    <td>{{item.lng}}</td>
-                  </tr>
-                </tbody>
-              </table>
+            <!-- table table-bordered table-striped table-condensed -->
+            <div class="filter-block" style="margin-bottom: 10px;">
+              <input class="form-control" ng-model="employee_name_search" placeholder="Search Employee Name"
+                style="width:350px; display: inline;" type="text" ng-change="onEmployeeSearch()">
+              <a class="btn btn-sm" href="#" id="change-request-search"
+                style="margin-left:10px; border:1px solid #E0E4E8; height:30px"><i aria-hidden="true"
+                  class="fa fa-search"></i></a>
+            </div>
+            <table class="table table-scroll table-bordered table-striped table-condensed">
+              <thead class="pop-table-head">
+                <tr>
+                  <th>Employee Name</th>
+                  <th>Gender</th>
+                  <th>Home Address</th>
+                  <th>Lat</th>
+                  <th>Long</th>
+                </tr>
+              </thead>
+              <tbody class="pop-table-body">
+                <tr class="active" ng-repeat="item in roster_employees track by $index">
+                  <td><span style="color:#49A49C;">{{item.empName}}</span></td>
+                  <td>{{item.gender}}</td>
+                  <td>{{item.home_address}}</td>
+                  <td>{{item.lat}}</td>
+                  <td>{{item.lng}}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <div class="vaayu-modal-footer">
