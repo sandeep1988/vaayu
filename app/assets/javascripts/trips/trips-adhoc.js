@@ -58,7 +58,17 @@ $(function () {
                             }
                         }
                     },
-                    {data: 'trip_type'},
+                    {
+                        data: null,
+                        render: function (data){
+                            if(data.trip_type == 'Check in'){
+                                return '<div>' + 'Pick Up' + '</div>'
+                            }
+                            else if(data.trip_type == 'Check out'){
+                                return '<div>' + 'Drop Off' + '</div>'                                
+                            }
+                        }
+                    },
                     {data: 'site_name'},
                     {data: 'employee_id'},                    
                     {
