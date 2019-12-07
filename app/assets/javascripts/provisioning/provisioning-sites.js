@@ -122,23 +122,23 @@ $(function () {
                 validationError = validationError || false
             }
 
-            if ($("#party_code").val() == '' || $("#party_code").val() == undefined || $("#party_code").val() == null) {
-                document.getElementById("party_code").classList.add("border-danger")
-                validationError = true
-            }
-            else {
-                document.getElementById("party_code").classList.remove("border-danger")
-                validationError = validationError || false
-            }
+            // if ($("#party_code").val() == '' || $("#party_code").val() == undefined || $("#party_code").val() == null) {
+            //     document.getElementById("party_code").classList.add("border-danger")
+            //     validationError = true
+            // }
+            // else {
+            //     document.getElementById("party_code").classList.remove("border-danger")
+            //     validationError = validationError || false
+            // }
 
-            if ($("#sap_control_number").val() == '' || $("#sap_control_number").val() == undefined || $("#sap_control_number").val() == null) {
-                document.getElementById("sap_control_number").classList.add("border-danger")
-                validationError = true
-            }
-            else {
-                document.getElementById("sap_control_number").classList.remove("border-danger")
-                validationError = validationError || false
-            }
+            // if ($("#sap_control_number").val() == '' || $("#sap_control_number").val() == undefined || $("#sap_control_number").val() == null) {
+            //     document.getElementById("sap_control_number").classList.add("border-danger")
+            //     validationError = true
+            // }
+            // else {
+            //     document.getElementById("sap_control_number").classList.remove("border-danger")
+            //     validationError = validationError || false
+            // }
 
             if ($("#party_contact_name").val() == '' || $("#party_contact_name").val() == undefined || $("#party_contact_name").val() == null) {
                 document.getElementById("party_contact_name").classList.add("border-danger")
@@ -263,23 +263,127 @@ $(function () {
                 document.getElementById("sezNonSez").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            if ($("#sap_control_number").val() == '' || $("#sap_control_number").val() == undefined || $("#sap_control_number").val() == null) {
-                document.getElementById("sap_control_number").classList.add("border-danger")
-                validationError = true
+            // if ($("#sap_control_number").val() == '' || $("#sap_control_number").val() == undefined || $("#sap_control_number").val() == null) {
+            //     document.getElementById("sap_control_number").classList.add("border-danger")
+            //     validationError = true
+            // }
+            // else {
+            //     document.getElementById("sap_control_number").classList.remove("border-danger")
+            //     validationError = validationError || false
+            // }
+
+            if( $("#sezNonSez").val() == 'non sez'){
+
+                validationError = validationError || false;
+
+                document.getElementById("lut_date").classList.remove("border-danger");
+                document.getElementById("lut_no").classList.remove("border-danger")
             }
+
+            if( $("#sezNonSez").val() == 'sez'){
+
+                validationError = validationError || false;
+
+                document.getElementById("lut_date").classList.add("border-danger");
+                document.getElementById("lut_no").classList.add("border-danger");
+
+                var formt = /^\d{1,2}\-\d{1,2}\-\d{4}$/
+           
+
+                if ($("#lut_date").val() == '' || $("#lut_date").val() == undefined || $("#lut_date").val() == null) {
+                   
+                    document.getElementById("lut_date").classList.add("border-danger")
+                    validationError = true;
+
+                }else if( false == formt.test( $("#lut_date").val() ) ) {
+
+                    // console.log( )
+                    validationError = true;
+                    alert( "LUT Date should be date.Format Ex. DD-MM-YYYY." );
+
+                }else {
+
+                    document.getElementById("lut_date").classList.remove("border-danger")
+                    validationError = validationError || false
+                }
+
+                if ($("#lut_no").val() == '' || $("#lut_no").val() == undefined || $("#lut_no").val() == null) {
+                   
+                    document.getElementById("lut_no").classList.add("border-danger")
+                    validationError = true;
+
+                }else {
+
+                    document.getElementById("lut_no").classList.remove("border-danger")
+                    validationError = validationError || false
+                }
+
+            }
+
+            var reg = new RegExp("^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}");
+
+            console.log( reg.exec( $("#latitude").val() ) );
+
+            if ($("#latitude").val() == '' || $("#latitude").val() == undefined || $("#latitude").val() == null) {
+                   
+                    document.getElementById("latitude").classList.add("border-danger")
+                    validationError = true;
+
+            }
+            // else if( !reg.exec( $("#latitude").val() ) ) {
+            //     document.getElementById("latitude").classList.add("border-danger")
+            //         validationError = true;
+            //          alert( "Latitude should be numeric." );
+
+            //  //do nothing
+            // }
             else {
-                document.getElementById("sap_control_number").classList.remove("border-danger")
+
+                document.getElementById("latitude").classList.remove("border-danger")
                 validationError = validationError || false
             }
 
-            if ($("#lut_date").val() == '' || $("#lut_date").val() == undefined || $("#lut_date").val() == null) {
-                document.getElementById("lut_date").classList.add("border-danger")
-                validationError = true
-            }
-            else {
-                document.getElementById("lut_date").classList.remove("border-danger")
+            if ($("#longitude").val() == '' || $("#longitude").val() == undefined || $("#longitude").val() == null) {
+                   
+                    document.getElementById("longitude").classList.add("border-danger")
+                    validationError = true;
+
+            }else {
+
+                document.getElementById("longitude").classList.remove("border-danger")
                 validationError = validationError || false
             }
+
+            
+
+            // if( reg.exec( $("#latitude").val() ) ) {
+            //     document.getElementById("latitude").classList.remove("border-danger")
+            //     validationError = validationError || false
+
+            //  //do nothing
+            // } else {
+
+            //     document.getElementById("latitude").classList.add("border-danger")
+            //         validationError = true;
+
+            //         alert( "Latitude should be numeric." );
+            //  //error
+            // }
+
+            // if( reg.exec(("#longitude").val()) ) {
+            //      document.getElementById("longitude").classList.remove("border-danger")
+            //     validationError = validationError || false
+
+            //  //do nothing
+            // } else {
+
+            //     document.getElementById("longitude").classList.add("border-danger")
+            //         validationError = true;
+            //         alert( "Longitude should be numeric." );
+            //  //error
+            // }
+
+            
 
           $(document).on('click', ".submit-btn", function (e) {
             var value = $("#lut_date").val()
@@ -288,9 +392,9 @@ $(function () {
                 return true;
             }
             else {
-                document.getElementById("lut_date").classList.add("border-danger")
-                alert("Please enter LUT date in dd-mm-yyyy format.")
-                return false;
+                //document.getElementById("lut_date").classList.add("border-danger")
+                //alert("Please enter LUT date in dd-mm-yyyy format.")
+                //return false;
             }
           })        
 
@@ -425,7 +529,7 @@ $(function () {
                     'proximity_radius': $("#proximity_radius").val(),
                     'sap_control_number': $("#sap_control_number").val(),
                     'contact_email': $("#contact_email").val(),
-                    'address2' : $("#address2").val(),
+                    'address_2' : $("#address2").val(),
                     'latitude' : $("#latitude").val(),
                     'longitude' : $("#longitude").val(),
                 }
@@ -439,6 +543,8 @@ $(function () {
                 var validationError = false
                 var services = getServiceData()
                 validationError = validateSite(site, validationError)
+
+                console.log( "validationError =====================", validationError);
                 if (!choose_operator) {
                     validationError = validateServices(services, validationError)
                 }
@@ -572,6 +678,8 @@ $(function () {
                             $("#services").css("display", "block")
                         }
                     }, 500);
+
+                    hideShowLut( $("#sezNonSez").val() );
                 });
             }
         })
@@ -683,6 +791,56 @@ $(function () {
             }
         })
 
+        // hideShowLut( $("#sezNonSez").val() );
+
     });
 
+    // sez non by ajay tiwari
+    $(document).on('change', '#sezNonSez', function (e) {
+            
+        hideShowLut( $(this).val() );
+    });
+
+    
 });
+
+
+
+function hideShowLut( selectedValueSez ) {
+
+    // alert(selectedValueSez);
+
+    if( selectedValueSez == 'non sez'){
+        $(".lut_sez").hide();
+
+    }else{
+
+        $(".lut_sez").show();
+    }
+
+
+}
+
+
+function isDateValid( d ){
+
+    let isDateValid = false;
+    if (Object.prototype.toString.call(d) === "[object Date]") {
+      // it is a date
+      if (isNaN(d.getTime())) {  // d.valueOf() could also work
+        // date is not valid
+        isDateValid  = false;
+      } else {
+        // date is valid
+
+        isDateValid  = true;
+      }
+    } else {
+
+        isDateValid  = false;
+      // not a date
+    }
+
+    return isDateValid;
+
+}

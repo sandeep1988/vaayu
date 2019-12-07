@@ -119,6 +119,7 @@ class SitesController < ApplicationController
       #   latitude = coordinates[:lat]
       #   longitude = coordinates[:lng]
       # end
+      binding.pry
       @site = Site.new(:name => params[:site]['name'], 
                       :employee_company_id => params[:site]['employee_company_id'],
                       :address  => params[:site]['address'],
@@ -162,7 +163,7 @@ class SitesController < ApplicationController
                       :sap_control_number => params[:site]['sap_control_number'],
                       :lut_date => params[:site]['lut_date'],
                       :party_name => params[:site]['party_name'],
-                      :address2 => params[:site]['address2'],
+                      # :address_2 => params[:site]['address_2'],
                       :contact_phone => params[:site]['contact_phone'],
                       :phone_2 => params[:site][:phone_2],
                       :phone_1 => params[:site][:phone_1],
@@ -281,7 +282,7 @@ class SitesController < ApplicationController
           :sap_control_number => params[:site]['sap_control_number'],
           :lut_date => params[:site]['lut_date'],
           :party_name => params[:site]['party_name'],
-          :address2 => params[:site]['address2'],
+          :address_2 => params[:site]['address_2'],
           :contact_phone => params[:site]['contact_phone'],
           :contact_email => params[:site][:contact_email]
 
