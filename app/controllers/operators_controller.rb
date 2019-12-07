@@ -17,6 +17,9 @@ class OperatorsController < ApplicationController
     @operator = operator.user
   end
 
+  def show
+  end
+
   def create
     user =  User.new(user_params.except(:id, :role).merge(:role => 2))
     user.save_with_notify

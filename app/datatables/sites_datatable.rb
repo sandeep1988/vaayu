@@ -19,12 +19,12 @@ class SitesDatatable
   end
 
   def get_sites
-    if @user.admin?
+    #if @user.admin?
       sites = Site.all
-    elsif (logistics_company = @user.entity.logistics_company)
-      employee_companies = EmployeeCompany.where(:logistics_company => logistics_company)
-      sites = Site.where(:employee_company => employee_companies)
-    end
+    #elsif (logistics_company = @user.entity.logistics_company)
+      #employee_companies = EmployeeCompany.where(:logistics_company => logistics_company)
+      #sites = Site.where(:employee_company => employee_companies)
+    #end
     sites
   end
 

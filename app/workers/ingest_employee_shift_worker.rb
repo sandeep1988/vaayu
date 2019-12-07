@@ -117,11 +117,13 @@ class IngestEmployeeShiftWorker < IngestWorker
   def provision_check_in_trip(employee, shift, row, index, date)
     check_in_date = Time.zone.parse("#{date} #{row[index]}")
     schedule_date = Time.zone.parse("#{date} 10:00:00")
+    site_id = Site.where(name:row[10]).first
     employee.employee_trips.where(
       schedule_date: schedule_date,
       date: check_in_date,
       trip_type: 'check_in',
-      site: Site.where(name:row[10]).first
+      site: Site.where(name:row[10]).first,
+      shift_id: Shift.where(start_time:[[row[13],row[15],row[17]], site_id: site_id).last
     ).first_or_create!
   end
 
@@ -133,12 +135,12 @@ class IngestEmployeeShiftWorker < IngestWorker
     check_out_date = check_out_date + 1.day if shift_end_time <= shift_start_time
 
     schedule_date = Time.zone.parse("#{date} 10:00:00")
-
     employee.employee_trips.where(
       schedule_date: schedule_date,
       date: check_out_date,
       trip_type: 'check_out',
-      site: Site.where(name:row[10]).first
+      site: Site.where(name:row[10]).first,
+      shift_id: Shift.where(end_time:[[row[14],row[16],row[18]], site_id: site_id).last
     ).first_or_create!
   end
 
