@@ -220,9 +220,9 @@ $(function () {
               if (home_address_address_1.val().trim().length == 0) {
                 home_address_address_1.error('Home Address 1 must be given.');
               }
-              if (home_address_address_2.val().trim().length == 0) {
-                home_address_address_2.error('Home Address 2 must be given.');
-              }
+              //if (home_address_address_2.val().trim().length == 0) {
+               // home_address_address_2.error('Home Address 2 must be given.');
+              //}
               if (home_address_gstin_no.val().trim().length == 0) {
                 home_address_gstin_no.error('GSTIN must be given.');
               }
@@ -276,9 +276,9 @@ $(function () {
               // var registered_pan_no = employeeCompaniesTableEditor.field('registered_pan_no');
               
 
-              if (registered_contact_name.val().trim().length == 0) {
-                registered_contact_name.error('Registered Contact Name must be given.');
-              }
+             // if (registered_contact_name.val().trim().length == 0) {
+              //  registered_contact_name.error('Registered Contact Name must be given.');
+              //}
               // if (registered_address1.val().trim().length == 0) {
               //   registered_address1.error('Registered Address 1 must be given.');
               // }
@@ -297,9 +297,9 @@ $(function () {
               // if (registered_city.val() == null) {
               //   registered_state.error('Registered City must be given.');
               // }
-              if (registered_phone1.val().trim().length == 0) {
-                registered_phone1.error('Registered Phone 1 must be given.');
-              }
+              //if (registered_phone1.val().trim().length == 0) {
+               // registered_phone1.error('Registered Phone 1 must be given.');
+              //}
 
               // var panValue1 = registered_pan_no.val().trim();
               // if (panValue1.length == 0) {
