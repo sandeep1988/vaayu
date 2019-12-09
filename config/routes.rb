@@ -62,6 +62,7 @@ Rails.application.routes.draw do
   resources :employee_companies do
     collection do
       get :get_all
+      get :get_all_sites
     end
     member do
       get 'active_customer'
