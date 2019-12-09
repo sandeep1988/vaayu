@@ -7,11 +7,11 @@
     .col-md-11
       .resource-headers
         .btn-group
-          - if can?(:view, :people_tab)
+          - if can?(:view, :people_tab) 
             a[href="#people" data-toggle="tab" data-modal-type="simple" class="btn btn-default active #{can?(:view, :places_tab) ? 'people-style' : ''}"]
               | People
               span.center.hidden[class="glyphicon glyphicon-dot" id="badge-people" style="position:absolute"]
-          - if can?(:view, :places_tab)
+          - if can?(:view, :places_tab) && !current_user.transport_desk_manager?
             a[href="#places" data-toggle="tab" data-hide-edit-buttons="true" class="btn btn-default places-style"]
               | Places
           - if can?(:view, :things_tab)
@@ -24,14 +24,14 @@
     .col-md-12.margin-bottom.nav-actions-block
       .people
         ul.nav.nav-tabs
-          -if current_user
+          -if !current_user.transport_desk_manager?
             li.logistic-companies
               a[class="people default" href="#logistic-companies" data-toggle="tab" data-modal-type="simple"]
                 | PTS Operators
             li.logistic-companies-users
               a[class="people" href="#logistic-companies-users" data-toggle="tab" data-source="/operators/new"]
                 | Site Managers
-          -if current_user.operator? || current_user || current_user.operator_shift_manager?
+          -if !current_user.transport_desk_manager?
             - if !current_user.operator_shift_manager? || (current_user.operator_shift_manager? && can?(:read, EmployeeCompany))
               li.employee-company
                 a[class="people" href="#employee-company" data-toggle="tab"  data-modal-type="simple"]
@@ -58,18 +58,18 @@
             li.employees
               a[class="people" href="#employees" data-toggle="tab" data-source="/employees/new" data-hide-edit-buttons="true"]
                 |  Employees
-          -if current_user.employer? || current_user
+          -if  !current_user.transport_desk_manager?
             li.transport_desk_managers
               a[class="people" href="#transport-desk-managers" data-toggle="tab" data-source="/transport_desk_managers/new"]
                 | Transport Desk Managers
             li.line_managers
               a[class="people" href="#line-managers" data-toggle="tab" data-source="/line_managers/new"]
                 | Line Managers
-          -if ENV["ENALBE_GUARD_PROVISIONGING"] == "true" && can?(:manage, :guard)
+          -if ENV["ENALBE_GUARD_PROVISIONGING"] == "true" && can?(:manage, :guard) && !current_user.transport_desk_manager?
             li.guards
               a[class="people" href="#guards" data-toggle="tab" data-source="/employees/new?is_guard=true"]
                 | Guards
-          -if can?(:read, EmployerShiftManager)
+          -if can?(:read, EmployerShiftManager) && !current_user.transport_desk_manager?
             li.employer_shift_managers
               a[class="people" href="#employer-shift-managers" data-toggle="tab" data-source="/employer_shift_managers/new"]
                 | Employer Shift Manager
@@ -85,7 +85,10 @@
                 | Routes
       .things[style="display:none;"]
         ul.nav.nav-tabs
-          -if current_user.operator? || current_user || current_user.operator_shift_manager?
+          li.shifts
+              a[class="things" href="#shifts" data-toggle="tab" data-source="/shifts/new"]
+                |  Shifts
+          -if !current_user.transport_desk_manager?
             li.vehicles
               a[class="things" href="#vehicles" data-toggle="tab" data-source="/vehicles/new"]
                 |  Vehicles 
@@ -94,9 +97,7 @@
               a[class="things" href="#devices" data-toggle="tab" data-source="/devices/new"]
                 |  Devices
                 span.center.hidden[style="margin-bottom: 2px;" class="glyphicon glyphicon-dot" id="badge-device"]
-            li.shifts
-              a[class="things" href="#shifts" data-toggle="tab" data-source="/shifts/new"]
-                |  Shifts
+            
       .nav-actions
         .edit-buttons
           a.btn.btn-sm.btn-default.cancel.btn-fixed-width[type="button" data-action="cancel"]

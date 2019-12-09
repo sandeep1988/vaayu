@@ -76,7 +76,7 @@ class Ability
         
       when 'transport_desk_manager'
         [:trips_tab].each { |page| can :view, page }
-        cannot :view, :provisioning_tab
+        can :view, :provisioning_tab
         cannot :view, :dashboard_tab
         cannot :view, :configurators_tab
         cannot :view, :billing_tab

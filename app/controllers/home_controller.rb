@@ -15,7 +15,7 @@ class HomeController < TripValidationController
   end
 
   def profile_edit
-    if !current_user.driver? || !current_user.employee?
+    if current_user
       @user = current_user
     else
       flash[:error] = 'Sorry, you have not permissions'

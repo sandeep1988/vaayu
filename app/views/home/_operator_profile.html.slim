@@ -1,4 +1,4 @@
-= simple_form_for @user, html: {'data-validate' => 'form', :class => 'update_profile'}, :url => operator_path(@user.entity), :method => 'PATCH' do |f|
+= simple_form_for @user, html: {'data-validate' => 'form', :class => 'update_profile'}, :url => operators_path(@user.entity), :method => 'PATCH' do |f|
   = f.simple_fields_for :entity_attributes, @user.entity do |ui|
     = ui.hidden_field :id
     .row

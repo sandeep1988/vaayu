@@ -199,7 +199,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
         } else {
           ToasterService.showError('Error', res['message']);
           
-          if (res['is_routes_generated']) {
+          if (res['is_routes_generated'] === false) {
           // if (true) {
             roster.result = 'REQUIRED MORE VEHICLE';
             roster.disableGenerate = false;
