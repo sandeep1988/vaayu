@@ -119,7 +119,6 @@ class SitesController < ApplicationController
       #   latitude = coordinates[:lat]
       #   longitude = coordinates[:lng]
       # end
-      binding.pry
       @site = Site.new(:name => params[:site]['name'], 
                       :employee_company_id => params[:site]['employee_company_id'],
                       :address  => params[:site]['address'],

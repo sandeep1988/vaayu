@@ -27,6 +27,20 @@ class EmployeeCompaniesController < ApplicationController
     }
   end
 
+  def get_all_sites
+    @employee_companies = EmployeeCompany.where(active: "1")
+    @logistics_companies = LogisticsCompany.all
+    @states = State.all
+    @cities = City.all
+    render :json => {
+      employee_companies: @employee_companies,
+      logistics_companies: @logistics_companies,
+      current_user: current_user,
+      states: @states,
+      cities: @cities
+    }
+  end
+
   def create
     if current_user.operator? || current_user
       # attr = company_params.merge!(:logistics_company_id => current_user.entity.logistics_company.id)

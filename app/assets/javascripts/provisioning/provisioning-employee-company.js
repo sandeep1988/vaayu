@@ -209,7 +209,7 @@ $(function () {
               var home_address_gstin_no = employeeCompaniesTableEditor.field('home_address_gstin_no');
 
               // var customer_code = employeeCompaniesTableEditor.field('customer_code');
-              // var sap_control_number = employeeCompaniesTableEditor.field('sap_control_number');
+               var sap_control_number = employeeCompaniesTableEditor.field('sap_control_number');
               var reference_no1 = employeeCompaniesTableEditor.field('reference_no1');
 
               // var home_address_pan_no = employeeCompaniesTableEditor.field('home_address_pan_no');

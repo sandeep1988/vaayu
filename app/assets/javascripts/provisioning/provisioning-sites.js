@@ -622,7 +622,7 @@ $(function () {
             if (0 != 1) {
                 $.ajax({
                     type: "GET",
-                    url: '/employee_companies/get_all'
+                    url: '/employee_companies/get_all_sites'
                 }).done(function (response) {
                     orig_service_html = $("#services").html()
                     allCompanies = response.employee_companies
