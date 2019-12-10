@@ -16,11 +16,11 @@ div#site_html
                 | Choose Company
           .col-md-4.no-margin
             label.site_labels for="site_code"
-              | Site_Code
+              | Site Code *
             input#site_code[class="form-control" type="text" name="site_code" value="" readonly ]
-          .col-md-4.margin-top
+          .col-md-4
             label.site_labels for="sezNonSez"
-              | Sez / Non Sez
+              | Sez / Non Sez *
             select.form-control.sezNonSez#sezNonSez[data-vehicleNumber="1"]
               option [value="non sez"]
                 | Non SEZ
@@ -28,11 +28,11 @@ div#site_html
                 | SEZ
           .col-md-4.no-margin.lut_sez
             label.site_labels for="lut_no"
-              |LUT No    
+              |LUT No *   
             input#lut_no[class="form-control" type="text" name="lutNo" value="" required]
           .col-md-4.no-margin.lut_sez
             label.site_labels for="lut_date"
-              |LUT Date    
+              |LUT Date *   
             input#lut_date[class="form-control"  placeholder="DD-MM-YYYY" type="text" name="lutDate" value="" required= "true"]        
           .col-md-4.no-margin
             label.site_labels for="address"
@@ -120,6 +120,14 @@ div#site_html
             label.site_labels for="gl_acc_no"
               | GL Acc No
             input#gl_acc_no[class="form-control" type="text" name="gl_acc_no" value=""]
+          .col-md-4.no-margin
+            label.site_labels for="active"
+              | Active/Inactive
+            select.form-control.active#active
+              option [value="yes"]
+                | Yes
+              option [value="No"]
+                | No
     
     .row
       .col-md-12
@@ -140,7 +148,7 @@ div#site_html
             input#sap_control_number[class="form-control" type="text" name="sap_control_number" value=""]
           .col-md-4.no-margin
             label.site_labels for="party_contact_name"
-              | Contact Name
+              | Contact Name *
             input#party_contact_name[class="form-control" type="text" name="party_contact_name" value=""]    
           .col-md-4.no-margin
             label.site_labels for="party_address_1"

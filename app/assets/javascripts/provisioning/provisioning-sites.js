@@ -263,14 +263,14 @@ $(function () {
                 document.getElementById("sezNonSez").classList.remove("border-danger")
                 validationError = validationError || false
             }
-            // if ($("#sap_control_number").val() == '' || $("#sap_control_number").val() == undefined || $("#sap_control_number").val() == null) {
-            //     document.getElementById("sap_control_number").classList.add("border-danger")
-            //     validationError = true
-            // }
-            // else {
-            //     document.getElementById("sap_control_number").classList.remove("border-danger")
-            //     validationError = validationError || false
-            // }
+            if ($("#party_address_1").val() == '' || $("#party_address_1").val() == undefined || $("#party_address_1").val() == null) {
+                document.getElementById("party_address_1").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("party_address_1").classList.remove("border-danger")
+                validationError = validationError || false
+            }
 
             if( $("#sezNonSez").val() == 'non sez'){
 
@@ -319,6 +319,48 @@ $(function () {
                 }
 
             }
+
+            if ($("#party_state").val() == 0 || $("#party_state").val() == undefined || $("#party_state").val() == null) {
+                document.getElementById("party_state").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("party_state").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+
+
+            if ($("#party_business_area").val() == 0 || $("#party_business_area").val() == undefined || $("#party_business_area").val() == null) {
+                document.getElementById("party_business_area").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("party_business_area").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+
+            if ($("#party_city").val() == 0 || $("#party_city").val() == undefined || $("#party_city").val() == null) {
+                document.getElementById("party_city").classList.add("border-danger")
+                validationError = true
+            }
+            else {
+                document.getElementById("party_city").classList.remove("border-danger")
+                validationError = validationError || false
+            }
+
+            if( $("#gstin_no").length > 0 ){
+
+                if ($("#gstin_no").val() == '' || $("#gstin_no").val() == undefined || $("#gstin_no").val() == null) {
+                    document.getElementById("gstin_no").classList.add("border-danger")
+                    validationError = true
+                }
+                else {
+                    document.getElementById("gstin_no").classList.remove("border-danger")
+                    validationError = validationError || false
+                }
+
+            }
+            
 
             var reg = new RegExp("^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}");
 
@@ -532,6 +574,7 @@ $(function () {
                     'address_2' : $("#address2").val(),
                     'latitude' : $("#latitude").val(),
                     'longitude' : $("#longitude").val(),
+                    'contact_phone':$("#contact_phone").val()
                 }
                 console.log('site adding', site);
                 if (current_user == 'Operator') {
