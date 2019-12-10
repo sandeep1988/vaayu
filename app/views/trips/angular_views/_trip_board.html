@@ -150,7 +150,7 @@
 
       <div class="row">
         <div class="col-md-12">
-          <table class="table table-bordered table-striped table-condensed">
+          <table class="table table-bordered  table-condensed">
             <thead>
               <tr>
                 <th>Sr.No</th>
@@ -167,7 +167,7 @@
 
             <tbody>
               
-              <tr ng-class="{'panic':roster.trip_is_panic}" ng-repeat="roster in rosters  | filter :{current_status:search} track by $index">
+              <tr ng-class="getRowColor($index, roster)" ng-repeat="roster in rosters  | filter :{current_status:search} track by $index">
                 <td> {{$index+1}}</td>
                 <td>
                    <a href="">{{roster.trip_type == 'Check In' ? 'Pick Up' : 'Drop Off'}}</a>
@@ -198,7 +198,7 @@
 <!-- <button id="myBtn">Open Modal</button> -->
 
 <!-- The Modal -->
-<div id="myModal" class="vaayu-modal" style="display: block;" ng-show="showPopup">
+<div id="myModal" class="vaayu-modal" style="display: block;" ng-if="showPopup">
 
   <!-- Modal content -->
   <div class="vaayu-modal-content">
@@ -211,7 +211,7 @@
           validation="required" search-placeholder="   Change Allocation    " validation-result="selectedVehicle">
           </div>  
       </span> -->
-      <span class="vaayu-pop-close closepop" ng-click="showPopup=false">&times;</span>
+      <span class="vaayu-pop-close closepop" ng-click="closePopup()">&times;</span>
     </div>
     <div class="vaayu-modal-body">
       <div class="row">
@@ -288,8 +288,9 @@
         </div>
         <div class="col-md-4">
           <div class="pop-img-card">
-            <img src="{{modelData.driver_profile_picture_url}}" alt="Avatar" style="width:100%" ng-if="modelData.driver_profile_picture_url !== 'NA'">
-            <img src="../assets/angular_images/img_avatar.png" alt="Avatar" style="width:100%" ng-if="modelData.driver_profile_picture_url === 'NA'">
+              <!-- modelData.driver_profile_picture_url -->
+            <img src="{{getDriverProfileUrl(modelData.driver_profile_picture_url)}}" alt="Avatar" style="width:100%" >
+            <!-- <img src="../assets/angular_images/img_avatar.png" alt="Avatar" style="width:100%" ng-if="modelData.driver_profile_picture_url === 'NA'"> -->
             <!-- <img src="../assets/angular_images/img_avatar.png" alt="Avatar" style="width:100%"> -->
             <!-- driver_profile_picture_url -->
             <div style="width:100%;">

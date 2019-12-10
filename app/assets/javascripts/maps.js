@@ -832,6 +832,7 @@ function showActualMapRoute(id, mapId, employeesMarkersData, status) {
           var ws = new WebSocket('ws://' + document.location.host + '/api/v3/drivers/' + response.trip.driver_id + '/location')
           ws.onmessage = (e) => {
             data = JSON.parse(e.data);
+            console.log('on driver location received', data);
             if (!('Lat' in data)) {
               return
             }

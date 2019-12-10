@@ -336,5 +336,31 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     });
   }
   
+  $scope.closePopup = () => {
+    $scope.showPopup=false;
+  }
+
+  $scope.getRowColor = (index, trip) => {
+    // 'active': ($index % 2) === 0, 'panic':roster.trip_is_panic}
+    if (trip && trip.trip_is_panic) {
+      return 'panic';
+    } else if ((index % 2) === 0){
+      return 'active';
+    }
+    return '';
+  }
+
+  $scope.getDriverProfileUrl = (url) => {
+    if (url !== undefined && url !== null && url.length > 8){
+      if (url.startsWith('http')) {
+        return url;
+      } else {
+        return 'http://'+url;
+      }
+    } 
+
+    return '../assets/angular_images/img_avatar.png';
+  }
+  
 
 });

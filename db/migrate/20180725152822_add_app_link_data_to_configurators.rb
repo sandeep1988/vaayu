@@ -1,7 +1,7 @@
 class AddAppLinkDataToConfigurators < ActiveRecord::Migration[5.0]
   def change
     new_conf_sequence = [{request_type: "rider_app_android", value: "shorturl.at/tELN6", conf_type: "string",display_name: ""},
-      {request_type: "rider_app_ios", value: "shorturl.at/ksvwW", conf_type: "string",display_name: ""},
+      {request_type: "rider_app_ios", value: "https://tinyurl.com/wxpo9cg", conf_type: "string",display_name: ""},
       {request_type: "provider_app_android", value: "http://bit.ly/2Lxy4TY", conf_type: "string",display_name: ""}]
 
     new_conf_sequence.each do |conf|

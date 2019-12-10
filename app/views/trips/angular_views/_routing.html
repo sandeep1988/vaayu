@@ -1,5 +1,5 @@
 <div class="vayau-routing" ng-init="init()" ng-controller='routeCtrl'>
-  <toaster-container></toaster-container>
+  
   <div class="container-fluid mt-4">
     <div class="row">
       <div class="col-md-9">
@@ -9,7 +9,7 @@
               <option ng-repeat="site in siteList" ng-value="site.id">{{site.name}}</option>
             </select>
           </div>
-
+          <toaster-container></toaster-container>
           <div class="form-group pr-2">
             <select id="disabledSelect" class="form-control" ng-model="selectedShift">
               <option ng-repeat="shift in shifts" value="{{shift}}">{{shift.name + ' ('+shift.shift_type+')'}}
@@ -149,7 +149,7 @@
                             <input type="checkbox" ng-change="selectRoute(container)" ng-model="container.selected"
                               name="route" class="tick" style="height: 25px; width: 25px;"
                               ng-show="container.status !== 'assign_requested'">
-                            <span class="title_text"># {{container.vehicle_type}} </span>
+                            <span class="title_text"># {{container.routeId+' - '+container.vehicle_type}}  </span>
                           </div>
                         </div>
 
@@ -416,10 +416,12 @@
           </div>
           <div class="row vaayu-sidebar-footer">
             <div class="col-md-6 pr-2">
-              <button type="button" ng-click="hideVehicalSidebar()" class="btn btn-cancel btn-block">Cancel</button>
+              <button type="button" ng-click="hideVehicalSidebar()" class="btn btn-cancel btn-block"
+              ng-click="hideGuardSidebar()"
+              >Cancel</button>
             </div>
             <div class="col-md-6 pr-2">
-              <button type="button" class="btn btn-primary btn-block">DONE</button>
+              <button type="button" class="btn btn-primary btn-block" ng-click="hideGuardSidebar()">DONE</button>
             </div>
           </div>
         </div>
@@ -520,10 +522,14 @@
           </div>
           <div class="row vaayu-sidebar-footer">
             <div class="col-md-6 pr-2">
-              <button type="button" ng-click="hideVehicalSidebar()" class="btn btn-cancel btn-block">Cancel</button>
+              <button type="button" ng-click="hideVehicalSidebar()" class="btn btn-cancel btn-block"
+              ng-click="hideVehicalSidebar()"
+              >Cancel</button>
             </div>
             <div class="col-md-6 pr-2">
-              <button type="button" class="btn btn-primary btn-block">DONE</button>
+              <button type="button" class="btn btn-primary btn-block"
+              ng-click="hideVehicalSidebar()"
+              >DONE</button>
             </div>
           </div>
         </div>
