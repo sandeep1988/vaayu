@@ -156,7 +156,7 @@ function generate_edit(response, type, operator_id, orig_service_html){
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="city">City *</label>' + 
-                        '<input class="form-control" id="city" name="city" type="text" value="' + response.site.city + '" required="true">' + 
+                        '<input class="form-control" id="city" name="city" type="text" value="' + `${!response.site.city ? "": response.site.city}`  + '" required="true">' + 
                     '</div>' +
                     // '<div class="col-md-4 no-margin">' + 
                     //     '<label class="site_labels" for="address_3">address 3</label>' + 
