@@ -176,7 +176,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     // console.log(roster);
     // console.log($scope.selectedSite);
     // console.log($scope.filterDate)
-
+    $scope.disable_roster_button = true;
     let shift_type = 0;
     if (roster.shift_type.toLowerCase() === 'check out') {
       shift_type = 1;
@@ -196,6 +196,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
         console.log('route generate res', res);
         if (res['success']) {
           ToasterService.showSuccess('Success', 'Route generated successfully.');
+          $scope.updateFilters();
         } else {
           ToasterService.showError('Error', res['message']);
           
@@ -205,8 +206,10 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
             roster.disableGenerate = false;
           }
         }
+        $scope.disable_roster_button = false;
 
       }, (error) => {
+        $scope.disable_roster_button = false;
         ToasterService.showError('Error', 'Something went wrong, Try again later.');
         console.error(error);
       });

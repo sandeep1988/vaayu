@@ -2,28 +2,34 @@
 angular.module('app').factory('TripboardService',['$resource','BASE_URL_8002','BASE_URL',
  function($resource,BASE_URL_8002,BASE_URL) {
     return $resource(BASE_URL_8002+'tripBoardList',{},{
-        get: { method: "POST"},
+        getAllTrips: { method: "POST"},
         getAllSiteList:{
           url: BASE_URL + 'getAllSiteList',
           method: "POST"
-        }
+        },
+        savePanicResponse: {url: BASE_URL_8002+'save-panic-response', method: 'POST'},
+        callOperator: {url: BASE_URL_8002+'call-generate-operator', method: 'POST'}
     });
 }]);
 
 
-angular.module('app').factory('TripboardBoardCommentService',['$resource','BASE_URL_8002','BASE_URL',
- function($resource,BASE_URL_8002,BASE_URL) {
-    return $resource(BASE_URL_8002+'save-panic-response',{},{
-        get: { method: "POST"},
-    });
-}]);
+// angular.module('app').factory('TripboardBoardCommentService',['$resource','BASE_URL_8002','BASE_URL',
+//  function($resource,BASE_URL_8002,BASE_URL) {
+//     return $resource(BASE_URL_8002+'save-panic-response',{},{
+//         get: { method: "POST"},
+//     });
+// }]);
 
-angular.module('app').factory('TripboardBoardCallService',['$resource','BASE_URL_8002','BASE_URL',
- function($resource,BASE_URL_8002,BASE_URL) {
-    return $resource(BASE_URL_8002+'call-generate-operator',{},{
-        get: { method: "POST"},
-    });
-}]);
+// angular.module('app').factory('TripboardBoardCallService',['$resource','BASE_URL_8002','BASE_URL',
+//  function($resource,BASE_URL_8002,BASE_URL) {
+//     return $resource(BASE_URL_8002+'call-generate-operator',{},{
+//         get: { method: "POST"},
+//         callEmployee: {
+//           url: 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8007/api/call-generate-driver-employee',
+//           method: "POST"
+//         },
+//     });
+// }]);
 
 
 angular.module('app').factory('TripboardResponse', function () {

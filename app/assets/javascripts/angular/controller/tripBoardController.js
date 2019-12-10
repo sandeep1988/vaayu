@@ -1,4 +1,4 @@
-angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListResponse, RouteService, TripboardService, TripboardResponse, $timeout, ToasterService,TripboardBoardCallService,$interval,$filter,TripboardBoardCommentService) {
+angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListResponse, RouteService, TripboardService, TripboardResponse, $timeout, ToasterService,$interval,$filter) {
 
   // $scope.toggled = function(open) {
   //   // $log.log('Dropdown is now: ', open);
@@ -81,13 +81,14 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   }
 
   $scope.updateCallStatus =function(modelData){
+
     var postdata={
       "msg":modelData.comment,
       "panic_id":modelData.panic_id,
       "date":moment().format('YYYY-MM-DD hh:mm:ss')
     };
     
-    TripboardBoardCommentService.get(postdata, (data) => {
+    TripboardService.savePanicResponse(postdata, (data) => {
      
       if (!data['success']) {
         ToasterService.showError('Error', data['message']);
@@ -107,7 +108,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       "callRequestDateTime":moment().format('YYYY-MM-DD hh:mm:ss')
     };
     
-    TripboardBoardCallService.get(postdata, (data) => {
+    TripboardService.callOperator(postdata, (data) => {
      
       if (!data['success']) {
         ToasterService.showError('Error', data['message']);
@@ -133,7 +134,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
     }
     console.log(postData)
-    TripboardService.get(postData, (data) => {
+    TripboardService.getAllTrips(postData, (data) => {
       console.log('all trips data', data);
       if (!data['success']) {
         ToasterService.showError('Error', data['message']);
@@ -328,6 +329,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       if (res['success']) {
         ToasterService.showSuccess('Success', res['message']);
         $scope.showPopup = false;
+        $scope.getAllTrips();
       } else {
         ToasterService.showError('Error', res['message']);
       }

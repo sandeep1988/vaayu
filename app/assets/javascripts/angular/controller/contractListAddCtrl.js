@@ -439,7 +439,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
             return;
         }
 
-        if ($scope.ctype == null) {
+        if ($scope.ctype == null || $scope.ctype.length == 0) {
             ToasterService.showError('Error', 'Please select Contract Type *');
             return;
         }

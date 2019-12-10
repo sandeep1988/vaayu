@@ -175,6 +175,7 @@
                       type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-block">Generate</button>
                     <button
                       ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated && !roster.disableGenerate"
+                      ng-disabled="disable_roster_button"
                       ng-click="generateRoutes(roster)" type="button"
                       class="btn btn-sm-vaayu btn-terniary-blue btn-block">Generate</button>
 
