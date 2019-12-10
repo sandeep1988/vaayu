@@ -121,7 +121,7 @@ function generate_edit(response, type, operator_id, orig_service_html){
                     '</div>' + 
             '<div class="col-md-4 margin-top"><label class="site_labels" for="sezNonSez">Sez / Non Sez</label>\
                 <select class="form-control sezNonSez" data-vehiclenumber="1" id="sezNonSez" >\
-                <option '+strSelectedNon+' value="non sez" >SEZ-Non SEZ</option>\
+                <option '+strSelectedNon+' value="non sez" >Non SEZ</option>\
                 <option  '+strSelectedSez+' value="sez"> SEZ </option>\
                 </select></div>' + 
                     '<div class="col-md-4 no-margin">' + 
@@ -193,7 +193,7 @@ function generate_edit(response, type, operator_id, orig_service_html){
                         '<input class="form-control" id="latitude" name="latitude" type="text" value="' + response.site.latitude + '">' + 
                     '</div>' + 
                     '<div class="col-md-4 no-margin">' + 
-                        '<label class="site_labels" for="longitude">LONG *</label>' + 
+                        '<label class="site_labels" for="longitude">Long *</label>' + 
                         '<input class="form-control" id="longitude" name="longitude" type="text" value="' + response.site.longitude + '">' + 
                     '</div>' + 
                     '<div class="col-md-4 no-margin">' + 
@@ -230,7 +230,7 @@ function generate_edit(response, type, operator_id, orig_service_html){
         '<div class="row">' + 
             '<div class="col-md-12">'+            
                 '<div style="border: 1px solid #8d8e90;display: inline-block;margin-top: 20px;padding-top: 10px;padding-bottom: 20px;">' + 
-                    '<div class="col-md-12" style="font-size: medium;text-align: center;padding: 10px;font-weight: bold;"> Party Details </div>'+            
+                    '<div class="col-md-12" style="font-size: medium;text-align: center;padding: 10px;font-weight: bold;">Billing Party Details </div>'+            
                     '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="party_code">Party Code *</label>' + 
                         '<input class="form-control" id="party_code" name="party_code" type="text" value="' + response.site.party_code + '" readonly>' + 
