@@ -31,7 +31,7 @@ class Notification < ApplicationRecord
 
   # set params to Notification message
   def driver_name
-    driver.nil? ? '' : driver.f_name + ' ' + driver.m_name.to_s + ' ' + driver.l_name
+    driver.nil? ? '' : ("#{driver.f_name} + #{driver.l_name}")
   end
 
   def driver_licence
