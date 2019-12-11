@@ -181,14 +181,21 @@ $(function () {
                       data: null,
                       orderable: false,
                       render: function (data) {
-                        return '<a href="/api/v2/drivers/' + data.id + '/blacklist_driver" id= "blacklist_driver" data-remote="true"><div style="float:left">' + data.blacklisted + '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
+                        return '<a href="/api/v2/drivers/' + data.id + '/blacklist_driver" id= "blacklist_driver" data-remote="true"><div style="float:left">' + `${data.blacklisted == true ? "Yes":"No"} `+ '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
                         }
                     },
                     {
                       data: null,
                       orderable: false,
                       render: function (data) {
-                        return '<a href="/api/v2/drivers/' + data.id + '/active_driver" id= "active_driver" data-remote="true"><div style="float:left">' + data.active + '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
+                        return '<a href="/api/v2/drivers/' + data.id + '/active_driver" id= "active_driver" data-remote="true"><div style="float:left">' + `${data.active == true ? "Yes":"No"}` + '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
+                        }
+                    },
+                    {
+                      data: null,
+                      orderable: false,
+                      render: function (data) {
+                        return '<a href="#" onclick="updateDriverPaired('+`${data.id}`+','+`${data.entity_attributes.vehicle_number ? 0 : 1 }`+');"; id="driver_paired" data-remote="true"><div style="float:left">' + `${data.entity_attributes.vehicle_number ? "Paired":"Unpaired"}`  + '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
                         }
                     },                   
                     
@@ -418,4 +425,57 @@ $(function () {
       var table = $('#drivers-table').DataTable();
       table.ajax.reload();
     });
+
+
+    
 });
+
+
+function updateDriverPaired( driverId , isDriverPaired ){
+
+    let pairedUrl = "/api/v1/drivers/"+driverId+"/off_duty";
+
+    if( isDriverPaired == 1 ){
+        pairedUrl = "/api/v1/drivers/"+driverId+"/on_duty";
+
+        $.ajax({
+          type: "POST",
+          url: pairedUrl,
+          data: {},
+          headers: {
+                "access_token": 'Lv-ew8BhWt-IpeHnaDmAPQ',   //If your header name has spaces or any other char not appropriate
+                "client": 'WAN2a7tMxvEKOgFAUB2lpA',
+                "uid":"deekshithmech@gmail.com"  //for object property name, use quoted notation shown in second
+            },
+          success: function(_response ){
+            table.ajax.reload();
+          }
+        
+        });
+
+    }else{
+
+
+        $.ajax({
+          type: "GET",
+          url: pairedUrl,
+          data: {},
+          headers: {
+                "access_token": 'Lv-ew8BhWt-IpeHnaDmAPQ',   //If your header name has spaces or any other char not appropriate
+                "client": 'WAN2a7tMxvEKOgFAUB2lpA',
+                "uid":"deekshithmech@gmail.com"  //for object property name, use quoted notation shown in second
+            },
+          success: function(_response ){
+            table.ajax.reload();
+          }
+        
+        }); 
+    }
+
+
+
+
+   
+
+    console.log('Updated driver paired status',driverId , isDriverPaired );
+}
