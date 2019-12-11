@@ -513,7 +513,7 @@ $(function () {
             });
         });
 
-        $(document).on('click', ".submit-btn", function (e) {
+        $(document).on('click', 'button[form="form-sites"]', function (e) {
             // $('.submit-btn').prop('disabled', true)    
             // if(e.target.baseURI.indexOf("sites") != -1){ failing save event
             if (0 != 1) {

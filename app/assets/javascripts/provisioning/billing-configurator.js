@@ -131,11 +131,11 @@ function generate_edit(response, type, operator_id, orig_service_html){
                 <option  '+strSelectedSez+' value="sez"> SEZ </option>\
                 </select></div>' + 
                     '<div class="col-md-4 no-margin lut_sez" style="display:'+strSelectedSezHide+'">' + 
-                        '<label class="site_labels" for="lut_no">LUT No</label>' + 
+                        '<label class="site_labels" for="lut_no">LUT No *</label>' + 
                         '<input class="form-control" id="lut_no" name="branch_name" type="text" value="' + `${!response.site.lut_no ? "": response.site.lut_no}` + '">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin lut_sez" style="display:'+strSelectedSezHide+'">' + 
-                        '<label class="site_labels" for="lut_date">LUT Date </label>' + 
+                        '<label class="site_labels" for="lut_date">LUT Date *</label>' + 
                         '<input class="form-control" id="lut_date" name="lut_date" type="text" value="' + `${!response.site.lut_date ? "": moment(response.site.lut_date).format("DD-MM-YYYY") }` +'" required="true">' + 
                     '</div>' + 
                     '<div class="col-md-4 no-margin">' + 
