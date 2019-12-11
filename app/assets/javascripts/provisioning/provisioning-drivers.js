@@ -24,6 +24,15 @@ $(function () {
      * Init table
      */
     $('a[href="#drivers"]').on('shown.bs.tab',function (e) {
+
+        if( "true" == $("#driver_add").attr('aria-expanded') ){
+        $('a[href="/drivers/new"]').hide();
+
+        }else{
+            $('a[href="/drivers/new"]').show();
+
+        }
+    
         if (loadedTabs['drivers']) return;
 
         // set loaded state
@@ -427,8 +436,7 @@ $(function () {
     });
 
 
-    
-});
+    });
 
 
 function updateDriverPaired( driverId , isDriverPaired ){
