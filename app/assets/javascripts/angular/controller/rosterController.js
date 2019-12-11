@@ -177,17 +177,13 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     // console.log($scope.selectedSite);
     // console.log($scope.filterDate)
     $scope.disable_roster_button = true;
-    let shift_type = 0;
-    if (roster.shift_type.toLowerCase() === 'check out') {
-      shift_type = 1;
-    }
 
     let postData = {
       "site_id": parseInt($scope.selectedSite.id),
       "shift_id": parseInt(roster.id),
       "to_date": moment($scope.filterDate).format('YYYY-MM-DD'),
       "search": '0',
-      "shift_type": shift_type // 0 -checkin 1-checout
+      "shift_type": roster.trip_type // 0 -checkin 1-checout
     }
     console.log('route generate req', postData)
 

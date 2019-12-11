@@ -77,23 +77,47 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
 
   $scope.FilterStat = function(item){
-    $scope.search=  $filter('uppercase')(item);
+    $scope.search =  $filter('uppercase')(item);
   }
 
-  $scope.updateCallStatus =function(modelData){
+
+  $scope.addRemarkInTripForDriverPanic = (trip) => {
+    var params={
+      "trip_id":trip.trip_id,
+      "remarks":trip.comment,
+    };
+    console.log('addRemarkInTripForDriverPanic req', params)
+    TripboardService.addRemarkInTripForDriverPanic(params, (data) => {
+      console.log('addRemarkInTripForDriverPanic res', data)
+      if (!data['success']) {
+        ToasterService.showError('Error', data['message']);
+      } else {
+        ToasterService.showSuccess('Success', data['message']);
+        trip.trip_is_panic = data.data.is_trip_panic;
+        trip.trip_driver_is_panic = false;
+      }
+
+    }, function (error) {
+      console.error(error);
+    });
+  }
+
+  $scope.updateCallStatus = function(item, trip) {
 
     var postdata={
-      "msg":modelData.comment,
-      "panic_id":modelData.panic_id,
+      "msg":item.comment,
+      "panic_id":item.panic_id,
       "date":moment().format('YYYY-MM-DD hh:mm:ss')
     };
     
     TripboardService.savePanicResponse(postdata, (data) => {
-     
+      console.log('employeePanicComment res', data)
       if (!data['success']) {
         ToasterService.showError('Error', data['message']);
       }else{
-        ToasterService.showSuccess('Success','Response Recorded Succesfully');
+        ToasterService.showSuccess('Success',data['message']);
+        trip.trip_is_panic = data.data.is_trip_panic;
+        item.is_panic = false;
       }
 
     }, function (error) {
@@ -110,20 +134,20 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     
     TripboardService.callOperator(postdata, (data) => {
      
-      if (!data['success']) {
+      if (data['success']) {
+        ToasterService.showSuccess('Success', data['message']);
+      } else {
         ToasterService.showError('Error', data['message']);
-        return;
-      }else{
-        ToasterService.showSuccess('Success','Call Ended');
       }
 
     }, function (error) {
+      ToasterService.showError('Error', 'Something went wrong, Try later.');
       console.error(error);
     });
   }
 
   $scope.getAllTrips = function () {
-
+    $scope.search = '';
     // $scope.fullRoster = TripboardResponse.tempResponse.tripsdetails;
     // $scope.stats = TripboardResponse.tempResponse.stats;
     // $scope.rosters = $scope.fullRoster;
