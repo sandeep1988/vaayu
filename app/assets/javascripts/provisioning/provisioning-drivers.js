@@ -32,7 +32,7 @@ $(function () {
             $('a[href="/drivers/new"]').show();
 
         }
-    
+
         if (loadedTabs['drivers']) return;
 
         // set loaded state
@@ -481,9 +481,6 @@ function updateDriverPaired( driverId , isDriverPaired ){
     }
 
 
+    
 
-
-   
-
-    console.log('Updated driver paired status',driverId , isDriverPaired );
 }
