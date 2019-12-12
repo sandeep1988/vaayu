@@ -36,6 +36,7 @@ class Employee < ApplicationRecord
   # validates :nodal_address_latitude, presence: true
   # validates :nodal_address_longitude, presence: true
   validates :site, presence: true
+  validates :employee_id, presence: true
   validates :employee_company, presence: true
   # validate :home_address_location_calculated
   # validate :distance_to_site_calculated

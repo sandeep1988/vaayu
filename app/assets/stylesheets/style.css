@@ -901,3 +901,7 @@
     .ml_selec > .multiselect-parent{width: 100% !important;}
     .ml_selec > .multiselect-parent > .dropdown-toggle{width:100%;text-align: left;}
     .ml_selec > .multiselect-parent > .dropdown-toggle > .caret{ float: right;position: relative;top:10px;}
+
+    .hide_driver_field {
+      display: none !important;
+    };

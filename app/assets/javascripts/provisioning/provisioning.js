@@ -294,3 +294,81 @@ function setInputFilter(textbox, inputFilter) {
         });
     });
 }
+
+$(document).ready(function(){
+
+    console.log( ">>>>>>>>>>>>>>>>>>>>>>>loading new <<<<<<<<<<<<<<<<<<<<<" );
+    
+    if( window.location.hash.indexOf("drivers") != -1  ){
+
+        $('#driver_add').trigger('click');
+    }
+    else if( window.location.hash.indexOf("employers") != -1 ){
+
+        $('a[href="#employers"]').trigger('click');
+    }
+    else if( window.location.hash.indexOf("logistic-companies-users") != -1 ){
+
+        $('a[href="#logistic-companies-users"]').trigger('click');
+    }
+
+    else if( window.location.hash.indexOf("logistic-companies") != -1 ){
+
+        $('a[href="#logistic-companies"]').trigger('click');
+    }
+    
+    else if( window.location.hash.indexOf("employee-company") != -1 ){
+
+        $('a[href="#employee-company"]').trigger('click');
+    }
+    else if( window.location.hash.indexOf("operator-shift-managers") != -1 ){
+
+        $('a[href="#operator-shift-managers"]').trigger('click');
+    }
+    else if( window.location.hash.indexOf("employers") != -1 ){
+
+        $('a[href="#employers"]').trigger('click');
+    }
+    else if( window.location.hash.indexOf("business-associates") != -1 ){
+
+        $('a[href="#business-associates"]').trigger('click');
+    }
+    else if( window.location.hash.indexOf("employees") != -1 ){
+
+        $('a[href="#employees"]').trigger('click');
+    }
+
+    else if( window.location.hash.indexOf("routes") != -1 ){
+
+        $('a[href="#routes"]').trigger('click');
+    }
+    else if( window.location.hash.indexOf("places") != -1 || window.location.hash.indexOf("sites") != -1 ){
+
+        $('a[href="#sites"]').trigger('click');
+    }
+
+    else if( window.location.hash.indexOf("places") != -1 || window.location.hash.indexOf("sites") != -1 ){
+
+        $('a[href="#sites"]').trigger('click');
+    }
+
+    else if( window.location.hash.indexOf("things") != -1 || window.location.hash.indexOf("shifts") != -1 ){
+
+        $('a[href="#shifts"]').trigger('click');
+    }
+
+    else if( window.location.hash.indexOf("vehicles") != -1 ){
+
+        $('a[href="#vehicles"]').trigger('click');
+    }
+    else if( window.location.hash.indexOf("devices") != -1 ){
+
+        $('a[href="#devices"]').trigger('click');
+    }
+
+
+
+});
+
+
+

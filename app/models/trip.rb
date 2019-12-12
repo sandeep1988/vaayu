@@ -1264,8 +1264,8 @@ class Trip < ApplicationRecord
   def renotify_driver_about_assignment
     @user = User.driver.where(id: driver.user_id).first
     if @user.present?
-      SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'],
-        'A new trip has been assigned. Please ACCEPT it using the MOOVE App within 3 minutes. This trip is for ' + (self.scheduled_approximate_distance / 1000).to_s + ' kms and will take about ' + self.scheduled_approximate_duration.to_s + ' minutes to complete.')
+      SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Hello! New trip has been assigned to you, kindly sign into app to accept the trip.")
+        # 'A new trip has been assigned. Please ACCEPT it using the MOOVE App within 3 minutes. This trip is for ' + (self.scheduled_approximate_distance / 1000).to_s + ' kms and will take about ' + self.scheduled_approximate_duration.to_s + ' minutes to complete.')
     end
 
     data = { 
@@ -1293,8 +1293,8 @@ class Trip < ApplicationRecord
   def notify_driver_about_assignment
     @user = User.driver.where(id: driver.user_id).first
     if @user.present?
-      SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], 
-        'A new trip has been assigned. Please ACCEPT it using the MOOVE App within 3 minutes. This trip is for ' + (self.scheduled_approximate_distance / 1000).to_s + ' kms and will take about ' + self.scheduled_approximate_duration.to_s + ' minutes to complete.')
+      SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Hello! New trip has been assigned to you, kindly sign into app to accept the trip.") 
+        # 'A new trip has been assigned. Please ACCEPT it using the MOOVE App within 3 minutes. This trip is for ' + (self.scheduled_approximate_distance / 1000).to_s + ' kms and will take about ' + self.scheduled_approximate_duration.to_s + ' minutes to complete.')
 
       push_data = {
           trip_id: self.id,
