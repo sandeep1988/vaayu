@@ -18,11 +18,11 @@ json.schedule @employee.employee_schedules.complete do |employee_schedule|
 end
 
 json.shift_check_in @employee_shifts  do |shift|
-	json.start_time shift.start_time
+	json.start_time shift.start_time shift.working_day
 end
 
 json.shift_check_out @employee_shifts  do |shift|
-	json.end_time shift.end_time
+	json.end_time shift.end_time shift.working_day
 end
 
 json.site do
