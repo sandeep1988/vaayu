@@ -508,11 +508,20 @@ $(function () {
                 }])
             .remove($(this).closest('tr'));
     });
+
+
+
+  $.extend( true, $.fn.dataTable.Editor.defaults, {
+    formOptions: {
+        main: {
+            onBackground: 'none'
+        },
+        bubble: {
+            onBackground: 'none'
+        }
+    }
+  });
 });
 
-$(document).on("click",'a[data-target="#modal-employee-company"]',function(){
 
-
-  $(".modal.fade ").attr("id","test-new");
-});
 
