@@ -297,77 +297,126 @@ function setInputFilter(textbox, inputFilter) {
 
 $(document).ready(function(){
 
-    console.log( ">>>>>>>>>>>>>>>>>>>>>>>loading new <<<<<<<<<<<<<<<<<<<<<" );
+    let urlHash = window.location.hash;
+    urlHash = urlHash.replace("#!","");
+    //setTimeout(function(){
+    $("a[href="+urlHash+"]").trigger('click');
+
+
+    //},1000);
     
-    if( window.location.hash.indexOf("drivers") != -1  ){
 
-        $('#driver_add').trigger('click');
-    }
-    else if( window.location.hash.indexOf("employers") != -1 ){
-
-        $('a[href="#employers"]').trigger('click');
-    }
-    else if( window.location.hash.indexOf("logistic-companies-users") != -1 ){
-
-        $('a[href="#logistic-companies-users"]').trigger('click');
-    }
-
-    else if( window.location.hash.indexOf("logistic-companies") != -1 ){
-
-        $('a[href="#logistic-companies"]').trigger('click');
-    }
+    console.log("trigger tab click >>>>>>>>>>>>>>>>>>>" );
     
-    else if( window.location.hash.indexOf("employee-company") != -1 ){
+    // if( window.location.hash.indexOf("drivers") != -1  ){
 
-        $('a[href="#employee-company"]').trigger('click');
-    }
-    else if( window.location.hash.indexOf("operator-shift-managers") != -1 ){
+    //     $('#driver_add').trigger('click');
+    // }
+    // else if( window.location.hash.indexOf("employers") != -1 ){
 
-        $('a[href="#operator-shift-managers"]').trigger('click');
-    }
-    else if( window.location.hash.indexOf("employers") != -1 ){
+    //     $('a[href="#employers"]').trigger('click');
+    // }
+    // else if( window.location.hash.indexOf("logistic-companies-users") != -1 ){
 
-        $('a[href="#employers"]').trigger('click');
-    }
-    else if( window.location.hash.indexOf("business-associates") != -1 ){
+    //     $('a[href="#logistic-companies-users"]').trigger('click');
+    // }
 
-        $('a[href="#business-associates"]').trigger('click');
-    }
-    else if( window.location.hash.indexOf("employees") != -1 ){
+    // else if( window.location.hash.indexOf("logistic-companies") != -1 ){
 
-        $('a[href="#employees"]').trigger('click');
-    }
+    //     $('a[href="#logistic-companies"]').trigger('click');
+    // }
+    
+    // else if( window.location.hash.indexOf("employee-company") != -1 ){
 
-    else if( window.location.hash.indexOf("routes") != -1 ){
+    //     $('a[href="#employee-company"]').trigger('click');
+    // }
+    // else if( window.location.hash.indexOf("operator-shift-managers") != -1 ){
 
-        $('a[href="#routes"]').trigger('click');
-    }
-    else if( window.location.hash.indexOf("places") != -1 || window.location.hash.indexOf("sites") != -1 ){
+    //     $('a[href="#operator-shift-managers"]').trigger('click');
+    // }
+    // else if( window.location.hash.indexOf("employers") != -1 ){
 
-        $('a[href="#sites"]').trigger('click');
-    }
+    //     $('a[href="#employers"]').trigger('click');
+    // }
+    // else if( window.location.hash.indexOf("business-associates") != -1 ){
 
-    else if( window.location.hash.indexOf("places") != -1 || window.location.hash.indexOf("sites") != -1 ){
+    //     $('a[href="#business-associates"]').trigger('click');
+    // }
+    // else if( window.location.hash.indexOf("employees") != -1 ){
 
-        $('a[href="#sites"]').trigger('click');
-    }
+    //     $('a[href="#employees"]').trigger('click');
+    // }
 
-    else if( window.location.hash.indexOf("things") != -1 || window.location.hash.indexOf("shifts") != -1 ){
+    // else if( window.location.hash.indexOf("routes") != -1 ){
 
-        $('a[href="#shifts"]').trigger('click');
-    }
+    //     $('a[href="#routes"]').trigger('click');
+    // }
+    // // else if( window.location.hash.indexOf("places") != -1 || window.location.hash.indexOf("sites") != -1 ){
 
-    else if( window.location.hash.indexOf("vehicles") != -1 ){
+    // //     $('a[href="#sites"]').trigger('click');
+    // // }
 
-        $('a[href="#vehicles"]').trigger('click');
-    }
-    else if( window.location.hash.indexOf("devices") != -1 ){
+    // else if( window.location.hash.indexOf("places") != -1 || window.location.hash.indexOf("sites") != -1 ){
 
-        $('a[href="#devices"]').trigger('click');
-    }
+    //     $('a[href="#sites"]').trigger('click');
+    // }
+
+    // else if( window.location.hash.indexOf("things") != -1 || window.location.hash.indexOf("shifts") != -1 ){
+
+    //     $('a[href="#shifts"]').trigger('click');
+    // }
+
+    // else if( window.location.hash.indexOf("vehicles") != -1 ){
+
+    //     $('a[href="#vehicles"]').trigger('click');
+    // }
+    // else if( window.location.hash.indexOf("devices") != -1 ){
+
+    //     $('a[href="#devices"]').trigger('click');
+    // }
+    // else if( window.location.hash.indexOf("operator-trip-board") != -1 ){
+
+    //     $('a[href="#operator-trip-board"]').trigger('click');
+    // }
+    // else if( window.location.hash.indexOf("operator-trip-board") != -1 ){
+
+    //     $('a[href="#operator-trip-board"]').trigger('click');
+    // }
+
+    // else if( window.location.hash.indexOf("employee-change-request") != -1 ){
+
+    //     $('a[href="#employee-change-request"]').trigger('click');
+    // }
+    // else if( window.location.hash.indexOf("employee-change-request") != -1 ){
+
+    //     $('a[href="#employee-change-request"]').trigger('click');
+    // }
+    // else if( window.location.hash.indexOf("roster-test") != -1 ){
+
+    //     $('a[href="#roster-test"]').trigger('click');
+    // }
+    // else if( window.location.hash.indexOf("routing-testing") != -1 ){
+
+    //     $('a[href="#routing-testing"]').trigger('click');
+    // }
+    // else if( window.location.hash.indexOf("trips-notifications") != -1 ){
+
+    //     $('a[href="#trips-notifications"]').trigger('click');
+    // }
+    // ///Configurator  ==========================================
+    // else if( window.location.hash.indexOf("general_settings") != -1 ){
+
+    //     $('a[href="#general_settings"]').trigger('click');
+    // }
 
 
+    
 
+
+// $("#modal-employee-company").modal('show',{
+//        backdrop:'static',
+//        keyboard:false,
+//      });
 });
 
 
