@@ -145,7 +145,7 @@
                         dnd-callback="container.employees.length" class="employee-cluster-panel">
                         <div class="employee-cluster-panel-heading"
                           ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
-                          <div class="title_container">
+                          <div class="title_container" >
                             <input type="checkbox" ng-change="selectRoute(container)" ng-model="container.selected"
                               name="route" class="tick" style="height: 25px; width: 25px;"
                               ng-show="container.status !== 'assign_requested'">
@@ -158,6 +158,7 @@
                           <div class="employee-cluster-panel-heading-meta">
                             <div class="employee-cluster-panel-title">
                               <div class="row">
+                                
                                 <div class="col-md-6 align-center">
                                   <span class="kilometer_time_duration">
                                     <i class="fa fa-road" aria-hidden="true"></i>
@@ -173,6 +174,21 @@
                               </div>
                             </div>
                           </div>
+
+                          <div class="employee-cluster-panel-heading-meta">
+                              <div class="employee-cluster-panel-title">
+                                <div class="row">
+                                  <div class="col-md-12">
+                                      <div class="title_container" style="padding-top:7px;padding-left: 26px;">
+                                          <input type="checkbox" ng-model="container.guard_required" ng-change="checkBoxChanged(container)" ng-disabled="container.guard_required"
+                                            name="route" class="tick" style="height: 16px; width: 16px;">
+                                            <label class="title_text" style="position: relative;top:-2px; left:10px;color:grey;color:#000;">Guard Required </label>
+                                        </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                              
 
                           <ul class="employee-list-group" dnd-list="container.employees" dnd-allowed-types="['item']"
                             dnd-horizontal-list="true" dnd-external-sources="true" dnd-effect-allowed="all"
@@ -271,10 +287,13 @@
                                     class="input-group background-{{person.type}} employee-list-group-item guard-assign"
                                     ng-if="container.guard.length">
 
-                                    <span class="input-group-addon addon-prepend vehicle_assign">
+                                    <span class="input-group-addon addon-prepend vehicle-assign">
+                                  
                                       <div class="inner-addon">
-                                        <i class="fa fa-shield"></i>
-                                      </div>
+                                          <i class="fa fa-shield vehicle_button" style="z-index: 8;"></i>
+                                          <i class="fa fa-times close_button"
+                                            ng-click="removeGuard(person, container)"></i>
+                                        </div>
                                     </span>
 
                                     <div class="vehicle_no">
@@ -283,7 +302,9 @@
                                     </div>
                                   </li>
                                 </dnd-nodrag>
-                                <li ng-if="!container.guard.length" ng-click="showGuardSidebar()"
+
+                                
+                                <li ng-if="!container.guard.length" ng-click="showGuardSidebar()" ng-show="container.guard_required"
                                   class="input-group employee-list-group-item guard-add">
                                   <span class="input-group-addon addon-prepend vehicle_assign">
                                     <div class="inner-addon">
@@ -416,7 +437,7 @@
           </div>
           <div class="row vaayu-sidebar-footer">
             <div class="col-md-6 pr-2">
-              <button type="button" ng-click="hideVehicalSidebar()" class="btn btn-cancel btn-block"
+              <button type="button" class="btn btn-cancel btn-block"
               ng-click="hideGuardSidebar()"
               >Cancel</button>
             </div>

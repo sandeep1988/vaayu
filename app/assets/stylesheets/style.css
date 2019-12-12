@@ -201,7 +201,7 @@
   cursor: pointer;
 } */
 
-.vayau-routing .employee-cluster-panel .employee-list-group-item .input-group-addon.addon-prepend .close_button{
+.vayau-routing .close_button{
   position: relative; 
   top: -22px; 
   left: -6px;  
@@ -213,12 +213,11 @@
   display: none;
 }
 
-.vayau-panel-footer .employee-list-group .employee-list-group-item.vehicle-assign:hover .close_button, .close_button:hover{
+ .close_button:hover, .vehicle-assign:hover .close_button {
   cursor: pointer;
-  display: block;
+  display: block !important;
   z-index: 14;
 }
-
 
 .vayau-routing .employee-cluster-panel .employee-cluster-panel-body {
   border-radius: 4px;
