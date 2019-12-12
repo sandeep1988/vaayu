@@ -342,10 +342,10 @@ $(document).ready(function(){
 
         $('a[href="#routes"]').trigger('click');
     }
-    else if( window.location.hash.indexOf("places") != -1 || window.location.hash.indexOf("sites") != -1 ){
+    // else if( window.location.hash.indexOf("places") != -1 || window.location.hash.indexOf("sites") != -1 ){
 
-        $('a[href="#sites"]').trigger('click');
-    }
+    //     $('a[href="#sites"]').trigger('click');
+    // }
 
     else if( window.location.hash.indexOf("places") != -1 || window.location.hash.indexOf("sites") != -1 ){
 
@@ -367,7 +367,10 @@ $(document).ready(function(){
     }
 
 
-
+// $("#modal-employee-company").modal('show',{
+//        backdrop:'static',
+//        keyboard:false,
+//      });
 });
 
 
