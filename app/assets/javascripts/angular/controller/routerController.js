@@ -374,9 +374,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         console.log('save button cick res', res)
         $scope.isDisabled = false;
         if (res['success']) {
+          ToasterService.showSuccess('Success', res['message']);
           $scope.resetRoute();
         } else {
-
           ToasterService.showError('Error', res['message']);
           return;
         }
@@ -396,7 +396,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.onVehicleSearch = (plateNumber) => {
     $scope.plateNumber = plateNumber;
     let shift = JSON.parse($scope.selectedShift);
-    let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber };
+    let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber, to_date: moment($scope.filterDate).format('YYYY-MM-DD')};
     RouteService.searchVechicle(params, function (res) {
       console.log('vehicle search response', res)
       console.log('vehicle search response', JSON.stringify(res))
