@@ -795,7 +795,7 @@ $(function () {
                             return true;
                         });
                         setInputFilter(document.getElementById("party_pan_no"), function(value) {
-                            if (value.trim().length >= 10) {
+                            if (value.trim().length > 10) {
                                 return false;
                             }
                             $("#party_pan_no").val(value.toUpperCase())
