@@ -3,7 +3,7 @@ json.eta employee_trip.eta.to_i
 json.schedule_date employee_trip.date.to_i
 json.shift_date employee_trip.schedule_date.to_i
 json.driver_arrive_date employee_trip.approximate_driver_arrive_date.to_i
-json.working_day Shift.find(employee_trip.shift_id).working_day.present? ? Shift.find(employee_trip.shift_id).working_day : nil 
+json.working_day employee_trip.shift_id.present? ? Shift.find(employee_trip.shift_id).working_day : nil 
 
 json.emergency_contact do
   json.name employee_trip.employee.emergency_contact_name
