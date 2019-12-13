@@ -389,7 +389,22 @@ $(function () {
       emploeesTable.draw();
     }
   });
+
+    $("#employees").on("change","#user_entity_attributes_site_id",function(){
+
+        updateBillingZone($(this).val());
+    });
+
 });
 
+
+function updateBillingZone( site_id ){
+
+    $.get("/zone_by_site_id?siteid="+site_id+"", function(data, status){
+   
+        console.log(">>>>>>>>>>>>>>", data );
+    });
+
+}
 
 
