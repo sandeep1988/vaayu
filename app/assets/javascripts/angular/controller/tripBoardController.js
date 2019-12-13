@@ -357,7 +357,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     $scope.showPopup = true;
     $scope.selectedVehicle = {};
     var trip_status = row.current_status.toLowerCase().trim();
-    if (trip_status === 'pending acceptance' || trip_status === 'accepted', trip_status === 'delayed') {
+    if (trip_status === 'pending acceptance' || trip_status === 'accepted' || trip_status === 'delayed') {
       $scope.getVehicleListForTrip(row);
     } 
       
