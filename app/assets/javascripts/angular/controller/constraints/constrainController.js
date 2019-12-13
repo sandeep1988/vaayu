@@ -131,10 +131,13 @@ app.controller('constraintController', function ($scope, $http, $state, SessionS
   };
 
   $scope.deleteConstraint =function(item){
-    console.log("constraint")
-    console.log(item);
+   
     var params = {id:item.id};
-    constraintService.delete_constraint(params);
-    $scope.fetchConstraintList($scope.selectedSiteId);
+    
+    constraintService.delete_constraint(params, function(location) {
+      $scope.fetchConstraintList($scope.selectedSiteId);
+      // ToasterService.showError('Error', location['message']);
+    
+    });
   }
 });
