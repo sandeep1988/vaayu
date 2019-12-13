@@ -257,6 +257,7 @@ class EmployeeTripsController < TripValidationController
   def schedule_trip_update
     return_data = {}
     @employee = Employee.find(params[:id])
+    s_id = @employee.shifts.first.id if @employee.shifts.present?
     return_data[:status] = 400 and raise RuntimeError unless params[:employee].present?
     return_data[:status] = 400 and raise RuntimeError if params[:employee][:check_in_attributes].blank? || params[:employee][:check_out_attributes].blank?
     EmployeeTrip.create_or_update(@employee, employee_trip_params)
@@ -271,6 +272,7 @@ class EmployeeTripsController < TripValidationController
         end_time = params[:employee][:check_out_attributes][check_in.to_s]["check_out"] if params[:employee][:check_out_attributes][check_in.to_s]["check_out"].present?
         shift = Shift.where(start_time:start_time, site_id: site_id.to_i, end_time: end_time ).first
         @employee.employee_trips.where(id: [emp_trips]).update(shift_id: params[:employee][:check_in_attributes][check_in.to_s]["shift_id"]) if shift.present?
+        @employee.employee_trips.where(id: [emp_trips]).update(shift_id: s_id) if s_id.present?
         end
     end
     # Update Status
