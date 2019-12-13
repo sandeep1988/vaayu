@@ -904,3 +904,10 @@
     .hide_driver_field {
       display: none !important;
     };
+    .new_over_fl > .multiselect-native-select > .btn-group >  .btn{width: 100% !important;overflow: hidden;}
+    .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus{background-color:transparent !important;}
+    .vt_b{vertical-align: top !important;
+    position: relative;
+    top: 23px;}
+
+

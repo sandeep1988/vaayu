@@ -21,7 +21,7 @@
     - unless @is_guard
       .row
         .col-md-4
-          = f.input :shift_ids, collection: Shift.active.map { |x| [x.name, x.id] }, input_html: { multiple: true, class: "multiple-select-ui" }, wrapper_html: { class: "provisioning-multiselect" }
+          = f.input :shift_ids,required:true,collection: Shift.active.map { |x| [x.name, x.id] }, input_html: { multiple: true, class: "multiple-select-ui" }, wrapper_html: { class: "provisioning-multiselect new_over_fl" }
         .col-md-4
           = f.input :process_code, label: 'Process Code'
         .col-md-4
@@ -80,7 +80,7 @@
         .col-md-6.col-md-offset-4.employee-home-address
           .input-group
             = ui.input :home_address, label: "#{@is_guard ? 'Pick-Up Address' : 'Home Address'}", required: true
-            span.input-group-btn
+            span.input-group-btn.vt_b
               /!button.btn.btn-primary type="button"  Go!
               = link_to 'Geocode', get_geocode_employees_path, class: "geo_code btn btn-primary"
         .col-md-1
@@ -96,7 +96,7 @@
         .col-md-6.col-md-offset-4.employee-home-address
           .input-group
             = ui.input :nodal_address, label: "#{@is_guard ? 'Nodal Address' : 'Nodal Address'}"
-            span.input-group-btn
+            span.input-group-btn.vt_b
               /!button.btn.btn-primary type="button"  Go!
               = link_to 'Geocode', get_nodal_geocode_employees_path, class: "nodal_geo_code btn btn-primary"
         .col-md-1

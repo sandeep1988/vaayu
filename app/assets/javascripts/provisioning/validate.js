@@ -11,10 +11,18 @@ $(function(){
   }
 
   $.addErrorMessage = function(selector, msg='cant be blank') {
-    selector.closest("div").addClass("has-error");
-    selector.closest("div").find("span").remove();
-    spanTxt = '<span class="help-block">'+ msg +'</span>';
-    selector.closest("div").append(spanTxt);
+    
+    
+    if( selector.closest("div").hasClass("user_shift_ids") ){
+
+    }else{
+
+      selector.closest("div").addClass("has-error");
+      selector.closest("div").find("span").remove();
+
+      spanTxt = '<span class="help-block">'+ msg +'</span>';
+       selector.closest("div").append(spanTxt);
+    }
   }
 
   $.removeErrorMessage = function(selector) {
@@ -48,7 +56,7 @@ $(function(){
           var formAttribute = fieldName.slice(1).length > 1 ? ["entity", fieldName.slice(-1)[0]].join(".") : fieldName.slice(-1)[0]
           data[formAttribute] === undefined ? $.removeErrorMessage(_this) : $.addErrorMessage(_this, data[formAttribute][0]);
         } else {
-          $.each($(".has-error"), function(i, errClass){ $(errClass).removeClass("has-error"); $(errClass).find("span").remove(); });
+          // $.each($(".has-error"), function(i, errClass){ $(errClass).removeClass("has-error"); $(errClass).find("span").remove(); });
           $.each(Object.keys(data), function(i, err) {
             var fieldClass = "input[name$='[" + err.split(".").slice(-1) + "]']";
             var fieldSelector = formElement.find(fieldClass);
