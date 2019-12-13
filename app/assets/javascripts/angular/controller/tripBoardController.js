@@ -80,6 +80,129 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     $scope.search =  $filter('uppercase')(item);
   }
 
+  $scope.FilterSosStat = function(item){
+    $scope.search ='';
+    $scope.sos_panic =  item
+  }
+
+
+  $scope.initMap = () => {
+
+    // $scope.drawMapPath([
+    //   {lat: 37.772, lng: -122.214},
+    //   {lat: 21.291, lng: -157.821},
+    //   {lat: -18.142, lng: 178.431},
+    //   {lat: -27.467, lng: 153.027}
+    // ])
+
+    // var flightPlanCoordinates = [
+    // {lat: 37.772, lng: -122.214},
+    // {lat: 21.291, lng: -157.821},
+    // {lat: -18.142, lng: 178.431},
+    // {lat: -27.467, lng: 153.027}
+    // ];
+
+    // var directionsService = new google.maps.DirectionsService();
+    var directionsRenderer = new google.maps.DirectionsRenderer();
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 13,
+      center: { lat: 19.2578, lng: 72.8731 },
+      mapTypeId: 'terrain'
+    });
+    $scope.map = map
+    console.log('map ', $scope.map)
+    directionsRenderer.setMap(map);
+    var stepDisplay = new google.maps.InfoWindow;
+    $scope.waypts=$scope.modelData.map_data.wayPoints;
+
+    var waypts=[];
+
+    angular.forEach($scope.waypts, function (item, index,wayptsArray) {
+      if(index==1){
+        $scope.source={
+           lat:item.lat,
+           lng:item.lng
+        }
+      }
+      waypts.push({
+        location:new google.maps.LatLng(item.lat,item.lng),
+        stopover:true
+      });
+
+      if(index===wayptsArray.length-1){
+        $scope.destination={
+          lat:item.lat,
+          lng:item.lng
+       }
+      }
+    })
+    
+    // var waypts = [
+    //   {
+    //     location: 'Kandivali Station (W), Parekh Nagar, Kandivali, Mumbai, Maharashtra',
+    //     stopover: true
+    //   },
+    //   {
+    //     location: 'Thane Station Road, Jambli Naka, Thane West, Thane, Maharashtra',
+    //     stopover: true
+    //   }
+    // ];
+    // calculateAndDisplayRoute(directionsRenderer, directionsService, $scope.markerArray, waypts, stepDisplay, map);    // Define a symbol using SVG path notation, with an opacity of 1.
+    calculateAndDisplayRoute( directionsService, directionsRenderer, waypts)
+
+  }
+
+  function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
+
+    var source =$scope.modelData.map_data.source;
+    var destination =$scope.modelData.map_data.destination;
+
+    if(!source.is_site){
+       source=$scope.source;
+    }
+
+    if(!destination.is_site){
+      source=$scope.destination;
+    }
+
+    directionsService.route({
+      origin: new google.maps.LatLng(source.lat,source.lng),
+      destination: new google.maps.LatLng(destination.lat,destination.lng),
+      waypoints: waypts,
+      optimizeWaypoints: true,
+      travelMode: google.maps.DirectionsTravelMode.DRIVING
+    }, function (response, status) {
+      if (status === 'OK') {
+        directionsRenderer.setDirections(response);
+        var route = response.routes[0];
+        var summaryPanel = document.getElementById('directions-panel');
+
+        if (summaryPanel) {
+          summaryPanel.innerHTML = '';
+          // For each route, display summary information.
+          for (var i = 0; i < route.legs.length; i++) {
+            var routeSegment = i + 1;
+            summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+              '</b><br>';
+            summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+            summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+            summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+          }
+        }
+      } else {
+        window.alert('Directions request failed due to ' + status);
+      }
+    });
+  }
+
+  function attachInstructionText(stepDisplay, marker, text, map) {
+    google.maps.event.addListener(marker, 'click', function () {
+      // Open an info window when the marker is clicked on, containing the text
+      // of the step.
+      stepDisplay.setContent(text);
+      stepDisplay.open(map, marker);
+    });
+  }
 
   $scope.addRemarkInTripForDriverPanic = (trip) => {
     var params={
@@ -186,7 +309,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
   $scope.showPopup = false;
   $scope.showModal = (row) => {
-    console.log('showModal', row);
+    console.log('showModal', row.map_data);
     $scope.modelData = row;
     $scope.showPopup = true;
     $scope.selectedVehicle = {};
@@ -339,7 +462,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       return false;
     }
     var trip_status = row.current_status.toLowerCase().trim();
-    if (trip_status === 'pending acceptance' || trip_status === 'accepted', trip_status === 'delayed') {
+    if (trip_status === 'pending acceptance' || trip_status === 'accepted' || trip_status === 'delayed') {
       return true;
     } 
     return false;

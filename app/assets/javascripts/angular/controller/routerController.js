@@ -196,6 +196,20 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
   }
 
+  $scope.removeGuard = (guard,route) => {
+    console.log('route', route.routeId, route)
+    RouteService.removeGuard({ routeId: String(route.routeId), guardId:String(guard.guardId)}, res => {
+      if (res['success']) {
+        ToasterService.showSuccess('Success', res['message']);
+        $scope.resetRoute()
+      } else {
+        ToasterService.showError('Error', res['message']);
+      }
+    }, er => {
+      console.log(er);
+    });
+  }
+
   $scope.getVehicleListForSite = function (siteId, shiftId, shiftType) {
 
     if (siteId == null || shiftId == null || shiftType == null){
@@ -319,6 +333,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     var finalChangedRoutes = [];
     angular.forEach(changedRoutes, function (route) {
+     
+      if(route.guard_required){
+        route.guard_required="Y";
+     }else{
+       route.guard_required="N";
+     }
       var employee_nodes = [];
       angular.forEach(route.employees, function (emp) {
         employee_nodes.push(emp.empId);
@@ -326,7 +346,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       var data = {
         "route_id": route.routeId,
         "vehicle_category": route.vehicle_type,
-        "employee_nodes": employee_nodes
+        "employee_nodes": employee_nodes,
+        "guard_required":route.guard_required
       }
       finalChangedRoutes.push(data);
     })
@@ -345,6 +366,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     })
 
     angular.forEach(originalChangedRoutes, function (originalRoute) {
+      if(originalRoute.guard_required){
+        originalRoute.guard_required="Y";
+      }else{
+        originalRoute.guard_required="N";
+      }
+
       var employee_nodes = [];
       angular.forEach(originalRoute.employees_nodes_addresses, function (orgEmp) {
         employee_nodes.push(orgEmp.empId);
@@ -352,7 +379,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       var data = {
         "route_id": originalRoute.routeId,
         "vehicle_category": originalRoute.vehicle_type,
-        "employee_nodes": employee_nodes
+        "employee_nodes": employee_nodes,
+        "guard_required":originalRoute.guard_required
       }
       original_routes.push(data);
     })
@@ -374,9 +402,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         console.log('save button cick res', res)
         $scope.isDisabled = false;
         if (res['success']) {
+          ToasterService.showSuccess('Success', res['message']);
           $scope.resetRoute();
         } else {
-
           ToasterService.showError('Error', res['message']);
           return;
         }
@@ -396,7 +424,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.onVehicleSearch = (plateNumber) => {
     $scope.plateNumber = plateNumber;
     let shift = JSON.parse($scope.selectedShift);
-    let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber };
+    let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber, to_date: moment($scope.filterDate).format('YYYY-MM-DD')};
     RouteService.searchVechicle(params, function (res) {
       console.log('vehicle search response', res)
       console.log('vehicle search response', JSON.stringify(res))
@@ -541,6 +569,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     angular.forEach($scope.routes.data.routes, function (route, index, routeArray) {
       route.allowed = "all";
 
+      if(route.guard_required=="Y"){
+         route.guard_required=true;
+      }else{
+        route.guard_required=false;
+      }
+
       if (route.guard) {
         let guard = route.guard;
         guard.type = 'guard';
@@ -662,6 +696,17 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.routeChangedIds = [];
 
+  $scope.checkBoxChanged = function (container) {
+    console.log(container);
+    if ($scope.routeChangedIds.indexOf(container.routeId) === -1) {
+      $scope.routeChangedIds.push(container.routeId)
+  
+      $scope.isDisabled = false;
+    }
+  };
+
+
+
   $scope.dragoverCallback = function (container, index, external, type, callback) {
     if ($scope.routeChangedIds.indexOf(container.routeId) === -1) {
       $scope.routeChangedIds.push(container.routeId)
@@ -711,6 +756,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.dropGuardCallback = function (container, index, item, external, type) {
     var isAssign = true;
+    $scope.saveRoutes();
     if (isAssign) {
       var postData = {
         "guardId": item.guardId,
@@ -719,6 +765,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
       RouteService.assignGuards(postData, function (data) {
         console.log("Guard Assign");
+       
         $scope.resetRoute();
       })
 
