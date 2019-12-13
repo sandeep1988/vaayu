@@ -24,7 +24,7 @@ angular.module('app').factory('constraintService', function($resource,BASE_URL_8
   {id:'@id'},
   { 
       delete_constraint: {
-          method: 'DELETE'
+          method: 'GET'
       }
   }); 
 
