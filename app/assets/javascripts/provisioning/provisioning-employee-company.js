@@ -361,7 +361,7 @@ $(function () {
                         data: null,
                         render: function (data) {
 
-                            return '<a href="" class="modal_edit">Edit |</a>&nbsp<a href="" class="modal_view">View | </a>&nbsp<a href="/employee_companies/' + data.id + '/active_customer" id= "active_customer" data-remote="true"><div style="float:left">' + data.active + '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
+                            return '<a href="#" class="modal_edit">Edit |</a>&nbsp<a href="#" class="modal_view">View | </a>&nbsp<a href="/employee_companies/' + data.id + '/active_customer" id= "active_customer" data-remote="true"><div style="float:left">' + data.active + '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
                             // return '<a href="/api/v2/drivers/' + data.id + '/active_driver" id= "active_driver" data-remote="true"><div style="float:left">' + data.active + '</div></a>'  + ' <div style="float:right; top:2px; position:relative">'
                         }
                     }
@@ -521,7 +521,24 @@ $(function () {
         }
     }
   });
+
+$(document).on('click', 'a[id="active_customer"]', function (e) {
+
+//console.log("sfsdfsdg>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" );
+
+  location.reload();
+
 });
+
+
+});
+
+
+// $(document).on("#active_customer", 'click', function (e) {
+//       //alert("Are you sure you want to active/deactivate driver!")
+      
+      
+//     });
 
 
 

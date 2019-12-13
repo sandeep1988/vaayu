@@ -450,6 +450,9 @@ $(function () {
         $(document).on('click', '#editSite', function (e) {
             //  
             $('input').removeAttr('disabled');
+
+            $('select').removeAttr('disabled');
+
             $('.btn-primary').removeAttr('disabled');
             if (current_user == 'Operator') {
                 //$(".provisioning .edit-buttons .submit-btn").fadeOut()
@@ -513,6 +516,8 @@ $(function () {
                         $('input').attr('disabled', 'disabled');
                         $('.btn-primary').attr('disabled', 'disabled');
                         $('#company').attr('disabled', 'disabled');
+
+                        $('select').attr('disabled', 'disabled');
                     }
                 })
             });

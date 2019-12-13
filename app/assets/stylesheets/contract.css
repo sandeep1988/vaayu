@@ -113,6 +113,6 @@ body {
 #checkboxes input {
   margin: 5px;
 }
-.required{
+.required_angular{
     color:red;
 }
