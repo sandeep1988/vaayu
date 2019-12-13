@@ -432,7 +432,24 @@ if( "true" == $("#driver_add").attr('aria-expanded') ){
     $('a[href="/drivers/new"]').show();
 
     }
+
+    $('a[href="/drivers/new"]').removeAttr("disabled");
+// });
+
+
+// if( "true" == $("#driver_add").attr('aria-expanded') ){
+        
+//     $('a[href="/drivers/new"]').hide();
+
+//     }else{
+
+//     $('a[href="/drivers/new"]').show();
+
+//     }
+
+    $('a[href="/sites/new"]').removeAttr("disabled");
 });
+
 
 
 });
