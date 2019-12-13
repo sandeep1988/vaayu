@@ -356,7 +356,7 @@ $(function () {
                     },
                     {data: 'business_type'},
                     {data: 'pan'},
-                    {data: 'service_tax_no'},
+                    {data: 'home_address_gstin_no'},
                     {
                         data: null,
                         render: function (data) {
