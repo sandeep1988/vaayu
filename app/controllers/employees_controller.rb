@@ -27,7 +27,11 @@ class EmployeesController < ApplicationController
   def new
     @employee = User.new
     @employee.entity = Employee.new
-    @billing_zones = ZoneRate.uniq.pluck(:name)
+    @billing_zones = Zone.uniq.pluck(:name)
+  end
+
+  def get_zones_by_site
+    @zones = Zone.where(site_id: site_id).pluck(:name)
   end
 
   def create
@@ -45,7 +49,7 @@ class EmployeesController < ApplicationController
 
   def edit
     @employee = @employee.user
-    @billing_zones = ZoneRate.uniq.pluck(:name)
+    @billing_zones = Zone.uniq.pluck(:name)
     # puts "---------------"
     # puts @billing_zones
     # @billing_zones = [['male': 'male'], ['female': 'female'], ['other': 'other']]

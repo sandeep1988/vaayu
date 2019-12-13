@@ -82,6 +82,7 @@ Rails.application.routes.draw do
   resources :user
 
   get 'users', to: 'user#index'
+  get '/zone_by_site_id', to: 'employees#get_zones_by_site'
 
   get '/profile', to: 'home#profile_edit', as: :user_profile_edit
   get '/site_list', to: 'sites#site_list'
