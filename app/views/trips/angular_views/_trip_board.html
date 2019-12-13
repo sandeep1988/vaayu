@@ -284,9 +284,9 @@
             </div>
 
           </div>
-          <div class="col-md-3" ng-init="initMap()">
+          <div class="col-md-4" ng-init="initMap()">
             <div class="pop-img-card">
-              <div id="map" style="width:100%;height:200px;"></div>
+              <div id="map" style="width:100%;height:250px;"></div>
               <div class="container" style="width:100%;">
                 <div>
                   <span class="pop-name">Duration</span>
@@ -299,7 +299,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="pop-img-card">
               <!-- modelData.driver_profile_picture_url -->
               <img src="{{getDriverProfileUrl(modelData.driver_profile_picture_url)}}" alt="Avatar" style="width:100%">
@@ -317,7 +317,7 @@
                   ng-class="{'panic':modelData.trip_driver_is_panic}">
                   <form class="form-inline">
                     <div class="form-group">
-                      <div class="input-group">
+                      <div class="input-group" style="width:80%">
                         <input type="text" class="form-control" ng-model="modelData.comment"
                           ng-disabled="!modelData.trip_driver_is_panic" placeholder="Comment">
                         <div ng-click="modelData.trip_driver_is_panic && addRemarkInTripForDriverPanic(modelData)"

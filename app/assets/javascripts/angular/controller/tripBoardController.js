@@ -1,4 +1,4 @@
-angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListResponse, RouteService, TripboardService, TripboardResponse, $timeout, ToasterService,$interval,$filter) {
+angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListResponse, RouteService, TripboardService, TripboardResponse, $timeout, ToasterService,$interval,$filter,VehicleLocation) {
 
   // $scope.toggled = function(open) {
   //   // $log.log('Dropdown is now: ', open);
@@ -88,6 +88,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
   $scope.initMap = () => {
 
+
     // $scope.drawMapPath([
     //   {lat: 37.772, lng: -122.214},
     //   {lat: 21.291, lng: -157.821},
@@ -103,7 +104,10 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     // ];
 
     // var directionsService = new google.maps.DirectionsService();
-    var directionsRenderer = new google.maps.DirectionsRenderer();
+    var directionsRenderer = new google.maps.DirectionsRenderer({
+      suppressMarkers: true
+  });
+
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
       center: { lat: 19.2578, lng: 72.8731 },
@@ -121,7 +125,8 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       if(index==1){
         $scope.source={
            lat:item.lat,
-           lng:item.lng
+           lng:item.lng,
+           emp_name:item.emp_name
         }
       }
       waypts.push({
@@ -129,10 +134,13 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         stopover:true
       });
 
+      makeMarker(new google.maps.LatLng(item.lat,item.lng),item.emp_name);
+
       if(index===wayptsArray.length-1){
         $scope.destination={
           lat:item.lat,
-          lng:item.lng
+          lng:item.lng,
+          emp_name:item.emp_name
        }
       }
     })
@@ -152,17 +160,49 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
   }
 
+  $scope.tripOngoing =true;
+
+  function makeMarker( position, title ) {
+    new google.maps.Marker({
+     position: position,
+     map: $scope.map,
+     title: title
+    });
+   }
+
+  $scope.getCurrentVehicleLocation = () => {
+
+ 
+      VehicleLocation.get({ id: $scope.modelData.trip_id }, function(location) {
+        if(location.success){
+          var res=location.data.current_location;
+          console.log("data : "+ res);
+         var marker1 = new google.maps.Marker({
+           map: $scope.map,
+           position: new google.maps.LatLng(res.lat, res.lng),
+           icon: "../assets/angular_images/car.png"
+         })
+         $scope.tripOngoing=true;
+        }else{
+          $scope.tripOngoing=false;
+          ToasterService.showError('Error', location['message']);
+        }
+      });
+    
+    
+  } 
+
   function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
 
     var source =$scope.modelData.map_data.source;
     var destination =$scope.modelData.map_data.destination;
 
-    if(!source.is_site){
-       source=$scope.source;
+    if(source.is_site){
+       makeMarker(new google.maps.LatLng(source.lat,source.lng),source.site_name);
     }
 
-    if(!destination.is_site){
-      source=$scope.destination;
+    if(destination.is_site){
+      makeMarker(new google.maps.LatLng(destination.lat,destination.lng),destination.site_name);
     }
 
     directionsService.route({
@@ -193,6 +233,8 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         window.alert('Directions request failed due to ' + status);
       }
     });
+
+    $scope.getCurrentVehicleLocation();
   }
 
   function attachInstructionText(stepDisplay, marker, text, map) {
@@ -303,6 +345,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   // Refresh Trip Board after Every 1 Minute;
 
   $interval(function() {
+    $scope.getCurrentVehicleLocation ();
     $scope.getAllTrips();
   }, 1000*60);
 
@@ -314,7 +357,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     $scope.showPopup = true;
     $scope.selectedVehicle = {};
     var trip_status = row.current_status.toLowerCase().trim();
-    if (trip_status === 'pending acceptance' || trip_status === 'accepted', trip_status === 'delayed') {
+    if (trip_status === 'pending acceptance' || trip_status === 'accepted' || trip_status === 'delayed') {
       $scope.getVehicleListForTrip(row);
     } 
       
