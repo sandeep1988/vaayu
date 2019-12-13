@@ -14,6 +14,12 @@ angular.module('app').factory('TripboardService',['$resource','BASE_URL_8002','B
 }]);
 
 
+
+angular.module('app').factory('VehicleLocation', ['$resource','BASE_URL_8002',function($resource,BASE_URL_8002) {
+  return $resource(BASE_URL_8002+'get-lat-lng-by-tripid/:id'); 
+}]);
+
+
 angular.module('app').factory('TripboardResponse', function () {
   return {
     tempResponse : {
