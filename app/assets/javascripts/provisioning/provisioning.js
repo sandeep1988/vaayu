@@ -300,13 +300,16 @@ $(document).ready(function(){
     let urlHash = window.location.hash;
     urlHash = urlHash.replace("#!","");
     //setTimeout(function(){
-    $("a[href="+urlHash+"]").trigger('click');
+    if(urlHash){
+        $("a[href="+urlHash+"]").trigger('click');    
+    }
+    
 
 
     //},1000);
     
 
-    console.log("trigger tab click >>>>>>>>>>>>>>>>>>>" );
+    console.log(urlHash,"trigger tab click >>>>>>>>>>>>>>>>>>>" );
     
     // if( window.location.hash.indexOf("drivers") != -1  ){
 
