@@ -262,6 +262,9 @@ class EmployeeTripsController < TripValidationController
     return_data[:status] = 400 and raise RuntimeError if params[:employee][:check_in_attributes].blank? || params[:employee][:check_out_attributes].blank?
     EmployeeTrip.create_or_update(@employee, employee_trip_params)
     (0..params[:employee][:check_in_attributes].count - 1).to_a.each do  |check_in|
+      if params[:employee][:check_in_attributes][check_in.to_s]["id"].present?
+        EmployeeTrip.find(params[:employee][:check_in_attributes][check_in.to_s]["id"]).update(shift_id: params[:employee][:check_in_attributes][check_in.to_s]["shift_id"])
+      end  
       start_time =  params[:employee][:check_in_attributes][check_in.to_s]["check_in"] if params[:employee][:check_in_attributes][check_in.to_s]["check_in"]
       site_id =  params[:employee][:check_in_attributes][check_in.to_s]["site_id"] if params[:employee][:check_in_attributes][check_in.to_s]["site_id"].present?
       shift_id = params[:employee][:check_in_attributes][check_in.to_s]["shift_id"] if params[:employee][:check_in_attributes][check_in].to_s.present?
@@ -269,10 +272,11 @@ class EmployeeTripsController < TripValidationController
       emp_trips = params[:employee][:check_in_attributes][check_in.to_s]["id"] if params[:employee][:check_in_attributes][check_in.to_s]["id"].present?
 
       (0..params[:employee][:check_out_attributes].count - 1).to_a.each do |check_out|
+        if params[:employee][:check_out_attributes][check_out.to_s]["id"].present?
+          EmployeeTrip.find(params[:employee][:check_out_attributes][check_out.to_s]["id"]).update(shift_id: params[:employee][:check_out_attributes][check_out.to_s]["shift_id"])
+        end  
         end_time = params[:employee][:check_out_attributes][check_in.to_s]["check_out"] if params[:employee][:check_out_attributes][check_in.to_s]["check_out"].present?
         shift = Shift.where(start_time:start_time, site_id: site_id.to_i, end_time: end_time ).first
-        @employee.employee_trips.where(id: [emp_trips]).update(shift_id: params[:employee][:check_in_attributes][check_in.to_s]["shift_id"]) if shift.present?
-        @employee.employee_trips.where(id: [emp_trips]).update(shift_id: s_id) if s_id.present?
         end
     end
     # Update Status
