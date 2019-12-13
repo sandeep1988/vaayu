@@ -3,6 +3,19 @@ var logisticCompaniesTableEditor;
 $(function () {
     'use strict';
 
+
+
+    $.extend( true, $.fn.dataTable.Editor.defaults, {
+    formOptions: {
+        main: {
+            onBackground: 'none'
+        },
+        bubble: {
+            onBackground: 'none'
+        }
+    }
+  });
+
     /**
      * Logistic Companies Table Editor
      *
@@ -179,5 +192,8 @@ $(function () {
         var id = button.data('id');
         $(this).find('form').attr('action', '/operators/?logistics_company_id=' + id).attr('method', 'POST');
     });
+
+
+
 
 });
