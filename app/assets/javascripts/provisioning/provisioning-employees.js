@@ -398,11 +398,25 @@ $(function () {
 });
 
 
-function updateBillingZone( site_id ){
+function updateBillingZone( siteid ){
 
-    $.get("/zone_by_site_id?siteid="+site_id+"", function(data, status){
+    $.get("/zone_by_site_id?site_id="+siteid+"", function(data, status){
    
-        console.log(">>>>>>>>>>>>>>", data );
+        // console.log("zone", data );
+
+        let zone_Html = '';
+        if( data.length > 0 ){
+            
+            for( let index in data ){
+
+                zone_Html += `<option value="${data[index]}">${data[index]}</option>`;
+            }
+        }
+
+
+        $("#user_entity_attributes_billing_zone").html(zone_Html);
+
+
     });
 
 }
