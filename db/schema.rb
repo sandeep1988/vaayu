@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191205115333) do
+ActiveRecord::Schema.define(version: 20191213084509) do
 
   create_table "Induction_logs_WIP", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "resource_id",                    null: false
@@ -871,8 +871,9 @@ ActiveRecord::Schema.define(version: 20191205115333) do
   end
 
   create_table "mdm_admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.integer  "logistics_company_id"
   end
 
   create_table "mll_audit_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -1031,7 +1032,7 @@ ActiveRecord::Schema.define(version: 20191205115333) do
 
   create_table "roaster_shift", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "shift_id"
-    t.text     "vehicle_availability", limit: 65535
+    t.text     "vehicle_availability",   limit: 65535
     t.integer  "seating_capacity"
     t.datetime "created_at"
     t.string   "created_by"
@@ -1040,8 +1041,9 @@ ActiveRecord::Schema.define(version: 20191205115333) do
     t.date     "scheduled_date"
     t.integer  "total_vehicles"
     t.integer  "no_of_emp"
-    t.text     "vehicle_capacity",     limit: 65535
+    t.text     "vehicle_capacity",       limit: 65535
     t.boolean  "trip_type"
+    t.string   "isConstraintsSatisfied", limit: 3,     default: "yes", null: false
   end
 
   create_table "role_permissions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -1435,6 +1437,9 @@ ActiveRecord::Schema.define(version: 20191205115333) do
     t.string   "current_lat",                        limit: 45
     t.string   "current_lng",                        limit: 45
     t.text     "route_lat_lng_json",                 limit: 4294967295
+    t.boolean  "panic_raised",                                                         default: false
+    t.string   "panic_status",                       limit: 45
+    t.string   "panic_remarks",                      limit: 200
     t.index ["driver_id"], name: "index_trips_on_driver_id", using: :btree
     t.index ["scheduled_date"], name: "index_trips_on_scheduled_date", using: :btree
     t.index ["site_id"], name: "index_trips_on_site_id", using: :btree
