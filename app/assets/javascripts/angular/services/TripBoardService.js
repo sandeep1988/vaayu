@@ -19,6 +19,18 @@ angular.module('app').factory('VehicleLocation', ['$resource','BASE_URL_8002',fu
   return $resource(BASE_URL_8002+'get-lat-lng-by-tripid/:id'); 
 }]);
 
+angular.module('app').factory('constraintService', function($resource,BASE_URL_8002){
+  var constraint = $resource(BASE_URL_8002+'constraint/deleteConstraint/:id', 
+  {id:'@id'},
+  { 
+      delete_constraint: {
+          method: 'DELETE'
+      }
+  }); 
+
+  return constraint;
+}); 
+
 
 angular.module('app').factory('TripboardResponse', function () {
   return {

@@ -341,6 +341,7 @@
                     <th>When</th>
                     <th>From Time</th>
                     <th>To Time</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody class="pop-table-body">
@@ -350,6 +351,11 @@
                     <td>{{item.when}}</td>
                     <td>{{item.from_time }}</td>
                     <td>{{item.to_time}}</td>
+                    <td>
+                       
+                                <button type="button" class="btn btn-danger main-submit-btn" style="margin-top: 5px;"
+                                    ng-click="deleteConstraint(item)">Delete</button>
+                    </td>
                 </tr>
             </tbody>
         </table>

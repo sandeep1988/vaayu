@@ -172,7 +172,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
   $scope.getCurrentVehicleLocation = () => {
 
-    if($scope.tripOngoing){
+ 
       VehicleLocation.get({ id: $scope.modelData.trip_id }, function(location) {
         if(location.success){
           var res=location.data.current_location;
@@ -188,7 +188,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
           ToasterService.showError('Error', location['message']);
         }
       });
-    }
+    
     
   } 
 

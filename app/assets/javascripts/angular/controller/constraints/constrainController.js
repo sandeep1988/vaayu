@@ -1,4 +1,4 @@
-app.controller('constraintController', function ($scope, $http, $state, SessionService, ToasterService, $timeout) {
+app.controller('constraintController', function ($scope, $http, $state, SessionService, ToasterService, $timeout,constraintService) {
 
   $scope.siteNames = [];
   $scope.siteID = null;
@@ -32,6 +32,7 @@ app.controller('constraintController', function ($scope, $http, $state, SessionS
   };
 
   $scope.fetchConstraintList = (id) => {
+    $scope.selectedSiteId=id;
     console.log(SessionService.uid);
     console.log(SessionService.access_token);
     console.log(SessionService.client);
@@ -129,5 +130,11 @@ app.controller('constraintController', function ($scope, $http, $state, SessionS
     moment(time)
   };
 
-
+  $scope.deleteConstraint =function(item){
+    console.log("constraint")
+    console.log(item);
+    var params = {id:item.id};
+    constraintService.delete_constraint(params);
+    $scope.fetchConstraintList($scope.selectedSiteId);
+  }
 });
