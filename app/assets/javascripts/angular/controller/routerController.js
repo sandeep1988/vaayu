@@ -756,6 +756,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.dropGuardCallback = function (container, index, item, external, type) {
     var isAssign = true;
+    $scope.saveRoutes();
     if (isAssign) {
       var postData = {
         "guardId": item.guardId,
@@ -764,6 +765,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
       RouteService.assignGuards(postData, function (data) {
         console.log("Guard Assign");
+       
         $scope.resetRoute();
       })
 

@@ -23,12 +23,15 @@ $(function () {
 
         resetBillingParameters()
         if (loadedTabs['sites']) {
+
+            console.log( current_user )
             if (current_user == 'Operator') {
                 $(".action-buttons")[0].style.display = "none"
             }
             else {
                 $(".action-buttons")[0].style.display = "block"
             }
+            $(".action-buttons")[0].style.display = "block"
             return;
         }
 
@@ -69,12 +72,14 @@ $(function () {
                     $('#sites-count').text("Total Sites: " + info.recordsTotal);
                     current_user = this.api().ajax.json().user.entity_type
                     if (current_user == 'Operator') {
-                        choose_operator = false
-                        $(".action-buttons")[0].style.display = "none"
+                        //choose_operator = false
+                        //$(".action-buttons")[0].style.display = "none"
                     }
                     else {
-                        $(".action-buttons")[0].style.display = "block"
+                        //$(".action-buttons")[0].style.display = "block"
                     }
+
+                    $(".action-buttons")[0].style.display = "block"
                 }
             });
         }
@@ -364,7 +369,7 @@ $(function () {
 
             var reg = new RegExp("^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}");
 
-            console.log( reg.exec( $("#latitude").val() ) );
+            // console.log( reg.exec( $("#latitude").val() ) );
 
             if ($("#latitude").val() == '' || $("#latitude").val() == undefined || $("#latitude").val() == null) {
                    
@@ -447,8 +452,8 @@ $(function () {
             $('input').removeAttr('disabled');
             $('.btn-primary').removeAttr('disabled');
             if (current_user == 'Operator') {
-                $(".provisioning .edit-buttons .submit-btn").fadeOut()
-                $(".provisioning .edit-buttons").fadeIn()
+                //$(".provisioning .edit-buttons .submit-btn").fadeOut()
+                //$(".provisioning .edit-buttons").fadeIn()
             }
 
             site_id = e.target.dataset.site_id
@@ -479,8 +484,8 @@ $(function () {
         });
         $(document).on('click', '#viewSite', function (e) {
             if (current_user == 'Operator') {
-                $(".provisioning .edit-buttons .submit-btn").fadeOut()
-                $(".provisioning .edit-buttons").fadeIn()
+                //$(".provisioning .edit-buttons .submit-btn").fadeOut()
+                //$(".provisioning .edit-buttons").fadeIn()
             }
 
             site_id = e.target.dataset.site_id
@@ -577,12 +582,13 @@ $(function () {
                     'contact_phone':$("#contact_phone").val()
                 }
                 console.log('site adding', site);
-                if (current_user == 'Operator') {
-                    site['logistics_company_id'] = $("#operator_id").val()
-                }
-                else {
-                    site['logistics_company_id'] = $("#operator").val()
-                }
+                // if (current_user == 'Operator') {
+                //     site['logistics_company_id'] = $("#operator_id").val()
+                // }
+                // else {
+                //     site['logistics_company_id'] = $("#operator").val()
+                // }
+                site['logistics_company_id'] = $("#operator").val();
                 var validationError = false
                 var services = getServiceData()
                 validationError = validateSite(site, validationError)
@@ -686,10 +692,10 @@ $(function () {
                             }));
                         }
                         if (current_user == 'Operator') {
-                            $("#cgst_1").parent().css("display", "block")
-                            $("#sgst_1").parent().css("display", "block")
-                            $("#addServicesDiv").css("display", "block")
-                            $("#services").css("display", "block")
+                            //$("#cgst_1").parent().css("display", "block")
+                            //$("#sgst_1").parent().css("display", "block")
+                            //$("#addServicesDiv").css("display", "block")
+                            //$("#services").css("display", "block")
                         }
                     }, 500);
                 });
@@ -715,10 +721,10 @@ $(function () {
                             }));
                         }
                         if (current_user == 'Operator') {
-                            $("#cgst_1").parent().css("display", "block")
-                            $("#sgst_1").parent().css("display", "block")
-                            $("#addServicesDiv").css("display", "block")
-                            $("#services").css("display", "block")
+                            //$("#cgst_1").parent().css("display", "block")
+                            //$("#sgst_1").parent().css("display", "block")
+                            //$("#addServicesDiv").css("display", "block")
+                            //$("#services").css("display", "block")
                         }
                     }, 500);
 
@@ -745,10 +751,10 @@ $(function () {
                             }));
                         }
                         if (current_user == 'Operator') {
-                            $("#cgst_1").parent().css("display", "block")
-                            $("#sgst_1").parent().css("display", "block")
-                            $("#addServicesDiv").css("display", "block")
-                            $("#services").css("display", "block")
+                            //$("#cgst_1").parent().css("display", "block")
+                            //$("#sgst_1").parent().css("display", "block")
+                            //$("#addServicesDiv").css("display", "block")
+                            //$("#services").css("display", "block")
                         }
 
                         setInputFilter(document.getElementById("phone_1"), function(value) {

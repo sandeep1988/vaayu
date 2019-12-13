@@ -8,11 +8,12 @@ $(function () {
      * Employee Companies Operator Table
      */
 
-     $("#modal-employee-company").modal('show',{
-       backdrop:'static',
-       keyboard:false,
-     })
-    $.fn.modal.prototype.constructor.Constructor.DEFAULTS.backdrop="static";
+
+    //  $("#modal-employee-company").modal('show',{
+    //    backdrop:'static',
+    //    keyboard:false,
+    //  })
+    // $.fn.modal.prototype.constructor.Constructor.DEFAULTS.backdrop="static";
 
     var table = '#employee-companies-table';
     /**
@@ -324,9 +325,9 @@ $(function () {
   
 
     $('a[href="#employee-company"]').on('shown.bs.tab', function () {
-        if (!loadedDatatables[table]) {
+        if ( !$.fn.dataTable.isDataTable( table ) ) {
             $(table).dataTable({
-                serverSide: true,
+               serverSide: true,
                 ajax: "/employee_companies",
                 order: [[0, 'desc']],
                 lengthChange: false,
@@ -508,3 +509,10 @@ $(function () {
             .remove($(this).closest('tr'));
     });
 });
+
+$(document).on("click",'a[data-target="#modal-employee-company"]',function(){
+
+
+  $(".modal.fade ").attr("id","test-new");
+});
+

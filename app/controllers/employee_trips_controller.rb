@@ -260,18 +260,17 @@ class EmployeeTripsController < TripValidationController
     return_data[:status] = 400 and raise RuntimeError unless params[:employee].present?
     return_data[:status] = 400 and raise RuntimeError if params[:employee][:check_in_attributes].blank? || params[:employee][:check_out_attributes].blank?
     EmployeeTrip.create_or_update(@employee, employee_trip_params)
-    (0..params[:employee][:check_in_attributes].count - 1).to_a.each do |check_in|
+    (0..params[:employee][:check_in_attributes].count - 1).to_a.each do  |check_in|
       start_time =  params[:employee][:check_in_attributes][check_in.to_s]["check_in"] if params[:employee][:check_in_attributes][check_in.to_s]["check_in"]
-
       site_id =  params[:employee][:check_in_attributes][check_in.to_s]["site_id"] if params[:employee][:check_in_attributes][check_in.to_s]["site_id"].present?
-
+      shift_id = params[:employee][:check_in_attributes][check_in.to_s]["shift_id"] if params[:employee][:check_in_attributes][check_in].to_s.present?
       date = params[:employee][:check_in_attributes][check_in.to_s]["date"] if params[:employee][:check_in_attributes][check_in.to_s]["date"].present?
       emp_trips = params[:employee][:check_in_attributes][check_in.to_s]["id"] if params[:employee][:check_in_attributes][check_in.to_s]["id"].present?
 
       (0..params[:employee][:check_out_attributes].count - 1).to_a.each do |check_out|
         end_time = params[:employee][:check_out_attributes][check_in.to_s]["check_out"] if params[:employee][:check_out_attributes][check_in.to_s]["check_out"].present?
         shift = Shift.where(start_time:start_time, site_id: site_id.to_i, end_time: end_time ).first
-        @employee.employee_trips.where(id: [emp_trips]).update(shift_id: shift.id) if shift.present?
+        @employee.employee_trips.where(id: [emp_trips]).update(shift_id: params[:employee][:check_in_attributes][check_in.to_s]["shift_id"]) if shift.present?
         end
     end
     # Update Status
