@@ -14,14 +14,14 @@
         = f.input :phone, as: :tel, label: 'Phone', required: true, wrapper_html: { class: 'search-match' }, input_html: { data: { "match-user" => "phone" } }
       .col-md-4
         = f.simple_fields_for :entity_attributes, @employee.entity do |ui|
-          = ui.association :employee_company, label: 'Company', prompt: false, required: true, prompt: "Choose a Company"
+          = ui.association :employee_company, label: 'Company', required: true, prompt: "Choose a Company"
       - if @is_guard
         .col-md-4
           = f.input :shift_ids, collection: Shift.active.map { |x| [x.name, x.id] }, input_html: { multiple: true, class: "multiple-select-ui" }, wrapper_html: { class: "provisioning-multiselect" }
     - unless @is_guard
       .row
         .col-md-4
-          = f.input :shift_ids,required:true,collection: Shift.active.map { |x| [x.name, x.id] }, input_html: { multiple: true, class: "multiple-select-ui" }, wrapper_html: { class: "provisioning-multiselect new_over_fl" }
+          = f.input :shift_ids, collection: Shift.active.map { |x| [x.name, x.id] }, input_html: { multiple: true, class: "multiple-select-ui" }, wrapper_html: { class: "provisioning-multiselect" }
         .col-md-4
           = f.input :process_code, label: 'Process Code'
         .col-md-4
@@ -43,9 +43,9 @@
         .col-md-4
           - if @is_guard
             = ui.input :gender, as: 'hidden', input_html: { value: 'male' }
-            = ui.association :site, label: 'Site', wrapper_html: { class: 'site' }, prompt: false, required: true, prompt: "Choose Site"
+            = ui.association :site, label: 'Site', wrapper_html: { class: 'site' }, required: true, prompt: "Choose Site"
           -else
-            = ui.input :gender, required: true, label: 'Gender', prompt: false, collection: [['Male', 1], ['Female', 0]], prompt: "Choose Gender"
+            = ui.input :gender, required: true, label: 'Gender', collection: [['Male', 1], ['Female', 0]], prompt: "Choose Gender"
       - unless @is_guard
         .row
           .col-md-8.col-md-offset-4
@@ -75,7 +75,7 @@
           .col-md-4.col-md-offset-4
             = ui.association :site, label: 'Site', wrapper_html: { class: 'site' }, prompt: false, required: true, prompt: "Choose Site"
           .col-md-4
-            = ui.input :billing_zone, required: false, label: 'Billing Zone', prompt: false, collection: @billing_zones, prompt: "Choose Billing Zone"
+            = ui.input :billing_zone, required: false, label: 'Billing Zone', collection: @billing_zones, prompt: "Choose Billing Zone"
       .row[style="margin-bottom:0px"]
         .col-md-6.col-md-offset-4.employee-home-address
           .input-group
@@ -108,7 +108,7 @@
           .col-xs-4.col-md-4.col-md-offset-4
             = ui.input :bus_travel, input_html: {class: "bus_travel"}
           .col-md-4
-            = ui.association :bus_trip_route, label: 'Bus Stop', prompt: false, required: false, prompt: "Choose Bus Stop"
+            = ui.association :bus_trip_route, label: 'Bus Stop', required: false, prompt: "Choose Bus Stop"
 
       ul.match-result style=("display: none;")
 
