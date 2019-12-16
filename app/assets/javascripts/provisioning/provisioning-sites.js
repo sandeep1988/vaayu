@@ -516,7 +516,7 @@ $(function () {
                         $('.btn-primary').attr('disabled', 'disabled');
                         $('#company').attr('disabled', 'disabled');
 
-                        $('select').attr('disabled', 'disabled');
+                        $('#sites select').attr('disabled', 'disabled');
                     }
                 })
             });
