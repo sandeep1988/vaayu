@@ -96,10 +96,11 @@ class API::V2::DriversController < ApplicationController
   # PATCH/PUT /api/v2/drivers/1
   # PATCH/PUT /api/v2/drivers/1.json
   def update
+    @driver = Driver.find(params[:id]) if params[:id].present?
     if @driver.update(driver_params)
       render json: {success: true , message: "UPDATE SUCCESS", data: { driver: @driver} },status: :ok
     else
-      render json: {success: false , message: "UPDATE FAIL", data: @driver.errors.split(",")},status: :ok
+      render json: {success: false , message: "UPDATE FAIL", errors: { errors: @driver.errors.full_messages } } , status: :ok 
     end
   end
 
