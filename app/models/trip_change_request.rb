@@ -77,7 +77,7 @@ class TripChangeRequest < ApplicationRecord
       when :new_trip
         if self.shift
           #Employee has requested for a new shift time so add schedule date here
-          self.create_employee_trip!( date: new_date, trip_type: trip_type, employee: employee, bus_rider: employee.bus_travel, schedule_date: Time.zone.parse("#{self.schedule_date} 10:00:00"))
+          self.create_employee_trip!( date: new_date, trip_type: trip_type, employee: employee, bus_rider: employee.bus_travel, schedule_date: Time.zone.parse("#{self.schedule_date} 10:00:00"), shift_id: shift_id )
         else          
           self.create_employee_trip!( date: new_date, trip_type: trip_type, employee: employee, bus_rider: employee.bus_travel)
         end

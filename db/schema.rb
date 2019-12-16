@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191213084509) do
+ActiveRecord::Schema.define(version: 20191216154017) do
 
   create_table "Induction_logs_WIP", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.integer  "resource_id",                    null: false
@@ -628,6 +628,14 @@ ActiveRecord::Schema.define(version: 20191213084509) do
     t.index ["employee_id"], name: "index_employee_schedules_on_employee_id", using: :btree
   end
 
+  create_table "employee_shifts_cutoff", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string "working_day", limit: 7
+    t.string "shift_type",  limit: 7
+    t.string "cutoff_time", limit: 45
+    t.string "status",      limit: 45, default: "active"
+    t.string "created_at",  limit: 45
+  end
+
   create_table "employee_trip_issues", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "issue"
     t.integer "employee_trip_id"
@@ -1208,6 +1216,7 @@ ActiveRecord::Schema.define(version: 20191213084509) do
     t.boolean  "shift",                          default: false
     t.boolean  "bus_rider",                      default: false
     t.text     "schedule_date",    limit: 65535
+    t.integer  "shift_id"
     t.index ["employee_id"], name: "index_trip_change_requests_on_employee_id", using: :btree
     t.index ["employee_trip_id"], name: "index_trip_change_requests_on_employee_trip_id", using: :btree
   end

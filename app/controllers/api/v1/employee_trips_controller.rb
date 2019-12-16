@@ -97,7 +97,7 @@ module API::V1
           reason: params[:reason],
           request_type: :change,
           employee: @employee,
-          bus_rider: @employee.bus_travel
+          bus_rider: @employee.bus_travel,
       )
 
       @trip_change_request.new_date = Time.at(params[:new_date].to_i) if params[:new_date].present?
@@ -156,13 +156,33 @@ module API::V1
       if params[:shift] == true
         shift = true
       end
+
+      if params[:trip_type] == "check_out"
+        e_t= Time.at(params[:new_date].to_i) if params[:new_date].present?
+        end_time = e_t.strftime("%H:%M")
+        if @employee.shifts.where(end_time: end_time).first.present?
+          shift_selected_id = @employee.shifts.where(end_time: end_time).first.id if end_time.present?
+        else 
+          shift_selected_id = nil  
+        end  
+      elsif params[:trip_type] == "check_in"
+        s_t = Time.at(params[:new_date].to_i) if params[:new_date].present?
+        start_time = s_t.strftime("%H:%M")
+        if @employee.shifts.where(start_time: start_time).first.present?
+          shift_selected_id = @employee.shifts.where(start_time: start_time).first.id if start_time.present?
+        else
+          shift_selected_id = nil
+        end  
+      end
+
       @trip_change_request = TripChangeRequest.new(
           trip_type: params[:trip_type],
           request_type: :new_trip,
           employee: @employee,
           bus_rider: @employee.bus_travel,
           schedule_date: params[:schedule_date],
-          shift: true
+          shift: true,
+          shift_id: shift_selected_id
       )
 
       @trip_change_request.new_date = Time.at(params[:new_date].to_i) if params[:new_date].present?
