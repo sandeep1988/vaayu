@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-controller='contractListAddCtrl'>
+<div class="container-fluid" ng-controller='contractListAddCtrl' ng-click="containerClicked">
     <div class="">
         <h2 class="main-title">Create Contract</h2>
         <link rel="stylesheet"
@@ -8,7 +8,6 @@
 
             <div class="col-md-6">
                 <div class="form-group" ng-show="tab === 'CUSTOMER'">
-                    
                     <label for="usr" class="leb_color">Site Name <span class="required">*</span></label>
                     <!-- <input type="text" class="form-control" id="usr"> -->
                     <select class="custom-select form-control" ng-model="selectedSiteId" ng-change="getContracts()"
@@ -90,7 +89,7 @@
 
         </ul>
         <div class="tab-content">
-            <toaster-container></toaster-container>
+            <toaster-container ng-show="myValue"></toaster-container>
             <div id="CUSTOMER" class="tab-pane fade  " ng-class="{'in active show':isSet('CUSTOMER')}">
                 <div class="tab-content-area ">
                     <div class="card-header cut_title">
