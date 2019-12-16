@@ -63,11 +63,12 @@ app.controller('createGuard', function ($scope, $http, SessionService, ToasterSe
           }
         })
           .then(function (res) {
-            console.log(JSON.stringify(res));
-            if (res.data['success']) {
+            console.log('response: ', JSON.stringify(res));
+            if (res.data['success'] && res.data['message'] === 'Constraint added successfully') {
               ToasterService.showSuccess('Success', 'Constraint added successfully');
               $scope.$parent.fetchConstraintList($scope.$parent.siteID);
             } else {
+              console.log('in else JSON')
               ToasterService.showError('Error', res.data['message']); 
             }
           }).catch(err => {

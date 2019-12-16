@@ -758,8 +758,42 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     var isAssign = true;
     $scope.saveRoutes();
     if (isAssign) {
+
+      var changedRoutes = [];
+
+      angular.forEach($scope.routes.data.routes, function (route) {
+        angular.forEach($scope.routeChangedIds, function (routeId) {
+          if (route.routeId === routeId) {
+            changedRoutes.push(route);
+          }
+        })
+      })
+   
+  
+      var finalChangedRoutes = [];
+      angular.forEach(changedRoutes, function (route) {
+       
+        if(route.guard_required){
+          route.guard_required="Y";
+       }else{
+         route.guard_required="N";
+       }
+        var employee_nodes = [];
+        angular.forEach(route.employees, function (emp) {
+          employee_nodes.push(emp.empId);
+        })
+        var data = {
+          "route_id": route.routeId,
+          "vehicle_category": route.vehicle_type,
+          "employee_nodes": employee_nodes,
+          "guard_required":route.guard_required
+        }
+        finalChangedRoutes.push(data);
+      })
+
       var postData = {
         "guardId": item.guardId,
+        "updated_routes": finalChangedRoutes,
         "routeId": container.routeId
       };
 

@@ -3,6 +3,9 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     this.$onInit = function () {
         console.log('onit - contractListAddCtrl');
         $scope.totalSelectedUIDs = "Select UIDs";
+        $scope.myValue = false;
+
+        ToasterService.clearToast();
         // $scope.showCheckboxes();
 
         $scope.fetchSiteList();
@@ -195,7 +198,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
                 }
 
             }).catch(err => {
-                ToasterService.showError('Error', 'Something went wrong, Try again later.');
+                // ToasterService.showError('Error', 'Something went wrong, Try again later.');
                 console.log(err)
             });
 
@@ -244,21 +247,33 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     
     $scope.isValid = () => {
         if ($scope.selectedUIDs.length == 0) {
+            $scope.myValue = true;
+            ToasterService.clearToast();
             ToasterService.showError('Error', 'Select one or more UDID\'s');
             return false;
         } else if (!$scope.selectedSiteId && $scope.tab == 'CUSTOMER') {
+            $scope.myValue = true;
+            ToasterService.clearToast();
             ToasterService.showError('Error', 'Select Site');
             return false;
         } else if (!$scope.baID && $scope.tab == 'BA') {
+            $scope.myValue = true;
+            ToasterService.clearToast();
             ToasterService.showError('Error', 'Select BA');
             return false;
         } else if (!$scope.bcycle) {
+            $scope.myValue = true;
+            ToasterService.clearToast();
             ToasterService.showError('Error', 'Select Billing Cycle.');
             return false;
         } else if (!$scope.ctype) {
+            $scope.myValue = true;
+            ToasterService.clearToast();
             ToasterService.showError('Error', 'Select Contract Type.');
             return false;
         } else if (!$scope.fileObject) {
+            $scope.myValue = true;
+            ToasterService.clearToast();
             ToasterService.showError('Error', 'Upload contract in csv');
             return false;
         }
@@ -266,6 +281,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     }
 
     $scope.createContract = function () {
+        
         // var file=$scope.myFile;
         if (!$scope.isValid()) {
             return;
@@ -298,6 +314,8 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
                     // console.log(request.response);
                     vm.submitResponse = JSON.parse(request.response);   
                     if (vm.submitResponse['success']) {
+                        $scope.myValue = true;
+            ToasterService.clearToast();
                         ToasterService.showSuccess('Success', 'Contract created successfully.');
                         console.log('Contract created successfully.');
                         $scope.getContracts();
@@ -318,14 +336,20 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
                                     msg +=  keyTemp+' must be '+obj[key] + "\n";
                                 }
                             }
+                            $scope.myValue = true;
+            ToasterService.clearToast();
                             ToasterService.showError_html('Error', msg.replace(/(\r\n|\n|\r)/gm, "<br>"));   
                         } else {
+                            $scope.myValue = true;
+            ToasterService.clearToast();
                             ToasterService.showError_html('Error', vm.submitResponse['message']);   
                         }
                     }                
                     
                 }
             } else {
+                $scope.myValue = true;
+            ToasterService.clearToast();
                 ToasterService.showError('Error', 'Something went wrong, Try again later.');
             }
         };
@@ -430,9 +454,13 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         var id = $scope.selectedSiteId
         var type = 'SITE'
         if (!$scope.selectedSiteId && $scope.tab === 'CUSTOMER') {
+            $scope.myValue = true;
+            ToasterService.clearToast();
             ToasterService.showError('Error', 'Please select SITE name');
             return;
         } else if (!$scope.baID && $scope.tab === 'BA') {
+            $scope.myValue = true;
+            ToasterService.clearToast();
             ToasterService.showError('Error', 'Please select BA name');
             id = $scope.baID
             type = 'BA'
@@ -483,6 +511,8 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
                 }
 
             }).catch(err => {
+                $scope.myValue = true;
+            ToasterService.clearToast();
                 ToasterService.showError('Error', 'Something went wrong, Try again later.');
                 console.log(err)
             });
