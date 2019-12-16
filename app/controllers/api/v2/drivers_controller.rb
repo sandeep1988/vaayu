@@ -269,7 +269,7 @@ class API::V2::DriversController < ApplicationController
   def upload_driving_license_doc(driver)
     if driver.driving_license_doc.url.present?
       driver.update(driving_license_doc_url: driver.driving_license_doc.url.gsub("//",''))
-      DocumentRenewalRequest.create(status: "New", resource_id: driver.id, document_id: "2", document_url: "#{driver.driving_license_doc.url.gsub("//",'')}", expiry_date: driver.licence_validity , created_by: 0, resource_type: "Driver" ) if driver.licence_validity.present?
+      DocumentRenewalRequest.create(status: "New", resource_id: driver.id, document_id: "2", document_url: "#{driver.driving_license_doc.url.gsub("//",'')}", expiry_date: driver.licence_validity , created_by: 0, resource_type: "Driver" ) 
     end
   end
 
@@ -300,18 +300,21 @@ class API::V2::DriversController < ApplicationController
   def upload_police_verification_vailidty_doc(driver)
     if driver.police_verification_vailidty_doc.url.present?
       driver.update(police_verification_vailidty_doc_url: driver.police_verification_vailidty_doc.url.gsub("//",''))
+      DocumentRenewalRequest.create(status: "New", resource_id: driver.id, document_id: "3", document_url: "#{driver.police_verification_vailidty_doc.url.gsub("//",'')}", expiry_date: driver.police_verification_vailidty , created_by: 0, resource_type: "Driver" )
     end
   end
 
   def upload_medically_certified_doc(driver)
     if driver.medically_certified_doc.url.present?
       driver.update(medically_certified_doc_url: driver.medically_certified_doc.url.gsub("//",''))
+      DocumentRenewalRequest.create(status: "New", resource_id: driver.id, document_id: "4", document_url: "#{driver.medically_certified_doc.url.gsub("//",'')}", expiry_date: driver.medically_certified_date , created_by: 0, resource_type: "Driver" )
     end
   end
 
   def upload_bgc_doc(driver)
     if driver.bgc_doc.url.present?
       driver.update(bgc_doc_url: driver.bgc_doc.url.gsub("//",''))
+      DocumentRenewalRequest.create(status: "New", resource_id: driver.id, document_id: "9", document_url: "#{driver.bgc_doc.url.gsub("//",'')}", expiry_date: driver.bgc_date , created_by: 0, resource_type: "Driver" ) #if driver.bgc_date.present?
     end
   end
 
