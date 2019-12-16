@@ -1,6 +1,7 @@
 app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionService, ToasterService, $timeout) {
 
     this.$onInit = function () {
+        ToasterService.hideToast();
         console.log('onit - contractListAddCtrl');
         $scope.totalSelectedUIDs = "Select UIDs";
         // $scope.showCheckboxes();
@@ -195,7 +196,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
                 }
 
             }).catch(err => {
-                ToasterService.showError('Error', 'Something went wrong, Try again later.');
+                // ToasterService.showError('Error', 'Something went wrong, Try again later.');
                 console.log(err)
             });
 
@@ -266,6 +267,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     }
 
     $scope.createContract = function () {
+        
         // var file=$scope.myFile;
         if (!$scope.isValid()) {
             return;

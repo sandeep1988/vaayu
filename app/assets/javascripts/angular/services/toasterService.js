@@ -10,6 +10,9 @@ angular.module('app').factory('ToasterService', (toaster) => {
             console.log('ToasterService');
             toaster.pop({type, title, body, timeout:2000});
         },
+        hideToast: ()=>{
+            toaster.clear();
+        },
         showSuccess: (title, body) => {
             console.log('ToasterService');
             toaster.pop({ type: 'success', title, body, timeout: 2000 });
