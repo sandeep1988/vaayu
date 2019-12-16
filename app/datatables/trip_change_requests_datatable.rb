@@ -52,7 +52,8 @@ class TripChangeRequestsDatatable
     end
 
     if @query_type == 'all'
-      new_trip_request_created = TripChangeRequest.joins(:employee => [:zone, :user])
+      #### remove zone for user "TripChangeRequest.joins(:employee => [:zone, :user])"
+      new_trip_request_created = TripChangeRequest.joins(:employee => [ :user])
           .includes(:employee => [:zone, :site, :user])
           .where(name_query)
           .where(line_manager_query)
@@ -60,8 +61,8 @@ class TripChangeRequestsDatatable
           .where(:request_state => 'created')
           .where(:new_date => filter_params['startDate']..filter_params['endDate'])
           .where(:trip_type => filter_params['trip_type']).order('created_at DESC')
-
-      change_trip_request_created = TripChangeRequest.joins(:employee_trip, :employee => [:zone, :user])
+      #### remove zone for user "TripChangeRequest.joins(:employee_trip, :employee => [:zone, :user])"
+      change_trip_request_created = TripChangeRequest.joins(:employee_trip, :employee => [ :user])
           .includes(:employee => [:zone, :site, :user])
           .where(name_query)
           .where(line_manager_query)
@@ -69,8 +70,8 @@ class TripChangeRequestsDatatable
           .where(:request_state => 'created')
           .where(:new_date => filter_params['startDate']..filter_params['endDate'])
           .where('employee_trips.trip_type' => filter_params['trip_type']).order('created_at DESC')
-
-      cancel_trip_request_created = TripChangeRequest.joins(:employee_trip, :employee => [:zone, :user])
+      #### remove zone for user "TripChangeRequest.joins(:employee_trip, :employee => [:zone, :user]) "
+      cancel_trip_request_created = TripChangeRequest.joins(:employee_trip, :employee => [ :user])
           .includes(:employee => [:zone, :site, :user])
           .where(name_query)
           .where(line_manager_query)
