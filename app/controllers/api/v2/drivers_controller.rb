@@ -77,6 +77,7 @@ class API::V2::DriversController < ApplicationController
             upload_bgc_doc(@driver) if @driver.present?
             upload_medically_certified_doc(@driver) if @driver.present?
             upload_other_docs_url(@driver) if @driver.present?
+            @driver.update(other_docs_url: nil) if @driver.other_doc.blank? 
             @driver.update(induction_status: "Registered")
             @driver.update(compliance_status: "Ready For Allocation")
             @driver.update(date_of_registration: Time.now )
@@ -320,7 +321,11 @@ class API::V2::DriversController < ApplicationController
 
   def upload_other_docs_url(driver)
     if driver.other_doc.url.present?
-      driver.update(other_docs_url: driver.other_doc.url.gsub("//",''))
+      if driver.other_doc.present? 
+        driver.update(other_docs_url: driver.other_doc.url.gsub("//",''))
+      else
+       driver.update(other_docs_url: nil)
+     end
     end
   end
 
