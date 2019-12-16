@@ -41,10 +41,11 @@ class API::V2::VehiclesController < ApplicationController
   # PATCH/PUT /api/v2/vehicles/1
   # PATCH/PUT /api/v2/vehicles/1.json
   def update
+    @vehicle = Vehicle.find(params[:id]) if params[:id].present?
    if @vehicle.update(vehicle_params)
       render json: {success: true , message: "UPDATE SUCCESS", data: { vehicle: @vehicle } , errors: {} },status: :ok
     else
-      render json: {success: false , message: "UPDATE FAIL", data: {}, errors: @vehicle.errors.full_messages  },status: :ok
+      render json: {success: false , message: "UPDATE FAIL", errors: { errors: @vehicle.errors.full_messages } } , status: :ok 
     end
   end
 
