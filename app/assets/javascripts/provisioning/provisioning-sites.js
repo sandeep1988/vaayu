@@ -57,7 +57,6 @@ $(function () {
                     },
                     { data: "company" },
                     { data: "address" },
-                    { data: "phone" },
                     {
                         data: null,
                         render: function (data) {
