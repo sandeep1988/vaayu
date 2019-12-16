@@ -97,7 +97,7 @@ module API::V1
           reason: params[:reason],
           request_type: :change,
           employee: @employee,
-          bus_rider: @employee.bus_travel,
+          bus_rider: @employee.bus_travel
       )
 
       @trip_change_request.new_date = Time.at(params[:new_date].to_i) if params[:new_date].present?
