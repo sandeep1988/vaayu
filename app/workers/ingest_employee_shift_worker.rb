@@ -67,9 +67,9 @@ class IngestEmployeeShiftWorker < IngestWorker
     check_in, check_out = row[index], row[index+1]
     shift_provisioned = false
     # consume schedule_date and apply weekday and weekend.
-    shift = employee.shifts.find_by(start_time: check_in, end_time: check_out)
+    shift = employee.shifts.find_by(start_time: check_in, end_time: check_out, site_id: employee.site_id)
     if shift.nil?
-      shift = Shift.find_by(start_time: check_in, end_time: check_out)
+      shift = Shift.find_by(start_time: check_in, end_time: check_out, site_id: employee.site_id)
       if shift.nil?
         if [1,2,3,4,5].include?(schedule_date.wday)
           work_day = "Weekday"
@@ -97,12 +97,12 @@ class IngestEmployeeShiftWorker < IngestWorker
 
   def get_check_in_shift(employee, row,index)
     check_in = row[index]
-    Shift.find_by(start_time: check_in)
+    Shift.find_by(start_time: check_in, end_time: check_out, site_id: employee.site_id)
   end
 
   def get_check_out_shift(employee, row,index)
     check_out = row[index+1]
-    Shift.find_by(end_time: check_out)
+    Shift.find_by(end_time: check_out, start_time: check_in, site_id: employee.site_id)
   end  
 
   def provision_employee_trips(employee, shift, row, index, date)
