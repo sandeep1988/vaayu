@@ -57,22 +57,31 @@ class IngestEmployeeShiftWorker < IngestWorker
       process_code: row['process_code'],
       site: Site.where(name:row["site"]).first,
       zone: Zone.where(name:row["zone"]).first,
-      employee_company: EmployeeCompany.where(name:row["employee_company"]).first,
+      employee_company: EmployeeCompany.where(name: row["employee_company"]).first,
       allow_update: true
     )
     employee
   end
 
-  def provision_shift(employee, row, index)
+  def provision_shift(employee, row, index, schedule_date)
     check_in, check_out = row[index], row[index+1]
     shift_provisioned = false
+    # consume schedule_date and apply weekday and weekend.
     shift = employee.shifts.find_by(start_time: check_in, end_time: check_out)
     if shift.nil?
       shift = Shift.find_by(start_time: check_in, end_time: check_out)
       if shift.nil?
-        shift = Shift.create!(name: "#{check_in} - #{check_out}",
+        if [1,2,3,4,5].include?(schedule_date.wday)
+          work_day = "Weekday"
+        else
+          work_day = "Weekend"
+        end    
+        shift = Shift.create!(name: "#{check_in} - #{check_out} - #{work_day}",
                               start_time: check_in,
-                              end_time: check_out)
+                              end_time: check_out,
+                              working_day: work_day,
+                              site_id: employee.site_id,
+                              adhoc_shift: 0)
         shift.activate!
         shift_provisioned = true
       end
@@ -104,13 +113,15 @@ class IngestEmployeeShiftWorker < IngestWorker
       schedule_date: schedule_date,
       date: check_in_date,
       trip_type: 'check_in',
-      site: Site.last
+      site_id: employee.site_id,
+      shift_id: shift.id
     ).first_or_create!
     employee.employee_trips.where(
       schedule_date: schedule_date,
       date: check_out_date,
       trip_type: 'check_out',
-      site: Site.last
+      site: employee.site_id,
+      shift_id: shift.id
     ).first_or_create!
   end
 
@@ -118,12 +129,12 @@ class IngestEmployeeShiftWorker < IngestWorker
     check_in_date = Time.zone.parse("#{date} #{row[index]}")
     schedule_date = Time.zone.parse("#{date} 10:00:00")
 
-    site_id = Site.where(name:row[10]).first.id
       employee.employee_trips.where(
         schedule_date: schedule_date,
         date: check_in_date,
         trip_type: 'check_in',
-        site_id: site_id,
+        site_id: employee.site_id,
+        shift_id: shift.id,
       ).first_or_create!
   end
 
@@ -139,7 +150,8 @@ class IngestEmployeeShiftWorker < IngestWorker
         schedule_date: schedule_date,
         date: check_out_date,
         trip_type: 'check_out', 
-        site_id: Site.where(name:row[10]).first.id,
+        site_id: employee.site_id,
+        shift_id: shift.id
       ).first_or_create!  
   end
 
@@ -147,6 +159,7 @@ class IngestEmployeeShiftWorker < IngestWorker
     # column index where check_in/check_out times start
     start_index = headers.index('login')
     start_index.step(row.size-1, 2).each do |index|
+
       date = get_trip_date(date_header[index])
       schedule_date = Time.zone.parse("#{date} 10:00:00")
       # Clear trips for this employee for thie schedule date
@@ -155,7 +168,7 @@ class IngestEmployeeShiftWorker < IngestWorker
       next if row[index].blank? && row[index+1].blank?
       #Provision new shift if possible
       if row[index].present? && row[index+1].present?
-        shift = provision_shift(employee, row, index)        
+        shift = provision_shift(employee, row, index, schedule_date)        
       end
 
       if row[index].present?
