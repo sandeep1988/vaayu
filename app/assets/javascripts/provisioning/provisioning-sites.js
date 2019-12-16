@@ -512,7 +512,7 @@ $(function () {
                         $("#sgst_1").parent().css("display", "none")
                         $("#addServicesDiv").css("display", "none")
                         $("#services").css("display", "none")
-                        $('input').attr('disabled', 'disabled');
+                        $('#sites input').attr('disabled', 'disabled');
                         $('.btn-primary').attr('disabled', 'disabled');
                         $('#company').attr('disabled', 'disabled');
 
