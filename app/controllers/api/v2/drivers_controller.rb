@@ -240,8 +240,8 @@ class API::V2::DriversController < ApplicationController
     def validate_licence_number
       if params[:licence_number].present?
         result = Driver.pluck(:licence_number).include? params[:licence_number]
-        render json: {success: true , message: "license number should not be duplicate", data: { licence_number: params[:licence_number] }  , errors: {} }, status: :not_found if result
-        render json: { success: false , message: "License number is unique", data: { licence_number: params[:licence_number] }, errors: {} }, status: :ok if result == false
+        render json: {success: false , message: "license number should not be duplicate", data: { licence_number: params[:licence_number] }  , errors: {} }, status: :not_found if result
+        render json: { success: true , message: "License number is unique", data: { licence_number: params[:licence_number] }, errors: {} }, status: :ok if result == false
       end
     end
 
