@@ -208,6 +208,18 @@ class API::V2::DriversController < ApplicationController
       end
     end
 
+    def driver_profile_picture
+      @driver = Driver.find_by(params[:id]) if params[:id].present?
+      if params[:profile_picture].present?
+        @driver.profile_picture  = params[:profile_picture] 
+        if @driver.update(profile_picture_url: @driver.profile_picture.url.gsub("//",''))
+          render json: {success: true , message: "UPDATE SUCCESS", data: { driver: @driver } },status: :ok
+        else
+          render json: {success: false , message: "UPDATE FAIL", errors: { errors: @driver.errors.full_messages } } , status: :ok 
+        end
+      end
+    end
+
     def validate_licence_number
       if params[:licence_number].present?
         result = Driver.pluck(:licence_number).include? params[:licence_number]
