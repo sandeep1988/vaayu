@@ -111,6 +111,23 @@ class API::V2::DriversController < ApplicationController
     render json: {success: true , message: "Deleted driver", data: { driver: @driver } },status: :ok
   end
 
+  def off_duty_web
+      @driver = Driver.find(params[:id])
+      # if !is_from_sms?
+      #   authorize! :edit, @driver
+      # end
+      if @driver.has_active_trip
+        @error = "Driver has a active trip"
+        render json: {success: false, message: "Driver has a active trip"}
+        # render '_active_trip', status: 424
+      else
+        unless @driver.go_off_duty!
+          render json: {success: true, message: "Unpaired successfully"}
+          # render '_errors', status: 422
+        end
+      end
+    end
+
     api :POST, '/drivers/:id/update_current_location'
     description 'Update the current location for on duty driver and send a push to all employees on that trip for real time update'
     param :id, :number, required: true

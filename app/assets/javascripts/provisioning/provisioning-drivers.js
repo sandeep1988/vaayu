@@ -441,25 +441,30 @@ $(function () {
 
 function updateDriverPaired( driverId , isDriverPaired ){
 
-    let pairedUrl = "/api/v1/drivers/"+driverId+"/off_duty";
+    let pairedUrl = "/api/v2/drivers/"+driverId+"/off_duty_web";
 
     if( isDriverPaired == 1 ){
-        pairedUrl = "/api/v1/drivers/"+driverId+"/on_duty";
 
-        $.ajax({
-          type: "POST",
-          url: pairedUrl,
-          data: {},
-          headers: {
-                "access_token": 'Lv-ew8BhWt-IpeHnaDmAPQ',   //If your header name has spaces or any other char not appropriate
-                "client": 'WAN2a7tMxvEKOgFAUB2lpA',
-                "uid":"deekshithmech@gmail.com"  //for object property name, use quoted notation shown in second
-            },
-          success: function(_response ){
-            table.ajax.reload();
-          }
+        alert("Driver pairing not allowed.");
+        // pairedUrl = "/api/v1/drivers/"+driverId+"/on_duty";
+
+        //alert( );
+        // $.ajax({
+        //   type: "POST",
+        //   url: pairedUrl,
+        //   data: {},
+        //   // headers: {
+        //   //       "access_token": 'Lv-ew8BhWt-IpeHnaDmAPQ',   //If your header name has spaces or any other char not appropriate
+        //   //       "client": 'WAN2a7tMxvEKOgFAUB2lpA',
+        //   //       "uid":"deekshithmech@gmail.com"  //for object property name, use quoted notation shown in second
+        //   //   },
+        //   success: function(response ){
+
+            
+
+        //   }
         
-        });
+        // });
 
     }else{
 
@@ -468,12 +473,14 @@ function updateDriverPaired( driverId , isDriverPaired ){
           type: "GET",
           url: pairedUrl,
           data: {},
-          headers: {
-                "access_token": 'Lv-ew8BhWt-IpeHnaDmAPQ',   //If your header name has spaces or any other char not appropriate
-                "client": 'WAN2a7tMxvEKOgFAUB2lpA',
-                "uid":"deekshithmech@gmail.com"  //for object property name, use quoted notation shown in second
-            },
-          success: function(_response ){
+          // headers: {
+          //       "access_token": 'Lv-ew8BhWt-IpeHnaDmAPQ',   //If your header name has spaces or any other char not appropriate
+          //       "client": 'WAN2a7tMxvEKOgFAUB2lpA',
+          //       "uid":"deekshithmech@gmail.com"  //for object property name, use quoted notation shown in second
+          //   },
+          success: function(response ){
+            alert( response.message );
+            var table = $('#drivers-table').DataTable();
             table.ajax.reload();
           }
         
