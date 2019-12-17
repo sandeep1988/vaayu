@@ -16,7 +16,7 @@ angular.module('app').factory('ToasterService', (toaster) => {
             toaster.pop();
         },
         clearToast: () => {
-            toaster.clear(this.hideToast)
+            toaster.clear(this.hideToast, this.showError, this.showSuccess)
         },
         showToast: (type, title, body) => {
             console.log('ToasterService');

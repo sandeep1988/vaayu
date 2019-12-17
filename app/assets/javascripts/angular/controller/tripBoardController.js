@@ -16,6 +16,9 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   
 
   $scope.init = function () {
+    $scope.toggleView = false;
+    
+    ToasterService.clearToast();
     $scope.today();
     // date picket
     $scope.toggleMin();
@@ -171,6 +174,11 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
    }
 
   $scope.getCurrentVehicleLocation = () => {
+    
+      $scope.toggleView = false;
+      
+      ToasterService.clearToast();
+    
 
  
       VehicleLocation.get({ id: $scope.modelData.trip_id }, function(location) {
@@ -185,6 +193,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
          $scope.tripOngoing=true;
         }else{
           $scope.tripOngoing=false;
+          $scope.toggleView = true;
           ToasterService.showError('Error', location['message']);
         }
       });
@@ -247,6 +256,10 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   }
 
   $scope.addRemarkInTripForDriverPanic = (trip) => {
+
+    $scope.toggleView = false;
+    
+    ToasterService.clearToast();
     var params={
       "trip_id":trip.trip_id,
       "remarks":trip.comment,
@@ -255,8 +268,10 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     TripboardService.addRemarkInTripForDriverPanic(params, (data) => {
       console.log('addRemarkInTripForDriverPanic res', data)
       if (!data['success']) {
+        $scope.toggleView = true;
         ToasterService.showError('Error', data['message']);
       } else {
+        $scope.toggleView = true;
         ToasterService.showSuccess('Success', data['message']);
         trip.trip_is_panic = data.data.is_trip_panic;
         trip.trip_driver_is_panic = false;
@@ -278,8 +293,10 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     TripboardService.savePanicResponse(postdata, (data) => {
       console.log('employeePanicComment res', data)
       if (!data['success']) {
+        $scope.toggleView = true;
         ToasterService.showError('Error', data['message']);
       }else{
+        $scope.toggleView = true;
         ToasterService.showSuccess('Success',data['message']);
         trip.trip_is_panic = data.data.is_trip_panic;
         item.is_panic = false;
@@ -291,6 +308,10 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   }
 
   $scope.panicCallSesion = function(id,type){
+
+    $scope.toggleView = false;
+    
+    ToasterService.clearToast();
     var postdata={
       "toId":id,
       "callToType":type,
@@ -300,18 +321,25 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     TripboardService.callOperator(postdata, (data) => {
      
       if (data['success']) {
+        $scope.toggleView = true;
         ToasterService.showSuccess('Success', data['message']);
       } else {
+        $scope.toggleView = true;
         ToasterService.showError('Error', data['message']);
       }
 
     }, function (error) {
+      $scope.toggleView = true;
       ToasterService.showError('Error', 'Something went wrong, Try later.');
       console.error(error);
     });
   }
 
   $scope.getAllTrips = function () {
+
+    $scope.toggleView = false;
+    
+    ToasterService.clearToast();
     $scope.search = '';
     // $scope.fullRoster = TripboardResponse.tempResponse.tripsdetails;
     // $scope.stats = TripboardResponse.tempResponse.stats;
@@ -326,6 +354,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     TripboardService.getAllTrips(postData, (data) => {
       console.log('all trips data', data);
       if (!data['success']) {
+        $scope.toggleView = true;
         ToasterService.showError('Error', data['message']);
         return;
       }
@@ -432,6 +461,10 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   }
 
   $scope.getVehicleListForTrip = function (trip) {
+
+    $scope.toggleView = false;
+    
+    ToasterService.clearToast();
     var siteId = $scope.selectedSiteID
     var shiftId = trip.shift_id
     var shiftType = trip.trip_type_status
@@ -445,6 +478,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     RouteService.postVehicleList(params, function (res) {
       console.log('vehicle list', res)
       if (!res['success']) {
+        $scope.toggleView = true;
         ToasterService.showError('Error', res['message']);
         return;
       } else {
@@ -511,19 +545,26 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     return false;
   }
   $scope.changeAllocation = (trip) => {
+
+    $scope.toggleView = false;
+    
+    ToasterService.clearToast();
     console.log('selected vehicle', $scope.selectedVehicle)
     let params = {trip_id: trip.trip_id, vehicleId: $scope.selectedVehicle.id}
     console.log('changeAllocation params', params);
     RouteService.changeAllocation (params, function(res) {
       console.log('changeAllocation res', res)
       if (res['success']) {
+        $scope.toggleView = true;
         ToasterService.showSuccess('Success', res['message']);
         $scope.showPopup = false;
         $scope.getAllTrips();
       } else {
+        $scope.toggleView = true;
         ToasterService.showError('Error', res['message']);
       }
     }, function (er) {
+      $scope.toggleView = true;
       ToasterService.showError('Error', 'Something went wrong, Try Later.');
     });
   }
