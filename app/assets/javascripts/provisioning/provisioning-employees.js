@@ -82,6 +82,7 @@ $(function () {
                 label: 'Billing Zone',
                 className: "col-md-4 selectboxit-wrap",
                 name: "entity_attributes.billing_zone",
+                
             }, {
                 label: 'Zone',
                 type: "select",
@@ -284,7 +285,7 @@ $(function () {
     $("#employees").on("focusout", ".live-validation input.required, select.required", function(e){
         var _this = this;
         focusOutTimer = setTimeout(function () {
-            var fields = ['user[email]', 'user[phone]', 'user[entity_attributes][home_address]', 'user[entity_attributes][nodal_address]'];
+            var fields = ['user[phone]', 'user[entity_attributes][home_address]', 'user[entity_attributes][nodal_address]'];
             $.validate($(_this), _this.name, fields, "/employees/validate", $("#form-employees"))
         }, 200)
     });
@@ -395,14 +396,17 @@ $(function () {
         updateBillingZone($(this).val());
     });
 
+    
 });
+
+
 
 
 function updateBillingZone( siteid ){
 
     $.get("/zone_by_site_id?site_id="+siteid+"", function(data, status){
    
-        // console.log("zone", data );
+     console.log("zone", data );
 
         let zone_Html = '';
         if( data.length > 0 ){
@@ -414,11 +418,37 @@ function updateBillingZone( siteid ){
         }
 
 
-        $("#user_entity_attributes_billing_zone").html(zone_Html);
+        $("#user_entity_attributes_billing_zone").html("").html(zone_Html);
 
 
     });
 
 }
+
+$(document).on("click",".employer_edit",function(){ 
+
+    var siteResponse = setInterval(siteListing, 500);
+    
+    let intcounter = 0;
+    function siteListing() {
+        intcounter++;
+        console.log( "siteListing","console","calling");
+        
+        if($("#user_entity_attributes_site_id").length > 0 ) {
+            updateBillingZone($("#user_entity_attributes_site_id").val()); 
+            clearInterval(siteResponse);
+        }
+        
+        if( intcounter >= 10 ){
+            clearInterval(siteResponse);
+        } 
+    }
+
+});
+
+
+
+
+
 
 

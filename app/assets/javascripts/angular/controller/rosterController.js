@@ -2,6 +2,9 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
 
   $scope.init = function () {
+
+    $scope.toggleView = false;    
+    ToasterService.clearToast();
     $scope.SelectedEmp = [];
     $scope.example14settings = {
       scrollableHeight: '200px',
@@ -51,6 +54,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.getAllSiteList = () => {
+    $scope.toggleView = false;    
+    ToasterService.clearToast();
     RosterService.getAllSiteList(function (data) {
       $scope.siteList = data.data.list;
       $scope.selectedSite = $scope.siteList[0];
@@ -68,7 +73,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.updateFilters = function () {
-
+    $scope.toggleView = false;    
+    ToasterService.clearToast();
     let postData = {
       "site_id": $scope.selectedSite.id,
       "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
@@ -85,7 +91,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   $scope.showPopup = false;
   
   $scope.showPopupWindow = (roster) => {
-    $scope.showPopup = true;
+    $scope.toggleView = false;    
+    ToasterService.clearToast();
     console.log('selectedRoster',roster)
     $scope.selectedRoster = roster;
     let postData = {
@@ -102,10 +109,13 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
         $scope.real_roster_employees = res.data;
         $scope.roster_employees = res.data;
       } else {
+        $scope.toggleView = true;  
+        console.log('showing on roster')
         ToasterService.showError('Error', res['message']);
       }
 
     }, (error) => {
+      $scope.toggleView = true;
       ToasterService.showError('Error', 'Something went wrong, Try again later.');
       console.error(error);
     });
@@ -113,6 +123,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
   
   $scope.onEmployeeSearch = () => {
+    $scope.toggleView = false;    
+    ToasterService.clearToast();
     var searchString = $scope.employee_name_search.trim().toLowerCase();
 
     if (searchString === "") {
@@ -129,6 +141,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.getRosters = (postData) => {
+    $scope.toggleView = false;    
+    ToasterService.clearToast();
     RosterService.get(postData, function (data) {
      
       if (data.data) {
@@ -176,6 +190,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     // console.log(roster);
     // console.log($scope.selectedSite);
     // console.log($scope.filterDate)
+    $scope.toggleView = false;    
+    ToasterService.clearToast();
     $scope.disable_roster_button = true;
 
     let postData = {
@@ -191,10 +207,18 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       (res) => {
         console.log('route generate res', res);
         if (res['success']) {
+          $scope.toggleView = true;
           ToasterService.showSuccess('Success', 'Route generated successfully.');
+          setTimeout(()=>{
+            ToasterService.clearToast();
+          },0)
           $scope.updateFilters();
         } else {
+          $scope.toggleView = true;
           ToasterService.showError('Error', res['message']);
+          setTimeout(()=>{
+            ToasterService.clearToast();
+          },0)
           
           if (res['is_routes_generated'] === false) {
           // if (true) {
@@ -206,12 +230,15 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
       }, (error) => {
         $scope.disable_roster_button = false;
+        $scope.toggleView = true;
         ToasterService.showError('Error', 'Something went wrong, Try again later.');
         console.error(error);
       });
   }
 
   $scope.addVehicleToRoster = function (roster) {
+    $scope.toggleView = false;    
+    ToasterService.clearToast();
     $scope.currentRoster = angular.copy(roster);
     // console.log($scope.currentRoster.vehicle);
     // console.log(angular.equals($scope.currentRoster.vehicle, {}));
@@ -236,6 +263,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.hideAddMenu = function () {
+    $scope.toggleView = false;    
+    ToasterService.clearToast();
     $scope.isAddMenuOpen = false;
     $scope.defaultVehiclesList = {
       HATCHBACK: 0,
@@ -252,6 +281,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.plusVehicle = function (key) {
+    $scope.toggleView = false;    
+    ToasterService.clearToast();
     $scope.currentRoster.vehicle[key] = parseInt($scope.currentRoster.vehicle[key]) + 1;
     $scope.currentRoster.total_vehicles = parseInt($scope.currentRoster.total_vehicles) + 1;
     if ($scope.currentRoster.vehicle_capacity[key]) {
@@ -277,7 +308,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.submitAddVehicle = function () {
-
+    $scope.toggleView = false;    
+    ToasterService.clearToast();
     let postData = {
       id: $scope.currentRoster.id,
       no_of_emp: $scope.currentRoster.no_of_emp,
@@ -293,7 +325,11 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     RosterService.addVehicle(postData, function (result) {
       console.log('vehicleAdd', result)
       if (!result['success']) {
+        $scope.toggleView = true;
         ToasterService.showError('Error', result['message']);
+        setTimeout(()=>{
+          ToasterService.clearToast()
+        },0)
         return;
       }
       $scope.isAddMenuOpen = false;
@@ -314,7 +350,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.disableDone = roster => {
-
+    $scope.toggleView = false;    
+    ToasterService.clearToast();
     if (!roster.total_seats) {
       $scope.isDoneDisabled = true;
     }
@@ -329,7 +366,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   //mansi changes
 
   $scope.getEmployeeList = function () {
-
+    $scope.toggleView = false;    
+    ToasterService.clearToast();
     let postData = {
       "siteId": $scope.selectedSite.id,
       "date": moment($scope.filterDate).format('YYYY-MM-DD'),
@@ -341,7 +379,11 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       if (res['success']) {
         $scope.EmpList = res.data.employeeList;
       } else {
+        $scope.toggleView = true;
         ToasterService.showError('Error', res['message']);
+        setTimeout(()=>{
+          ToasterService.clearToast();
+        },0)
         return;
       }
     }, function (error) {
@@ -358,10 +400,14 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     $scope.SelectedEmp = [];
   }
   $scope.submitAddCustomRoute = function (selectedShift, to_time) {
+    $scope.toggleView = false;    
+    ToasterService.clearToast();
     if ($scope.SelectedEmp.length == 0) {
+      $scope.toggleView = true;
       ToasterService.showError('Error', 'Select atleast one Employee');
       return;
     } else if (moment($scope.filterDate).format('YYYY-MM-DD') < moment(new Date()).format('YYYY-MM-DD')) {
+      $scope.toggleView = true;
       ToasterService.showError('Error', 'Selected date should not be smaller than todays date.');
       return;
     }
@@ -385,6 +431,9 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
           $scope.updateFilters();
         } else {
           ToasterService.showError('Error', res['message']);
+          setTimeout(()=>{
+            ToasterService.clearToast();
+          },0)
           return;
         }
       }, (error) => {

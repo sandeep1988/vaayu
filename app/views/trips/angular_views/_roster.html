@@ -3,7 +3,7 @@
   <div class="container-fluid mt-4">
     <div class="row">
       <div class="col-md-8">
-        <toaster-container></toaster-container>
+        <toaster-container ng-show="toggleView"></toaster-container>
         <form class="form-inline" ng-submit="updateFilters()">
           <div class="form-group pr-2">
             <select ng-model="selectedSite" ng-options="site.name for site in siteList track by site.id"

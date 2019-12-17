@@ -62,6 +62,7 @@ class User < ApplicationRecord
   # validates :f_name, presence: true
   # validates :l_name, presence: true
   validate :login_credentials_cannot_duplicate
+  validates_length_of :phone, minimum: 10, maximum: 10
 
   before_save :update_username
   before_create :set_status
