@@ -304,7 +304,7 @@ $(document).ready(function(){
         $("a[href="+urlHash+"]").trigger('click');    
     }
     
-
+    $(".reload-button").attr("href", "#");
 
     //},1000);
     
