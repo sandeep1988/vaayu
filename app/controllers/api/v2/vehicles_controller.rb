@@ -59,6 +59,18 @@ class API::V2::VehiclesController < ApplicationController
     end
   end
 
+  def vehicle_profile_picture
+      @vehicle = Vehicle.find_by(params[:id]) if params[:id].present?
+      if params[:vehicle_picture_doc].present?
+        @vehicle.vehicle_picture_doc  = params[:vehicle_picture_doc] 
+        if @vehicle.update(vehicle_picture_url: @vehicle.vehicle_picture_doc.url.gsub("//",''))
+          render json: {success: true , message: "UPDATE SUCCESS", data: { vehicle: @vehicle } },status: :ok
+        else
+          render json: {success: false , message: "UPDATE FAIL", errors: { errors: @vehicle.errors.full_messages } } , status: :ok 
+        end
+      end
+    end
+
   def find_category_seat_by_vehicle
     vehicle = VehicleModel.find_by_make_model(params[:make_model]) if params[:make_model].present?
     vehicle_data = { capacity: vehicle.capacity.to_i , vehicle_category: vehicle.vehicle_category.category_name } if vehicle.present? && vehicle.vehicle_category.present?

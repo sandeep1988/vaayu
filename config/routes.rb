@@ -411,6 +411,11 @@ Rails.application.routes.draw do
           get :get_vehicle_model_data
         end
       end
+      resources :vehicles do
+        member do
+          post :vehicle_profile_picture
+        end
+      end
       resources :drivers, only: :show do
         member do
           post 'update_current_location'
@@ -418,6 +423,7 @@ Rails.application.routes.draw do
           post 'vehicle_info'
           get 'blacklist_driver'
           get 'active_driver'
+          post 'driver_profile_picture'
         end
       end
     end

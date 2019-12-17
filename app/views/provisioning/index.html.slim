@@ -36,10 +36,6 @@
               li.employee-company
                 a[class="people" href="#employee-company" data-toggle="tab"  data-modal-type="simple"]
                   | Customers
-              -if current_user.operator?
-                li.logistic-companies
-                  a[class="people" href="#logistic-companies" data-toggle="tab" data-modal-type="simple"]
-                    | PTS Operators
             li.operator_shift_managers
               a[class="people" href="#operator-shift-managers" data-toggle="tab" data-source="/operator_shift_managers/new"]
                 | Operator Shift Manager
