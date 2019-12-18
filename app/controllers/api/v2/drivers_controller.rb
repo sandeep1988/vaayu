@@ -77,7 +77,10 @@ class API::V2::DriversController < ApplicationController
             upload_bgc_doc(@driver) if @driver.present?
             upload_medically_certified_doc(@driver) if @driver.present?
             upload_other_docs_url(@driver) if @driver.present?
-            @driver.update(other_docs_url: nil) if @driver.other_doc.blank? 
+            ### Nil for blank doc
+            @driver.update(other_docs_url: nil) if params[:other_doc].blank?
+            @driver.update(bgc_doc_url: nil) if params[:bgc_doc].blank?
+          ### End  Nil for blank doc
             @driver.update(induction_status: "Registered")
             @driver.update(compliance_status: "Ready For Allocation")
             @driver.update(date_of_registration: Time.now )
@@ -226,7 +229,7 @@ class API::V2::DriversController < ApplicationController
     end
 
     def driver_profile_picture
-      @driver = Driver.find_by(params[:id]) if params[:id].present?
+      @driver = Driver.find(params["id"]) if params["id"].present?
       if params[:profile_picture].present?
         @driver.profile_picture  = params[:profile_picture] 
         if @driver.update(profile_picture_url: @driver.profile_picture.url.gsub("//",''))
@@ -237,13 +240,24 @@ class API::V2::DriversController < ApplicationController
       end
     end
 
+    # def validate_licence_number
+    #   if params[:licence_number].present?
+    #     result = Driver.pluck(:licence_number).include? params[:licence_number]
+    #     render json: {success: true , message: "license number should not be duplicate", data: { licence_number: params[:licence_number] }  , errors: {} }, status: :not_found if result
+    #     render json: { success: false , message: "License number is unique", data: { licence_number: params[:licence_number] }, errors: {} }, status: :ok if result == false
+    #   end
+    # end
+
     def validate_licence_number
-      if params[:licence_number].present?
-        result = Driver.pluck(:licence_number).include? params[:licence_number]
-        render json: {success: true , message: "license number should not be duplicate", data: { licence_number: params[:licence_number] }  , errors: {} }, status: :not_found if result
-        render json: { success: false , message: "License number is unique", data: { licence_number: params[:licence_number] }, errors: {} }, status: :ok if result == false
-      end
+    if params[:id].present? && params[:licence_number].present?
+        driver = Driver.where(:licence_number => params[:licence_number]).first
+        if driver.nil? || driver.id == params[:id] .to_i
+         render json: {success: true , message: "Valid licence number", data: {}, errors: { } ,status: :ok }
+        else
+          render json: {success: false , message: "Invalid licence number", data: {}, errors: { } ,status: :ok }
+        end
     end
+  end
 
   protected
     # Never trust parameters from the scary internet, only allow the white list through.

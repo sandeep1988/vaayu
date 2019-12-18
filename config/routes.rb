@@ -424,6 +424,7 @@ Rails.application.routes.draw do
           get 'blacklist_driver'
           get 'active_driver'
           post 'driver_profile_picture'
+          get 'off_duty_web'
         end
       end
     end
