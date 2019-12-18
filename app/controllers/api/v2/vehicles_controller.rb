@@ -60,7 +60,7 @@ class API::V2::VehiclesController < ApplicationController
   end
 
   def vehicle_profile_picture
-      @vehicle = Vehicle.find_by(params[:id]) if params[:id].present?
+      @vehicle = Vehicle.find(params["id"]) if params["id"].present?
       if params[:vehicle_picture_doc].present?
         @vehicle.vehicle_picture_doc  = params[:vehicle_picture_doc] 
         if @vehicle.update(vehicle_picture_url: @vehicle.vehicle_picture_doc.url.gsub("//",''))
@@ -100,8 +100,8 @@ class API::V2::VehiclesController < ApplicationController
     if params[:plate_number].present?
       vehicle = Vehicle.where(plate_number: params[:plate_number]).last
       result = Vehicle.pluck(:plate_number).include? params[:plate_number]
-      render json: {success: false , message: "Vehicle registration number should not be duplicate", data:{ plate_number: params[:plate_number] }, errors: {} }, status: :ok if result && vehicle.induction_status != "Draft" && vehicle.present?
-      render json: { success: true , message: "Registration number is unique", data: { plate_number: params[:plate_number] } , errors: {} }, status: :ok if result == false
+      render json: {success: true , message: "Vehicle registration number should not be duplicate", data:{ plate_number: params[:plate_number] }, errors: {} }, status: :ok if result && vehicle.induction_status != "Draft" && vehicle.present?
+      render json: { success: false , message: "Registration number is unique", data: { plate_number: params[:plate_number] } , errors: {} }, status: :ok if result == false
       render json: { success: true , message: "Registration number is unique", data: { plate_number: params[:plate_number] } , errors: {} }, status: :ok if result &&  vehicle.induction_status == "Draft" && vehicle.present?
     end
   end

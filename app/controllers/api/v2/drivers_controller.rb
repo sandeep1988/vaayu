@@ -226,7 +226,7 @@ class API::V2::DriversController < ApplicationController
     end
 
     def driver_profile_picture
-      @driver = Driver.find_by(params[:id]) if params[:id].present?
+      @driver = Driver.find(params["id"]) if params["id"].present?
       if params[:profile_picture].present?
         @driver.profile_picture  = params[:profile_picture] 
         if @driver.update(profile_picture_url: @driver.profile_picture.url.gsub("//",''))
@@ -240,8 +240,8 @@ class API::V2::DriversController < ApplicationController
     def validate_licence_number
       if params[:licence_number].present?
         result = Driver.pluck(:licence_number).include? params[:licence_number]
-        render json: {success: false , message: "license number should not be duplicate", data: { licence_number: params[:licence_number] }  , errors: {} }, status: :not_found if result
-        render json: { success: true , message: "License number is unique", data: { licence_number: params[:licence_number] }, errors: {} }, status: :ok if result == false
+        render json: {success: true , message: "license number should not be duplicate", data: { licence_number: params[:licence_number] }  , errors: {} }, status: :not_found if result
+        render json: { success: false , message: "License number is unique", data: { licence_number: params[:licence_number] }, errors: {} }, status: :ok if result == false
       end
     end
 
