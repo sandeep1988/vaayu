@@ -77,7 +77,10 @@ class API::V2::DriversController < ApplicationController
             upload_bgc_doc(@driver) if @driver.present?
             upload_medically_certified_doc(@driver) if @driver.present?
             upload_other_docs_url(@driver) if @driver.present?
-            @driver.update(other_docs_url: nil) if @driver.other_doc.blank? 
+            ### Nil for blank doc
+            @driver.update(other_docs_url: nil) if params[:other_doc].blank?
+            @driver.update(bgc_doc_url: nil) if params[:bgc_doc].blank?
+          ### End  Nil for blank doc
             @driver.update(induction_status: "Registered")
             @driver.update(compliance_status: "Ready For Allocation")
             @driver.update(date_of_registration: Time.now )
@@ -226,7 +229,7 @@ class API::V2::DriversController < ApplicationController
     end
 
     def driver_profile_picture
-      @driver = Driver.find_by(params[:id]) if params[:id].present?
+      @driver = Driver.find(params["id"]) if params["id"].present?
       if params[:profile_picture].present?
         @driver.profile_picture  = params[:profile_picture] 
         if @driver.update(profile_picture_url: @driver.profile_picture.url.gsub("//",''))
