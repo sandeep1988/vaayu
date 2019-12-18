@@ -60,7 +60,7 @@ class API::V2::VehiclesController < ApplicationController
   end
 
   def vehicle_profile_picture
-      @vehicle = Vehicle.find_by(params[:id]) if params[:id].present?
+      @vehicle = Vehicle.find(params["id"]) if params["id"].present?
       if params[:vehicle_picture_doc].present?
         @vehicle.vehicle_picture_doc  = params[:vehicle_picture_doc] 
         if @vehicle.update(vehicle_picture_url: @vehicle.vehicle_picture_doc.url.gsub("//",''))
