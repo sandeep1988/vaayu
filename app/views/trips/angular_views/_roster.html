@@ -316,35 +316,36 @@
         <div class="">
           <div class="row">
             <div class="col-md-6">
-              <div class="form-group">
+              <!-- <div class="form-group"> -->
                 <!-- <input class="form-control" type="number" id="appt" min="0" max="23"  ng-model="to_time" name='to_time' placeholder="Time" required>
                                                           <span ng-show="hasError('to_time', 'required')" class="help-block">To Time is
                                                               required.</span>
                                                               -->
-              </div>
+              <!-- </div> -->
               <input type="time" id="to_time" name="to_time" class="form-control" ng-model="to_time" placeholder="Time"
-                required />
+                required style="height: 42px;"/>
               <span ng-show="hasError('to_time', 'required')" class="help-block">To Time is
                 required.</span>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <select name="selectedShift" class="form-control" ng-model="selectedShift" required>
-                <option value="">Select Shift</option>
-                <option value="0">Check In</option>
-                <option value="1">Check Out</option>
-              </select>
-              <span ng-show="selectedShift.$error.required" class="help-block">Shift is
-                required.</span>
+            <div class="col-md-6">
+              <div class="form-group">
+                <select name="selectedShift" class="form-control" ng-model="selectedShift" required>
+                  <option value="">Select Shift</option>
+                  <option value="0">Check In</option>
+                  <option value="1">Check Out</option>
+                </select>
+                <span ng-show="selectedShift.$error.required" class="help-block">Shift is
+                  required.</span>
+              </div>
             </div>
           </div>
+          
         </div>
         <div class="row">
           <div class="col-md-12">
             <div ng-dropdown-multiselect="" class="form-control ml_selec" options="EmpList"
               selected-model="SelectedEmp " checkboxes="true" extra-settings="example14settings" validation="required"
-              search-placeholder="   Search Employee's    " validation-result="SelectedEmp">
+              search-placeholder="   Search Employee's    " validation-result="SelectedEmp" style="border-color: #fff; padding: 0;">
             </div>
           </div>
           <span ng-show="SelectedEmp .$error.required" class="help-block">Employee is

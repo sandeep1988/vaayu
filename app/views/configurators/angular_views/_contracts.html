@@ -80,14 +80,15 @@
                         </select>
                     </div> -->
         </div>
-
-        <ul class="nav nav-tabs nav-tabs-new">
-            <li class="nav-item nav-link " ng-class="{active:isSet('CUSTOMER')}" ng-click="setTab('CUSTOMER')">
-                <a href="javascript:void(0)">Customer</a></li>
-            <li class="nav-item nav-link " ng-class="{active:isSet('BA')}" ng-click="setTab('BA')"><a
-                    href="javascript:void(0)">BA</a></li>
-
-        </ul>
+        <div class="col-xs-12">
+            <ul class="nav nav-tabs nav-tabs-new col-lg-12">
+                <li class="nav-item nav-link " ng-class="{active:isSet('CUSTOMER')}" ng-click="setTab('CUSTOMER')">
+                    <a href="javascript:void(0)">Customer</a></li>
+                <li class="nav-item nav-link " ng-class="{active:isSet('BA')}" ng-click="setTab('BA')"><a
+                        href="javascript:void(0)">BA</a></li>
+    
+            </ul>
+        </div>
         <div class="tab-content">
             <toaster-container ng-show="toggleView"></toaster-container>
             <div id="CUSTOMER" class="tab-pane fade  " ng-class="{'in active show':isSet('CUSTOMER')}">
