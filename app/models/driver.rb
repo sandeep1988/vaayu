@@ -40,9 +40,9 @@ class Driver < ApplicationRecord
   # validates :aadhaar_mobile_number, uniqueness: true, length: { is: 10 }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :aadhaar_mobile_number, presence: true, uniqueness: {message: "already taken"}, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :licence_number, presence: true, uniqueness: {message: "already taken"}, :if => Proc.new{|f| f.registration_steps == "Step_1"}
-  validates :ifsc_code, length: { is: 11 }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
-  validates :ifsc_code, format: { with: /[a-zA-Z0-9]/, message: "only allows alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
-  validates :licence_number, format: { with: /[a-zA-Z0-9]/, message: "licence number only allows alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  #validates :ifsc_code, length: { is: 11 }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  # validates :ifsc_code, format: { with: /[a-zA-Z0-9]/, message: "only allows alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  validates :licence_number, format: { with: /[a-zA-Z0-9]/, message: "licence number only allows alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   ###validation for upload docs
   validates :father_spouse_name, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # validates :driver_badge_doc_url, attachment_presence: true
@@ -52,16 +52,16 @@ class Driver < ApplicationRecord
   # validates :badge_expire_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :badge_number, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :blood_group, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
-  validates :ifsc_code, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  #validates :ifsc_code, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :gender, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # validates :licence_type, :licence_validity, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
-  validates :bank_no  , uniqueness: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
-  validates :bank_no, length: { is: 16 }, format: { with: /\A\d+\z/, message: "Please enter only Number." }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  #validates :bank_no  , uniqueness: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  #validates :bank_no, length: { is: 16 }, format: { with: /\A\d+\z/, message: "Please enter only Number." }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :licence_number, format: { with: /\A(?=.*[a-z])[a-z\d]+\Z/i, message: "Please enter alphanumeric ." }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # validates :licence_number, format: { with: ^[a-zA-Z0-9]+$ }
   validates_length_of :licence_number, maximum: 25 , :if => Proc.new{|f| f.registration_steps == "Step_1"}
-  validates :bank_name, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
-  validates :bank_name, format: { with: /[a-zA-Z0-9]/, message: "Please enter alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  #validates :bank_name, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  #validates :bank_name, format: { with: /[a-zA-Z0-9]/, message: "Please enter alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :date_of_birth, presence: true , :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # validates_format_of :bank_name, { :with => /^[A-Za-z0-9 ]*$/ , message: "Please enter only Number or char." }
   # validates :verified_by_police, presence: true, :if => Proc.new{|f| f.registration_steps.blank?}
