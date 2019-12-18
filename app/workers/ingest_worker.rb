@@ -37,8 +37,9 @@ class IngestWorker
     send("parse_ingest_#{extn[1..-1]}", &block)
   end
 
-  def get_address(address)
+  def get_address(address, longitude, latitude)
     return {} if address.blank?
+    return { home_address: address, home_address_latitude: latitude, home_address_longitude: longitude } if longitude.present?
     if address =~ /\d+\.\d+,\d+\.\d+/
       lat, lng = address.split(',').map(&:to_f)
       result = GoogleService.new.reverse_geocode({lat: lat, lng: lng}).first
@@ -64,23 +65,43 @@ class IngestWorker
     allow_update = emp_hash.delete(:allow_update)
     employee = Employee.joins(:user).find_by('users.email = ? or employee_id = ?', emp_hash[:email], emp_hash[:employee_id])
     if employee.nil?
-      user = User.new(
-        email: emp_hash[:email],
-        phone: emp_hash[:phone],
-        f_name: emp_hash[:f_name],
-        l_name: emp_hash[:l_name],
-        password: 'password',
-        entity_type: 'Employee',
-        process_code: emp_hash[:process_code],
-        entity_attributes: {
-          employee_id: emp_hash[:employee_id],
-          gender: emp_hash[:gender],
-          site: emp_hash[:site],
-          zone: emp_hash[:zone],
-          landmark: emp_hash[:area],
-          employee_company: emp_hash[:employee_company]
-        }.compact.merge(get_address(emp_hash[:address]))
-      )
+      if !emp_hash[:latitude].present?
+        user = User.new(
+          email: emp_hash[:email],
+          phone: emp_hash[:phone],
+          f_name: emp_hash[:f_name],
+          l_name: emp_hash[:l_name],
+          password: 'password',
+          entity_type: 'Employee',
+          process_code: emp_hash[:process_code],
+          entity_attributes: {
+            employee_id: emp_hash[:employee_id],
+            gender: emp_hash[:gender],
+            site: emp_hash[:site],
+            zone: emp_hash[:zone],
+            landmark: emp_hash[:area],
+            employee_company: emp_hash[:employee_company]
+          }.compact.merge(get_address(emp_hash[:address], emp_hash[:longitude], emp_hash[:latitude]))
+        )
+      else
+        user = User.new(
+          email: emp_hash[:email],
+          phone: emp_hash[:phone],
+          f_name: emp_hash[:f_name],
+          l_name: emp_hash[:l_name],
+          password: 'password',
+          entity_type: 'Employee',
+          process_code: emp_hash[:process_code],
+          entity_attributes: {
+            employee_id: emp_hash[:employee_id],
+            gender: emp_hash[:gender],
+            site: emp_hash[:site],
+            zone: emp_hash[:zone],
+            landmark: emp_hash[:area],
+            employee_company: emp_hash[:employee_company]
+          }.compact.merge(get_address(emp_hash[:address], emp_hash[:longitude], emp_hash[:latitude]))
+        )
+      end  
       user.save_with_notify!
       employee = user.entity
       ingest_job.employee_provisioned_count += 1
@@ -97,7 +118,7 @@ class IngestWorker
             employee_id: emp_hash[:employee_id],
             gender: emp_hash[:gender],
             landmark: emp_hash[:area],
-          }.compact.merge(get_address(emp_hash[:address]))
+          }.compact.merge(get_address(emp_hash[:address], emp_hash[:longitude], emp_hash[:latitude]))
         }.compact)
       end
     end

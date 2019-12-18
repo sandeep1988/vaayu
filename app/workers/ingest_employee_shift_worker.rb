@@ -58,7 +58,9 @@ class IngestEmployeeShiftWorker < IngestWorker
       site: Site.where(name:row["site"]).first,
       zone: Zone.where(name:row["zone"]).first,
       employee_company: EmployeeCompany.where(name: row["employee_company"]).first,
-      allow_update: true
+      allow_update: true,
+      longitude: row["longitude"],
+      latitude: row["latitude"]
     )
     employee
   end
