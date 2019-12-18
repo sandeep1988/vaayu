@@ -46,7 +46,7 @@ app.directive('focusMe', function ($timeout) {
 
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService,
   AutoAllocationService,
-  FinalizeService, RouteStaticResponse, ToasterService, SessionService) {
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService,BASE_URL_API_8002) {
 
 
   $scope.toggleView = false;  
@@ -165,6 +165,26 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       {name: 'Off Duty', value: 'off_duty'}
     ]
 
+    $http({
+      method: 'POST',
+      url: BASE_URL_API_8002 + 'categoryList',
+      headers: {
+          'Content-Type': 'application/json',
+          'uid': SessionService.uid,
+          'access_token': SessionService.access_token,
+          'client': SessionService.client
+      },
+      data: { test: 'test' }
+  }).then(function (res) {
+      console.log('Vehicle', res);
+      $scope.vehicleCategoryList = res.data.data;
+  }).catch(err => {
+      console.log(err)
+  });
+  
+    // RouteService.getVehicleCategoryList(function (data) {
+    //   $scope.vehicleCategoryList = data;
+    // });
 
     RosterService.getAllSiteList(function (data) {
       $scope.siteList = data.data.list;
@@ -475,6 +495,58 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.plateNumber = '';
+
+  $scope.closePopup = () => {
+    $scope.showPopup=false;
+  }
+
+  $scope.showPopup = false;
+
+  $scope.openPopUp = () => {
+   
+    $scope.showPopup = true;
+             
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+
+    var closepop = document.getElementsByClassName("closepop")[0];
+
+    closepop.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  }
+ 
+  $scope.createNewRoute=function(vehicleType) {
+    var routeId;
+
+    angular.forEach($scope.routes.data.routes, function (route, index, routeArray) {
+      if(index===routeArray.length-1){
+        routeId=route.routeId
+      }
+    });
+
+    let shift = JSON.parse($scope.selectedShift);
+      let postData = {
+        "routeId":String(routeId),
+        "site_id": String($scope.siteId),
+        "shift_id": String(shift.id),
+        "vehicle_category":vehicleType,
+        "start_date": moment($scope.filterDate).format('YYYY-MM-DD'),
+        "trip_type": String(shift.trip_type),
+      }
+
+
+      RouteService.createRoute(postData, function (res) {
+          $scope.showPopup = false;
+          $scope.resetRoute();
+      });
+  };
 
   $scope.onVehicleSearch = (plateNumber) => {
     $scope.toggleView = false;

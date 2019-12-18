@@ -142,7 +142,7 @@
                     <div class="vaayu-dropzone">
                       <!-- | filter :{vehicle_allocated:search} | range : 'empty_seats' : slider_empty.minValue : slider_empty.maxValue | range : 'total_seats' : slider_occupied.minValue : slider_occupied.maxValue -->
                       <div ng-repeat="container in containers | filter :{vehicle_allocated:search}" no-drag
-                        dnd-callback="container.employees.length" class="employee-cluster-panel">
+                         class="employee-cluster-panel">
                         <div class="employee-cluster-panel-heading"
                           ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
                           <div class="title_container" >
@@ -217,14 +217,7 @@
                               </div>
 
                             </li>
-                            <li ng-if="!container.employees.length">
-                              <div class="drop-box">
-                                <div class="drop-box-label">
-                                  <div>Drop here you employee and</div>
-                                  <div>We i will make your work easy</div>
-                                </div>
-                              </div>
-                            </li>
+                           
                             <li class="dndPlaceholder">
                               Drop any <strong>Employee</strong> here
                             </li>
@@ -323,6 +316,26 @@
                               </ul>
                             </div>
                           </div>
+                        </div>
+                      </div>
+
+                      <div no-drag class="employee-cluster-panel" style="height: 235px;" ng-if="originalRoutes.length">
+                        <div class="employee-cluster-panel-heading">
+                          <div class="title_container" >
+                            <span class="title_text" style="padding-top:5px;"> <i class="fa fa-plus"></i> Add Route </span>
+                          </div>
+                        </div>
+    
+                        <div class="employee-cluster-panel-body">
+                          <ul class="employee-list-group itemlist" style="padding-bottom: 20px;">
+                            <li>
+                              <div class="drop-box" style="height: 150px;">
+                                <div class="drop-box-label">
+                                  <button ng-click="openPopUp()" class="btn btn-default btn-block" style="height: 100%;"><i class="fa fa-plus  fa-3x"></i> <div>Add Route</div></button>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
                         </div>
                       </div>
                     </div>
@@ -628,6 +641,29 @@
     </div>
   </div>
 
+  <div id="myModal" class="vaayu-modal" style="display: block;z-index:100;" ng-if="showPopup">
+
+    <div class="vaayu-modal-content" style="width:450px;">
+      <div class="vaayu-modal-header">
+        <span>Select Vehicle Type</span>
+        <span style="margin-top: -4px;" class="vaayu-pop-close closepop" ng-click="closePopup()">&times;</span>
+      </div>
+      <div class="vaayu-modal-body">
+        <div class="form-group pr-2">
+          <select ng-model="vehicleType" class="form-control" placeholder="Select Vehicle Category">
+            <option ng-repeat="item in vehicleCategoryList" ng-value="item.category_name">{{item.category_name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="vaayu-modal-footer">
+        <button type="button" class="vaayu-pop-action-btn" ng-click="createNewRoute(vehicleType)">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
+
+
 
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBL-ocE6P0pPmR6Ef4DC2BKqlnlMe1pQFk&amp;libraries=places"></script> -->
