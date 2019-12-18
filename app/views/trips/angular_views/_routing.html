@@ -167,8 +167,8 @@
                                 </div>
                                 <div class="col-md-6 align-center">
                                   <span class="kilometer_time_duration">
-                                    <i class="fa fa-clock" aria-hidden="true"></i>
-                                    {{container.total_time}}
+                                    <i class="fa "></i>
+                                    {{container.total_time}} min
                                   </span>
                                 </div>
                               </div>
@@ -651,7 +651,7 @@
       <div class="vaayu-modal-body">
         <div class="form-group pr-2">
           <select ng-model="vehicleType" class="form-control" placeholder="Select Vehicle Category">
-            <option ng-repeat="item in vehicleCategoryList" ng-value="item.category_name">{{item.category_name}}</option>
+            <option ng-repeat="item in vehicleCategoryList" ng-value="item.id">{{item.category_name}}</option>
           </select>
         </div>
       </div>

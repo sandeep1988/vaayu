@@ -187,8 +187,7 @@ class API::V2::DriversController < ApplicationController
     end
 
     def vehicle_info
-      @vehicles = Vehicle.where("replace(lower(plate_number), ' ', '') LIKE replace(?, ' ', '')", "%#{params[:vehicle_id]}%").where(:induction_status=> "Inducted")
-      puts @vehicles
+      @vehicles = Vehicle.where("replace(lower(plate_number), ' ', '') LIKE replace(?, ' ', '')", "%#{params[:vehicle_id]}%").where(:induction_status=> "Inducted").where(:compliance_status=> "Ready For Allocation")
       if @vehicles.blank?
         render '_errors', status:422
       end
