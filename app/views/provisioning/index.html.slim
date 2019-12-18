@@ -112,8 +112,6 @@
 
       -if current_user.operator? || current_user || current_user.operator_shift_manager?
         = render :partial => 'provisioning/employee_company'
-        -if current_user.operator?
-          = render :partial => 'provisioning/companies_tab'
         = render :partial => 'provisioning/employers'
         = render :partial => 'provisioning/drivers'
         = render :partial => 'provisioning/vehicles'

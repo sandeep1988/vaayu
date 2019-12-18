@@ -304,7 +304,7 @@ $(document).ready(function(){
         $("a[href="+urlHash+"]").trigger('click');    
     }
     
-
+    $(".reload-button").attr("href", "#");
 
     //},1000);
     
@@ -452,7 +452,23 @@ if( "true" == $("#driver_add").attr('aria-expanded') ){
 
 
 
+
+// console.log(">>>>>>>>>>>>>>>>>>" );
+    // updateBillingZone($("#user_entity_attributes_site_id").val());
+
+
+    // $(document).on("click","href[/employees/new]",function(){
+
+    //     let html =`<option> Choose Billing Zone </option>`;
+    //     html +=$("#user_entity_attributes_billing_zone").html();
+    //     $("#user_entity_attributes_billing_zone").html( html ); 
+
+    // });
+
+
 });
+
+
 
 
 

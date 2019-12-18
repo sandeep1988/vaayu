@@ -57,10 +57,12 @@ class User < ApplicationRecord
 
   # validates :username, presence: true, uniqueness: true
   # validates :email, presence: true, uniqueness: true , :if => Proc.new{|user| user.role == "driver" } 
-  validates :phone, presence: true, uniqueness: true
+  validates :phone, presence: true
+  validates :phone, uniqueness: true
   # validates :f_name, presence: true
   # validates :l_name, presence: true
   validate :login_credentials_cannot_duplicate
+  validates_length_of :phone, minimum: 10, maximum: 10
 
   before_save :update_username
   before_create :set_status
@@ -285,7 +287,7 @@ class User < ApplicationRecord
 
       # make where query and check if there are any columns with the same item in db
       where_clause = compare_columns.map{|col| "#{col} = '#{values.last}'"}.join(' OR ')
-      errors.add('', 'email or phone has already been taken') if User.where(where_clause).exists?
+      # errors.add('', 'email or phone has already been taken') if User.where(where_clause).exists?
     end
 
     # check if we're trying to save any
