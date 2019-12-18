@@ -24,10 +24,16 @@ $(function () {
       type: "GET",
       url: '/employee_companies/get_all'
     }).done(function (response) {
+      // console.log("M<<<<<<<<<<<<<<<<<<<", response.states );
+
+      response.states.unshift( {label:"choose states", value: 0} );
+      response.cities.unshift( {label:"choose cities", value: 0} );
       states = response.states.map(item => { return {label: item.state, value: item.id}} );
       cities = response.cities.map(item => { return {label: item.city_name, value: item.id}} );
       // {label, value}
-        employeeCompaniesTableEditor = new $.fn.dataTable.Editor({
+      console.log(">>>>>>>>", states );
+
+      employeeCompaniesTableEditor = new $.fn.dataTable.Editor({
           table: table,
           ajax: {
               create: {
@@ -82,6 +88,7 @@ $(function () {
               className: "col-md-4 home_address_state",
               name: "home_address_state",
               type:"select",
+              prompt:"Choose states",
               options:states
             },
             {
@@ -122,12 +129,12 @@ $(function () {
               name: "home_address_gstin_no"
             },
             {
-              label: 'SAP Control Number * ',
+              label: 'SAP Control Number ',
               className: "col-md-4",
               name: "sap_control_number"
             },
             {
-              label: 'Reference Number *',
+              label: 'Reference Number',
               className: "col-md-4",
               name: "reference_no1"
             },
@@ -230,12 +237,12 @@ $(function () {
               // if (customer_code.val().trim().length == 0) {
               //   customer_code.error('Customer Code must be given.');
               // }
-              if (sap_control_number.val().trim().length == 0) {
-                sap_control_number.error('SAP control number must be given.');
-              }
-              if (reference_no1.val().trim().length == 0) {
-                reference_no1.error('Reference number must be given.');
-              }
+              // if (sap_control_number.val().trim().length == 0) {
+              //   sap_control_number.error('SAP control number must be given.');
+              // }
+              // if (reference_no1.val().trim().length == 0) {
+              //   reference_no1.error('Reference number must be given.');
+              // }
               // if (home_address_address_3.val().trim().length == 0) {
               //   home_address_address_3.error('Home Address 3 must be given.');
               // } home_address_gstin_no customer_code reference_no1
@@ -444,7 +451,7 @@ $(function () {
             }])
             .create();
             $('input').removeAttr('disabled'); //Rushikesh added code here
-
+            $('select').removeAttr('disabled');
             setInputFilter(document.getElementById("home_address_pin"), function(value) {
               return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
             });

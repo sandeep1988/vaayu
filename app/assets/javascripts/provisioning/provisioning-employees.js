@@ -408,12 +408,14 @@ function updateBillingZone( siteid ){
    
      console.log("zone", data );
 
+     let zoneValune = $("#user_entity_attributes_billing_zone").val();
+
         let zone_Html = '';
         if( data.length > 0 ){
             
             for( let index in data ){
 
-                zone_Html += `<option value="${data[index]}">${data[index]}</option>`;
+                zone_Html += `<option  ${zoneValune == data[index] ?"selected":"" } value="${data[index]}">${data[index]}</option>`;
             }
         }
 
