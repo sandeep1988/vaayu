@@ -240,13 +240,24 @@ class API::V2::DriversController < ApplicationController
       end
     end
 
+    # def validate_licence_number
+    #   if params[:licence_number].present?
+    #     result = Driver.pluck(:licence_number).include? params[:licence_number]
+    #     render json: {success: true , message: "license number should not be duplicate", data: { licence_number: params[:licence_number] }  , errors: {} }, status: :not_found if result
+    #     render json: { success: false , message: "License number is unique", data: { licence_number: params[:licence_number] }, errors: {} }, status: :ok if result == false
+    #   end
+    # end
+
     def validate_licence_number
-      if params[:licence_number].present?
-        result = Driver.pluck(:licence_number).include? params[:licence_number]
-        render json: {success: true , message: "license number should not be duplicate", data: { licence_number: params[:licence_number] }  , errors: {} }, status: :not_found if result
-        render json: { success: false , message: "License number is unique", data: { licence_number: params[:licence_number] }, errors: {} }, status: :ok if result == false
-      end
+    if params[:id].present? && params[:licence_number].present?
+        driver = Driver.where(:licence_number => params[:licence_number]).first
+        if driver.nil? || driver.id == params[:id] .to_i
+         render json: {success: true , message: "Valid licence number", data: {}, errors: { } ,status: :ok }
+        else
+          render json: {success: false , message: "Invalid licence number", data: {}, errors: { } ,status: :ok }
+        end
     end
+  end
 
   protected
     # Never trust parameters from the scary internet, only allow the white list through.
