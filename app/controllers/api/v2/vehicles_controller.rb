@@ -97,14 +97,28 @@ class API::V2::VehiclesController < ApplicationController
   end
 
   def validate_plate_number
-    if params[:plate_number].present?
-      vehicle = Vehicle.where(plate_number: params[:plate_number]).last
-      result = Vehicle.pluck(:plate_number).include? params[:plate_number]
-      render json: {success: true , message: "Vehicle registration number should not be duplicate", data:{ plate_number: params[:plate_number] }, errors: {} }, status: :ok if result && vehicle.induction_status != "Draft" && vehicle.present?
-      render json: { success: false , message: "Registration number is unique", data: { plate_number: params[:plate_number] } , errors: {} }, status: :ok if result == false
-      render json: { success: true , message: "Registration number is unique", data: { plate_number: params[:plate_number] } , errors: {} }, status: :ok if result &&  vehicle.induction_status == "Draft" && vehicle.present?
+    if params[:id].present? && params[:plate_number].present?
+        vehicle = Vehicle.where(:plate_number => params[:plate_number]).first
+        if vehicle.nil? || vehicle.id == params[:id] .to_i
+         render json: {success: true , message: "Valid plate number", data: {}, errors: { } ,status: :ok }
+        else
+          render json: {success: false , message: "Invalid plate number", data: {}, errors: { } ,status: :ok }
+        end
     end
   end
+
+  # def validate_plate_number_old
+  #   # if params[:id].present? && params[:plate_number].present?
+  #   #   vehicle = Vehicle.where(:id => params[:id], :plate_number => params[:plate_number]).first
+  #   #     render json: { success: true , message: "Vehicle got", data:{ vehicle: vehicle }, errors: {} }, status: :ok if vehicle.present?
+  #   # else params[:plate_number].present?
+  #   #   vehicle = Vehicle.where(plate_number: params[:plate_number]).last
+  #   #   result = Vehicle.pluck(:plate_number).include? params[:plate_number]
+  #   #   render json: {success: true , message: "Vehicle registration number should not be duplicate", data:{ plate_number: params[:plate_number] }, errors: {} }, status: :ok if result && vehicle.induction_status != "Draft" && vehicle.present?
+  #   #   render json: { success: false , message: "Registration number is unique", data: { plate_number: params[:plate_number] } , errors: {} }, status: :ok if result == false
+  #   #   render json: { success: true , message: "Registration number is unique", data: { plate_number: params[:plate_number] } , errors: {} }, status: :ok if result &&  vehicle.induction_status == "Draft" && vehicle.present?
+  #   # end
+  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.
