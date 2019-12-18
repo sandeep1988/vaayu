@@ -1,5 +1,5 @@
-angular.module('app').factory('RouteService', ['$resource', 'BASE_URL_8002', 'SessionService',
-function ($resource, BASE_URL_8002, SessionService) {
+angular.module('app').factory('RouteService', ['$resource', 'BASE_URL_8002','BASE_URL_API_8002', 'SessionService',
+function ($resource, BASE_URL_8002, BASE_URL_API_8002, SessionService) {
   return $resource(BASE_URL_8002 + 'generateRoutes', {}, {
     // query: { method: "GET", isArray: true },
     // create: { method: "POST" },
@@ -8,6 +8,7 @@ function ($resource, BASE_URL_8002, SessionService) {
     getRoutes: { method: "POST" },
     postVehicleList: {url: BASE_URL_8002 + 'getVehicleData', method: "POST"},
     getGuardList: {url: BASE_URL_8002 + 'getAllGuards', method: "GET"},
+    createRoute: {url: BASE_URL_API_8002 + 'customTrip', method: "POST"},
     assignVehicle: {url: BASE_URL_8002 + 'assignVehicleToTrip', method: "PATCH"},
     assignGuards: {url: BASE_URL_8002 + 'addGuardInTrip', method: "PATCH"},
     removeVehicle: {url: BASE_URL_8002 + 'remove-trip-vehicle', method: "POST"},

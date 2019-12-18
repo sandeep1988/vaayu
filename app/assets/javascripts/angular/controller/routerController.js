@@ -1,9 +1,5 @@
 
 angular.module('app').directive('setHeight', function ($window) {
-  $scope.toggleView = false;
-  
-  ToasterService.clearToast();
-
   return {
     link: function (scope, element, attrs) {
       element.css('height', $window.innerHeight / 2 + 'px');
@@ -13,9 +9,6 @@ angular.module('app').directive('setHeight', function ($window) {
 
 angular.module('app')
   .filter('range', function () {
-    $scope.toggleView = false;
-  
-    ToasterService.clearToast();
     return function (items, property, min, max) {
       return items.filter(function (item) {
         return item[property] >= min && item[property] <= max;
@@ -25,9 +18,6 @@ angular.module('app')
 
 
 app.directive('focusMe', function ($timeout) {
-  $scope.toggleView = false;
-  
-  ToasterService.clearToast();
   return {
     link: function (scope, ele, attrs) {
       scope.$watch(attrs.focusMe, function (value) {
@@ -46,7 +36,7 @@ app.directive('focusMe', function ($timeout) {
 
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService,
   AutoAllocationService,
-  FinalizeService, RouteStaticResponse, ToasterService, SessionService) {
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService,BASE_URL_API_8002) {
 
 
   $scope.toggleView = false;  
@@ -73,7 +63,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // {lat: -27.467, lng: 153.027}
     // ];
 
-    // var directionsService = new google.maps.DirectionsService();
+    var directionsService = new google.maps.DirectionsService();
     var directionsRenderer = new google.maps.DirectionsRenderer();
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
@@ -95,7 +85,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       }
     ];
     // calculateAndDisplayRoute(directionsRenderer, directionsService, $scope.markerArray, waypts, stepDisplay, map);    // Define a symbol using SVG path notation, with an opacity of 1.
-    // calculateAndDisplayRoute( directionsService, directionsRenderer, waypts)
+    calculateAndDisplayRoute( directionsService, directionsRenderer, waypts)
 
   }
 
@@ -107,18 +97,19 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.finalizeArray = [];
-
+  $scope.coords = []
   $scope.selectRoute = (container) => {
     $scope.finalizeArray.push({ routeId: container.routeId });
-
+    
     var coords = [];
     angular.forEach(container.employees, function (emp, idx, empArray) {
+
       try {
-        coords.push({ lat: parseFloat(emp.lat), lng: parseFloat(emp.long) })
+        coords.push({ lat: parseFloat(emp.lat), lng: parseFloat(emp.lng) })
+        makeMarker(new google.maps.LatLng(emp.lat,emp.lng),emp.emp_name);
       } catch (er) { console.log(er) }
     });
-
-
+    console.log('coords', coords);
   }
 
 
@@ -164,6 +155,26 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       {name: 'Off Duty', value: 'off_duty'}
     ]
 
+    $http({
+      method: 'POST',
+      url: BASE_URL_API_8002 + 'categoryList',
+      headers: {
+          'Content-Type': 'application/json',
+          'uid': SessionService.uid,
+          'access_token': SessionService.access_token,
+          'client': SessionService.client
+      },
+      data: { test: 'test' }
+  }).then(function (res) {
+      console.log('Vehicle', res);
+      $scope.vehicleCategoryList = res.data.data;
+  }).catch(err => {
+      console.log(err)
+  });
+  
+    // RouteService.getVehicleCategoryList(function (data) {
+    //   $scope.vehicleCategoryList = data;
+    // });
 
     RosterService.getAllSiteList(function (data) {
       $scope.siteList = data.data.list;
@@ -475,6 +486,65 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.plateNumber = '';
 
+  $scope.closePopup = () => {
+    $scope.showPopup=false;
+  }
+
+  $scope.showPopup = false;
+
+  $scope.openPopUp = () => {
+   
+    $scope.showPopup = true;
+             
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+
+    var closepop = document.getElementsByClassName("closepop")[0];
+
+    closepop.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  }
+ 
+  $scope.createNewRoute=function(vehicleType) {
+    var routeId;
+
+    angular.forEach($scope.vehicleCategoryList, function (vehicle, idx) {
+      if(vehicle.id==vehicleType){
+        $scope.vehicle=vehicle;
+      }
+    });
+
+    angular.forEach($scope.routes.data.routes, function (route, index, routeArray) {
+      if(index===routeArray.length-1){
+        routeId=route.routeId
+      }
+    });
+
+    let shift = JSON.parse($scope.selectedShift);
+      let postData = {
+        "routeId":String(routeId),
+        "site_id": String($scope.siteId),
+        "shift_id": String(shift.id),
+        "seating_capacity":String($scope.vehicle.seating_capacity),
+        "vehicle_category":$scope.vehicle.category_name,
+        "start_date": moment($scope.filterDate).format('YYYY-MM-DD'),
+        "trip_type": String(shift.trip_type),
+      }
+
+
+      RouteService.createRoute(postData, function (res) {
+          $scope.showPopup = false;
+          $scope.resetRoute();
+      });
+  };
+
   $scope.onVehicleSearch = (plateNumber) => {
     $scope.toggleView = false;
     
@@ -564,10 +634,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
 
 
-    console.log($scope.routes);
-
+    
     $scope.fullModel = [$scope.routes.data.routes];
     $scope.model2 = $scope.fullModel;
+    console.log('scope routes', $scope.model2);
+
   }
 
   $scope.generateRoute = function (siteId, shiftId, filterDate, shiftType) {  
@@ -634,6 +705,14 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
   }
 
+  function makeMarker( position, title ) {
+    new google.maps.Marker({
+     position: position,
+     map: $scope.map,
+     title: title
+    });
+   }
+   
   $scope.showRouteData = () => {
     $scope.toggleView = false;
     
@@ -684,6 +763,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     $scope.fullModel = [$scope.routes.data.routes];
     $scope.model2 = $scope.fullModel;
+    console.log('scope model2');
+    
   }
 
   $scope.collapsiblePanel = function (item) {
@@ -1028,6 +1109,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
+    
     directionsService.route({
       origin: 'Veer Savarkar Flyover, Malad, Liliya Nagar, Malad West, Mumbai, Maharashtra 400064',
       destination: 'Panvel, Navi Mumbai, Maharashtra',

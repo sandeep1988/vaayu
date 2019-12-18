@@ -104,7 +104,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     $scope.real_roster_employees = [];
     RosterService.getEmployeesInRoster(postData,  (res) => {
       console.log('getEmployeesInRoster',res);
-
+      $scope.showPopup=true;
+      
       if (res['success']) {
         $scope.real_roster_employees = res.data;
         $scope.roster_employees = res.data;

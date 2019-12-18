@@ -176,7 +176,6 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   $scope.getCurrentVehicleLocation = () => {
     
       $scope.toggleView = false;
-      
       ToasterService.clearToast();
     
 
@@ -204,6 +203,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
 
     var source =$scope.modelData.map_data.source;
+    console.log('modelData', $scope.modelData)
     var destination =$scope.modelData.map_data.destination;
 
     if(source.is_site){

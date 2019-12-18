@@ -38,13 +38,13 @@ class Vehicle < ApplicationRecord
 
   # validates :rc_book_no, presence: true , :if => Proc.new{|f| f.registration_steps != "Step_1" or f.registration_steps != "Step_2" }
   # validates :registration_date, presence: true , :if => Proc.new{|f| f.registration_steps != "Step_1" or f.registration_steps != "Step_2" }
-  validates :insurance_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
-  validates :puc_validity_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  # validates :insurance_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  # validates :puc_validity_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :authorization_certificate_validity_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
-  validates :fitness_validity_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
-  validates :road_tax_validity_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  # validates :fitness_validity_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  # validates :road_tax_validity_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :permit_type, presence: true, :if => Proc.new{|f| f.registration_steps != "Step_1" or f.registration_steps != "Step_2" }
-  validates :permit_validity_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
+  # validates :permit_validity_date, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_2"}
 
   validates :seats, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # validates :make_year, presence: true, unless: :first_registration_steps
