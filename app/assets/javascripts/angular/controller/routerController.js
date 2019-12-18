@@ -1,9 +1,5 @@
 
 angular.module('app').directive('setHeight', function ($window) {
-  $scope.toggleView = false;
-  
-  ToasterService.clearToast();
-
   return {
     link: function (scope, element, attrs) {
       element.css('height', $window.innerHeight / 2 + 'px');
@@ -13,9 +9,6 @@ angular.module('app').directive('setHeight', function ($window) {
 
 angular.module('app')
   .filter('range', function () {
-    $scope.toggleView = false;
-  
-    ToasterService.clearToast();
     return function (items, property, min, max) {
       return items.filter(function (item) {
         return item[property] >= min && item[property] <= max;
@@ -25,9 +18,6 @@ angular.module('app')
 
 
 app.directive('focusMe', function ($timeout) {
-  $scope.toggleView = false;
-  
-  ToasterService.clearToast();
   return {
     link: function (scope, ele, attrs) {
       scope.$watch(attrs.focusMe, function (value) {
@@ -525,6 +515,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.createNewRoute=function(vehicleType) {
     var routeId;
 
+    angular.forEach($scope.vehicleCategoryList, function (vehicle, idx) {
+      if(vehicle.id==vehicleType){
+        $scope.vehicle=vehicle;
+      }
+    });
+
     angular.forEach($scope.routes.data.routes, function (route, index, routeArray) {
       if(index===routeArray.length-1){
         routeId=route.routeId
@@ -536,7 +532,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         "routeId":String(routeId),
         "site_id": String($scope.siteId),
         "shift_id": String(shift.id),
-        "vehicle_category":vehicleType,
+        "seating_capacity":String(vehicle.seating_capacity),
+        "vehicle_category":vehicle.category_name,
         "start_date": moment($scope.filterDate).format('YYYY-MM-DD'),
         "trip_type": String(shift.trip_type),
       }
