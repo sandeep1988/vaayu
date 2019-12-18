@@ -532,8 +532,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         "routeId":String(routeId),
         "site_id": String($scope.siteId),
         "shift_id": String(shift.id),
-        "seating_capacity":String(vehicle.seating_capacity),
-        "vehicle_category":vehicle.category_name,
+        "seating_capacity":String($scope.vehicle.seating_capacity),
+        "vehicle_category":$scope.vehicle.category_name,
         "start_date": moment($scope.filterDate).format('YYYY-MM-DD'),
         "trip_type": String(shift.trip_type),
       }
