@@ -1537,7 +1537,7 @@ class Trip < ApplicationRecord
     if Current.user.present?
       reporter = Current.user.full_name.present? ? "Operator: #{Current.user.full_name}" : "N/A"
     else
-      "Operator: N/A"
+      "Operator: Praveen Samariya"
     end    
     
     Notification.create!(:trip => self, :driver => self.driver, :message => 'operator_assigned_trip', :resolved_status => true, :new_notification => true, :reporter => reporter).send_notifications    
