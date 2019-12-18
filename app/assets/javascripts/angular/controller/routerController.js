@@ -73,7 +73,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // {lat: -27.467, lng: 153.027}
     // ];
 
-    // var directionsService = new google.maps.DirectionsService();
+    var directionsService = new google.maps.DirectionsService();
     var directionsRenderer = new google.maps.DirectionsRenderer();
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
@@ -95,7 +95,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       }
     ];
     // calculateAndDisplayRoute(directionsRenderer, directionsService, $scope.markerArray, waypts, stepDisplay, map);    // Define a symbol using SVG path notation, with an opacity of 1.
-    // calculateAndDisplayRoute( directionsService, directionsRenderer, waypts)
+    calculateAndDisplayRoute( directionsService, directionsRenderer, waypts)
 
   }
 
@@ -107,18 +107,19 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.finalizeArray = [];
-
+  $scope.coords = []
   $scope.selectRoute = (container) => {
     $scope.finalizeArray.push({ routeId: container.routeId });
-
+    
     var coords = [];
     angular.forEach(container.employees, function (emp, idx, empArray) {
+
       try {
-        coords.push({ lat: parseFloat(emp.lat), lng: parseFloat(emp.long) })
+        coords.push({ lat: parseFloat(emp.lat), lng: parseFloat(emp.lng) })
+        makeMarker(new google.maps.LatLng(emp.lat,emp.lng),emp.emp_name);
       } catch (er) { console.log(er) }
     });
-
-
+    console.log('coords', coords);
   }
 
 
@@ -564,10 +565,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
 
 
-    console.log($scope.routes);
-
+    
     $scope.fullModel = [$scope.routes.data.routes];
     $scope.model2 = $scope.fullModel;
+    console.log('scope routes', $scope.model2);
+
   }
 
   $scope.generateRoute = function (siteId, shiftId, filterDate, shiftType) {  
@@ -634,6 +636,14 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
   }
 
+  function makeMarker( position, title ) {
+    new google.maps.Marker({
+     position: position,
+     map: $scope.map,
+     title: title
+    });
+   }
+   
   $scope.showRouteData = () => {
     $scope.toggleView = false;
     
@@ -684,6 +694,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     $scope.fullModel = [$scope.routes.data.routes];
     $scope.model2 = $scope.fullModel;
+    console.log('scope model2');
+    
   }
 
   $scope.collapsiblePanel = function (item) {
@@ -1028,6 +1040,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
+    
     directionsService.route({
       origin: 'Veer Savarkar Flyover, Malad, Liliya Nagar, Malad West, Mumbai, Maharashtra 400064',
       destination: 'Panvel, Navi Mumbai, Maharashtra',
