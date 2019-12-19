@@ -297,19 +297,33 @@ function setInputFilter(textbox, inputFilter) {
 
 $(document).ready(function(){
 
-    let urlHash = window.location.hash;
-    urlHash = urlHash.replace("#!","");
-    //setTimeout(function(){
-    if(urlHash){
-        $("a[href="+urlHash+"]").trigger('click');    
-    }
-    
-    $(".reload-button").attr("href", "#");
 
+
+    if( window.location.hash.indexOf("places") != -1 || window.location.hash.indexOf("sites") != -1 ){
+
+        $('a[href="#sites"]').trigger('click');
+    }
+
+    else if( window.location.hash.indexOf("things") != -1 || window.location.hash.indexOf("shifts") != -1 ){
+
+        $('a[href="#shifts"]').trigger('click');
+    }else{
+
+        let urlHash = window.location.hash;
+        urlHash = urlHash.replace("#!","");
+        //setTimeout(function(){
+        if(urlHash){
+            $("a[href="+urlHash+"]").trigger('click');    
+        }
+        $("#id_gaurd").click();
+        $(".reload-button").attr("href", "#");
+
+         console.log(urlHash,"trigger tab click >>>>>>>>>>>>>>>>>>>" );
+    }
     //},1000);
     
 
-    console.log(urlHash,"trigger tab click >>>>>>>>>>>>>>>>>>>" );
+   
     
     // if( window.location.hash.indexOf("drivers") != -1  ){
 
