@@ -107,11 +107,13 @@ javascript:
   $("#employee_check_in_attributes_"+head_id+"__shift_id option").each(function() {
    
    shift_times = $(this).text();
-   
+   //console.log("AJAY --<<<<<<<>>>>>>>>>>>>", shift_times , $(this).closest( "th").text() );
    if(shift_times != 'Clear'){ 
-   var momTime=moment(shift_times, 'hh:mm');
-   finalshiftTime=momTime._i;
    
+   var momTime=moment(shift_times, 'hh:mm');
+   
+   finalshiftTime=momTime._i;
+   console.log("<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>", finalshiftTime );
    var d1= new Date();
    var curDay=moment(d1).format('MMMM dd , YYYY ');
    
@@ -127,7 +129,7 @@ javascript:
    if(stt >= endt)
    {
    console.log('Inside Looped--->current time--->'+curr_time+'--Compare time--------->'+finalshiftTime);
-   $(this).prop('disabled', true);
+   //$(this).prop('disabled', true);
    
    }
    }
@@ -157,7 +159,7 @@ javascript:
    if(stt_checkout >= endt_checkout)
    {
    console.log('Inside Checkout Looped--->current Checkout time--->'+curr_time+'--Compare Checkout time--------->'+finalshiftTime_checkout);
-   $(this).prop('disabled', true);
+   //$(this).prop('disabled', true);
    
    }
    }
