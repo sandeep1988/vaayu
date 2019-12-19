@@ -312,7 +312,43 @@ $(function () {
         var table = $('#dataTables_wrapper').DataTable();
         table.ajax.reload();
         e.preventDefault();
-    })
+    });
+
+
+
+    $(".nav-actions").on("click", ".edit-buttons .submit-btn.form-guards", function(e) {        
+        console.log($(".bus_travel").attr("value"))
+        if($(".bus_travel").attr("checked") == "checked" || checked){
+            var selectedStop = $("#user_entity_attributes_bus_trip_route_id option:selected").val();
+            if(selectedStop == '' || selectedStop == undefined || selectedStop == null){
+                $(".user_entity_bus_trip_route label:first").addClass("text-danger")
+                $("#user_entity_attributes_bus_trip_route_id").css("border-color", "#DA4F49")
+                e.preventDefault()
+                return
+            }
+            else{
+                $(".user_entity_bus_trip_route label:first").removeClass("text-danger")
+                $("#user_entity_attributes_bus_trip_route_id").css("border-color", "#E0E4E8")
+            }
+
+        }
+        clearTimeout(focusOutTimer);
+        $.call("/employees/validate", $("#form-guards"), "", "", true);
+        $("select.required").focusout();
+        var table = $('#dataTables_wrapper').DataTable();
+        table.ajax.reload();
+        e.preventDefault();
+    });
+
+
+    // Form Validation
+    $("#guards").on("focusout", ".live-validation input.required, select.required", function(e){
+        var _this = this;
+        focusOutTimer = setTimeout(function () {
+            var fields = ['user[phone]', 'user[entity_attributes][home_address]', 'user[entity_attributes][nodal_address]'];
+            $.validate($(_this), _this.name, fields, "/employees/validate", $("#form-guards"))
+        }, 200)
+    });
 
     // Match Employees
     var typingTimer, matchTemplate, listItem;
@@ -347,6 +383,10 @@ $(function () {
         $(".form-group .match-result").remove();
     });
 
+    $("#guards").on("focusin", ".live-validation input, select", function(){
+        $(".form-group .match-result").remove();
+    });
+
     $("#employees").on("click", ".geo_code", function(e) {
         if($("#user_entity_attributes_home_address").val() !== "") {
             $.showLoader();
@@ -361,7 +401,38 @@ $(function () {
         e.preventDefault();
     });
 
+
+    $("#guards").on("click", ".geo_code", function(e) {
+        if($("#user_entity_attributes_home_address").val() !== "") {
+            $.showLoader();
+            $.get($(this).attr("href"), { home_address: $("#user_entity_attributes_home_address").val() }).done(function(data){
+                // console.log( data ,"<<<<<<<<<<bb>>>>>>>>>>>>");
+                if(!$.isEmptyObject(data)) {
+                    console.log( data ,"`1313<<<<<<<<<<>>>>>>>>>>>>");
+                    $("#user_entity_attributes_home_address_latitude").val(data["lat"]);
+                    $("#user_entity_attributes_home_address_longitude").val(data["lng"]);
+                }
+                $.hideLoader();
+            });
+        }
+        e.preventDefault();
+    });
+
     $("#employees").on("click", ".nodal_geo_code", function(e) {
+        if($("#user_entity_attributes_nodal_address").val() !== "") {
+            $.showLoader();
+            $.get($(this).attr("href"), { nodal_address: $("#user_entity_attributes_nodal_address").val() }).done(function(data){
+                if(!$.isEmptyObject(data)) {
+                    $("#user_entity_attributes_nodal_address_latitude").val(data["lat"]);
+                    $("#user_entity_attributes_nodal_address_longitude").val(data["lng"]);
+                }
+                $.hideLoader();
+            });
+        }
+        e.preventDefault();
+    });
+
+    $("#guards").on("click", ".nodal_geo_code", function(e) {
         if($("#user_entity_attributes_nodal_address").val() !== "") {
             $.showLoader();
             $.get($(this).attr("href"), { nodal_address: $("#user_entity_attributes_nodal_address").val() }).done(function(data){
@@ -395,6 +466,12 @@ $(function () {
 
         updateBillingZone($(this).val());
     });
+
+
+    // $("#guards").on("change","#user_entity_attributes_site_id",function(){
+
+    //     updateBillingZone($(this).val());
+    // });
 
     
 });

@@ -24,6 +24,7 @@ $(function(){
       selector.closest("div").find("span").remove();
 
       spanTxt = '<span class="help-block">'+ msg +'</span>';
+      // console.log( "addErrorMessage ",spanTxt );
       selector.closest("div").append(spanTxt);
     }
   }
@@ -42,6 +43,7 @@ $(function(){
   }
 
   $.call = function(url, formElement, _this="", fieldName="", submit=false) {
+    $(".has-error").removeClass("has-error");
     var data = $.grep(formElement.serializeArray(), function(e, i) {return e.name == "_method"}, true)
     var editObj = formElement.serializeArray().reduce(function(prev, current) { return (current.name === "_method") ? current : prev; }, null);
     if (editObj !== null) { data.push({name: "id", value: formElement.attr("action").split("/").slice(-1)}) }
