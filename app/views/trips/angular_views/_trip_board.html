@@ -237,7 +237,7 @@
                   <tr class="" ng-repeat="item in modelData.employees_nodes_addresses track by $index"
                     ng-class="{'panic':item.is_panic}">
                     <td> 
-                        <input type="checkbox" ng-checked="item.empCheckInStatus=='checked'"
+                        <input type="checkbox" ng-checked="item.empCheckInStatus=='checked'" ng-disabled="item.empCheckInStatus=='checked'"
                           name="route" class="tick" style="height: 15px; width: 15px;">
                   </td>
                     <td>{{item.empName}}</td>
