@@ -40,6 +40,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
 
   $scope.toggleView = false;  
+  $scope.disableBtn = false;
   ToasterService.clearToast();
   $scope.place = {};
   // Map.init();
@@ -342,7 +343,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.updateFilters = function () {
     $scope.toggleView = false;
-    
     ToasterService.clearToast();
     let postData = {
       "site_id": $scope.siteId,
@@ -353,7 +353,33 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       $scope.shifts = data.data.shiftdetails;
       if ($scope.shifts && $scope.shifts.length) {
         $scope.selectedShift = JSON.stringify($scope.shifts[0]);
+        // $scope.resetRoute();
+        // $scope.generateRoute($scope.siteId,$scope.shifts[0].id,moment().format('YYYY-MM-DD'),1);
+      } else {
+        $scope.selectedShift = null;
+        // $scope.resetRoute();
+      }
+    }, function (error) {
+      console.log(error);
+    });
+
+  }
+
+  $scope.submitFilters = function () {
+    let postData = {
+      "site_id": $scope.siteId,
+      "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
+    }
+    $scope.disableBtn = true;
+    RosterService.get(postData, function (data) {
+      $scope.disableBtn = false;
+      $scope.shifts = data.data.shiftdetails;
+      if ($scope.shifts && $scope.shifts.length) {
+        $scope.selectedShift = JSON.stringify($scope.shifts[0]);
         $scope.resetRoute();
+        $scope.toggleView = true;
+        console.log('data: ',data); 
+        ToasterService.showSuccess('Success', 'Routes listed successfully');
         // $scope.generateRoute($scope.siteId,$scope.shifts[0].id,moment().format('YYYY-MM-DD'),1);
       } else {
         $scope.selectedShift = null;
@@ -371,10 +397,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.isDisabled = true;
 
   $scope.finalizeRoutes = () => {
-
-    $scope.toggleView = false;
-    
-    ToasterService.clearToast();
     if ($scope.finalizeArray.length === 0) {
       $scope.toggleView = true;
       ToasterService.showError('Error', 'Kindly select a route before save')
@@ -396,10 +418,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.saveRoutes = function () {
-    $scope.toggleView = false;
-    
-    ToasterService.clearToast();
-
     var changedRoutes = [];
 
     angular.forEach($scope.routes.data.routes, function (route) {
@@ -483,9 +501,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         console.log('save button cick res', res)
         $scope.isDisabled = false;
         if (res['success']) {
+          $scope.resetRoute();
           $scope.toggleView = true;
           ToasterService.showSuccess('Success', res['message']);
-          $scope.resetRoute();
         } else {
           ToasterService.clearToast();
           $scope.toggleView = true;
@@ -566,9 +584,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   };
 
   $scope.onVehicleSearch = (plateNumber) => {
-    $scope.toggleView = false;
-    
-    ToasterService.clearToast();
     $scope.plateNumber = plateNumber;
     let shift = JSON.parse($scope.selectedShift);
     let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber, to_date: moment($scope.filterDate).format('YYYY-MM-DD')};

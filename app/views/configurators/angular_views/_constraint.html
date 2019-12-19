@@ -21,7 +21,7 @@
     </div>
 
     <div>
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs col-lg-12">
             <li class="nav-item nav-link " ng-class="{active:isSet(1)}" ng-click="setTab(1)"><a
                     href="javascript:void(0)">Guard</a></li>
             <li class="nav-item nav-link " ng-class="{active:isSet(2)}" ng-click="setTab(2)"><a
@@ -333,28 +333,28 @@
         <span class="main-title" style="padding: 10px;float: left;">All List</span>
 
 
-        <table class="table table-striped table-bordered ">
+        <table class="table table-striped table-bordered " style="text-align: center;">
             <thead class="pop-table-head">
                 <tr>
-                    <th>For</th>
-                    <th>Event</th>
-                    <th>When</th>
-                    <th>From Time</th>
-                    <th>To Time</th>
-                    <th>Action</th>
+                    <th style="text-align: center;">For</th>
+                    <th style="text-align: center;">Event</th>
+                    <th style="text-align: center;">When</th>
+                    <th style="text-align: center;">From Time</th>
+                    <th style="text-align: center;">To Time</th>
+                    <th style="text-align: center;">Action</th>
                 </tr>
             </thead>
             <tbody class="pop-table-body">
                 <tr ng-repeat="item in constraintList track by $index">
-                    <td>{{item.for}}</td>
-                    <td>{{item.event}}</td>
-                    <td>{{item.when}}</td>
-                    <td>{{item.from_time }}</td>
-                    <td>{{item.to_time}}</td>
-                    <td>
-                       
-                                <button type="button" class="btn btn-danger main-submit-btn" style="margin-top: 5px;"
-                                    ng-click="deleteConstraint(item)">Delete</button>
+                    <td style="text-align: center;">{{item.for}}</td>
+                    <td style="text-align: center;">{{item.event}}</td>
+                    <td style="text-align: center;">{{item.when}}</td>
+                    <td style="text-align: center;">{{item.from_time }}</td>
+                    <td style="text-align: center;">{{item.to_time}}</td>
+                    <td>      
+                        <div style="text-align: center; position: relative; overflow: hidden;">
+                            <button type="button" class="btn btn-danger main-submit-btn" style="margin: 5px auto; float: none;" ng-click="deleteConstraint(item)">Delete</button>
+                        </div>      
                     </td>
                 </tr>
             </tbody>
