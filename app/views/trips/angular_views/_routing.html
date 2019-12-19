@@ -141,7 +141,7 @@
                   <div ng-repeat="containers in model2">
                     <div class="vaayu-dropzone">
                       <!-- | filter :{vehicle_allocated:search} | range : 'empty_seats' : slider_empty.minValue : slider_empty.maxValue | range : 'total_seats' : slider_occupied.minValue : slider_occupied.maxValue -->
-                      <div ng-repeat="container in containers | filter :{vehicle_allocated:search}" no-drag
+                      <div ng-repeat="container in containers" no-drag
                          class="employee-cluster-panel">
                         <div class="employee-cluster-panel-heading"
                           ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
