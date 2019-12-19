@@ -485,19 +485,21 @@ function updateBillingZone( siteid ){
    
      console.log("zone", data );
 
-     let zoneValune = $("#user_entity_attributes_billing_zone").val();
+     let zoneValune = $("#user_entity_attributes_zone_id").val();
 
         let zone_Html = '';
         if( data.length > 0 ){
             
             for( let index in data ){
 
-                zone_Html += `<option  ${zoneValune == data[index] ?"selected":"" } value="${data[index]}">${data[index]}</option>`;
+                console.log( data[index] );
+
+                zone_Html += `<option  ${zoneValune == data[index][0] ?"selected":"" } value="${data[index][0]}">${data[index][1]}</option>`;
             }
         }
 
-
-        $("#user_entity_attributes_billing_zone").html("").html(zone_Html);
+        console.log("<<<<<<<<<<<<<<<", zone_Html);
+        $("#user_entity_attributes_zone_id").html("").html(zone_Html);
 
 
     });
