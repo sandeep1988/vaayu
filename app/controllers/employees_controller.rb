@@ -31,7 +31,7 @@ class EmployeesController < ApplicationController
   end
 
   def get_zones_by_site
-    zones = Zone.where(site_id: params[:site_id]).pluck(:name)
+    zones = Zone.where(site_id: params[:site_id]).pluck(:id,:name)
     render json: zones, status: 200
   end
 
