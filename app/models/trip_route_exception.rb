@@ -25,7 +25,7 @@ class TripRouteException < ApplicationRecord
   delegate :driver, to: :trip_route
   delegate :trip, to: :trip_route
 
-  after_create :autoclose_exceptions
+  # after_create :autoclose_exceptions
 
   # All non-suspending exceptions
   scope :non_suspending, -> { where.not(exception_type: SUSPEND) }

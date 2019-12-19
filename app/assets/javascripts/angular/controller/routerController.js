@@ -91,7 +91,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.selected_vehicle_status = 'on_duty';
-  $scope.onVehicleStatusChange = (value) => {
+  $scope.onVehicleStatusChange = (value) => {   
+    console.log('value ', value);
     $scope.selected_vehicle_status = value;
     let shift = JSON.parse($scope.selectedShift);
     $scope.getVehicleListForSite($scope.siteId, shift.id, shift.trip_type);
@@ -196,6 +197,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // RouteService.getVehicleCategoryList(function (data) {
     //   $scope.vehicleCategoryList = data;
     // });
+
+
+
+
+
 
     RosterService.getAllSiteList(function (data) {
       $scope.siteList = data.data.list;
@@ -353,7 +359,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       $scope.shifts = data.data.shiftdetails;
       if ($scope.shifts && $scope.shifts.length) {
         $scope.selectedShift = JSON.stringify($scope.shifts[0]);
-        // $scope.resetRoute();
+        $scope.resetRoute();
         // $scope.generateRoute($scope.siteId,$scope.shifts[0].id,moment().format('YYYY-MM-DD'),1);
       } else {
         $scope.selectedShift = null;
@@ -589,7 +595,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber, to_date: moment($scope.filterDate).format('YYYY-MM-DD')};
     RouteService.searchVechicle(params, function (res) {
       console.log('vehicle search response', res)
-      console.log('vehicle search response', JSON.stringify(res))
+      console.log('vs response', JSON.stringify(res))
       if (res['success']) {
         $scope.vehicleList = res.data;
         var allowtypes = [];
