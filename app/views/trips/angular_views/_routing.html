@@ -141,7 +141,7 @@
                   <div ng-repeat="containers in model2">
                     <div class="vaayu-dropzone">
                       <!-- | filter :{vehicle_allocated:search} | range : 'empty_seats' : slider_empty.minValue : slider_empty.maxValue | range : 'total_seats' : slider_occupied.minValue : slider_occupied.maxValue -->
-                      <div ng-repeat="container in containers" no-drag
+                      <div ng-repeat="container in containers | filter :{vehicle_allocated:search}" no-drag
                          class="employee-cluster-panel">
                         <div class="employee-cluster-panel-heading"
                           ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
@@ -528,7 +528,7 @@
               dnd-allowed-types="list.allowedTypes" dnd-disable-if="list.vehical.length >= 1"
               dnd-dragover="dragoverVehicleCallback(list,index, external, type)"
               dnd-drop="dropVehicleCallback(list,index, item, external, type)">
-              <li ng-repeat="vehical in list.vehical | filter : {driverStatus:selected_vehicle_status}" dnd-draggable="vehical" no-drop
+              <li ng-repeat="vehical in list.vehical" dnd-draggable="vehical" no-drop
                 dnd-effect-allowed="move" dnd-type="vehical.type" dnd-disable-if="vehical.type == 'unknown'"
                 dnd-moved="list.vehical.splice($index, 1)"
                 class="background-{{vehical.type}} input-group employee-list-group-item">
