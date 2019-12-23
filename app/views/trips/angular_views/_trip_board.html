@@ -210,7 +210,7 @@
     <div class="vaayu-modal-content">
       <div class="vaayu-modal-header">
 
-        <span> Routes - {{modelData.trip_id}}</span>
+        <span> Route - {{modelData.route_id}}</span>
         <!-- <span style="float: right;">
           <div ng-dropdown-multiselect=""  options="vehicleList" style="display: inline-block;"
           selected-model="SelectedEmp " checkboxes="true" extra-settings="example14settings"
@@ -237,8 +237,16 @@
                   <tr class="" ng-repeat="item in modelData.employees_nodes_addresses track by $index"
                     ng-class="{'panic':item.is_panic}">
                     <td> 
-                        <input type="checkbox" ng-checked="item.empCheckInStatus=='checked'" ng-disabled="item.empCheckInStatus=='checked'"
-                          name="route" class="tick" style="height: 15px; width: 15px;">
+                        <!-- <input type="checkbox" ng-checked="item.empCheckInStatus=='checked'" ng-disabled="item.empCheckInStatus=='checked'"
+                          name="route" class="tick" style="height: 15px; width: 15px;"> -->
+                          <div class="checked-element">
+                            <i class="fa fa-check" style="color: green;" aria-hidden="true" ng-if="item.empCheckInStatus=='checked'"></i>
+                            <span class="tooltiptext">Checked In</span>
+                          </div>
+                          <div class="missed-element">
+                            <i class="fa fa-times" style="color: red;" aria-hidden="true" ng-if="item.empCheckInStatus=='missed'"></i>
+                            <span class="tooltiptext">No Show</span>
+                          </div>
                   </td>
                     <td>{{item.empName}}</td>
                     <td>{{item.eta}}</td>
