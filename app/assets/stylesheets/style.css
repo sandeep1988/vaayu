@@ -15,6 +15,45 @@
     padding-right: 15px;
 }
 
+.icon-green {
+  color: green;
+}
+
+.checked-element,
+.missed-element{
+  position: relative;
+  display: inline-block;
+}
+
+.checked-element .tooltiptext,
+.missed-element .tooltiptext{
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+.checked-element:hover .tooltiptext,
+.missed-element:hover .tooltiptext {
+  visibility: visible;
+}
+
+
+.checked-element:hover .tooltiptext{
+  display: block;
+}
+
+.icon.red{
+  color: red;
+}
+
 .vayau-routing .card-analytic.routes .number {
     color: #ffffff;
 }
