@@ -378,15 +378,41 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
 
   $scope.showPopup = false;
+
+  $scope.getTripDetails =function() {
+
+    if($scope.selectedTripId){
+      let postData = {
+        "trip_id": $scope.selectedTripId,
+        "site_id": $scope.selectedSiteID,
+        "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
+      }
+       
+      TripboardService.getAllTrips(postData, (data) => {
+        
+        $scope.modelData = data.data.tripsdetails[0];
+        $scope.showPopup = true;
+        $scope.selectedVehicle = {};
+        var trip_status = data.current_status.toLowerCase().trim();
+        if (trip_status === 'pending acceptance' || trip_status === 'accepted' || trip_status === 'delayed') {
+          $scope.getVehicleListForTrip(data);
+        } 
+  
+      }, function (error) {
+        console.error(error);
+      });
+    }
+    
+  }
+
   $scope.showModal = (row) => {
-    console.log('showModal', row.map_data);
-    $scope.modelData = row;
-    $scope.showPopup = true;
-    $scope.selectedVehicle = {};
-    var trip_status = row.current_status.toLowerCase().trim();
-    if (trip_status === 'pending acceptance' || trip_status === 'accepted' || trip_status === 'delayed') {
-      $scope.getVehicleListForTrip(row);
-    } 
+      $scope.selectedTripId=row.trip_id
+     
+      $scope.getTripDetails();
+
+      $interval(function() {
+        $scope.getTripDetails();
+      }, 1000*60);
       
     return ;
 
