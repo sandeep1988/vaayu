@@ -334,7 +334,6 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   }
 
   $scope.getAllTrips = function () {
-
     $scope.toggleView = false;
     
     ToasterService.clearToast();

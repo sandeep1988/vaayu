@@ -102,7 +102,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.finalizeArray = [];
   $scope.coords = []
   $scope.selectRoute = (container) => {
-
     console.log(container);
     $scope.finalizeArray.push({ routeId: container.routeId });
    
@@ -1076,10 +1075,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       } else {
         console.log('data: ', data['message'])
         $scope.toggleView = true;
-        ToasterService.showError('Error', data.message);
-        setTimeout(()=>{
-          ToasterService.clearToast();
-        },20)
+        // ToasterService.showError('Error', data.message);
+        // setTimeout(()=>{
+        //   ToasterService.clearToast();
+        // },20)
       }
 
       // $scope.resetRoute();
@@ -1195,7 +1194,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           }
         }
       } else {
-        window.alert('Directions request failed due to ' + status);
+        console.log('Directions request failed due to ' + status);
       }
     });
    }
@@ -1227,7 +1226,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           }
         }
       } else {
-        window.alert('Directions request failed due to ' + status);
+        console.log('Directions request failed due to ' + status);
       }
     });
    }
