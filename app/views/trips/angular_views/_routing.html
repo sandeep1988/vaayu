@@ -146,7 +146,7 @@
                         <div class="employee-cluster-panel-heading"
                           ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
                           <div class="title_container" >
-                            <input type="checkbox" ng-changed="selectRoute(container)" ng-model="container.selected"
+                            <input type="checkbox" ng-change="selectRoute(container)" ng-model="container.selected"
                               name="route" class="tick" style="height: 25px; width: 25px;"
                               ng-show="container.status !== 'assign_requested'">
                             <span class="title_text"># {{container.routeId+' - '+container.vehicle_type}}  </span>
