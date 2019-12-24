@@ -413,7 +413,6 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         $scope.getTripDetails();
       }, 1000*60);
       
-    return ;
 
     // var mapProp = {
     //   center: new google.maps.LatLng(51.508742, -0.120850),
