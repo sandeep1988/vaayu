@@ -28,7 +28,8 @@ class IngestWorker
 
       ingest_job.complete if ingest_job.may_complete?
       ingest_job.save
-      IngestMailer.notify(ingest_job).deliver_now!
+      ## Comment mailer for employe bulk upload
+      # IngestMailer.notify(ingest_job).deliver_now!
     end
   end
 

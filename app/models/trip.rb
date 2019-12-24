@@ -717,7 +717,7 @@ class Trip < ApplicationRecord
     self.renotify_driver_about_assignment
 
     #Send notification for reassignment
-    Notification.create!(:trip => self, :driver => driver, :message => 'reassigned_trip', :new_notification => true, :resolved_status => true, :reporter => 'Moove System').send_notifications    
+    Notification.create!(:trip => self, :driver => driver, :message => 'reassigned_trip', :new_notification => true, :resolved_status => true, :reporter => 'Vaayu System').send_notifications    
   end
 
   def add_guard_to_trip(employee_id)
@@ -829,7 +829,7 @@ class Trip < ApplicationRecord
           @user = User.employee.where(id: trip_route.employee_trip.employee.user_id).first
           if @user.present?
             @user_driver = User.driver.where(id: driver.user_id).first
-            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], @user_driver.full_name + ' is on the way to your pick-up location in ' + vehicle.colour + ' ' + vehicle.make + ' ' + vehicle.model + '(' + vehicle.plate_number  + ')' + '. Expected arrival time is ' + eta + '. For more updates use the MOOVE App.');
+            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], @user_driver.full_name + ' is on the way to your pick-up location in ' + vehicle.colour + ' ' + vehicle.make + ' ' + vehicle.model + '(' + vehicle.plate_number  + ')' + '. Expected arrival time is ' + eta + '. For more updates use the Vaayu App.');
           end
         end   
         data = { employee_trip_id: trip_route.employee_trip.id, eta: eta }
@@ -876,7 +876,7 @@ class Trip < ApplicationRecord
             @user = User.employee.where(id: employee_trip.employee.user_id).first
             if @user.present?
               @user_driver = User.driver.where(id: driver.user_id).first
-              SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], @user_driver.full_name + ' is on the way to your pick-up location in ' + vehicle.colour + ' ' + vehicle.make + ' ' + vehicle.model + '(' + vehicle.plate_number  + ')' + '. Expected arrival time is ' + eta + '. For more updates use the MOOVE App.');
+              SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], @user_driver.full_name + ' is on the way to your pick-up location in ' + vehicle.colour + ' ' + vehicle.make + ' ' + vehicle.model + '(' + vehicle.plate_number  + ')' + '. Expected arrival time is ' + eta + '. For more updates use the Vaayu App.');
             end
           end
           data = { employee_trip_id: employee_trip.id, eta: eta }
@@ -1165,7 +1165,7 @@ class Trip < ApplicationRecord
       # Remove all the Employees from the trip with trip route status as not_started, driver_arrived
       self.trip_routes.each do |trip_route|
         if trip_route.not_started? || trip_route.driver_arrived?
-          Notification.create!(:trip => self, :driver => self.driver, :employee => trip_route.employee_trip.employee,:employee_trip => trip_route.employee_trip, :message => 'car_break_down_employee_removed', :new_notification => true, :resolved_status => false, :reporter => 'Moove System').send_notifications
+          Notification.create!(:trip => self, :driver => self.driver, :employee => trip_route.employee_trip.employee,:employee_trip => trip_route.employee_trip, :message => 'car_break_down_employee_removed', :new_notification => true, :resolved_status => false, :reporter => 'Vaayu System').send_notifications
           # Send SMS to the employees
           @user = User.employee.where(id: trip_route.employee_trip.employee.user_id).first
           if @user.present?
@@ -1214,7 +1214,7 @@ class Trip < ApplicationRecord
     if self.is_guard_required?
       @notification = Notification.where(trip: self, message: 'female_first_or_last_in_trip', resolved_status: false).first
       if @notification.blank?
-        Notification.create!(trip: self, message: 'female_first_or_last_in_trip', resolved_status: false, new_notification: true, :reporter => "Moove System").send_notifications
+        Notification.create!(trip: self, message: 'female_first_or_last_in_trip', resolved_status: false, new_notification: true, :reporter => "Vaayu System").send_notifications
       end
     end
   end
@@ -1368,11 +1368,11 @@ class Trip < ApplicationRecord
   end  
 
   def add_notification_unassign_driver_due_to_female_exception
-    Notification.create!(:trip => self, :driver => driver, :message => 'female_exception_driver_unassigned', :new_notification => true, :resolved_status => false, :reporter => 'Moove System').send_notifications
+    Notification.create!(:trip => self, :driver => driver, :message => 'female_exception_driver_unassigned', :new_notification => true, :resolved_status => false, :reporter => 'Vaayu System').send_notifications
   end
 
   def add_notification_unassign_driver_due_to_car_broke_down
-    Notification.create!(:trip => self, :driver => driver, :message => 'car_break_down_driver_unassigned', :new_notification => true, :resolved_status => false, :reporter => 'Moove System').send_notifications
+    Notification.create!(:trip => self, :driver => driver, :message => 'car_break_down_driver_unassigned', :new_notification => true, :resolved_status => false, :reporter => 'Vaayu System').send_notifications
   end
 
   def notify_driver_trip_cancel
@@ -1411,9 +1411,9 @@ class Trip < ApplicationRecord
         if @user.present?
           @user_driver = User.driver.where(id: driver.user_id).first
           if self.check_in?
-            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Driver #{driver&.full_name} (#{vehicle&.plate_number}) will be picking you up for the #{self.employee_trips&.first&.date&.in_time_zone('Chennai').strftime("%H:%M")} Check In to office. Driver Mobile Number - #{self.driver&.phone}. You can track your ride from the MOOVE Rider App.")
+            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Driver #{driver&.full_name} (#{vehicle&.plate_number}) will be picking you up for the #{self.employee_trips&.first&.date&.in_time_zone('Chennai').strftime("%H:%M")} Check In to office. Driver Mobile Number - #{self.driver&.phone}. You can track your ride from the Vaayu Rider App.")
           else
-            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Driver #{self.driver&.full_name} (#{self.vehicle&.plate_number}) will be picking you up for the #{self.employee_trips&.first&.date&.in_time_zone('Chennai').strftime("%H:%M")} Check Out from office. Driver Mobile Number - #{self.driver&.phone}. You can track your ride from the MOOVE Rider App.")
+            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Driver #{self.driver&.full_name} (#{self.vehicle&.plate_number}) will be picking you up for the #{self.employee_trips&.first&.date&.in_time_zone('Chennai').strftime("%H:%M")} Check Out from office. Driver Mobile Number - #{self.driver&.phone}. You can track your ride from the Vaayu Rider App.")
           end
         end
       end
