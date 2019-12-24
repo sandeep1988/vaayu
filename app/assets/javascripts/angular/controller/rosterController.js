@@ -175,9 +175,15 @@ $scope.uploadExcelData = function () {
       } else {
           // ToasterService.hideToast();
           $scope.toggleView = true;
-          ToasterService.showError('Error', 'resData.message');
+          showErrorToast('Error', 'resData.message')
+          // ToasterService.showError('Error', 'resData.message');
       }
   };
+
+  function showErrorToast(error, message){
+    ToasterService.showError(error, message);
+
+  }
  
   request.setRequestHeader('uid',SessionService.uid);
   request.setRequestHeader('access_token',SessionService.access_token);
