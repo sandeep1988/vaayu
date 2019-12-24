@@ -318,7 +318,7 @@ $scope.downloadSample= function() {
           if (res['is_routes_generated'] === false) {
           // if (true) {
             roster.result = 'REQUIRED MORE VEHICLE';
-            roster.disableGenerate = false;
+            // roster.disableGenerate = false;
           }
         }
         $scope.disable_roster_button = false;
