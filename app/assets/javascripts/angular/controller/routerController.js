@@ -91,6 +91,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.selected_vehicle_status = 'on_duty';
+
   $scope.onVehicleStatusChange = (value) => {   
     console.log('value ', value);
     $scope.selected_vehicle_status = value;
@@ -101,7 +102,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.finalizeArray = [];
   $scope.coords = []
   $scope.selectRoute = (container) => {
-
     console.log(container);
     $scope.finalizeArray.push({ routeId: container.routeId });
    
@@ -590,39 +590,41 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   };
 
   $scope.onVehicleSearch = (plateNumber) => {
-    $scope.plateNumber = plateNumber;
+    $scope.plateNumber=plateNumber;
     let shift = JSON.parse($scope.selectedShift);
-    let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber, to_date: moment($scope.filterDate).format('YYYY-MM-DD')};
-    RouteService.searchVechicle(params, function (res) {
-      console.log('vehicle search response', res)
-      console.log('vs response', JSON.stringify(res))
-      if (res['success']) {
-        $scope.vehicleList = res.data;
-        var allowtypes = [];
-        angular.forEach($scope.vehicleList, function (item) {
-          // item.type = "vehical";
-          item.type = item.vehicleType;
-          if (!allowtypes.includes(item.type)) {
-            allowtypes.push(item.type)
-          }
-        })
-        console.log('allowtypes', allowtypes);
-
-        $scope.vehicals = [
-          {
-            label: "Vehical",
-            allowedTypes: allowtypes,
-            max: allowtypes.length + 1,
-            vehical: $scope.vehicleList
-          }
-        ];
-      } else {
-        //ToasterService.showError('Error', res['message']);
-        console.log(res['message']);
-      }
-    }, function (error) {
-      console.log(error);
-    });
+  
+      let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber, to_date: moment($scope.filterDate).format('YYYY-MM-DD')};
+      RouteService.searchVechicle(params, function (res) {
+        console.log('vehicle search response', res)
+        console.log('vs response', JSON.stringify(res))
+        if (res['success']) {
+          $scope.vehicleList = res.data;
+          var allowtypes = [];
+          angular.forEach($scope.vehicleList, function (item) {
+            // item.type = "vehical";
+            item.type = item.vehicleType;
+            if (!allowtypes.includes(item.type)) {
+              allowtypes.push(item.type)
+            }
+          })
+          console.log('allowtypes', allowtypes);
+  
+          $scope.vehicals = [
+            {
+              label: "Vehical",
+              allowedTypes: allowtypes,
+              max: allowtypes.length + 1,
+              vehical: $scope.vehicleList
+            }
+          ];
+        } else {
+          //ToasterService.showError('Error', res['message']);
+          console.log(res['message']);
+        }
+      }, function (error) {
+        console.log(error);
+      });
+   
 
   }
 
@@ -1019,15 +1021,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.autoAllocate = function () {
 
-    $scope.toggleView = false;    
-    ToasterService.clearToast();
     if (!$scope.siteId) {
-      ToasterService.clearToast();
       $scope.toggleView = true;
       ToasterService.showError('Error', 'Select Site.');
       return;
     } else if (!$scope.selectedShift) {
-      ToasterService.clearToast();
       $scope.toggleView = true;
       ToasterService.showError('Error', 'Select Shift.');
       return;
@@ -1055,14 +1053,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     AutoAllocationService.query(postData, function (data) {
       console.log('autoallocation response ', data);
       if (data['success']) {
-        ToasterService.clearToast();
         $scope.routes = data;
         if ($scope.routes.data) {
-          ToasterService.clearToast();
           try {
             $scope.toggleView = true;
             console.log('In try loop');
-            ToasterService.clearToast();
             ToasterService.showToast('info', 'Response Received', $scope.routes.data.routes.length + ' Routes found for this shift')
             $scope.originalRoutes = angular.copy($scope.routes.data.routes);
             $scope.stats = $scope.routes.data.tats[0];
@@ -1071,7 +1066,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
             console.log('In catch loop');
             $scope.routes = RouteStaticResponse.emptyResponse;
             $scope.routes.data.routes = [];
-            ToasterService.clearToast();
             $scope.toggleView = true;
             ToasterService.showToast('info', 'Response Received', 'No Routes found for this shift')
             console.log('error', err)
@@ -1081,10 +1075,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       } else {
         console.log('data: ', data['message'])
         $scope.toggleView = true;
-        ToasterService.showError('Error', data.message);
-        setTimeout(()=>{
-          ToasterService.clearToast();
-        },20)
+        // ToasterService.showError('Error', data.message);
+        // setTimeout(()=>{
+        //   ToasterService.clearToast();
+        // },20)
       }
 
       // $scope.resetRoute();
@@ -1200,7 +1194,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           }
         }
       } else {
-        window.alert('Directions request failed due to ' + status);
+        console.log('Directions request failed due to ' + status);
       }
     });
    }
@@ -1232,7 +1226,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           }
         }
       } else {
-        window.alert('Directions request failed due to ' + status);
+        console.log('Directions request failed due to ' + status);
       }
     });
    }

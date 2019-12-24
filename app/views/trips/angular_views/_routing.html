@@ -528,7 +528,7 @@
               dnd-allowed-types="list.allowedTypes" dnd-disable-if="list.vehical.length >= 1"
               dnd-dragover="dragoverVehicleCallback(list,index, external, type)"
               dnd-drop="dropVehicleCallback(list,index, item, external, type)">
-              <li ng-repeat="vehical in list.vehical | filter : {driverStatus:selected_vehicle_status}" dnd-draggable="vehical" no-drop
+              <li ng-repeat="vehical in list.vehical" dnd-draggable="vehical" no-drop
                 dnd-effect-allowed="move" dnd-type="vehical.type" dnd-disable-if="vehical.type == 'unknown'"
                 dnd-moved="list.vehical.splice($index, 1)"
                 class="background-{{vehical.type}} input-group employee-list-group-item">
@@ -540,7 +540,8 @@
                 </span>
 
                 <div class="inner-text">
-                  <div class="text-medium"> {{vehical.vehicleNumber}} - <i> ({{vehical.driverStatus.toUpperCase().replace('_',' ')}}) </i></div>
+                  <div class="text-medium"> {{vehical.vehicleNumber}} - <i ng-if="vehical.driverStatus"> ({{vehical.driverStatus.toUpperCase()}}) </i>
+                    <i ng-if="!vehical.driverStatus"> ({{selected_vehicle_status.toUpperCase()}}) </i></div>
                   <div class="text-big"> {{vehical.vehicleType}} - {{vehical.model}}</div>
                 </div>
 
