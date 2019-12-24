@@ -140,7 +140,7 @@
                 <th>Vehicle Required</th>
                 <th>Available Vehicle</th>
                 <th>Result</th>
-                <th style="width:220px;">Action</th>
+                <th style="width:250px;">Action</th>
               </tr>
             </thead>
 
@@ -168,28 +168,28 @@
                    
                     <button ng-if="!roster.routesGenerated && !roster.disableGenerate && (roster.generateButtonLabel=='generate' || roster.generateButtonLabel =='regenerate')"
                       ng-click="addVehicleToRoster(roster)" type="button"
-                      class="btn btn-sm-vaayu btn-terniary btn-sm pull-left route-button">Add Vehicle</button>
+                      class="btn btn-sm-vaayu btn-terniary btn-sm pull-left route-button" style="width:48%;">Add Vehicle</button>
 
                     <button ng-if="!roster.routesGenerated && roster.disableGenerate || roster.routesGenerated" type="button"
-                      class="btn btn-sm-vaayu btn-terniary-disable btn-sm pull-left route-button">Add Vehicle</button>
+                      class="btn btn-sm-vaayu btn-terniary-disable btn-sm pull-left route-button" style="width:48%;">Add Vehicle</button>
 
-                    <button ng-if="roster.routesGenerated" type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-sm">
+                    <button ng-if="roster.routesGenerated" type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-sm" style="width:48%; float: right;">
                       Routes Finalized
                     </button>
-                    <button ng-if="!roster.routesGenerated && roster.disableGenerate" type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-sm route-button" style="width:46%;">
+                    <button ng-if="!roster.routesGenerated && roster.disableGenerate" type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-sm route-button" style="width:48%;">
                       Generate
                     </button>
                     <button
                       ng-if="!roster.routesGenerated && !roster.disableGenerate && roster.generateButtonLabel=='generate'"
                       ng-click="generateRoutes(roster)" type="button"
-                      class="btn btn-sm-vaayu btn-terniary-blue btn-sm" style="width:46%;">
+                      class="btn btn-sm-vaayu btn-terniary-blue btn-sm" style="width:48%;">
                       Generate
                     </button>
 
                      <button
                       ng-if="!roster.routesGenerated && !roster.disableGenerate && roster.generateButtonLabel =='regenerate'"
                       ng-click="generateRoutes(roster)" type="button"
-                      class="btn btn-sm-vaayu btn-sm pull-right" style="color:#fff;background:#65b9da;">
+                      class="btn btn-sm-vaayu btn-sm pull-right" style="color:#fff;background:#65b9da; width: 48%;">
                       Re-Generate
                     </button>
 
