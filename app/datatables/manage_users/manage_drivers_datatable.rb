@@ -41,7 +41,7 @@ class ManageUsers::ManageDriversDatatable
     search_by = params[:search_by]
     search_input = params[:search_input]
     if search_input.present?
-      @driver = Driver.eager_load([:user, :logistics_company, :business_associate, :vehicle, :site]).ransack(Searchables::DriverSearchable.new(params[:search_input]).send("by_#{params[:search_by]}")).result.joins(:user).order("f_name ASC, m_name ASC, l_name ASC").order('drivers.sort_status desc').order('drivers.created_at desc').offset(start).limit(per_page)
+      @driver = Driver.eager_load([:user, :logistics_company, :business_associate, :vehicle, :site]).ransack(Searchables::DriverSearchable.new(params[:search_input]).send("by_#{params[:search_by]}")).result.joins(:user).order("m_name ASC").order('drivers.sort_status desc').order('drivers.created_at desc').offset(start).limit(per_page)
     else
       @driver = Driver.eager_load([:user, :logistics_company, :business_associate, :vehicle, :site]).order('drivers.sort_status desc').order('drivers.created_at desc').offset(start).limit(per_page)
     end

@@ -634,6 +634,7 @@ ActiveRecord::Schema.define(version: 20191216154017) do
     t.string "cutoff_time", limit: 45
     t.string "status",      limit: 45, default: "active"
     t.string "created_at",  limit: 45
+    t.string "site_id",     limit: 45
   end
 
   create_table "employee_trip_issues", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
