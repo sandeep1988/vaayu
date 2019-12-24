@@ -88,7 +88,7 @@ javascript:
    var today = new Date();
    var h = today.getHours();
    var m = today.getMinutes();
-   currTimeNew = h + ":" + m;
+   currTimeNew = h+":"+m;
    momTimeCurr=moment(currTimeNew, 'HH:mm');
    var currTimeFinal;
    if(typeof(momTimeCurr._i) != "undefined" && momTimeCurr._i !== null)
@@ -107,62 +107,60 @@ javascript:
   $("#employee_check_in_attributes_"+head_id+"__shift_id option").each(function() {
    
    shift_times = $(this).text();
-   //console.log("AJAY --<<<<<<<>>>>>>>>>>>>", shift_times , $(this).closest( "th").text() );
+   //console.log("AJAY --<<<<<<<>>>>>>>>>>>>", head_id );
    if(shift_times != 'Clear'){ 
    
-   var momTime=moment(shift_times, 'hh:mm');
+   var momTime=moment(shift_times, 'HH:mm');
    
    finalshiftTime=momTime._i;
-   console.log("<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>", finalshiftTime );
-   var d1= new Date();
-   var curDay=moment(d1).format('MMMM dd , YYYY ');
    
-   var stt = new Date(curDay + curr_time);
-   stt = stt.getTime();
+   var d1 = new Date();
+   var curDay =moment(d1).format('YYYY/MM/DD');
+   let currentTimeDate        = curDay +" "+curr_time;
+   let currentFinalshiftTime  = currentSheduleDate +" "+finalshiftTime;
    
-   var endt = new Date(curDay + finalshiftTime);
-   endt = endt.getTime();
+   console.log(currentTimeDate,"<<<<<<<<<<????<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>", currentFinalshiftTime );
+
+    if( new Date(currentFinalshiftTime) < new Date( currentTimeDate ) )
+     {
+
+        $(this).prop('disabled', true);
+        $(this).attr("disabled", "disabled");
+        //let optionObject =  $(this);
+        //optionObject.disabled = true;
+      }
    
-   //by this you can see time stamp value in console via firebug
-   console.log("Time1: "+ stt + " Time2: " + endt);
-   
-   if(stt >= endt)
-   {
-   console.log('Inside Looped--->current time--->'+curr_time+'--Compare time--------->'+finalshiftTime);
-   //$(this).prop('disabled', true);
-   
-   }
    }
    
    });
+
    $("#employee_check_out_attributes_"+head_id+"__shift_id option").each(function() {
    
    shift_times_checkout = $(this).text();
    
    if(shift_times_checkout != 'Clear'){ 
-   var momTime_checkout=moment(shift_times_checkout, 'hh:mm');
-   finalshiftTime_checkout=momTime_checkout._i;
    
-   var d1_checkout= new Date();
-   var curDay_checkout=moment(d1_checkout).format('MMMM dd , YYYY ');
+    let momTime=moment(shift_times_checkout, 'HH:mm');
    
-   var stt_checkout = new Date(curDay_checkout + curr_time);
-   stt_checkout = stt_checkout.getTime();
+   finalshiftTime=momTime._i;
    
-   var endt_checkout = new Date(curDay_checkout + finalshiftTime_checkout);
-   endt_checkout = endt_checkout.getTime();
+   let d1 = new Date();
+   let curDay =moment(d1).format('YYYY/MM/DD');
+   let currentTimeDate        = curDay +" "+curr_time;
+   let currentFinalshiftTime  = currentSheduleDate +" "+finalshiftTime;
+   
+   console.log(currentTimeDate,"<<<<<<<<<<????<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>", currentFinalshiftTime );
 
- 
-
-   console.log("Checkout Time1: "+ stt_checkout + " Checkout Time2: " + endt_checkout);
-   
-   if(stt_checkout >= endt_checkout)
-   {
-   console.log('Inside Checkout Looped--->current Checkout time--->'+curr_time+'--Compare Checkout time--------->'+finalshiftTime_checkout);
-   //$(this).prop('disabled', true);
+    if( new Date(currentFinalshiftTime) < new Date( currentTimeDate ) )
+     {
+        $(this).prop('disabled', true);
+        $(this).attr("disabled", "disabled");
+      }
    
    }
-   }
+
+
+   
    
    });
   }

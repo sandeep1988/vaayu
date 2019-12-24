@@ -55,6 +55,8 @@
           <div class="">
             <button ng-click="addCustomeRoute()" type="button" class="btn btn-terniary fa-search-custom"
               style="float: right; background-color: #384266;">ADD CUSTOM ROUTE</button>
+              <button ng-click="showUploadWindow()" type="button" class="btn btn-terniary fa-search-custom"
+              style="float: right; background-color: #384266;margin-right:10px;">Upload</button>
           </div>
         </div>
 
@@ -138,7 +140,7 @@
                 <th>Vehicle Required</th>
                 <th>Available Vehicle</th>
                 <th>Result</th>
-                <th>Action</th>
+                <th style="width:250px;">Action</th>
               </tr>
             </thead>
 
@@ -163,33 +165,34 @@
                 <td class="text-color-blue " style="color: #14a89e !important;"><b>{{roster.result}}</b></td>
                 <td>
                   <div class="">
-                    <!-- && !roster.routesGenerated -->
-                    <!-- <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' "
-                    ng-click="generateRoutes(roster)" type="button"
-                    class="btn btn-sm-vaayu btn-terniary-blue btn-block">Generate</button> -->
-
-                    <button ng-if="roster.result!=='REQUIRED MORE VEHICLE' && roster.routesGenerated" type="button"
-                      class="btn btn-sm-vaayu btn-terniary-disable btn-block">Routes Generated</button>
-                    <button
-                      ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated && roster.disableGenerate"
-                      type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-block">Generate</button>
-                    <button
-                      ng-if="roster.result!=='REQUIRED MORE VEHICLE' && !roster.routesGenerated && !roster.disableGenerate"
-                      ng-disabled="disable_roster_button"
-                      ng-click="generateRoutes(roster)" type="button"
-                      class="btn btn-sm-vaayu btn-terniary-blue btn-block">Generate</button>
-
-
-
-
-                    <!-- <button ng-if="roster.result=='REQUIRED MORE VEHICLE'" ng-click="addVehicleToRoster(roster)"
-                      type="button" class="btn btn-sm-vaayu btn-terniary btn-block">Add Vehicle</button> -->
-
-                    <button ng-if="roster.result=='REQUIRED MORE VEHICLE' && !roster.disableGenerate"
+                   
+                    <button ng-if="!roster.routesGenerated && !roster.disableGenerate && (roster.generateButtonLabel=='generate' || roster.generateButtonLabel =='regenerate')"
                       ng-click="addVehicleToRoster(roster)" type="button"
-                      class="btn btn-sm-vaayu btn-terniary btn-block">Add Vehicle</button>
-                    <button ng-if="roster.result=='REQUIRED MORE VEHICLE' && roster.disableGenerate" type="button"
-                      class="btn btn-sm-vaayu btn-terniary-disable btn-block">Add Vehicle</button>
+                      class="btn btn-sm-vaayu btn-terniary btn-sm pull-left route-button" style="width:48%;">Add Vehicle</button>
+
+                    <button ng-if="!roster.routesGenerated && roster.disableGenerate || roster.routesGenerated" type="button"
+                      class="btn btn-sm-vaayu btn-terniary-disable btn-sm pull-left route-button" style="width:48%;">Add Vehicle</button>
+
+                    <button ng-if="roster.routesGenerated" type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-sm" style="width:48%; float: right;">
+                      Routes Finalized
+                    </button>
+                    <button ng-if="!roster.routesGenerated && roster.disableGenerate" type="button" class="btn btn-sm-vaayu btn-terniary-disable btn-sm route-button" style="width:48%;">
+                      Generate
+                    </button>
+                    <button
+                      ng-if="!roster.routesGenerated && !roster.disableGenerate && roster.generateButtonLabel=='generate'"
+                      ng-click="generateRoutes(roster)" type="button"
+                      class="btn btn-sm-vaayu btn-terniary-blue btn-sm" style="width:48%;">
+                      Generate
+                    </button>
+
+                     <button
+                      ng-if="!roster.routesGenerated && !roster.disableGenerate && roster.generateButtonLabel =='regenerate'"
+                      ng-click="generateRoutes(roster)" type="button"
+                      class="btn btn-sm-vaayu btn-sm pull-right" style="color:#fff;background:#65b9da; width: 48%;">
+                      Re-Generate
+                    </button>
+
                   </div>
                 </td>
               </tr>
@@ -451,4 +454,40 @@
 
   </div>
 
+  <div id="myModal" class="vaayu-modal" ng-init="CheckIsDownloadeble()" style="display: block;z-index: 4;" ng-show="showUploadDialog">
+
+    <!-- Modal content -->
+    <div class="vaayu-modal-content" style="width:450px;">
+      <div class="vaayu-modal-header">
+        <span> File Upload</span>
+        <span class="vaayu-pop-close closepop" ng-click="showUploadDialog=false">&times;</span>
+      </div>
+      <div class="vaayu-modal-body">
+        <div class="row container-fluid">
+          <div class="col-md-12">
+            <div class="btn-group">
+              <div class="input-group">
+                <label class="input-group-btn">
+                    <span class="btn btn-primary">
+                        Choose File&hellip; <input type="file" style="display: none;"
+                            accept=".xls, .xlsx" id="file" name='file'
+                            onchange="angular.element(this).scope().fileNameChanged(this)">
+                    </span>
+                </label>
+                <input type="text" ng-model="tempfileName" ng-value="tempfileName"
+                    class="form-control" readonly>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+        <div class="vaayu-modal-footer">
+          <button class="vaayu-pop-action-btn" ng-click="downloadSample()">
+                download sample
+          </button>
+          <button class="vaayu-pop-action-btn" type="button" ng-click="uploadExcelData()">Upload</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

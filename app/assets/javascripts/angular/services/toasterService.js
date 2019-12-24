@@ -14,29 +14,30 @@ angular.module('app').factory('ToasterService', (toaster) => {
         },
         hideToast:() => {
             toaster.pop();
+            console.log('Toaster hideToast')
         },
         clearToast: () => {
             toaster.clear(this.hideToast, this.showError, this.showSuccess)
         },
         showToast: (type, title, body) => {
             console.log('ToasterService');
-            toaster.pop({type, title, body, timeout:2000});
+            toaster.pop({type, title, body, timeout:3000});
         },
         showSuccess: (title, body) => {
             console.log('ToasterService show Success');
-            toaster.pop({ type: 'success', title, body, timeout: 2000 });
+            toaster.pop({ type: 'success', title, body, timeout: 3000 });
         },
         showError: (title, body) => {
-            console.log('ToasterService');
-            toaster.pop({type: 'error', title, body, timeout: 2000 });
+            console.log('ToasterService Error');
+            toaster.pop({type: 'error', title, body, timeout: 3000 });
         },
         showError_html: (title, body) => {
             console.log('ToasterService');
-            toaster.pop({type: 'error', title, body, timeout: 2000, bodyOutputType: 'trustedHtml'});
+            toaster.pop({type: 'error', title, body, timeout: 3000, bodyOutputType: 'trustedHtml'});
         },
         showToast_html: (type, title, body) => {
             console.log('ToasterService');
-            toaster.pop({type: type, title, body, timeout: 2000, bodyOutputType: 'trustedHtml'});
+            toaster.pop({type: type, title, body, timeout: 3000, bodyOutputType: 'trustedHtml'});
         }
     };
 });

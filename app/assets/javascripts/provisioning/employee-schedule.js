@@ -1,5 +1,5 @@
 // Calendar - Employee Trip Module
-
+var currentSheduleDate;
 $(function () {
   'use strict';
 
@@ -28,6 +28,9 @@ function updateCalendarTableHead(selectedDate) {
 function updateCalendarTitle(selectedDate) {
   monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   currentDate = new Date(selectedDate.date);
+
+  // console.log( currentDate ,"sfffffffffffffffffffffffffffffffff");
+  currentSheduleDate = dateFormatter(new Date(selectedDate.date), "YYYY/MM/DD");
   weekNo = getWeek(currentDate);
   dateRange = getDateRangeOfWeek(weekNo, currentDate)
   fromDate = monthNames[new Date(dateRange[0]).getMonth()].substr(0, 3) + " " + new Date(dateRange[0]).getDate();
@@ -45,6 +48,8 @@ function weekForwardBackward(weekNo, selectedDate) {
     } else {
       $('#schedule-date').datepicker('update', startDate);
     }
+
+
     $(".datepicker table td.active").click();
   }
   // getEmployeeTrips(getDateRangeOfWeek(weekNo, selectedDate));
@@ -78,6 +83,8 @@ function getEmployeeTrips(dates) {
     $.get( modalUrl, { range_from: dateFormatter(dates[0]), range_to: dateFormatter(dates[1]) } )
       .done(function( data ) {
         if(data.length !== 0) {
+
+          console.log( "<<<<<<<<<<<<<<data shedule",data );
           employeeTripObjects[Object.keys(data[0])[0]] = Object.values(data[0])[0];
           reloadForm(getWeek(new Date(dates[0])), new Date(dates[0]));
         }
@@ -97,8 +104,15 @@ function applyDefaultContent() {
 }
 
 function reloadForm(weekNo, weekDate) {
+  let intCounter=0;
   $.each(employeeTripObjects[weekNo], function(i, obj) {
+
     if (obj[scheduleType] == "check_in" || obj.check_in !== undefined) {
+      if( intCounter == 0){
+        currentSheduleDate = dateFormatter(new Date(obj.date), "YYYY/MM/DD");
+         intCounter++;
+      }
+      
       updateCheckInForm(obj);
     } else {
       updateCheckOutForm(obj);
@@ -159,6 +173,14 @@ function updateCheckInForm(etObj) {
     check_in = etObj.check_in;
     currentForm.find(inputField).val(check_in);
   }
+
+  
+  //let todayDate   = dateFormatter(new Date(), "YYYY/MM/DD");
+
+  // if( sheduleDate == todayDate ){
+    //currentSheduleDate = sheduleDate;
+  // }
+  // console.log("<<<<<check_in shedule>>>>", check_in );
   if (etObj.site_id !== "") { currentForm.find(".check_in_location_select").val(etObj.site_id) }
   // if (etObj.shift_id !== "") { currentForm.find(".check_in_shift_select").val(etObj.shift_id) }
   if (check_in !== "") {createOrSelectShift(check_in, currentForm, "check_in");}
