@@ -703,7 +703,7 @@ class TripRoute < ApplicationRecord
         # else
         #   SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], @user_driver.full_name + ' has arrived at your pick-up location in ' + vehicle.colour + ' ' + vehicle.make + ' ' + vehicle.model + ' (' + vehicle.plate_number + ') at ' + current_time + '.')
         # end      
-        SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], 'Driver has arrived at your pick-up location in ' + vehicle.colour + ' ' + vehicle.make + ' ' + vehicle.model + ' (' + vehicle.plate_number + ').')
+        SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], 'Driver has arrived at your pick-up location in ' + vehicle.colour + ' ' + vehicle.model + ' (' + vehicle.plate_number + ').')
       end
     end
 
