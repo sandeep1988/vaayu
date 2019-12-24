@@ -380,7 +380,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
   $scope.getTripDetails =function() {
 
-    if($scope.selectedTripId){
+    if($scope.selectedTripId && $scope.isOpen){
       let postData = {
         "trip_id": $scope.selectedTripId,
         "site_id": $scope.selectedSiteID,
@@ -390,7 +390,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       TripboardService.getAllTrips(postData, (data) => {
         
         $scope.modelData = data.data.tripsdetails[0];
-        $scope.showPopup = true;
+       
         $scope.selectedVehicle = {};
         var trip_status = data.current_status.toLowerCase().trim();
         if (trip_status === 'pending acceptance' || trip_status === 'accepted' || trip_status === 'delayed') {
@@ -403,15 +403,20 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     }
     
   }
+  $scope.isOpen=false;
 
   $scope.showModal = (row) => {
       $scope.selectedTripId=row.trip_id
+
+      $scope.showPopup = true;
+      
+      $scope.isOpen=true;
      
       $scope.getTripDetails();
 
       $interval(function() {
         $scope.getTripDetails();
-      }, 1000*60);
+      }, 20);
       
 
     // var mapProp = {
@@ -466,6 +471,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     // When the user clicks on <span> (x), close the modal
     closepop.onclick = function () {
       modal.style.display = "none";
+      $scope.isOpen=false;
     }
 
 
@@ -593,6 +599,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   
   $scope.closePopup = () => {
     $scope.showPopup=false;
+    $scope.isOpen=false;
   }
 
   $scope.getRowColor = (index, trip) => {

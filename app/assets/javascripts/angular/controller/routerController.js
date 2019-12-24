@@ -127,11 +127,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
 
     // var directionsService = new google.maps.DirectionsService();
-    var directionsRenderer = new google.maps.DirectionsRenderer(
-      {
-        suppressMarkers: true
-      }
-    );
+    var directionsRenderer = new google.maps.DirectionsRenderer();
 
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
