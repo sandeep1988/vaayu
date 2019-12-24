@@ -1,6 +1,6 @@
 
-angular.module('app').factory('RosterService', ['$resource', 'BASE_URL_8002', 'BASE_URL',
-  function ($resource, BASE_URL_8002, BASE_URL) {
+angular.module('app').factory('RosterService', ['$resource', 'BASE_URL_8002', 'BASE_URL','BASE_URL_API_8002',
+  function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002) {
     return $resource(BASE_URL_8002 + 'roasterlist', {}, {
       // query: { method: "GET", isArray: true },
       // create: { method: "POST"},
@@ -10,6 +10,10 @@ angular.module('app').factory('RosterService', ['$resource', 'BASE_URL_8002', 'B
       addVehicle: {
         url: BASE_URL_8002 + 'addvehicle',
         method: "POST"
+      },
+      downloadSample: {
+        url: BASE_URL_API_8002 + 'employeeupload/downloadEmployeeExcel/:siteId',
+        method: "GET"
       },
       getAllSiteList: {
         url: BASE_URL + 'getAllSiteList',
@@ -27,6 +31,10 @@ angular.module('app').factory('RosterService', ['$resource', 'BASE_URL_8002', 'B
         url: BASE_URL_8002 + 'getRosterEmpDetails',
         method: "POST"
       },
+      uploadExcel :{
+        url: BASE_URL_8002 + 'upload-employee-shedule',
+        method: "POST"
+      }
     });
 
   }]);

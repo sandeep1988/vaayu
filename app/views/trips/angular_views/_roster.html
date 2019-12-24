@@ -55,6 +55,8 @@
           <div class="">
             <button ng-click="addCustomeRoute()" type="button" class="btn btn-terniary fa-search-custom"
               style="float: right; background-color: #384266;">ADD CUSTOM ROUTE</button>
+              <button ng-click="showUploadWindow()" type="button" class="btn btn-terniary fa-search-custom"
+              style="float: right; background-color: #384266;margin-right:10px;">Upload</button>
           </div>
         </div>
 
@@ -451,4 +453,40 @@
 
   </div>
 
+  <div id="myModal" class="vaayu-modal" ng-init="CheckIsDownloadeble()" style="display: block;z-index: 4;" ng-show="showUploadDialog">
+
+    <!-- Modal content -->
+    <div class="vaayu-modal-content" style="width:450px;">
+      <div class="vaayu-modal-header">
+        <span> File Upload</span>
+        <span class="vaayu-pop-close closepop" ng-click="showUploadDialog=false">&times;</span>
+      </div>
+      <div class="vaayu-modal-body">
+        <div class="row container-fluid">
+          <div class="col-md-12">
+            <div class="btn-group">
+              <div class="input-group">
+                <label class="input-group-btn">
+                    <span class="btn btn-primary">
+                        Choose File&hellip; <input type="file" style="display: none;"
+                            accept=".xls, .xlsx" id="file" name='file'
+                            onchange="angular.element(this).scope().fileNameChanged(this)">
+                    </span>
+                </label>
+                <input type="text" ng-model="tempfileName" ng-value="tempfileName"
+                    class="form-control" readonly>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+        <div class="vaayu-modal-footer">
+          <button class="vaayu-pop-action-btn" ng-click="downloadSample()">
+                download sample
+          </button>
+          <button class="vaayu-pop-action-btn" type="button" ng-click="uploadExcelData()">Upload</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
