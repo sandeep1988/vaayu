@@ -28,6 +28,9 @@ function updateCalendarTableHead(selectedDate) {
 function updateCalendarTitle(selectedDate) {
   monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   currentDate = new Date(selectedDate.date);
+
+  // console.log( currentDate ,"sfffffffffffffffffffffffffffffffff");
+  currentSheduleDate = dateFormatter(new Date(selectedDate.date), "YYYY/MM/DD");
   weekNo = getWeek(currentDate);
   dateRange = getDateRangeOfWeek(weekNo, currentDate)
   fromDate = monthNames[new Date(dateRange[0]).getMonth()].substr(0, 3) + " " + new Date(dateRange[0]).getDate();
@@ -45,6 +48,8 @@ function weekForwardBackward(weekNo, selectedDate) {
     } else {
       $('#schedule-date').datepicker('update', startDate);
     }
+
+
     $(".datepicker table td.active").click();
   }
   // getEmployeeTrips(getDateRangeOfWeek(weekNo, selectedDate));
@@ -101,6 +106,7 @@ function applyDefaultContent() {
 function reloadForm(weekNo, weekDate) {
   let intCounter=0;
   $.each(employeeTripObjects[weekNo], function(i, obj) {
+
     if (obj[scheduleType] == "check_in" || obj.check_in !== undefined) {
       if( intCounter == 0){
         currentSheduleDate = dateFormatter(new Date(obj.date), "YYYY/MM/DD");
