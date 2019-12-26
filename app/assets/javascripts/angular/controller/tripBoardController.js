@@ -136,7 +136,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         location:new google.maps.LatLng(item.lat,item.lng),
         stopover:true
       });
-
+      console.log('tripBoard', $scope.waypts)
       makeMarker(new google.maps.LatLng(item.lat,item.lng),item.emp_name);
 
       if(index===wayptsArray.length-1){
@@ -409,14 +409,14 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       $scope.selectedTripId=row.trip_id
 
       $scope.showPopup = true;
-      
+
       $scope.isOpen=true;
      
       $scope.getTripDetails();
 
       $interval(function() {
         $scope.getTripDetails();
-      }, 20);
+      }, 1000*60);
       
 
     // var mapProp = {

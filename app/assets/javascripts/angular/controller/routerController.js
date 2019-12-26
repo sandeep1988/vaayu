@@ -127,7 +127,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
 
     // var directionsService = new google.maps.DirectionsService();
-    var directionsRenderer = new google.maps.DirectionsRenderer();
+    var directionsRenderer = new google.maps.DirectionsRenderer({suppressMarkers:true});
 
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
@@ -1170,10 +1170,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
 
    if($scope.getShiftType(shift.shift_type) ==0){
-    console.log('latLng 0', $scope.site.latitude, waypts);
-
+      console.log('latLng 0', $scope.site.latitude, waypts);
       $scope.isSiteStatus=0;
-     makeMarker(new google.maps.LatLng($scope.site.latitude,$scope.site.longitude),$scope.site.name);
+      makeMarker(new google.maps.LatLng($scope.site.latitude,$scope.site.longitude),$scope.site.name);
    }
 
    if($scope.isSiteStatus == 1){
