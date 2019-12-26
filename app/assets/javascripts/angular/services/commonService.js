@@ -20,9 +20,9 @@ angular.module('app').factory('SessionService', function() {
       
     var _data2 ={
         custId : 1,
-        uid:'deekshithmech@gmail.com',
-        access_token:'Lv-ew8BhWt-IpeHnaDmAPQ',
-        client:'WAN2a7tMxvEKOgFAUB2lpA'
+        uid:'deekshith.kgr95@gmail.com',
+        access_token:'a6tCfF5T7HVIdx8Czd6I7w',
+        client:'osUe4ObG0a1QvZ4R9-t6yg'
     }
     
     return _data2;
