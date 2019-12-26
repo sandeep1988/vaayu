@@ -64,27 +64,32 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // {lat: -27.467, lng: 153.027}
     // ];
 
-    var directionsService = new google.maps.DirectionsService();
-    var directionsRenderer = new google.maps.DirectionsRenderer();
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 13,
-      center: { lat: 19.2578, lng: 72.8731 },
-      mapTypeId: 'terrain'
-    });
-    $scope.map = map
-    console.log('map ', $scope.map)
-    directionsRenderer.setMap(map);
-    var stepDisplay = new google.maps.InfoWindow;
-    var waypts = [
-      {
-        location: 'Kandivali Station (W), Parekh Nagar, Kandivali, Mumbai, Maharashtra',
-        stopover: true
-      },
-      {
-        location: 'Thane Station Road, Jambli Naka, Thane West, Thane, Maharashtra',
-        stopover: true
-      }
-    ];
+       // var directionsService = new google.maps.DirectionsService();
+    //    var directionsRenderer = new google.maps.DirectionsRenderer({
+    //     suppressMarkers: true
+    // });
+  
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 13,
+        center: { lat: 19.2578, lng: 72.8731 },
+        mapTypeId: 'terrain'
+      });
+      $scope.map = map
+      console.log('map ', $scope.map)
+      // directionsRenderer.setMap(map);
+      var stepDisplay = new google.maps.InfoWindow;
+
+      
+    // var waypts = [
+    //   {
+    //     location: 'Kandivali Station (W), Parekh Nagar, Kandivali, Mumbai, Maharashtra',
+    //     stopover: true
+    //   },
+    //   {
+    //     location: 'Thane Station Road, Jambli Naka, Thane West, Thane, Maharashtra',
+    //     stopover: true
+    //   }
+    // ];
     
     // calculateAndDisplayRoute( directionsService, directionsRenderer, waypts)
 
@@ -108,18 +113,21 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     var waypts=[];
 
     angular.forEach(container.employees, function (item, index,wayptsArray) {
+
       waypts.push({
         location:new google.maps.LatLng(item.lat,item.lng),
         stopover:true
       });
+
+      console.log('item LatLng', item, index)
 
       makeMarker(new google.maps.LatLng(item.lat,item.lng),item.empName);
 
     })
 
 
-    var directionsService = new google.maps.DirectionsService();
-    var directionsRenderer = new google.maps.DirectionsRenderer();
+    // var directionsService = new google.maps.DirectionsService();
+    var directionsRenderer = new google.maps.DirectionsRenderer({suppressMarkers:true});
 
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
@@ -748,6 +756,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
   }
 
+ 
   function makeMarker( position, title ) {
     new google.maps.Marker({
      position: position,
@@ -1151,7 +1160,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     TripboardService.getAllSiteList(postData,function (data) {
       $scope.site = data.data.list[0];
 
-
       let shift = JSON.parse($scope.selectedShift);
     
       $scope.isSiteStatus=1;
@@ -1162,12 +1170,13 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
 
    if($scope.getShiftType(shift.shift_type) ==0){
+      console.log('latLng 0', $scope.site.latitude, waypts);
       $scope.isSiteStatus=0;
-     makeMarker(new google.maps.LatLng($scope.site.latitude,$scope.site.longitude),$scope.site.name);
+      makeMarker(new google.maps.LatLng($scope.site.latitude,$scope.site.longitude),$scope.site.name);
    }
 
    if($scope.isSiteStatus == 1){
-     console.log('latLng', $scope.site.latitude);
+     console.log('latLng 1', $scope.site.latitude, waypts);
      
     directionsService.route({
       origin: waypts[0].location,
@@ -1231,11 +1240,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
    }
     });
-   
-
-
-
-
     // $scope.getCurrentVehicleLocation();
   }
 

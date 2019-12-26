@@ -23,7 +23,8 @@ class Scheduled::DaysWorker
     @trips = Trip.all.where('scheduled_date >= ?', yesterday).order('id DESC')
     trip_log_csv = Trip.trip_logs_csv({}, { trips: @trips, from_reports: true })
     employee_log_csv = Trip.employee_logs_csv({}, { trips: @trips, from_reports: true })
-    AnalyticsMailer.analytics_mailer(trip_log_csv, employee_log_csv).deliver_now!
+    ### Comment mailer for employee
+    # AnalyticsMailer.analytics_mailer(trip_log_csv, employee_log_csv).deliver_now!
   end
   
   def generate_invoices

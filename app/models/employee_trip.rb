@@ -528,7 +528,7 @@ class EmployeeTrip < ApplicationRecord
       if self.status == 'completed'
         @user = User.employee.where(id: self.employee.user_id).first
         if @user.present?
-          SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], 'Your trip has been completed. Please use the MOOVE App to rate this trip, and optionally provide additional feedback.');
+          SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], 'Your trip has been completed. Please use the VAAYU App to rate this trip, and optionally provide additional feedback.');
         end        
       end
     end    

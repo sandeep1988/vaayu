@@ -136,7 +136,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         location:new google.maps.LatLng(item.lat,item.lng),
         stopover:true
       });
-
+      console.log('tripBoard', $scope.waypts)
       makeMarker(new google.maps.LatLng(item.lat,item.lng),item.emp_name);
 
       if(index===wayptsArray.length-1){
@@ -380,7 +380,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
   $scope.getTripDetails =function() {
 
-    if($scope.selectedTripId){
+    if($scope.selectedTripId && $scope.isOpen){
       let postData = {
         "trip_id": $scope.selectedTripId,
         "site_id": $scope.selectedSiteID,
@@ -390,7 +390,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       TripboardService.getAllTrips(postData, (data) => {
         
         $scope.modelData = data.data.tripsdetails[0];
-        $scope.showPopup = true;
+       
         $scope.selectedVehicle = {};
         var trip_status = data.current_status.toLowerCase().trim();
         if (trip_status === 'pending acceptance' || trip_status === 'accepted' || trip_status === 'delayed') {
@@ -403,9 +403,14 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     }
     
   }
+  $scope.isOpen=false;
 
   $scope.showModal = (row) => {
       $scope.selectedTripId=row.trip_id
+
+      $scope.showPopup = true;
+
+      $scope.isOpen=true;
      
       $scope.getTripDetails();
 
@@ -413,7 +418,6 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         $scope.getTripDetails();
       }, 1000*60);
       
-    return ;
 
     // var mapProp = {
     //   center: new google.maps.LatLng(51.508742, -0.120850),
@@ -467,6 +471,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     // When the user clicks on <span> (x), close the modal
     closepop.onclick = function () {
       modal.style.display = "none";
+      $scope.isOpen=false;
     }
 
 
@@ -594,6 +599,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   
   $scope.closePopup = () => {
     $scope.showPopup=false;
+    $scope.isOpen=false;
   }
 
   $scope.getRowColor = (index, trip) => {

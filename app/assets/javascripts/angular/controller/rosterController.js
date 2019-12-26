@@ -212,7 +212,7 @@ $scope.downloadSample= function() {
       a.click();
     }else{
       $scope.toggleView=true;
-      ToasterService.showError('Error',"Error occurs while downloading...")
+      ToasterService.showError('Error',"CutOff time does not exists for this site")
     }
 }
 
