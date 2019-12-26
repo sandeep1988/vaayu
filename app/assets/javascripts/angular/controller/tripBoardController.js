@@ -127,16 +127,16 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     angular.forEach($scope.waypts, function (item, index,wayptsArray) {
       if(index==1){
         $scope.source={
-           lat:item.lat,
-           lng:item.lng,
-           emp_name:item.emp_name
+          lat:item.lat,
+          lng:item.lng,
+          emp_name:item.emp_name
         }
       }
       waypts.push({
         location:new google.maps.LatLng(item.lat,item.lng),
         stopover:true
       });
-      console.log('tripBoard', $scope.waypts)
+      
       makeMarker(new google.maps.LatLng(item.lat,item.lng),item.emp_name);
 
       if(index===wayptsArray.length-1){
@@ -199,9 +199,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   } 
 
   function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
-
     var source =$scope.modelData.map_data.source;
-    console.log('modelData', $scope.modelData)
     var destination =$scope.modelData.map_data.destination;
 
     if(source.is_site){
