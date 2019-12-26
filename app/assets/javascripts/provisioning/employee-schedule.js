@@ -29,9 +29,10 @@ function updateCalendarTitle(selectedDate) {
   monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   currentDate = new Date(selectedDate.date);
 
-  // console.log( currentDate ,"sfffffffffffffffffffffffffffffffff");
-  currentSheduleDate = dateFormatter(new Date(selectedDate.date), "YYYY/MM/DD");
+  console.log("sfffffffffffffffffffffffffffffffff", currentDate );
+  currentSheduleDate = dateFormatter(new Date(currentDate), "YYYY/MM/DD");
   weekNo = getWeek(currentDate);
+  // console.log("sfffffffffffffffffffffffffffffffffaaa", currentSheduleDate );
   dateRange = getDateRangeOfWeek(weekNo, currentDate)
   fromDate = monthNames[new Date(dateRange[0]).getMonth()].substr(0, 3) + " " + new Date(dateRange[0]).getDate();
   toDate = monthNames[new Date(dateRange[1]).getMonth()].substr(0, 3) + " " + new Date(dateRange[1]).getDate();
@@ -109,7 +110,7 @@ function reloadForm(weekNo, weekDate) {
 
     if (obj[scheduleType] == "check_in" || obj.check_in !== undefined) {
       if( intCounter == 0){
-        currentSheduleDate = dateFormatter(new Date(obj.date), "YYYY/MM/DD");
+        // currentSheduleDate = dateFormatter(new Date(obj.date), "YYYY/MM/DD");
          intCounter++;
       }
       
