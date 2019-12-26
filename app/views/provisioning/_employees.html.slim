@@ -104,9 +104,9 @@ javascript:
   var curr_time=getCurrentTime();
   var finalshiftTime;
   var head_id=get_header_id();
-  $("#employee_check_in_attributes_"+head_id+"__shift_id option").each(function() {
+  $("#employee_check_in_attributes_"+head_id+"__shift_id option").each(function( index,element ) {
    
-   shift_times = $(this).text();
+   shift_times = $(element).text();
    //console.log("AJAY --<<<<<<<>>>>>>>>>>>>", head_id );
    if(shift_times != 'Clear'){ 
    
@@ -123,20 +123,25 @@ javascript:
 
     if( new Date(currentFinalshiftTime) < new Date( currentTimeDate ) )
      {
+      //console.log("Ajay new   ",index );
 
-        $(this).prop('disabled', true);
-        $(this).attr("disabled", "disabled");
+      let elementId = "employee_check_in_attributes_"+head_id+"__shift_id";
+
+        //$(this).prop('disabled', true);
+        //$(this).attr("disabled", "disabled");
         //let optionObject =  $(this);
-        //optionObject.disabled = true;
+        //$(this).element.disabled = true;
+
+        document.getElementById(elementId).options[index].disabled = true;
       }
    
    }
    
    });
 
-   $("#employee_check_out_attributes_"+head_id+"__shift_id option").each(function() {
+   $("#employee_check_out_attributes_"+head_id+"__shift_id option").each(function( index,element  ) {
    
-   shift_times_checkout = $(this).text();
+   shift_times_checkout = $(element).text();
    
    if(shift_times_checkout != 'Clear'){ 
    
@@ -151,10 +156,11 @@ javascript:
    
    console.log(currentTimeDate,"<<<<<<<<<<????<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>", currentFinalshiftTime );
 
+   let elementId = "employee_check_out_attributes_"+head_id+"__shift_id";
+
     if( new Date(currentFinalshiftTime) < new Date( currentTimeDate ) )
      {
-        $(this).prop('disabled', true);
-        $(this).attr("disabled", "disabled");
+        document.getElementById(elementId).options[index].disabled = true;
       }
    
    }
