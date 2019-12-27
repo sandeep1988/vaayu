@@ -175,8 +175,8 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
   $scope.getCurrentVehicleLocation = () => {
     
-      $scope.toggleView = false;
-      ToasterService.clearToast();
+      // $scope.toggleView = false;
+      // ToasterService.clearToast();
     
       VehicleLocation.get({ id: $scope.modelData.trip_id }, function(location) {
         if(location.success){
@@ -191,7 +191,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         }else{
           $scope.tripOngoing=false;
           $scope.toggleView = true;
-          ToasterService.showError('Error', location['message']);
+          // ToasterService.showError('Error', location['message']);
         }
       });
     
@@ -239,7 +239,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       }
     });
 
-    $scope.getCurrentVehicleLocation();
+    // $scope.getCurrentVehicleLocation();
   }
 
   function attachInstructionText(stepDisplay, marker, text, map) {
@@ -369,13 +369,13 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   // Refresh Trip Board after Every 1 Minute;
 
   $interval(function() {
-    $scope.getCurrentVehicleLocation ();
+    // $scope.getCurrentVehicleLocation ();
     $scope.getAllTrips();
   }, 1000*60);
 
 
   $scope.showPopup = false;
-
+  $scope.callAPI = false;
   $scope.getTripDetails =function() {
 
     if($scope.selectedTripId && $scope.isOpen){
@@ -388,7 +388,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       TripboardService.getAllTrips(postData, (data) => {
         
         $scope.modelData = data.data.tripsdetails[0];
-       
+        
         $scope.selectedVehicle = {};
         var trip_status = data.current_status.toLowerCase().trim();
         if (trip_status === 'pending acceptance' || trip_status === 'accepted' || trip_status === 'delayed') {
@@ -398,17 +398,20 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       }, function (error) {
         console.error(error);
       });
-    }
-    
+    }  
   }
   $scope.isOpen=false;
 
-  $scope.showModal = (row) => {
+  $scope.showModal = (row, checkStatus) => {
       $scope.selectedTripId=row.trip_id
 
       $scope.showPopup = true;
 
       $scope.isOpen=true;
+      if(checkStatus === 'On Going'){
+        this.getCurrentVehicleLocation();
+      }
+      
      
       $scope.getTripDetails();
 
