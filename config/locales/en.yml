@@ -196,10 +196,10 @@ en:
       body: You are next to be picked up The updated ETA is %{updated_eta}
     driver_arrived:
       title: Driver has arrived at your pick-up location
-      body: "Driver has arrived at your pick-up location in %{color} %{make} %{model} (%{plate_no})."
+      body: "Driver has arrived at your pick-up location in %{color} %{model} (%{plate_no})."
     driver_arrived_early:
       title: Driver has arrived at your pick-up location
-      body: "Driver has arrived at your pick-up location in %{color} %{make} %{model} (%{plate_no})."
+      body: "Driver has arrived at your pick-up location in %{color} %{model} (%{plate_no})."
     driver_face_verified:
       title: Driver face verified
       body: "driver_face_detection"
