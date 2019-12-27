@@ -829,7 +829,7 @@ class Trip < ApplicationRecord
           @user = User.employee.where(id: trip_route.employee_trip.employee.user_id).first
           if @user.present?
             @user_driver = User.driver.where(id: driver.user_id).first
-            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], @user_driver.full_name + ' is on the way to your pick-up location in ' + vehicle.colour + ' ' + vehicle.make + ' ' + vehicle.model + '(' + vehicle.plate_number  + ')' + '. Expected arrival time is ' + eta + '. For more updates use the Vaayu App.');
+            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], @user_driver.full_name + ' is on the way to your pick-up location in ' + vehicle.colour + ' ' + vehicle.model + '(' + vehicle.plate_number  + ')' + '. Expected arrival time is ' + eta + '. For more updates use the Vaayu App.');
           end
         end   
         data = { employee_trip_id: trip_route.employee_trip.id, eta: eta }
@@ -876,7 +876,7 @@ class Trip < ApplicationRecord
             @user = User.employee.where(id: employee_trip.employee.user_id).first
             if @user.present?
               @user_driver = User.driver.where(id: driver.user_id).first
-              SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], @user_driver.full_name + ' is on the way to your pick-up location in ' + vehicle.colour + ' ' + vehicle.make + ' ' + vehicle.model + '(' + vehicle.plate_number  + ')' + '. Expected arrival time is ' + eta + '. For more updates use the Vaayu App.');
+              SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], @user_driver.full_name + ' is on the way to your pick-up location in ' + vehicle.colour + '  ' + vehicle.model + '(' + vehicle.plate_number  + ')' + '. Expected arrival time is ' + eta + '. For more updates use the Vaayu App.');
             end
           end
           data = { employee_trip_id: employee_trip.id, eta: eta }
