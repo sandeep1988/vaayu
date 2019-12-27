@@ -349,7 +349,22 @@ function generateFormParams() {
   values = [];
   keys = Object.keys(employeeTripObjects);
 
-  $.each(keys, function(i, key) {if (parseInt(key) >= getWeek(new Date())) { values.push(Object.values(employeeTripObjects[key])) }});
+  $.each(keys, function(i, key) {
+
+    let sheduleDate = employeeTripObjects[key][0];
+    sheduleDate     = sheduleDate.schedule_date;
+
+    let currentYear = moment(new Date()).format("YYYY");
+    let sheduleYear = moment(sheduleDate).format("YYYY");
+    console.log("Shedule Year <<", sheduleYear,"===Current Year", currentYear);
+    
+    if (parseInt(key) >= getWeek(new Date()) || currentYear != sheduleYear ) {
+     
+      values.push(Object.values(employeeTripObjects[key])) 
+    }
+  
+  });
+
   values = [].concat.apply([], values)
   check_in_values = $.grep(values, function(x){ return x[scheduleType] == "check_in" || x.check_in !== undefined })
   check_out_values = $.grep(values, function(x){ return x[scheduleType] == "check_out" || x.check_out !== undefined })
