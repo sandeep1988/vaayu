@@ -127,16 +127,16 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     angular.forEach($scope.waypts, function (item, index,wayptsArray) {
       if(index==1){
         $scope.source={
-           lat:item.lat,
-           lng:item.lng,
-           emp_name:item.emp_name
+          lat:item.lat,
+          lng:item.lng,
+          emp_name:item.emp_name
         }
       }
       waypts.push({
         location:new google.maps.LatLng(item.lat,item.lng),
         stopover:true
       });
-      console.log('tripBoard', $scope.waypts)
+      
       makeMarker(new google.maps.LatLng(item.lat,item.lng),item.emp_name);
 
       if(index===wayptsArray.length-1){
@@ -175,8 +175,8 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
   $scope.getCurrentVehicleLocation = () => {
     
-      $scope.toggleView = false;
-      ToasterService.clearToast();
+      // $scope.toggleView = false;
+      // ToasterService.clearToast();
     
       VehicleLocation.get({ id: $scope.modelData.trip_id }, function(location) {
         if(location.success){
@@ -191,7 +191,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         }else{
           $scope.tripOngoing=false;
           $scope.toggleView = true;
-          ToasterService.showError('Error', location['message']);
+          // ToasterService.showError('Error', location['message']);
         }
       });
     
@@ -199,9 +199,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   } 
 
   function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
-
     var source =$scope.modelData.map_data.source;
-    console.log('modelData', $scope.modelData)
     var destination =$scope.modelData.map_data.destination;
 
     if(source.is_site){
@@ -241,7 +239,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       }
     });
 
-    $scope.getCurrentVehicleLocation();
+    // $scope.getCurrentVehicleLocation();
   }
 
   function attachInstructionText(stepDisplay, marker, text, map) {
@@ -371,13 +369,13 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   // Refresh Trip Board after Every 1 Minute;
 
   $interval(function() {
-    $scope.getCurrentVehicleLocation ();
+    // $scope.getCurrentVehicleLocation ();
     $scope.getAllTrips();
   }, 1000*60);
 
 
   $scope.showPopup = false;
-
+  $scope.callAPI = false;
   $scope.getTripDetails =function() {
 
     if($scope.selectedTripId && $scope.isOpen){
@@ -390,7 +388,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       TripboardService.getAllTrips(postData, (data) => {
         
         $scope.modelData = data.data.tripsdetails[0];
-       
+        
         $scope.selectedVehicle = {};
         var trip_status = data.current_status.toLowerCase().trim();
         if (trip_status === 'pending acceptance' || trip_status === 'accepted' || trip_status === 'delayed') {
@@ -400,17 +398,20 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       }, function (error) {
         console.error(error);
       });
-    }
-    
+    }  
   }
   $scope.isOpen=false;
 
-  $scope.showModal = (row) => {
+  $scope.showModal = (row, checkStatus) => {
       $scope.selectedTripId=row.trip_id
 
       $scope.showPopup = true;
 
       $scope.isOpen=true;
+      if(checkStatus === 'On Going'){
+        this.getCurrentVehicleLocation();
+      }
+      
      
       $scope.getTripDetails();
 

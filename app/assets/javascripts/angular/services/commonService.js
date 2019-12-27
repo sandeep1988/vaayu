@@ -1,8 +1,8 @@
 
 // Services 
-angular.module('app').constant('BASE_URL', 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8001/api/v1/');
-angular.module('app').constant('BASE_URL_8002', 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com/');
-angular.module('app').constant('BASE_URL_API_8002', 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8002/api/v1/');
+angular.module('app').constant('BASE_URL', 'http://vaayuuat.devmll.com:8001/api/v1/');
+angular.module('app').constant('BASE_URL_8002', 'http://vaayuuat.devmll.com/');
+angular.module('app').constant('BASE_URL_API_8002', 'http://vaayuuat.devmll.com:8002/api/v1/');
 angular.module('app').constant('BASE_URL_RUBY', 'http://alb-uat10-1592161168.ap-south-1.elb.amazonaws.com/api/v2/');
 
 angular.module('app').factory('SessionService', function() {
@@ -17,11 +17,12 @@ angular.module('app').factory('SessionService', function() {
     //     access_token:'aFZIMX0-5uAuKvorJn6wVg',
     //     client:'jM0YUtfxE9aOBj-wisoGzw'
     // }
+      
     var _data2 ={
         custId : 1,
-        uid:'deekshithmech@gmail.com',
-        access_token:'Lv-ew8BhWt-IpeHnaDmAPQ',
-        client:'WAN2a7tMxvEKOgFAUB2lpA'
+        uid:'deekshith.kgr95@gmail.com',
+        access_token:'a6tCfF5T7HVIdx8Czd6I7w',
+        client:'osUe4ObG0a1QvZ4R9-t6yg'
     }
     
     return _data2;

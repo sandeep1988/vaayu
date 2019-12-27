@@ -45,7 +45,7 @@ app.controller('addDistance', function ($scope, $http, $state, SessionService, T
   $scope.addTime = () => {
     $http({
       method: 'POST',
-      url: 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com/' + 'constraint/insert',
+      url: 'http://vaayuuat.devmll.com/' + 'constraint/insert',
       // url: 'http://localhost:8002/api/v1/' + 'constraint/insert',
       headers: {
         'Content-Type': 'application/json',

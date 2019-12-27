@@ -46,10 +46,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   // Map.init();
 
   $scope.initMap = () => {
-
-    $scope.toggleView = false;
-    
-    ToasterService.clearToast();
     // $scope.drawMapPath([
     //   {lat: 37.772, lng: -122.214},
     //   {lat: 21.291, lng: -157.821},
@@ -65,9 +61,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // ];
 
        // var directionsService = new google.maps.DirectionsService();
-    //    var directionsRenderer = new google.maps.DirectionsRenderer({
-    //     suppressMarkers: true
-    // });
+       var directionsRenderer = new google.maps.DirectionsRenderer({suppressMarkers: true});
   
       var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 13,
@@ -106,41 +100,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.finalizeArray = [];
   $scope.coords = []
-  $scope.selectRoute = (container) => {
-    console.log(container);
-    $scope.finalizeArray.push({ routeId: container.routeId });
-   
-    var waypts=[];
-
-    angular.forEach(container.employees, function (item, index,wayptsArray) {
-
-      waypts.push({
-        location:new google.maps.LatLng(item.lat,item.lng),
-        stopover:true
-      });
-
-      console.log('item LatLng', item, index)
-
-      makeMarker(new google.maps.LatLng(item.lat,item.lng),item.empName);
-
-    })
-
-
-    // var directionsService = new google.maps.DirectionsService();
-    var directionsRenderer = new google.maps.DirectionsRenderer({suppressMarkers:true});
-
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 13,
-      center: { lat: 19.2578, lng: 72.8731 },
-      mapTypeId: 'terrain'
-    });
-    $scope.map = map
-    console.log('map ', $scope.map)
-    directionsRenderer.setMap(map);
-    var stepDisplay = new google.maps.InfoWindow;
-   
-    calculateAndDisplayRoute( directionsService, directionsRenderer, waypts)
-  }
+  
 
 
   $scope.init = function () {
@@ -156,7 +116,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       "kilometres": 0
     }
 
-    $scope.initMap();
+    // $scope.initMap();
 
     // SiteService.get().$promise.then(function (res) {
     //   $scope.sites = res.data.list;
@@ -1152,6 +1112,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // $scope.isFilterSidebarView = true;
   }
 
+  $scope.isSiteStatus=1;
+  $scope.site;
   function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
 
     var postData ={
@@ -1162,7 +1124,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
       let shift = JSON.parse($scope.selectedShift);
     
-      $scope.isSiteStatus=1;
 
     if($scope.getShiftType(shift.shift_type) == 1){
       $scope.isSiteStatus=1;
@@ -1170,7 +1131,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
 
    if($scope.getShiftType(shift.shift_type) ==0){
-      console.log('latLng 0', $scope.site.latitude, waypts);
       $scope.isSiteStatus=0;
       makeMarker(new google.maps.LatLng($scope.site.latitude,$scope.site.longitude),$scope.site.name);
    }
@@ -1209,7 +1169,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
    }
 
    if($scope.isSiteStatus == 0){
-
     directionsService.route({
       origin: new google.maps.LatLng($scope.site.latitude,$scope.site.longitude),
       destination: waypts[waypts.length-1].location,
@@ -1243,6 +1202,37 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // $scope.getCurrentVehicleLocation();
   }
 
+  $scope.selectRoute = (container) => {
+    console.log('container', container);
+    $scope.finalizeArray.push({ routeId: container.routeId });
+   
+    var waypts=[];
+    setTimeout(()=>{
+      angular.forEach(container.employees, function (item, index,wayptsArray) {
+        
+        waypts.push({
+          location:new google.maps.LatLng(item.lat,item.lng),
+          stopover:true
+        });
+          makeMarker(new google.maps.LatLng(item.lat,item.lng),item.empName);
+      });
+    })
+
+    // var directionsService = new google.maps.DirectionsService();
+    var directionsRenderer = new google.maps.DirectionsRenderer({suppressMarkers:true});
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 13,
+      center: { lat: 19.2578, lng: 72.8731 },
+      mapTypeId: 'terrain'
+    });
+    $scope.map = map;
+    console.log('map: ', $scope.map);
+    directionsRenderer.setMap(map);
+    var stepDisplay = new google.maps.InfoWindow;
+   
+    calculateAndDisplayRoute( directionsService, directionsRenderer, waypts)
+  }
 
 
   function attachInstructionText(stepDisplay, marker, text, map) {

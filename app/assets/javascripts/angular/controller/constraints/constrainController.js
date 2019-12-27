@@ -1,4 +1,4 @@
-app.controller('constraintController', function ($scope, $http, $state, SessionService, ToasterService, $timeout,constraintService) {
+app.controller('constraintController', function ($scope, $http, $state, SessionService, ToasterService, $timeout,constraintService,RosterService) {
 
   $scope.siteNames = [];
   $scope.siteID = null;
@@ -36,9 +36,10 @@ app.controller('constraintController', function ($scope, $http, $state, SessionS
     console.log(SessionService.uid);
     console.log(SessionService.access_token);
     console.log(SessionService.client);
+
     $http({
       method: 'GET',
-      url: 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com/' + 'constraint/getall/site/' + id,
+      url: 'http://vaayuuat.devmll.com/' + 'constraint/getall/site/' + id,
       headers: {
         // 'Content-Type': 'application/json',
         'uid': SessionService.uid,
@@ -100,7 +101,7 @@ app.controller('constraintController', function ($scope, $http, $state, SessionS
 
     $http({
       method: 'POST',
-      url: 'http://ec2-13-233-214-215.ap-south-1.compute.amazonaws.com:8001/api/v1/getAllSiteList',
+      url: 'http://vaayuuat.devmll.com:8001/api/v1/getAllSiteList',
       headers: {
         'Content-Type': 'application/json',
         'uid': SessionService.uid,
