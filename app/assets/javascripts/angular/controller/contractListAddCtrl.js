@@ -134,8 +134,8 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     $scope.billingOption = [
         // {"name": "Per Trip", "value": "Per Trip"},
         { "name": "Daily", "value": "Daily" },
-        // { "name": "Weekly", "value": "Weekly" },
-        // { "name": "Forth Nightly",  "value": "Forth Nightly" },
+        { "name": "Weekly", "value": "Weekly" },
+        { "name": "Forth Nightly",  "value": "Forth Nightly" },
         { "name": "Monthly",  "value": "Monthly" },
         // {  "name": "Quarterly", "value": "Quarterly"  }
     ]

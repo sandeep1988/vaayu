@@ -57,8 +57,6 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.getAllSiteList = () => {
-    // $scope.toggleView = false;    
-    // ToasterService.clearToast();
     RosterService.getAllSiteList(function (data) {
       $scope.siteList = data.data.list;
       $scope.selectedSite = $scope.siteList[0];
@@ -76,8 +74,6 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.updateFilters = function () {
-    // $scope.toggleView = false;    
-    // ToasterService.clearToast();
     $scope.CheckIsDownloadeble();
     let postData = {
       "site_id": $scope.selectedSite.id,
@@ -95,8 +91,6 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   $scope.showPopup = false;
 
   $scope.showPopupWindow = (roster) => {
-    // $scope.toggleView = false;    
-    // ToasterService.clearToast();
     console.log('selectedRoster',roster)
     $scope.selectedRoster = roster;
     let postData = {
@@ -173,10 +167,8 @@ $scope.uploadExcelData = function () {
         $scope.toggleView = true;
         ToasterService.showSuccess('Success', "File upload success");
       } else {
-          // ToasterService.hideToast();
           $scope.toggleView = true;
           showErrorToast('Error', 'resData.message')
-          // ToasterService.showError('Error', 'resData.message');
       }
   };
 
@@ -218,8 +210,6 @@ $scope.downloadSample= function() {
 
   
   $scope.onEmployeeSearch = () => {
-    // $scope.toggleView = false;    
-    // ToasterService.clearToast();
     var searchString = $scope.employee_name_search.trim().toLowerCase();
 
     if (searchString === "") {
@@ -236,8 +226,6 @@ $scope.downloadSample= function() {
   }
 
   $scope.getRosters = (postData) => {
-    // $scope.toggleView = false;    
-    // ToasterService.clearToast();
     RosterService.get(postData, function (data) {
      
       if (data.data) {
@@ -285,8 +273,6 @@ $scope.downloadSample= function() {
     // console.log(roster);
     // console.log($scope.selectedSite);
     // console.log($scope.filterDate)
-    // $scope.toggleView = false;    
-    // ToasterService.clearToast();
     $scope.disable_roster_button = true;
 
     let postData = {
@@ -304,16 +290,10 @@ $scope.downloadSample= function() {
         if (res['success']) {
           $scope.toggleView = true;
           ToasterService.showSuccess('Success', 'Route generated successfully.');
-          // setTimeout(()=>{
-          //   ToasterService.clearToast();
-          // },0)
           $scope.updateFilters();
         } else {
           $scope.toggleView = true;
           ToasterService.showError('Error', res['message']);
-          // setTimeout(()=>{
-          //   ToasterService.clearToast();
-          // },0)
           
           if (res['is_routes_generated'] === false) {
           // if (true) {
@@ -332,8 +312,6 @@ $scope.downloadSample= function() {
   }
 
   $scope.addVehicleToRoster = function (roster) {
-    // $scope.toggleView = false;    
-    // ToasterService.clearToast();
     $scope.currentRoster = angular.copy(roster);
     // console.log($scope.currentRoster.vehicle);
     // console.log(angular.equals($scope.currentRoster.vehicle, {}));
@@ -358,8 +336,6 @@ $scope.downloadSample= function() {
   }
 
   $scope.hideAddMenu = function () {
-    // $scope.toggleView = false;    
-    // ToasterService.clearToast();
     $scope.isAddMenuOpen = false;
     $scope.defaultVehiclesList = {
       HATCHBACK: 0,
@@ -376,8 +352,6 @@ $scope.downloadSample= function() {
   }
 
   $scope.plusVehicle = function (key) {
-    // $scope.toggleView = false;    
-    // ToasterService.clearToast();
     $scope.currentRoster.vehicle[key] = parseInt($scope.currentRoster.vehicle[key]) + 1;
     $scope.currentRoster.total_vehicles = parseInt($scope.currentRoster.total_vehicles) + 1;
     if ($scope.currentRoster.vehicle_capacity[key]) {
@@ -403,8 +377,6 @@ $scope.downloadSample= function() {
   }
 
   $scope.submitAddVehicle = function () {
-    // $scope.toggleView = false;    
-    // ToasterService.clearToast();
     let postData = {
       id: $scope.currentRoster.id,
       no_of_emp: $scope.currentRoster.no_of_emp,
@@ -422,9 +394,6 @@ $scope.downloadSample= function() {
       if (!result['success']) {
         $scope.toggleView = true;
         ToasterService.showError('Error', result['message']);
-        setTimeout(()=>{
-          // ToasterService.clearToast()
-        },0)
         return;
       }
       $scope.isAddMenuOpen = false;
@@ -445,8 +414,6 @@ $scope.downloadSample= function() {
   }
 
   $scope.disableDone = roster => {
-    // $scope.toggleView = false;    
-    // ToasterService.clearToast();
     if (!roster.total_seats) {
       $scope.isDoneDisabled = true;
     }
@@ -461,8 +428,6 @@ $scope.downloadSample= function() {
   //mansi changes
 
   $scope.getEmployeeList = function () {
-    // $scope.toggleView = false;    
-    // ToasterService.clearToast();
     let postData = {
       "siteId": $scope.selectedSite.id,
       "date": moment($scope.filterDate).format('YYYY-MM-DD'),
@@ -495,8 +460,6 @@ $scope.downloadSample= function() {
     $scope.SelectedEmp = [];
   }
   $scope.submitAddCustomRoute = function (selectedShift, to_time) {
-    // $scope.toggleView = false;    
-    // ToasterService.clearToast();
     if ($scope.SelectedEmp.length == 0) {
       $scope.toggleView = true;
       ToasterService.showError('Error', 'Select atleast one Employee');
@@ -526,9 +489,6 @@ $scope.downloadSample= function() {
           $scope.updateFilters();
         } else {
           ToasterService.showError('Error', res['message']);
-          // setTimeout(()=>{
-          //   ToasterService.clearToast();
-          // },0)
           return;
         }
       }, (error) => {
