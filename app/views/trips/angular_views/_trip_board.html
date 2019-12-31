@@ -253,19 +253,20 @@
                     <td><button ng-click="panicCallSesion(item.empId,'Employee')"
                         class="btn btn-sm vaayu-pop-action-btn"><i class="fa fa-phone callIcon"></i></button></td>
                     <td>
-                      <div class="input-group" ng-if="item.is_panic">
+                      <div class="input-group" >
                         <form class="form-inline">
                           <div class="form-group">
                             <div class="input-group">
-                              <input type="text" class="form-control" ng-model="item.comment" placeholder="Comment">
+                              <input type="text" class="form-control" ng-model="item.panic_message" placeholder="Comment" ng-disabled="!item.is_panic">
                               <div ng-click="updateCallStatus(item, modelData)" ng-class="{'panic':modelData.is_panic}"
+                                ng-disabled="!item.is_panic"
                                 class="input-group-addon btn vaayu-pop-action-btn">Done</div>
                             </div>
                           </div>
                         </form>
                       </div>
 
-                      <div class="input-group" ng-if="!item.is_panic">
+                      <!-- <div class="input-group" ng-if="!item.is_panic">
                         <form class="form-inline">
                           <div class="form-group">
                             <div class="input-group">
@@ -274,7 +275,7 @@
                             </div>
                           </div>
                         </form>
-                      </div>
+                      </div> -->
                     </td>
                   </tr>
                 </tbody>
@@ -331,7 +332,7 @@
                   <form class="form-inline">
                     <div class="form-group">
                       <div class="input-group" style="width:80%">
-                        <input type="text" class="form-control" ng-model="modelData.comment"
+                        <input type="text" class="form-control" ng-model="modelData.panic_remarks"
                           ng-disabled="!modelData.trip_driver_is_panic" placeholder="Comment">
                         <div ng-click="modelData.trip_driver_is_panic && addRemarkInTripForDriverPanic(modelData)"
                           class="input-group-addon btn vaayu-pop-action-btn"

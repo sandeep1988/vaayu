@@ -1,4 +1,4 @@
-angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListResponse, RouteService, TripboardService, TripboardResponse, $timeout, ToasterService,$interval,$filter,VehicleLocation) {
+angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListResponse, RouteService, TripboardService, TripboardResponse, $timeout, ToasterService, $interval, $filter, VehicleLocation) {
 
   // $scope.toggled = function(open) {
   //   // $log.log('Dropdown is now: ', open);
@@ -13,11 +13,11 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   //   $scope.status.isopen = !$scope.status.isopen;
   // };
 
-  
+
 
   $scope.init = function () {
     $scope.toggleView = false;
-    
+
     ToasterService.clearToast();
     $scope.today();
     // date picket
@@ -79,13 +79,13 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   };
 
 
-  $scope.FilterStat = function(item){
-    $scope.search =  $filter('uppercase')(item);
+  $scope.FilterStat = function (item) {
+    $scope.search = $filter('uppercase')(item);
   }
 
-  $scope.FilterSosStat = function(item){
-    $scope.search ='';
-    $scope.sos_panic =  item
+  $scope.FilterSosStat = function (item) {
+    $scope.search = '';
+    $scope.sos_panic = item
   }
 
 
@@ -109,7 +109,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     // var directionsService = new google.maps.DirectionsService();
     var directionsRenderer = new google.maps.DirectionsRenderer({
       suppressMarkers: true
-  });
+    });
 
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
@@ -120,34 +120,34 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     console.log('map ', $scope.map)
     directionsRenderer.setMap(map);
     var stepDisplay = new google.maps.InfoWindow;
-    $scope.waypts=$scope.modelData.map_data.wayPoints;
+    $scope.waypts = $scope.modelData.map_data.wayPoints;
 
-    var waypts=[];
+    var waypts = [];
 
-    angular.forEach($scope.waypts, function (item, index,wayptsArray) {
-      if(index==1){
-        $scope.source={
-          lat:item.lat,
-          lng:item.lng,
-          emp_name:item.emp_name
+    angular.forEach($scope.waypts, function (item, index, wayptsArray) {
+      if (index == 1) {
+        $scope.source = {
+          lat: item.lat,
+          lng: item.lng,
+          emp_name: item.emp_name
         }
       }
       waypts.push({
-        location:new google.maps.LatLng(item.lat,item.lng),
-        stopover:true
+        location: new google.maps.LatLng(item.lat, item.lng),
+        stopover: true
       });
-      
-      makeMarker(new google.maps.LatLng(item.lat,item.lng),item.emp_name);
 
-      if(index===wayptsArray.length-1){
-        $scope.destination={
-          lat:item.lat,
-          lng:item.lng,
-          emp_name:item.emp_name
-       }
+      makeMarker(new google.maps.LatLng(item.lat, item.lng), item.emp_name);
+
+      if (index === wayptsArray.length - 1) {
+        $scope.destination = {
+          lat: item.lat,
+          lng: item.lng,
+          emp_name: item.emp_name
+        }
       }
     })
-    
+
     // var waypts = [
     //   {
     //     location: 'Kandivali Station (W), Parekh Nagar, Kandivali, Mumbai, Maharashtra',
@@ -159,60 +159,60 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     //   }
     // ];
     // calculateAndDisplayRoute(directionsRenderer, directionsService, $scope.markerArray, waypts, stepDisplay, map);    // Define a symbol using SVG path notation, with an opacity of 1.
-    calculateAndDisplayRoute( directionsService, directionsRenderer, waypts)
+    calculateAndDisplayRoute(directionsService, directionsRenderer, waypts)
 
   }
 
-  $scope.tripOngoing =true;
+  $scope.tripOngoing = true;
 
-  function makeMarker( position, title ) {
+  function makeMarker(position, title) {
     new google.maps.Marker({
-     position: position,
-     map: $scope.map,
-     title: title
+      position: position,
+      map: $scope.map,
+      title: title
     });
-   }
+  }
 
   $scope.getCurrentVehicleLocation = () => {
-    
-      // $scope.toggleView = false;
-      // ToasterService.clearToast();
-    
-      VehicleLocation.get({ id: $scope.modelData.trip_id }, function(location) {
-        if(location.success){
-          var res=location.data.current_location;
-          console.log("data : "+ res);
-         var marker1 = new google.maps.Marker({
-           map: $scope.map,
-           position: new google.maps.LatLng(res.lat, res.lng),
-           icon: "../assets/angular_images/car.png"
-         })
-         $scope.tripOngoing=true;
-        }else{
-          $scope.tripOngoing=false;
-          $scope.toggleView = true;
-          // ToasterService.showError('Error', location['message']);
-        }
-      });
-    
-    
-  } 
+
+    // $scope.toggleView = false;
+    // ToasterService.clearToast();
+
+    VehicleLocation.get({ id: $scope.modelData.trip_id }, function (location) {
+      if (location.success) {
+        var res = location.data.current_location;
+        console.log("data : " + res);
+        var marker1 = new google.maps.Marker({
+          map: $scope.map,
+          position: new google.maps.LatLng(res.lat, res.lng),
+          icon: "../assets/angular_images/car.png"
+        })
+        $scope.tripOngoing = true;
+      } else {
+        $scope.tripOngoing = false;
+        $scope.toggleView = true;
+        // ToasterService.showError('Error', location['message']);
+      }
+    });
+
+
+  }
 
   function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
-    var source =$scope.modelData.map_data.source;
-    var destination =$scope.modelData.map_data.destination;
+    var source = $scope.modelData.map_data.source;
+    var destination = $scope.modelData.map_data.destination;
 
-    if(source.is_site){
-       makeMarker(new google.maps.LatLng(source.lat,source.lng),source.site_name);
+    if (source.is_site) {
+      makeMarker(new google.maps.LatLng(source.lat, source.lng), source.site_name);
     }
 
-    if(destination.is_site){
-      makeMarker(new google.maps.LatLng(destination.lat,destination.lng),destination.site_name);
+    if (destination.is_site) {
+      makeMarker(new google.maps.LatLng(destination.lat, destination.lng), destination.site_name);
     }
 
     directionsService.route({
-      origin: new google.maps.LatLng(source.lat,source.lng),
-      destination: new google.maps.LatLng(destination.lat,destination.lng),
+      origin: new google.maps.LatLng(source.lat, source.lng),
+      destination: new google.maps.LatLng(destination.lat, destination.lng),
       waypoints: waypts,
       optimizeWaypoints: true,
       travelMode: google.maps.DirectionsTravelMode.DRIVING
@@ -254,11 +254,11 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   $scope.addRemarkInTripForDriverPanic = (trip) => {
 
     $scope.toggleView = false;
-    
+
     ToasterService.clearToast();
-    var params={
-      "trip_id":trip.trip_id,
-      "remarks":trip.comment,
+    var params = {
+      "trip_id": trip.trip_id,
+      "remarks": trip.panic_remarks,
     };
     console.log('addRemarkInTripForDriverPanic req', params)
     TripboardService.addRemarkInTripForDriverPanic(params, (data) => {
@@ -278,22 +278,22 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     });
   }
 
-  $scope.updateCallStatus = function(item, trip) {
+  $scope.updateCallStatus = function (item, trip) {
 
-    var postdata={
-      "msg":item.comment,
-      "panic_id":item.panic_id,
-      "date":moment().format('YYYY-MM-DD hh:mm:ss')
+    var postdata = {
+      "msg": item.panic_message,
+      "panic_id": item.panic_id,
+      "date": moment().format('YYYY-MM-DD hh:mm:ss')
     };
-    
+
     TripboardService.savePanicResponse(postdata, (data) => {
       console.log('employeePanicComment res', data)
       if (!data['success']) {
         $scope.toggleView = true;
         ToasterService.showError('Error', data['message']);
-      }else{
+      } else {
         $scope.toggleView = true;
-        ToasterService.showSuccess('Success',data['message']);
+        ToasterService.showSuccess('Success', data['message']);
         trip.trip_is_panic = data.data.is_trip_panic;
         item.is_panic = false;
       }
@@ -303,19 +303,19 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     });
   }
 
-  $scope.panicCallSesion = function(id,type){
+  $scope.panicCallSesion = function (id, type) {
 
     $scope.toggleView = false;
-    
+
     ToasterService.clearToast();
-    var postdata={
-      "toId":id,
-      "callToType":type,
-      "callRequestDateTime":moment().format('YYYY-MM-DD hh:mm:ss')
+    var postdata = {
+      "toId": id,
+      "callToType": type,
+      "callRequestDateTime": moment().format('YYYY-MM-DD hh:mm:ss')
     };
-    
+
     TripboardService.callOperator(postdata, (data) => {
-     
+
       if (data['success']) {
         $scope.toggleView = true;
         ToasterService.showSuccess('Success', data['message']);
@@ -333,13 +333,11 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
   $scope.getAllTrips = function () {
     $scope.toggleView = false;
-    
+
     ToasterService.clearToast();
     $scope.search = '';
-    // $scope.fullRoster = TripboardResponse.tempResponse.tripsdetails;
-    // $scope.stats = TripboardResponse.tempResponse.stats;
-    // $scope.rosters = $scope.fullRoster;
-    
+   
+
 
     let postData = {
       "site_id": $scope.selectedSiteID,
@@ -353,13 +351,16 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         ToasterService.showError('Error', data['message']);
         return;
       }
+      
+      // $scope.fullRoster = TripboardResponse.tempResponse.data.tripsdetails;
       $scope.fullRoster = data.data.tripsdetails;
       $scope.rosters = $scope.fullRoster;
-      
+       
+
       angular.forEach($scope.rosters, function (item) {
-        item.current_status =  $filter('uppercase')(item.current_status);
+        item.current_status = $filter('uppercase')(item.current_status);
       })
-      $scope.stats =  data.data.stats;
+      $scope.stats = data.data.stats;
 
     }, function (error) {
       console.error(error);
@@ -368,57 +369,58 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   }
   // Refresh Trip Board after Every 1 Minute;
 
-  $interval(function() {
+  $interval(function () {
     // $scope.getCurrentVehicleLocation ();
     $scope.getAllTrips();
-  }, 1000*60);
+  }, 1000 * 60);
 
 
   $scope.showPopup = false;
   $scope.callAPI = false;
-  $scope.getTripDetails =function() {
+  $scope.getTripDetails = function () {
 
-    if($scope.selectedTripId && $scope.isOpen){
+    if ($scope.selectedTripId && $scope.isOpen) {
       let postData = {
         "trip_id": $scope.selectedTripId,
         "site_id": $scope.selectedSiteID,
         "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
       }
-       
+
       TripboardService.getAllTrips(postData, (data) => {
-        
+
         $scope.modelData = data.data.tripsdetails[0];
-        
+
         $scope.selectedVehicle = {};
         var trip_status = data.current_status.toLowerCase().trim();
         if (trip_status === 'pending acceptance' || trip_status === 'accepted' || trip_status === 'delayed') {
           $scope.getVehicleListForTrip(data);
-        } 
-  
+        }
+
       }, function (error) {
         console.error(error);
       });
-    }  
+    }
   }
-  $scope.isOpen=false;
+  $scope.isOpen = false;
 
   $scope.showModal = (row, checkStatus) => {
-      $scope.selectedTripId=row.trip_id
+    console.log('row', row);
+    $scope.selectedTripId = row.trip_id
 
-      $scope.showPopup = true;
+    $scope.showPopup = true;
 
-      $scope.isOpen=true;
-      if(checkStatus === 'On Going'){
-        this.getCurrentVehicleLocation();
-      }
-      
-     
+    $scope.isOpen = true;
+    if (checkStatus === 'On Going') {
+      this.getCurrentVehicleLocation();
+    }
+
+
+    $scope.getTripDetails();
+
+    $interval(function () {
       $scope.getTripDetails();
+    }, 1000 * 60);
 
-      $interval(function() {
-        $scope.getTripDetails();
-      }, 1000*60);
-      
 
     // var mapProp = {
     //   center: new google.maps.LatLng(51.508742, -0.120850),
@@ -472,7 +474,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     // When the user clicks on <span> (x), close the modal
     closepop.onclick = function () {
       modal.style.display = "none";
-      $scope.isOpen=false;
+      $scope.isOpen = false;
     }
 
 
@@ -492,7 +494,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   $scope.getVehicleListForTrip = function (trip) {
 
     $scope.toggleView = false;
-    
+
     ToasterService.clearToast();
     var siteId = $scope.selectedSiteID
     var shiftId = trip.shift_id
@@ -521,7 +523,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         // }
         // $scope.vehicleList = newarray;
       }
-      
+
     }, function (error) {
       console.log(error);
     });
@@ -531,7 +533,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     var shiftId = trip.shift_id
     var shiftType = trip.trip_type_status
 
-    let params = { shiftId , shift_type: shiftType, searchBy: '' };
+    let params = { shiftId, shift_type: shiftType, searchBy: '' };
     console.log('searchAllVehicles req', params)
     RouteService.searchVechicle(params, function (res) {
       console.log('searchAllVehicles res', res)
@@ -540,21 +542,21 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         // var array = VehicleListResponse.listResponse.data;
         var newarray = [];
         for (let item of vehicleList) {
-          newarray.push({id: item.id, name: item.vehicleNumber+' - On Site'})
+          newarray.push({ id: item.id, name: item.vehicleNumber + ' - On Site' })
         }
         for (let item of res.data) {
-          newarray.push({id: item.id, name: item.vehicleNumber+' - Off Site'})
+          newarray.push({ id: item.id, name: item.vehicleNumber + ' - Off Site' })
         }
-       
+
         $scope.vehicleList = newarray;
       } else {
         console.log(res['message']);
       }
       console.log('$scope.vehicleList', $scope.vehicleList)
     },
-    function (error) {
-      console.log(error);
-    });
+      function (error) {
+        console.log(error);
+      });
   }
 
   $scope.isDisable = () => {
@@ -570,18 +572,18 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     var trip_status = row.current_status.toLowerCase().trim();
     if (trip_status === 'pending acceptance' || trip_status === 'accepted' || trip_status === 'delayed') {
       return true;
-    } 
+    }
     return false;
   }
   $scope.changeAllocation = (trip) => {
 
     $scope.toggleView = false;
-    
+
     ToasterService.clearToast();
     console.log('selected vehicle', $scope.selectedVehicle)
-    let params = {trip_id: trip.trip_id, vehicleId: $scope.selectedVehicle.id}
+    let params = { trip_id: trip.trip_id, vehicleId: $scope.selectedVehicle.id }
     console.log('changeAllocation params', params);
-    RouteService.changeAllocation (params, function(res) {
+    RouteService.changeAllocation(params, function (res) {
       console.log('changeAllocation res', res)
       if (res['success']) {
         $scope.toggleView = true;
@@ -597,33 +599,33 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       ToasterService.showError('Error', 'Something went wrong, Try Later.');
     });
   }
-  
+
   $scope.closePopup = () => {
-    $scope.showPopup=false;
-    $scope.isOpen=false;
+    $scope.showPopup = false;
+    $scope.isOpen = false;
   }
 
   $scope.getRowColor = (index, trip) => {
     // 'active': ($index % 2) === 0, 'panic':roster.trip_is_panic}
     if (trip && trip.trip_is_panic) {
       return 'panic';
-    } else if ((index % 2) === 0){
+    } else if ((index % 2) === 0) {
       return 'active';
     }
     return '';
   }
 
   $scope.getDriverProfileUrl = (url) => {
-    if (url !== undefined && url !== null && url.length > 8){
+    if (url !== undefined && url !== null && url.length > 8) {
       if (url.startsWith('http')) {
         return url;
       } else {
-        return 'http://'+url;
+        return 'http://' + url;
       }
-    } 
+    }
 
     return '../assets/angular_images/img_avatar.png';
   }
-  
+
 
 });
