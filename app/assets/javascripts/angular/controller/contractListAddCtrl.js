@@ -135,7 +135,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         // {"name": "Per Trip", "value": "Per Trip"},
         { "name": "Daily", "value": "Daily" },
         { "name": "Weekly", "value": "Weekly" },
-        { "name": "Forth Nightly",  "value": "Forth Nightly" },
+        { "name": "Fortnightly",  "value": "Fortnightly" },
         { "name": "Monthly",  "value": "Monthly" },
         // {  "name": "Quarterly", "value": "Quarterly"  }
     ]
