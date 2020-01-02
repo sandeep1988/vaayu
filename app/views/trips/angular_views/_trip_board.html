@@ -257,7 +257,7 @@
                         <form class="form-inline">
                           <div class="form-group">
                             <div class="input-group">
-                              <input type="text" class="form-control" ng-model="item.panic_message" placeholder="Comment" ng-disabled="!item.is_panic">
+                              <input type="text" class="form-control" title="{{item.panic_message}}" ng-model="item.panic_message" placeholder="Comment" ng-disabled="!item.is_panic">
                               <div ng-click="updateCallStatus(item, modelData)" ng-class="{'panic':modelData.is_panic}"
                                 ng-disabled="!item.is_panic"
                                 class="input-group-addon btn vaayu-pop-action-btn">Done</div>
@@ -333,6 +333,7 @@
                     <div class="form-group">
                       <div class="input-group" style="width:80%">
                         <input type="text" class="form-control" ng-model="modelData.panic_remarks"
+                          title="{{modelData.panic_remarks}}"
                           ng-disabled="!modelData.trip_driver_is_panic" placeholder="Comment">
                         <div ng-click="modelData.trip_driver_is_panic && addRemarkInTripForDriverPanic(modelData)"
                           class="input-group-addon btn vaayu-pop-action-btn"
