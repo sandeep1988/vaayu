@@ -76,8 +76,11 @@ class TripChangeRequest < ApplicationRecord
         end
       when :new_trip
         if self.shift
+          trip_request_new_date = self.new_date.strftime("%H:%M")
+          shift_id = employee.shifts.where(:start_time => trip_request_new_date).first.id if trip_request_new_date.present? && trip_type == "check_in"
+            shift_id = employee.shifts.where(:end_time => trip_request_new_date).first.id if trip_type == "check_out"
           #Employee has requested for a new shift time so add schedule date here
-          self.create_employee_trip!( date: new_date, trip_type: trip_type, employee: employee, bus_rider: employee.bus_travel, schedule_date: Time.zone.parse("#{self.schedule_date} 10:00:00"), shift_id: shift_id )
+          self.create_employee_trip!( date: new_date, trip_type: trip_type, employee: employee, bus_rider: employee.bus_travel, schedule_date: Time.zone.parse("#{self.schedule_date} 10:00:00"), shift_id: shift_id , site_id: employee.site_id )
         else          
           self.create_employee_trip!( date: new_date, trip_type: trip_type, employee: employee, bus_rider: employee.bus_travel)
         end
