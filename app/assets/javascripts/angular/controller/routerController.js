@@ -36,16 +36,27 @@ app.directive('focusMe', function ($timeout) {
 
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService,
   AutoAllocationService,
-  FinalizeService, RouteStaticResponse, ToasterService, SessionService,BASE_URL_API_8002,TripboardService) {
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService) {
 
 
-  $scope.toggleView = false;  
+  $scope.toggleView = false;
   $scope.disableBtn = false;
   ToasterService.clearToast();
   $scope.place = {};
   // Map.init();
 
+  var directionsRenderer 
   $scope.initMap = () => {
+
+    directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 13,
+      center: { lat: 19.2578, lng: 72.8731 },
+      mapTypeId: 'terrain'
+    });
+    $scope.map = map;
+    directionsRenderer.setMap(map);
+
     // $scope.drawMapPath([
     //   {lat: 37.772, lng: -122.214},
     //   {lat: 21.291, lng: -157.821},
@@ -60,20 +71,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // {lat: -27.467, lng: 153.027}
     // ];
 
-       // var directionsService = new google.maps.DirectionsService();
-       var directionsRenderer = new google.maps.DirectionsRenderer({suppressMarkers: true});
-  
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 13,
-        center: { lat: 19.2578, lng: 72.8731 },
-        mapTypeId: 'terrain'
-      });
-      $scope.map = map
-      console.log('map ', $scope.map)
-      // directionsRenderer.setMap(map);
-      var stepDisplay = new google.maps.InfoWindow;
+    // var directionsService = new google.maps.DirectionsService();
+   
+    var stepDisplay = new google.maps.InfoWindow;
 
-      
+
     // var waypts = [
     //   {
     //     location: 'Kandivali Station (W), Parekh Nagar, Kandivali, Mumbai, Maharashtra',
@@ -84,14 +86,14 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     //     stopover: true
     //   }
     // ];
-    
+
     // calculateAndDisplayRoute( directionsService, directionsRenderer, waypts)
 
   }
 
   $scope.selected_vehicle_status = 'on_duty';
 
-  $scope.onVehicleStatusChange = (value) => {   
+  $scope.onVehicleStatusChange = (value) => {
     console.log('value ', value);
     $scope.selected_vehicle_status = value;
     let shift = JSON.parse($scope.selectedShift);
@@ -100,12 +102,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.finalizeArray = [];
   $scope.coords = []
-  
+
 
 
   $scope.init = function () {
     $scope.toggleView = false;
-    
+
     ToasterService.clearToast();
     $scope.stats = {
       "no_of_routes": 0,
@@ -141,27 +143,27 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // date function
 
     $scope.vehicle_status_list = [
-      {name: 'On Duty', value: 'on_duty'},
-      {name: 'Off Duty', value: 'off_duty'}
+      { name: 'On Duty', value: 'on_duty' },
+      { name: 'Off Duty', value: 'off_duty' }
     ]
 
     $http({
       method: 'POST',
       url: BASE_URL_API_8002 + 'categoryList',
       headers: {
-          'Content-Type': 'application/json',
-          'uid': SessionService.uid,
-          'access_token': SessionService.access_token,
-          'client': SessionService.client
+        'Content-Type': 'application/json',
+        'uid': SessionService.uid,
+        'access_token': SessionService.access_token,
+        'client': SessionService.client
       },
       data: { test: 'test' }
-  }).then(function (res) {
+    }).then(function (res) {
       console.log('Vehicle', res);
       $scope.vehicleCategoryList = res.data.data;
-  }).catch(err => {
+    }).catch(err => {
       console.log(err)
-  });
-  
+    });
+
     // RouteService.getVehicleCategoryList(function (data) {
     //   $scope.vehicleCategoryList = data;
     // });
@@ -206,7 +208,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.removeVehicle = (vehicle, route) => {
 
     $scope.toggleView = false;
-    
+
     ToasterService.clearToast();
     console.log('route', route.routeId, route)
     RouteService.removeVehicle({ routeId: route.routeId }, res => {
@@ -225,12 +227,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
   }
 
-  $scope.removeGuard = (guard,route) => {
+  $scope.removeGuard = (guard, route) => {
     $scope.toggleView = false;
-    
+
     ToasterService.clearToast();
     console.log('route', route.routeId, route)
-    RouteService.removeGuard({ routeId: String(route.routeId), guardId:String(guard.guardId)}, res => {
+    RouteService.removeGuard({ routeId: String(route.routeId), guardId: String(guard.guardId) }, res => {
       if (res['success']) {
         $scope.toggleView = true;
         ToasterService.showSuccess('Success', res['message']);
@@ -248,11 +250,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.getVehicleListForSite = function (siteId, shiftId, shiftType) {
 
     $scope.toggleView = false;
-    
+
     ToasterService.clearToast();
-    if (siteId == null || shiftId == null || shiftType == null){
+    if (siteId == null || shiftId == null || shiftType == null) {
       return;
-    } 
+    }
 
     let postVehicleData = {
       siteId, shiftId, shiftType,
@@ -290,11 +292,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.getGuardListForSite = function (siteId, shiftId, shiftType) {
 
     $scope.toggleView = false;
-    
+
     ToasterService.clearToast();
-    if (siteId == null || shiftId == null ){
+    if (siteId == null || shiftId == null) {
       return;
-    } 
+    }
     RouteService.getGuardList({ siteId, shiftId }, function (res) {
       console.log('guard list', res.data)
       $scope.guardList = res.data;
@@ -352,7 +354,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         $scope.selectedShift = JSON.stringify($scope.shifts[0]);
         $scope.resetRoute();
         $scope.toggleView = true;
-        console.log('data: ',data); 
+        console.log('data: ', data);
         ToasterService.showSuccess('Success', 'Routes listed successfully');
         // $scope.generateRoute($scope.siteId,$scope.shifts[0].id,moment().format('YYYY-MM-DD'),1);
       } else {
@@ -406,12 +408,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     var finalChangedRoutes = [];
     angular.forEach(changedRoutes, function (route) {
-     
-      if(route.guard_required){
-        route.guard_required="Y";
-     }else{
-       route.guard_required="N";
-     }
+
+      if (route.guard_required) {
+        route.guard_required = "Y";
+      } else {
+        route.guard_required = "N";
+      }
       var employee_nodes = [];
       angular.forEach(route.employees, function (emp) {
         employee_nodes.push(emp.empId);
@@ -420,7 +422,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         "route_id": route.routeId,
         "vehicle_category": route.vehicle_type,
         "employee_nodes": employee_nodes,
-        "guard_required":route.guard_required
+        "guard_required": route.guard_required
       }
       finalChangedRoutes.push(data);
     })
@@ -439,10 +441,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     })
 
     angular.forEach(originalChangedRoutes, function (originalRoute) {
-      if(originalRoute.guard_required){
-        originalRoute.guard_required="Y";
-      }else{
-        originalRoute.guard_required="N";
+      if (originalRoute.guard_required) {
+        originalRoute.guard_required = "Y";
+      } else {
+        originalRoute.guard_required = "N";
       }
 
       var employee_nodes = [];
@@ -453,7 +455,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         "route_id": originalRoute.routeId,
         "vehicle_category": originalRoute.vehicle_type,
         "employee_nodes": employee_nodes,
-        "guard_required":originalRoute.guard_required
+        "guard_required": originalRoute.guard_required
       }
       original_routes.push(data);
     })
@@ -489,7 +491,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.resetRoute = function () {
-    
+
     $scope.finalizeArray = [];
     $scope.routeChangedIds = [];
 
@@ -499,15 +501,15 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.plateNumber = '';
 
   $scope.closePopup = () => {
-    $scope.showPopup=false;
+    $scope.showPopup = false;
   }
 
   $scope.showPopup = false;
 
   $scope.openPopUp = () => {
-   
+
     $scope.showPopup = true;
-             
+
     var modal = document.getElementById("myModal");
     modal.style.display = "block";
 
@@ -523,82 +525,82 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       }
     }
   }
- 
-  $scope.createNewRoute=function(vehicleType) {
+
+  $scope.createNewRoute = function (vehicleType) {
     var routeId;
 
     angular.forEach($scope.vehicleCategoryList, function (vehicle, idx) {
-      if(vehicle.id==vehicleType){
-        $scope.vehicle=vehicle;
+      if (vehicle.id == vehicleType) {
+        $scope.vehicle = vehicle;
       }
     });
 
     angular.forEach($scope.routes.data.routes, function (route, index, routeArray) {
-      if(index===routeArray.length-1){
-        routeId=route.routeId
+      if (index === routeArray.length - 1) {
+        routeId = route.routeId
       }
     });
 
     let shift = JSON.parse($scope.selectedShift);
-      let postData = {
-        "routeId":String(routeId),
-        "site_id": String($scope.siteId),
-        "shift_id": String(shift.id),
-        "seating_capacity":String($scope.vehicle.seating_capacity),
-        "vehicle_category":$scope.vehicle.category_name,
-        "start_date": moment($scope.filterDate).format('YYYY-MM-DD'),
-        "trip_type": String(shift.trip_type),
-      }
+    let postData = {
+      "routeId": String(routeId),
+      "site_id": String($scope.siteId),
+      "shift_id": String(shift.id),
+      "seating_capacity": String($scope.vehicle.seating_capacity),
+      "vehicle_category": $scope.vehicle.category_name,
+      "start_date": moment($scope.filterDate).format('YYYY-MM-DD'),
+      "trip_type": String(shift.trip_type),
+    }
 
 
-      RouteService.createRoute(postData, function (res) {
-          $scope.showPopup = false;
-          $scope.resetRoute();
-      });
+    RouteService.createRoute(postData, function (res) {
+      $scope.showPopup = false;
+      $scope.resetRoute();
+    });
   };
 
   $scope.onVehicleSearch = (plateNumber) => {
-    $scope.plateNumber=plateNumber;
+    $scope.plateNumber = plateNumber;
     let shift = JSON.parse($scope.selectedShift);
-  
-      let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber, to_date: moment($scope.filterDate).format('YYYY-MM-DD')};
-      RouteService.searchVechicle(params, function (res) {
-        console.log('vehicle search response', res)
-        console.log('vs response', JSON.stringify(res))
-        if (res['success']) {
-          $scope.vehicleList = res.data;
-          var allowtypes = [];
-          angular.forEach($scope.vehicleList, function (item) {
-            // item.type = "vehical";
-            item.type = item.vehicleType;
-            if (!allowtypes.includes(item.type)) {
-              allowtypes.push(item.type)
-            }
-          })
-          console.log('allowtypes', allowtypes);
-  
-          $scope.vehicals = [
-            {
-              label: "Vehical",
-              allowedTypes: allowtypes,
-              max: allowtypes.length + 1,
-              vehical: $scope.vehicleList
-            }
-          ];
-        } else {
-          //ToasterService.showError('Error', res['message']);
-          console.log(res['message']);
-        }
-      }, function (error) {
-        console.log(error);
-      });
-   
+
+    let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber, to_date: moment($scope.filterDate).format('YYYY-MM-DD') };
+    RouteService.searchVechicle(params, function (res) {
+      console.log('vehicle search response', res)
+      console.log('vs response', JSON.stringify(res))
+      if (res['success']) {
+        $scope.vehicleList = res.data;
+        var allowtypes = [];
+        angular.forEach($scope.vehicleList, function (item) {
+          // item.type = "vehical";
+          item.type = item.vehicleType;
+          if (!allowtypes.includes(item.type)) {
+            allowtypes.push(item.type)
+          }
+        })
+        console.log('allowtypes', allowtypes);
+
+        $scope.vehicals = [
+          {
+            label: "Vehical",
+            allowedTypes: allowtypes,
+            max: allowtypes.length + 1,
+            vehical: $scope.vehicleList
+          }
+        ];
+      } else {
+        //ToasterService.showError('Error', res['message']);
+        console.log(res['message']);
+      }
+    }, function (error) {
+      console.log(error);
+    });
+
 
   }
 
   $scope.showStaticData = (res) => {
     $scope.toggleView = false;
-    
+
     ToasterService.clearToast();
     $scope.routes = res;
 
@@ -645,14 +647,14 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
 
 
-    
+
     $scope.fullModel = [$scope.routes.data.routes];
     $scope.model2 = $scope.fullModel;
     console.log('scope routes', $scope.model2);
 
   }
 
-  $scope.generateRoute = function (siteId, shiftId, filterDate, shiftType) {  
+  $scope.generateRoute = function (siteId, shiftId, filterDate, shiftType) {
 
     $scope.toggleView = false;
     ToasterService.clearToast();
@@ -716,26 +718,17 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
   }
 
- 
-  function makeMarker( position, title ) {
-    new google.maps.Marker({
-     position: position,
-     map: $scope.map,
-     title: title
-    });
-   }
-   
   $scope.showRouteData = () => {
     $scope.toggleView = false;
-    
+
     ToasterService.clearToast();
     angular.forEach($scope.routes.data.routes, function (route, index, routeArray) {
       route.allowed = "all";
 
-      if(route.guard_required=="Y"){
-         route.guard_required=true;
-      }else{
-        route.guard_required=false;
+      if (route.guard_required == "Y") {
+        route.guard_required = true;
+      } else {
+        route.guard_required = false;
       }
 
       if (route.guard) {
@@ -776,7 +769,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     $scope.fullModel = [$scope.routes.data.routes];
     $scope.model2 = $scope.fullModel;
     console.log('scope model2');
-    
+
   }
 
   $scope.collapsiblePanel = function (item) {
@@ -833,7 +826,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
   };
 
-  
+
   $scope.reset = function () {
     $state.reload(true);
   }
@@ -865,7 +858,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     console.log(container);
     if ($scope.routeChangedIds.indexOf(container.routeId) === -1) {
       $scope.routeChangedIds.push(container.routeId)
-  
+
       $scope.isDisabled = false;
     }
   };
@@ -934,16 +927,16 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           }
         })
       })
-   
-  
+
+
       var finalChangedRoutes = [];
       angular.forEach(changedRoutes, function (route) {
-       
-        if(route.guard_required){
-          route.guard_required="Y";
-       }else{
-         route.guard_required="N";
-       }
+
+        if (route.guard_required) {
+          route.guard_required = "Y";
+        } else {
+          route.guard_required = "N";
+        }
         var employee_nodes = [];
         angular.forEach(route.employees, function (emp) {
           employee_nodes.push(emp.empId);
@@ -952,7 +945,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           "route_id": route.routeId,
           "vehicle_category": route.vehicle_type,
           "employee_nodes": employee_nodes,
-          "guard_required":route.guard_required
+          "guard_required": route.guard_required
         }
         finalChangedRoutes.push(data);
       })
@@ -965,7 +958,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
       RouteService.assignGuards(postData, function (data) {
         console.log("Guard Assign");
-       
+
         $scope.resetRoute();
       })
 
@@ -1112,126 +1105,117 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // $scope.isFilterSidebarView = true;
   }
 
-  $scope.isSiteStatus=1;
+  $scope.isSiteStatus = 1;
   $scope.site;
   function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
-
-    var postData ={
-      "site_id": $scope.siteId
-    }
-    TripboardService.getAllSiteList(postData,function (data) {
-      $scope.site = data.data.list[0];
-
-      let shift = JSON.parse($scope.selectedShift);
-    
-
-    if($scope.getShiftType(shift.shift_type) == 1){
-      $scope.isSiteStatus=1;
-      makeMarker(new google.maps.LatLng($scope.site.latitude,$scope.site.longitude),$scope.site.name);
+    for (let item of $scope.siteList) {
+      if (item.id === $scope.siteId) {
+        var site = item;
+      }
     }
 
-   if($scope.getShiftType(shift.shift_type) ==0){
-      $scope.isSiteStatus=0;
-      makeMarker(new google.maps.LatLng($scope.site.latitude,$scope.site.longitude),$scope.site.name);
-   }
+    let shift = JSON.parse($scope.selectedShift);
+    if ($scope.getShiftType(shift.shift_type) == 1) {
+      $scope.isSiteStatus = 1;
+      makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true);
+    }
 
-   if($scope.isSiteStatus == 1){
-     console.log('latLng 1', $scope.site.latitude, waypts);
-     
-    directionsService.route({
-      origin: waypts[0].location,
-      destination: new google.maps.LatLng($scope.site.latitude,$scope.site.longitude),
-      waypoints: waypts,
-      optimizeWaypoints: true,
-      travelMode: google.maps.DirectionsTravelMode.DRIVING
-    }, function (response, status) {
-      if (status === 'OK') {
-        directionsRenderer.setDirections(response);
-        var route = response.routes[0];
-        var summaryPanel = document.getElementById('directions-panel');
- 
-        if (summaryPanel) {
-          summaryPanel.innerHTML = '';
-          // For each route, display summary information.
-          for (var i = 0; i < route.legs.length; i++) {
-            var routeSegment = i + 1;
-            summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-              '</b><br>';
-            summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-            summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-            summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-          }
-        }
-      } else {
-        console.log('Directions request failed due to ' + status);
-      }
-    });
-   }
+    if ($scope.getShiftType(shift.shift_type) == 0) {
+      $scope.isSiteStatus = 0;
+      makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true);
+    }
 
-   if($scope.isSiteStatus == 0){
-    directionsService.route({
-      origin: new google.maps.LatLng($scope.site.latitude,$scope.site.longitude),
-      destination: waypts[waypts.length-1].location,
-      waypoints: waypts,
-      optimizeWaypoints: true,
-      travelMode: google.maps.DirectionsTravelMode.DRIVING
-    }, function (response, status) {
-      if (status === 'OK') {
-        directionsRenderer.setDirections(response);
-        var route = response.routes[0];
-        var summaryPanel = document.getElementById('directions-panel');
- 
-        if (summaryPanel) {
-          summaryPanel.innerHTML = '';
-          // For each route, display summary information.
-          for (var i = 0; i < route.legs.length; i++) {
-            var routeSegment = i + 1;
-            summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-              '</b><br>';
-            summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-            summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-            summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+    if ($scope.isSiteStatus == 1) {
+      console.log('latLng 1', site.latitude, waypts);
+
+      directionsService.route({
+        origin: waypts[0].location,
+        destination: new google.maps.LatLng(site.latitude, site.longitude),
+        waypoints: waypts,
+        optimizeWaypoints: true,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING
+      }, function (response, status) {
+        if (status === 'OK') {
+          directionsRenderer.setDirections(response);
+          var route = response.routes[0];
+          var summaryPanel = document.getElementById('directions-panel');
+
+          if (summaryPanel) {
+            summaryPanel.innerHTML = '';
+            // For each route, display summary information.
+            for (var i = 0; i < route.legs.length; i++) {
+              var routeSegment = i + 1;
+              summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+                '</b><br>';
+              summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+              summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+              summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+            }
           }
+        } else {
+          console.log('Directions request failed due to ' + status);
         }
-      } else {
-        console.log('Directions request failed due to ' + status);
-      }
-    });
-   }
-    });
+      });
+    }
+
+    if ($scope.isSiteStatus == 0) {
+      directionsService.route({
+        origin: new google.maps.LatLng(site.latitude, site.longitude),
+        destination: waypts[waypts.length - 1].location,
+        waypoints: waypts,
+        optimizeWaypoints: true,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING
+      }, function (response, status) {
+        if (status === 'OK') {
+          directionsRenderer.setDirections(response);
+          var route = response.routes[0];
+          var summaryPanel = document.getElementById('directions-panel');
+
+          if (summaryPanel) {
+            summaryPanel.innerHTML = '';
+            // For each route, display summary information.
+            for (var i = 0; i < route.legs.length; i++) {
+              var routeSegment = i + 1;
+              summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+                '</b><br>';
+              summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+              summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+              summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+            }
+          }
+        } else {
+          console.log('Directions request failed due to ' + status);
+        }
+      });
+    }
+
     // $scope.getCurrentVehicleLocation();
   }
 
+ 
   $scope.selectRoute = (container) => {
-    console.log('container', container);
+    if (!container.route_selected) {
+      console.log("routes un checked");
+      return;
+    }
+    
     $scope.finalizeArray.push({ routeId: container.routeId });
-   
-    var waypts=[];
-    setTimeout(()=>{
-      angular.forEach(container.employees, function (item, index,wayptsArray) {
-        
-        waypts.push({
-          location:new google.maps.LatLng(item.lat,item.lng),
-          stopover:true
-        });
-          makeMarker(new google.maps.LatLng(item.lat,item.lng),item.empName);
+
+    var waypts = [];
+    for (let item of container.employees) {
+      waypts.push({
+        location: new google.maps.LatLng(item.lat, item.lng),
+        stopover: true
       });
-    })
+      makeMarker(new google.maps.LatLng(item.lat, item.lng), item.empName);
+    }
 
     // var directionsService = new google.maps.DirectionsService();
-    var directionsRenderer = new google.maps.DirectionsRenderer({suppressMarkers:true});
+    
 
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 13,
-      center: { lat: 19.2578, lng: 72.8731 },
-      mapTypeId: 'terrain'
-    });
-    $scope.map = map;
-    console.log('map: ', $scope.map);
-    directionsRenderer.setMap(map);
     var stepDisplay = new google.maps.InfoWindow;
-   
-    calculateAndDisplayRoute( directionsService, directionsRenderer, waypts)
+
+    calculateAndDisplayRoute(directionsService, directionsRenderer, waypts)
   }
 
 
@@ -1246,7 +1230,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   // Helping Functions End
 
   $scope.getShiftType = (shiftType) => {
-   
+
     return shiftType.toLowerCase() === 'check out' ? 1 : 0;
   }
 
@@ -1293,4 +1277,31 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       icon: "../assets/angular_images/car.png"
     })
   }
+
+  function makeMarker(position, title, isSite = false) {
+    // var image = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2238%22%20height%3D%2238%22%20viewBox%3D%220%200%2038%2038%22%3E%3Cpath%20fill%3D%22%23808080%22%20stroke%3D%22%23ccc%22%20stroke-width%3D%22.5%22%20d%3D%22M34.305%2016.234c0%208.83-15.148%2019.158-15.148%2019.158S3.507%2025.065%203.507%2016.1c0-8.505%206.894-14.304%2015.4-14.304%208.504%200%2015.398%205.933%2015.398%2014.438z%22%2F%3E%3Ctext%20transform%3D%22translate%2819%2018.5%29%22%20fill%3D%22%23fff%22%20style%3D%22font-family%3A%20Arial%2C%20sans-serif%3Bfont-weight%3Abold%3Btext-align%3Acenter%3B%22%20font-size%3D%2212%22%20text-anchor%3D%22middle%22%3E' + 'umar' + '%3C%2Ftext%3E%3C%2Fsvg%3E';
+    if (!isSite) {
+      return showCustomMarker(position, title, title)
+    }
+    return new google.maps.Marker({
+      position: position,
+      map: $scope.map,
+      title: title,
+      animation: google.maps.Animation.DROP,
+    });
+
+    function showCustomMarker() {
+      // var image = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2238%22%20height%3D%2238%22%20viewBox%3D%220%200%2038%2038%22%3E%3Cpath%20fill%3D%22%23808080%22%20stroke%3D%22%23ccc%22%20stroke-width%3D%22.5%22%20d%3D%22M34.305%2016.234c0%208.83-15.148%2019.158-15.148%2019.158S3.507%2025.065%203.507%2016.1c0-8.505%206.894-14.304%2015.4-14.304%208.504%200%2015.398%205.933%2015.398%2014.438z%22%2F%3E%3Ctext%20transform%3D%22translate%2819%2018.5%29%22%20fill%3D%22%23fff%22%20style%3D%22font-family%3A%20Arial%2C%20sans-serif%3Bfont-weight%3Abold%3Btext-align%3Acenter%3B%22%20font-size%3D%2212%22%20text-anchor%3D%22middle%22%3E' + 'umar' + '%3C%2Ftext%3E%3C%2Fsvg%3E';
+      return new google.maps.Marker({
+        position: position,
+        map: $scope.map,
+        title: title,
+        animation: google.maps.Animation.DROP,
+        // icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+        label: { color: '#fff', fontWeight: 'bold', fontSize: '14px', text: title.charAt(0).toUpperCase() }
+      });
+    }
+  }
+
+  
 });

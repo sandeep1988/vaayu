@@ -28,6 +28,7 @@
                 <input type="text" class="form-control data_in_style" datepicker-popup="{{format}}"
                   ng-model="filterDate" is-open="opened" datepicker-options="dateOptions"
                   date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"
+                  ng-change="updateFilters()"
                    />
                 <span class="input-group-btn-datePicket ">
                   <button type="button" class="btn btn-default data_in_style" ng-click="open($event)"><i
@@ -146,7 +147,7 @@
                         <div class="employee-cluster-panel-heading"
                           ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
                           <div class="title_container" >
-                            <input type="checkbox" ng-change="selectRoute(container)" ng-model="container.selected"
+                            <input type="checkbox" ng-change="selectRoute(container)" ng-model="container.route_selected"
                               name="route" class="tick" style="height: 25px; width: 25px;"
                               ng-show="container.status !== 'assign_requested'">
                             <span class="title_text"># {{container.routeId+' - '+container.vehicle_type}}  </span>
