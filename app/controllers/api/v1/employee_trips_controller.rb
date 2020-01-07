@@ -67,7 +67,7 @@ module API::V1
           @cancel_request_approved_notification = Notification.where(:trip => @employee_trip.trip, :employee => @employee, :message => 'cancel_request_approved').first
 
           if @cancel_request_approved_notification.blank?
-            Notification.create!(:trip => @employee_trip.trip, :employee => @employee, :message => 'cancel_request_approved', :new_notification => true, :resolved_status => true, :reporter => "Moove System").send_notifications
+            Notification.create!(:trip => @employee_trip.trip, :employee => @employee, :message => 'cancel_request_approved', :new_notification => true, :resolved_status => true, :reporter => "Vaayu System").send_notifications
           end
         end
         @trip_change_request.approve!
@@ -117,7 +117,7 @@ module API::V1
             @change_request_approved_notification = Notification.where(:trip => @employee_trip.trip, :employee => @employee, :message => 'change_request_approved').first
 
             if @change_request_approved_notification.blank?
-              Notification.create!(:trip => @employee_trip.trip, :employee => @employee, :message => 'change_request_approved', :new_notification => true, :resolved_status => true, :reporter => "Moove System").send_notifications
+              Notification.create!(:trip => @employee_trip.trip, :employee => @employee, :message => 'change_request_approved', :new_notification => true, :resolved_status => true, :reporter => "Vaayu System").send_notifications
             end
           end
           @trip_change_request.approve!

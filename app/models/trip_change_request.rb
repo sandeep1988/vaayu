@@ -46,7 +46,7 @@ class TripChangeRequest < ApplicationRecord
           if Configurator.get('change_request_require_approval') == '1'
             reporter = "Operator: #{Current.user.full_name}"
             #TODO: Show Name of the approver here
-            Notification.create!(:trip => employee_trip.trip, :employee => employee_trip.employee, :message => 'change_request_approved', :new_notification => true, :resolved_status => true, :reporter => "Moove System").send_notifications    
+            Notification.create!(:trip => employee_trip.trip, :employee => employee_trip.employee, :message => 'change_request_approved', :new_notification => true, :resolved_status => true, :reporter => "Vaayu System").send_notifications    
           end          
         else
           employee_trip.update(:date => self.new_date)
