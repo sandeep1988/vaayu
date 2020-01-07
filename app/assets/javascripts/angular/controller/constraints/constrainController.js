@@ -39,7 +39,7 @@ app.controller('constraintController', function ($scope, $http, $state, SessionS
 
     $http({
       method: 'GET',
-      url: 'http://operatorptsdemo.devmll.com/' + 'constraint/getall/site/' + id,
+      url: 'http://apiptsdemo.devmll.com/' + 'constraint/getall/site/' + id,
       headers: {
         // 'Content-Type': 'application/json',
         'uid': SessionService.uid,
@@ -101,7 +101,7 @@ app.controller('constraintController', function ($scope, $http, $state, SessionS
 
     $http({
       method: 'POST',
-      url: 'http://operatorptsdemo.devmll.com:8001/api/v1/getAllSiteList',
+      url: 'http://apiptsdemo.devmll.com:8001/api/v1/getAllSiteList',
       headers: {
         'Content-Type': 'application/json',
         'uid': SessionService.uid,
