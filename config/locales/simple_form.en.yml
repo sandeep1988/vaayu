@@ -9,7 +9,7 @@ en:
       # When using html, text and mark won't be used.
       # html: '<abbr title="required">*</abbr>'
     error_notification:
-      default_message: "Please review the problems below:"
+      default_message: "If provided email address is a registered email address on vaayu then a link will be sent to reset the password."
     # Examples
     # labels:
     #   defaults:

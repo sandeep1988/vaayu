@@ -185,7 +185,7 @@ class API::V2::VehiclesController < ApplicationController
                 @vehicle.update(created_by: current_user.id) if current_user.present?
                 render json: {success: true , message: "Success Final step", data:{vehicle_id: @vehicle.id } , errors: {} }, status: :ok if @vehicle.id.present?
               else
-                render json: {success: false , message: "Fail Final step", data: {}, errors: { errors: @vehicle.errors.full_messages  } },status: :ok if @vehicle.id.blank?
+                render json: {success: false , message: "Fail Final step", data: {}, errors: { errors: @vehicle.errors.full_messages.split(",")  } },status: :ok 
               end
             else
               render json: {success: false , message: "Please complete Step 1 and 2 form", data: {}, errors: { errors: validate_first_and_second_step(@vehicle) } },status: :ok
