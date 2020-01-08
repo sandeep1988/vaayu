@@ -45,7 +45,7 @@ app.controller('createGuard', function ($scope, $http, SessionService, ToasterSe
       $scope.addGuard = () => {
         $http({
           method: 'POST',
-          url: 'http://vaayuuat.devmll.com/' + 'constraint/insert',
+          url: 'http://apiptsdemo.devmll.com/' + 'constraint/insert',
           headers: {
             'Content-Type': 'application/json',
             'uid': SessionService.uid,
