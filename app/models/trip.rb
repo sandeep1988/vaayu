@@ -1411,9 +1411,9 @@ class Trip < ApplicationRecord
         if @user.present?
           @user_driver = User.driver.where(id: driver.user_id).first
           if self.check_in?
-            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Driver #{driver&.full_name} (#{vehicle&.plate_number}) will be picking you up for the #{self.employee_trips&.first&.date&.in_time_zone('Chennai').strftime("%H:%M")} Check In to office. Driver Mobile Number - #{self.driver&.phone}. You can track your ride from the Vaayu Rider App.")
+            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Driver #{driver&.full_name} (#{vehicle&.plate_number}) will be picking you up for the #{self.employee_trips&.first&.date&.in_time_zone('Chennai').strftime("%H:%M")} Check In to office. You can track your ride from the Vaayu Traveller App.")
           else
-            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Driver #{self.driver&.full_name} (#{self.vehicle&.plate_number}) will be picking you up for the #{self.employee_trips&.first&.date&.in_time_zone('Chennai').strftime("%H:%M")} Check Out from office. Driver Mobile Number - #{self.driver&.phone}. You can track your ride from the Vaayu Rider App.")
+            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Driver #{self.driver&.full_name} (#{self.vehicle&.plate_number}) will be picking you up for the #{self.employee_trips&.first&.date&.in_time_zone('Chennai').strftime("%H:%M")} Check Out from office. You can track your ride from the Vaayu Traveller App.")
           end
         end
       end

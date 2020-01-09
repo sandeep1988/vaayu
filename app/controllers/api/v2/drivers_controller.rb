@@ -86,7 +86,7 @@ class API::V2::DriversController < ApplicationController
             @driver.update(date_of_registration: Time.now )
             render json: {success: true , message: "Success Final step", data: { driver_id: @driver.id } , errors: {} }, status: :ok if @driver.id.present?
           else
-            render json: {success: false , message: "Fail Final step", data: {}, errors: { errors: @driver.errors.split(",") } },status: :ok
+            render json: {success: false , message: "Fail Final step", data: {}, errors: { errors: @driver.errors.full_messages.split(",") } },status: :ok
           end
       else
         render json: {success: false , message: "Please complete Step 1 and 2 form", data: {}, errors: { errors: validate_first_and_second_step(@driver) } },status: :ok
