@@ -19,7 +19,7 @@ class NotificationDatatable
        :date => @notifications_data[:first_notification].created_at.strftime("%d/%m/%Y"),
        :id => @notifications_data[:first_notification].id,
        :created_at => @notifications_data[:first_notification].created_at.strftime("%d/%m/%Y  %I:%M%p"),
-       :display_message => @notifications_data[:first_notification].present? && @notifications_data[:first_notification].message.present? ? @notifications_data[:first_notification].message.titleize : '',
+       :display_message => I18n.t('notification.message.' + (@notifications_data[:first_notification].message.present? ? @notifications_data[:first_notification].message : ' ') , 
         employee_name: @notifications_data[:first_notification].employee_name, 
         site_name: @notifications_data[:first_notification]&.trip&.site&.name, 
         driver_name: @notifications_data[:first_notification].driver_name,
