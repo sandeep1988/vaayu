@@ -438,6 +438,8 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     console.log('row', row);
     $scope.selectedTripId = row.trip_id
 
+    $scope.getVehicleListForTrip(row);
+
     $scope.showPopup = true;
 
     $scope.isOpen = true;
@@ -532,9 +534,11 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     var shiftType = trip.trip_type_status
 
     let params = {
-      siteId, shiftId, shiftType,
+      siteId:siteId, 
+      shiftId:shiftId, 
+      shiftType:shiftType,
       selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
-      driverStatus: 'on_duty' //$scope.selected_vehicle_status
+      driverStatus: 'on_duty', //$scope.selected_vehicle_status
     }
     console.log('getVehicleListForTrip req', params)
     RouteService.postVehicleList(params, function (res) {
@@ -561,10 +565,20 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   }
 
   $scope.searchAllVehicles = (vehicleList, trip) => {
+  
+    var siteId = $scope.selectedSiteID
     var shiftId = trip.shift_id
     var shiftType = trip.trip_type_status
 
-    let params = { shiftId, shift_type: shiftType, searchBy: '' };
+    let params = {
+      siteId:siteId, 
+      shiftId:shiftId, 
+      shiftType:shiftType,
+      selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
+      driverStatus: 'on_duty', //$scope.selected_vehicle_status
+    }
+
+    // let params = { shiftId, shift_type: shiftType, searchBy: '' };
     console.log('searchAllVehicles req', params)
     RouteService.searchVechicle(params, function (res) {
       console.log('searchAllVehicles res', res)
