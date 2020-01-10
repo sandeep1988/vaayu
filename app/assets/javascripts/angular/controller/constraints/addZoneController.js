@@ -19,7 +19,7 @@ angular.
     $scope.fetchSiteList = () => {
       $http({
         method: 'POST',
-        url: 'http://apiptsdemo.devmll.com:8001/api/v1/getAllSiteList',
+        url: 'http://vaayuuat.devmll.com:8001/api/v1/getAllSiteList',
         headers: {
           'Content-Type': 'application/json',
           'uid': SessionService.uid,
@@ -55,7 +55,7 @@ angular.
       console.log('fetchZones');
       $http({
         method: 'GET',
-        url: 'http://apiptsdemo.devmll.com:8003/api/v1/zones/' + $scope.siteID,
+        url: 'http://vaayuuat.devmll.com:8003/api/v1/zones/' + $scope.siteID,
       })
         .then((res) => {
 
@@ -115,7 +115,7 @@ angular.
       console.log('body' + JSON.stringify(data))
       $http({
         method: 'POST',
-        url: 'http://apiptsdemo.devmll.com/' + 'createZones',
+        url: 'http://vaayuuat.devmll.com/' + 'createZones',
         // url: 'http://localhost:8002/api/v1/' + 'createZones',
         headers: {
           'content-type': 'application/json',
@@ -145,7 +145,7 @@ angular.
 
       $http({
         method: 'GET',
-        url: "http://apiptsdemo.devmll.com/delete_zone/" + zone.id,
+        url: "http://vaayuuat.devmll.com/delete_zone/" + zone.id,
         // url: "https://c22e1ea0.ngrok.io/api/v1/delete_zone/"+ zone.id,
         headers: {
           'Content-Type': 'application/json',

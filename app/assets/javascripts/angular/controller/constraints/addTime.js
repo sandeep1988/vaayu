@@ -46,7 +46,7 @@ app.controller('addTime', function ($scope, $http, $state, SessionService, Toast
   $scope.addTime = () => {
     $http({
       method: 'POST',
-      url: 'http://apiptsdemo.devmll.com/' + 'constraint/insert',
+      url: 'http://vaayuuat.devmll.com/' + 'constraint/insert',
       // url: 'http://localhost:8002/api/v1/' + 'constraint/insert',
       headers: {
         'Content-Type': 'application/json',
