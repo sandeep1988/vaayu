@@ -123,6 +123,31 @@ $(function () {
                 showDefaultResource()
         }
     });
+
+// $('#signin').submit(function() {
+
+//      var data1 = document.getElementById('g-recaptcha-response').value;
+//      let data = {"g-recaptcha-response": data1};
+//      let flag2 = true
+//      //alert('$("#captcha-api-url").attr("data_api_url")'+$("#captcha-api-url").attr("data_api_url"));
+//     // alert('process.env.G_RECAPTCHA_URL:'+process.env.G_RECAPTCHA_URL);
+//      $.ajaxSetup({async:false});
+//      $.ajax({
+//      type: "POST",
+//      url: $("#captcha-api-url").attr("data_api_url"),
+//      async: false,
+//      contentType:"application/json",
+//      data:JSON.stringify(data),
+//      dataType:"json",
+//      success: function(data){
+//        if(data.responseCode == "1")  {
+//             alert(data.responseDesc);
+//             flag2 = false
+//        }
+//       }
+//      });
+//      if (!flag2) return false;
+//     });
 });
 
 /**

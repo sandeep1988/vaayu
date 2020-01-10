@@ -125,7 +125,7 @@ class Notification < ApplicationRecord
        :date => self.created_at.strftime("%m/%d/%Y"),
        :id => self.id,
        :created_at => self.created_at.strftime("%d/%m/%Y  %I:%M%p"),
-       :display_message => I18n.t('notification.message.' + self.message, 
+       :display_message => I18n.t('notification.message.' + (self.message.present? ? self.message : ''), 
         employee_name: self.employee_name, 
         site_name: self&.trip&.site&.name, 
         driver_name: self.driver_name,

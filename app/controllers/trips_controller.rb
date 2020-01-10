@@ -633,9 +633,9 @@ class TripsController < ApplicationController
       @trip.update(:book_ola => true)
       @trip.book_ola_uber!
       #Create a notification for book ola uber
-      @notification = Notification.where(:trip => @trip, :message => 'book_ola_uber', :resolved_status => false, :reporter => 'Moove System').first
+      @notification = Notification.where(:trip => @trip, :message => 'book_ola_uber', :resolved_status => false, :reporter => 'Vaayu System').first
       if @notification.blank?
-        Notification.create!(:trip => @trip, :driver => @trip.driver,  :message => 'book_ola_uber', :resolved_status => false, :new_notification => true, :reporter => 'Moove System').send_notifications
+        Notification.create!(:trip => @trip, :driver => @trip.driver,  :message => 'book_ola_uber', :resolved_status => false, :new_notification => true, :reporter => 'Vaayu System').send_notifications
       end
     else
       @trip.cancel_complete_trip

@@ -13,7 +13,7 @@ end
 json.driver do
   if employee_trip.trip.try(:driver)
     json.extract! employee_trip.trip.driver, :user_id, :username, :email, :f_name, :m_name, :l_name, :phone
-    json.profile_picture employee_trip.trip.driver.full_avatar_url
+    json.profile_picture employee_trip.trip.driver.profile_picture_url
 
     json.operating_organization do
       json.name employee_trip.trip.driver.operating_organization_name
