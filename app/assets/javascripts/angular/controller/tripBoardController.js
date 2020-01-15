@@ -166,12 +166,12 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     });
   }
 
-  $scope.getCurrentVehicleLocation = () => {
+  $scope.getCurrentVehicleLocation = (row) => {
 
     // $scope.toggleView = false;
     // ToasterService.clearToast();
 
-    VehicleLocation.get({ id: $scope.modelData.trip_id }, function (location) {
+    VehicleLocation.get({ id: row.trip_id }, function (location) {
       if (location.success) {
         var res = location.data.current_location;
         console.log("data : " + res);
@@ -443,8 +443,8 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     $scope.showPopup = true;
 
     $scope.isOpen = true;
-    if (checkStatus === 'On Going') {
-      this.getCurrentVehicleLocation();
+    if (checkStatus.toLowerCase() === 'on going') {
+      $scope.getCurrentVehicleLocation(row);
     }
 
 
