@@ -4,10 +4,10 @@
     <div class="row">
       <div class="col-md-8">
         <toaster-container ng-show="toggleView"></toaster-container>
-        <form class="form-inline" ng-submit="updateFilters()">
+        <form class="form-inline">
           <div class="form-group pr-2">
             <select ng-model="selectedSite" ng-options="site.name for site in siteList track by site.id"
-              ng-change="updateFilters()" class="form-control" placeholder="Select Shift">
+              ng-change="updateFilters()" class="form-control" placeholder="Select Site">
               <!-- <option value="" >Site</option> -->
             </select>
           </div>
@@ -15,7 +15,7 @@
             <p class="input-group custom-date date_style">
               <input type="text" class="form-control data_in_style" datepicker-popup="{{format}}" ng-model="filterDate"
                 is-open="opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
-                ng-change="updateFilters()" ng-required="true" close-text="Close" />
+                 ng-required="true" close-text="Close" />
               <span class="input-group-btn-datePicket">
                 <button type="button" class="btn btn-default data_in_style" ng-click="open($event)">
                   <i class="fa fa-calendar" aria-hidden="true"></i>

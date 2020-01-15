@@ -226,13 +226,14 @@ $scope.downloadSample= function() {
   }
 
   $scope.getRosters = (postData) => {
+    console.log('getRosters params', postData)
     RosterService.get(postData, function (data) {
-     
+      console.log('rosters res', data);
       if (data.data) {
         // var data = RosterStaticResponse.staticResponse;
         $scope.rosters = data.data.shiftdetails;
         $scope.stats = data.data.stats;
-        console.log('rosters', $scope.rosters);
+        
 
       }
     }

@@ -179,7 +179,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
 
         $http({
             method: 'POST',
-            url: 'http://vaayuuat.devmll.com:8001/api/v1/getAllSiteList',
+            url: 'http://api.mllvaayu.com:8001/api/v1/getAllSiteList',
             headers: {
                 'Content-Type': 'application/json',
                 'uid': SessionService.uid,
@@ -230,7 +230,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     //     console.log(type, id)        
     //     $http({
     //         method: 'GET',
-    //         url: 'http://vaayuuat.devmll.com:8003/api/v1/contract/download-samplefile/'+id+'/'+type,
+    //         url: 'http://api.mllvaayu.com:8003/api/v1/contract/download-samplefile/'+id+'/'+type,
     //         headers: {
     //             'Content-Type': 'application/json',
     //             'uid': SessionService.uid,
@@ -305,7 +305,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         } 
         var request = new XMLHttpRequest();
         var vm = $scope;
-        request.open("POST", "http://vaayuuat.devmll.com:8003/api/v1/" + contractType + "/upload");
+        request.open("POST", "http://api.mllvaayu.com:8003/api/v1/" + contractType + "/upload");
         // request.open("POST", "https://a7c05928.ngrok.io/api/v1/" + contractType + "/upload");
         request.onload = function () {
             console.log(request.response);
@@ -416,7 +416,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
                 return
             }
         }
-        let url = 'http://vaayuuat.devmll.com/getContractListByCustId?custId=1&custType=' + $scope.tab + '&siteId=' + urlEnd;
+        let url = 'http://api.mllvaayu.com/getContractListByCustId?custId=1&custType=' + $scope.tab + '&siteId=' + urlEnd;
         // let url = 'http://4607df07.ngrok.io/api/v1/getContractListByCustId?custId=1&custType=' + $scope.tab + '&siteId=' + urlEnd;
         console.log(url)
         $http({
@@ -480,7 +480,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         }
 
         var a = document.createElement("a");
-        let url = 'http://vaayuuat.devmll.com:8003/api/v1/contract/download-samplefile/'+id+'/'+type+'/'+$scope.ctype
+        let url = 'http://api.mllvaayu.com:8003/api/v1/contract/download-samplefile/'+id+'/'+type+'/'+$scope.ctype
         a.href = url;
         a.download = 'contract_sample.xlsx';
         a.click();   
@@ -492,7 +492,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         }
         $http({
             method: 'POST',
-            url: 'http://vaayuuat.devmll.com/induction/getAllBaList',
+            url: 'http://api.mllvaayu.com/induction/getAllBaList',
             headers: {
                 'Content-Type': 'application/json',
                 'uid': SessionService.uid,
