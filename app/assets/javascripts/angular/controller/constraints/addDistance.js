@@ -7,7 +7,7 @@
 //     templateUrl: './views/add_distance.html',
 //     controller: function GuardController($http, $scope, SessionService, ToasterService) {
 
-app.controller('addDistance', function ($scope, $http, $state, SessionService, ToasterService, $timeout) {
+app.controller('addDistance', function ($scope, $http, $state, SessionService, ConstraintService, ToasterService, $timeout) {
 
   this.$onInit = () => {
     console.log('onInit called addDistance');
@@ -43,35 +43,23 @@ app.controller('addDistance', function ($scope, $http, $state, SessionService, T
   };
 
   $scope.addTime = () => {
-    $http({
-      method: 'POST',
-      url: 'http://api.mllvaayu.com/' + 'constraint/insert',
-      // url: 'http://localhost:8002/api/v1/' + 'constraint/insert',
-      headers: {
-        'Content-Type': 'application/json',
-        'uid': SessionService.uid,
-        'access_token': SessionService.access_token, //'8HP_3YQagGCUoWCXiCR_cg'
-        'client': SessionService.client//'DDCqul04WXTRkxBHTH3udA',
-      },
-      data: {
-        siteId: parseInt($scope.$parent.siteID),
-        type: 'distance',
-        clause: 'total_distance',
-        operator: 'less_than',
-        value: parseInt($scope.$parent.distance)
+    let params = {
+      siteId: parseInt($scope.$parent.siteID),
+      type: 'distance',
+      clause: 'total_distance',
+      operator: 'less_than',
+      value: parseInt($scope.$parent.distance)
+    }
+    ConstraintService.upsertConstraint(params, res => {
+      console.log(JSON.stringify(res));
+      if (res['success']) {
+        ToasterService.showSuccess('Success', res['message']);
+        $timeout(() => $scope.$parent.fetchConstraintList($scope.$parent.siteID), 200);
+      } else {
+        ToasterService.showError('Error', res['message']);
       }
+    },er => {
+      ToasterService.showError('Error', 'Something went wrong, Try again later.');
     })
-      .then(function (res) {
-        console.log(JSON.stringify(res));
-        if (res.data['success']) {
-          ToasterService.showSuccess('Success', res.data['message']);
-          $timeout(() => $scope.$parent.fetchConstraintList($scope.$parent.siteID), 200);
-        } else {
-          ToasterService.showError('Error', res.data['message']);
-        }
-      }).catch(err => {
-        console.log(err);
-        ToasterService.showError('Error', 'Something went wrong, Try again later.');
-      });
   }
 });

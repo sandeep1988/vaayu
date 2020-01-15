@@ -1,7 +1,7 @@
 'use strict';
 
 // Register `phoneList` component, along with its associated controller and template
-app.controller('createGuard', function ($scope, $http, SessionService, ToasterService) {
+app.controller('createGuard', function ($scope, $http, SessionService, ConstraintService, ToasterService) {
 
       $scope.when = ''
       $scope.event = ''
@@ -23,7 +23,7 @@ app.controller('createGuard', function ($scope, $http, SessionService, ToasterSe
         return ($scope.form[field].$dirty && $scope.form[field].$invalid) || ($scope.submitted && $scope.form[field].$invalid);
       };
 
-      $scope.submitForm = function (isValid) {
+      $scope.submitForm = function (form, isValid) {
         console.log($scope.$parent.siteID)
         console.log('for', $scope.for)
         console.log('when', $scope.when)
@@ -43,38 +43,61 @@ app.controller('createGuard', function ($scope, $http, SessionService, ToasterSe
       };
 
       $scope.addGuard = () => {
-        $http({
-          method: 'POST',
-          url: 'http://api.mllvaayu.com/' + 'constraint/insert',
-          headers: {
-            'Content-Type': 'application/json',
-            'uid': SessionService.uid,
-            'access_token': SessionService.access_token, //'8HP_3YQagGCUoWCXiCR_cg'
-            'client': SessionService.client//'DDCqul04WXTRkxBHTH3udA',
-          },
-          data: { 
-            siteId: parseInt($scope.$parent.siteID),
-            type: 'guard',
-            for : $scope.for, //male
-            event: $scope.event, // pick drop
-            when: $scope.when, // first last
-            fromTime: moment($scope.from_time).format('HH:mm'),
-            toTime: moment($scope.to_time).format('HH:mm'),
-          }
-        })
-          .then(function (res) {
-            console.log('response: ', JSON.stringify(res));
-            if (res.data['success'] && res.data['message'] === 'Constraint added successfully') {
+
+        let params = {
+          siteId: parseInt($scope.$parent.siteID),
+          type: 'guard',
+          for : $scope.for, //male
+          event: $scope.event, // pick drop
+          when: $scope.when, // first last
+          fromTime: moment($scope.from_time).format('HH:mm'),
+          toTime: moment($scope.to_time).format('HH:mm'),
+        }
+        ConstraintService.upsertConstraint(params, res => {
+          console.log('guard add response: ', res);
+            if (res['success'] && res['message'] === 'Constraint added successfully') {
               ToasterService.showSuccess('Success', 'Constraint added successfully');
               $scope.$parent.fetchConstraintList($scope.$parent.siteID);
             } else {
               console.log('in else JSON')
-              ToasterService.showError('Error', res.data['message']); 
+              ToasterService.showError('Error', res['message']); 
             }
-          }).catch(err => {
-            console.log(err)
-            ToasterService.showError('Error', 'Something went wrong, Try again later.');
-          });
+        },er => {
+          ToasterService.showError('Error', 'Something went wrong, Try again later.');
+        })
+
+      //   $http({
+      //     method: 'POST',
+      //     url: 'http://api.mllvaayu.com/' + 'constraint/insert',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'uid': SessionService.uid,
+      //       'access_token': SessionService.access_token, //'8HP_3YQagGCUoWCXiCR_cg'
+      //       'client': SessionService.client//'DDCqul04WXTRkxBHTH3udA',
+      //     },
+      //     data: { 
+      //       siteId: parseInt($scope.$parent.siteID),
+      //       type: 'guard',
+      //       for : $scope.for, //male
+      //       event: $scope.event, // pick drop
+      //       when: $scope.when, // first last
+      //       fromTime: moment($scope.from_time).format('HH:mm'),
+      //       toTime: moment($scope.to_time).format('HH:mm'),
+      //     }
+      //   })
+      //     .then(function (res) {
+      //       console.log('response: ', JSON.stringify(res));
+      //       if (res.data['success'] && res.data['message'] === 'Constraint added successfully') {
+      //         ToasterService.showSuccess('Success', 'Constraint added successfully');
+      //         $scope.$parent.fetchConstraintList($scope.$parent.siteID);
+      //       } else {
+      //         console.log('in else JSON')
+      //         ToasterService.showError('Error', res.data['message']); 
+      //       }
+      //     }).catch(err => {
+      //       console.log(err)
+      //       ToasterService.showError('Error', 'Something went wrong, Try again later.');
+      //     });
       }
       
   });

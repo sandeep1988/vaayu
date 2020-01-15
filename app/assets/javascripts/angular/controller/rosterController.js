@@ -1,12 +1,12 @@
 
 
-angular.module('app').controller('rosterCtrl', function ($scope, RosterService, RouteService, ToasterService, RosterStaticResponse, $http, BASE_URL_API_8002,SessionService,$timeout) {
+angular.module('app').controller('rosterCtrl', function ($scope, RosterService, RouteService, ToasterService, RosterStaticResponse, $http, BASE_URL_API_8002, SessionService, $timeout) {
 
-  $scope.baseUrl=BASE_URL_API_8002;
+  $scope.baseUrl = BASE_URL_API_8002;
 
   $scope.init = function () {
 
-    $scope.toggleView = false;    
+    $scope.toggleView = false;
     ToasterService.clearToast();
     $scope.SelectedEmp = [];
     $scope.example14settings = {
@@ -67,9 +67,9 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
 
       $scope.getRosters(postData);
-    } , function (error) {
-        console.error(error);
-      });
+    }, function (error) {
+      console.error(error);
+    });
 
   }
 
@@ -91,24 +91,24 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   $scope.showPopup = false;
 
   $scope.showPopupWindow = (roster) => {
-    console.log('selectedRoster',roster)
+    console.log('selectedRoster', roster)
     $scope.selectedRoster = roster;
     let postData = {
-      siteId: $scope.selectedSite.id+'',
+      siteId: $scope.selectedSite.id + '',
       to_date: moment($scope.filterDate).format('YYYY-MM-DD'),
-      shiftId: roster.id+'',
-      tripType: roster.trip_type+''
+      shiftId: roster.id + '',
+      tripType: roster.trip_type + ''
     }
     $scope.real_roster_employees = [];
-    RosterService.getEmployeesInRoster(postData,  (res) => {
-      console.log('getEmployeesInRoster',res);
-      $scope.showPopup=true;
-      
+    RosterService.getEmployeesInRoster(postData, (res) => {
+      console.log('getEmployeesInRoster', res);
+      $scope.showPopup = true;
+
       if (res['success']) {
         $scope.real_roster_employees = res.data;
         $scope.roster_employees = res.data;
       } else {
-        $scope.toggleView = true;  
+        $scope.toggleView = true;
         console.log('showing on roster')
         ToasterService.showError('Error', res['message']);
       }
@@ -121,22 +121,22 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
 
-$scope.showUploadDialog = false;
+  $scope.showUploadDialog = false;
 
-$scope.showUploadWindow = () => {
+  $scope.showUploadWindow = () => {
 
-  $scope.showUploadDialog=true;
+    $scope.showUploadDialog = true;
 
-  // let postData = {
-  //   siteId: $scope.selectedSite.id+'',
-  // }
+    // let postData = {
+    //   siteId: $scope.selectedSite.id+'',
+    // }
 
-  // RosterService.uploadExcel(postData,  (res) => {
-  //   $scope.showUploadDialog=true;
-  // }, (error) => {
-   
-  // });
-}
+    // RosterService.uploadExcel(postData,  (res) => {
+    //   $scope.showUploadDialog=true;
+    // }, (error) => {
+
+    // });
+  }
 
 
 
@@ -145,76 +145,76 @@ $scope.showUploadWindow = () => {
     // console.log(e.files)
     $scope.fileObject = e.files[0];
     console.log('selected file', $scope.fileObject)
-    $timeout(()=>{
-        $scope.tempfileName = $scope.fileObject.name;
-    },50)
-}
+    $timeout(() => {
+      $scope.tempfileName = $scope.fileObject.name;
+    }, 50)
+  }
 
-$scope.uploadExcelData = function () {
-      
-  var formData = new FormData();
-  
-  formData.append("excelPath", $scope.fileObject);
-  formData.append("siteId", $scope.selectedSite.id);
- 
-  var request = new XMLHttpRequest();
-  var vm = $scope;
-  request.open("POST", this.baseUrl + "upload-employee-shedule");
-  request.onload = function () {
-    var resData=JSON.parse(request.response)
-    // alert(resData.success);
-      if(resData.success) {
+  $scope.uploadExcelData = function () {
+
+    var formData = new FormData();
+
+    formData.append("excelPath", $scope.fileObject);
+    formData.append("siteId", $scope.selectedSite.id);
+
+    var request = new XMLHttpRequest();
+    var vm = $scope;
+    request.open("POST", this.baseUrl + "upload-employee-shedule");
+    request.onload = function () {
+      var resData = JSON.parse(request.response)
+      // alert(resData.success);
+      if (resData.success) {
         $scope.toggleView = true;
         ToasterService.showSuccess('Success', "File upload success");
       } else {
-          $scope.toggleView = true;
-          showErrorToast('Error', 'resData.message')
+        $scope.toggleView = true;
+        showErrorToast('Error', 'resData.message')
       }
-  };
+    };
 
-  function showErrorToast(error, message){
-    ToasterService.showError(error, message);
+    function showErrorToast(error, message) {
+      ToasterService.showError(error, message);
 
-  }
- 
-  request.setRequestHeader('uid',SessionService.uid);
-  request.setRequestHeader('access_token',SessionService.access_token);
-  request.setRequestHeader('client',SessionService.client)
-  request.send(formData);
-}
-
-$scope.isDownload=false;
-
-$scope.CheckIsDownloadeble =function() {
-  RosterService.downloadSample({siteId:$scope.selectedSite.id}, function (res) {
-    if(res.success==false){
-      $scope.isDownload=false;
-    }else{
-      $scope.isDownload=true;
     }
-  });
-}
 
-$scope.downloadSample= function() {
-    if($scope.isDownload){
-      var url = this.baseUrl+'employeeupload/downloadEmployeeExcel/'+$scope.selectedSite.id;
+    request.setRequestHeader('uid', SessionService.uid);
+    request.setRequestHeader('access_token', SessionService.access_token);
+    request.setRequestHeader('client', SessionService.client)
+    request.send(formData);
+  }
+
+  $scope.isDownload = false;
+
+  $scope.CheckIsDownloadeble = function () {
+    RosterService.downloadSample({ siteId: $scope.selectedSite.id }, function (res) {
+      if (res.success == false) {
+        $scope.isDownload = false;
+      } else {
+        $scope.isDownload = true;
+      }
+    });
+  }
+
+  $scope.downloadSample = function () {
+    if ($scope.isDownload) {
+      var url = this.baseUrl + 'employeeupload/downloadEmployeeExcel/' + $scope.selectedSite.id;
       var a = document.createElement("a");
       a.href = url;
       a.target = "_self";
       a.click();
-    }else{
-      $scope.toggleView=true;
-      ToasterService.showError('Error',"CutOff time does not exists for this site")
+    } else {
+      $scope.toggleView = true;
+      ToasterService.showError('Error', "CutOff time does not exists for this site")
     }
-}
+  }
 
-  
+
   $scope.onEmployeeSearch = () => {
     var searchString = $scope.employee_name_search.trim().toLowerCase();
 
     if (searchString === "") {
       $scope.roster_employees = $scope.real_roster_employees;
-      return ;
+      return;
     }
     var array = [];
     for (let item of $scope.real_roster_employees) {
@@ -233,7 +233,7 @@ $scope.downloadSample= function() {
         // var data = RosterStaticResponse.staticResponse;
         $scope.rosters = data.data.shiftdetails;
         $scope.stats = data.data.stats;
-        
+
 
       }
     }
@@ -295,9 +295,9 @@ $scope.downloadSample= function() {
         } else {
           $scope.toggleView = true;
           ToasterService.showError('Error', res['message']);
-          
+
           if (res['is_routes_generated'] === false) {
-          // if (true) {
+            // if (true) {
             roster.result = 'REQUIRED MORE VEHICLE';
             // roster.disableGenerate = false;
           }
@@ -321,13 +321,13 @@ $scope.downloadSample= function() {
       $scope.currentRoster.total_vehicles = 0;
       $scope.currentRoster.vehicle = $scope.defaultVehiclesList;
       $scope.currentRoster.vehicle_capacity = $scope.defaultVehiclesCapacityList;
-      
+
     } else if (!$scope.currentRoster.vehicle) {
       $scope.currentRoster.total_seats = 0;
       $scope.currentRoster.total_vehicles = 0;
       $scope.currentRoster.vehicle = $scope.defaultVehiclesList;
       $scope.currentRoster.vehicle_capacity = $scope.defaultVehiclesCapacityList;
-     
+
     }
     $scope.disableDone(roster);
 
@@ -356,11 +356,12 @@ $scope.downloadSample= function() {
     $scope.currentRoster.vehicle[key] = parseInt($scope.currentRoster.vehicle[key]) + 1;
     $scope.currentRoster.total_vehicles = parseInt($scope.currentRoster.total_vehicles) + 1;
     if ($scope.currentRoster.vehicle_capacity[key]) {
-        if(!!$scope.currentRoster.total_seats)$scope.currentRoster.total_seats = parseInt($scope.currentRoster.total_seats) + parseInt($scope.currentRoster.vehicle_capacity[key]);
-        else { $scope.currentRoster.total_seats = 0 + parseInt($scope.currentRoster.vehicle_capacity[key]);
-        }
-    
+      if (!!$scope.currentRoster.total_seats) $scope.currentRoster.total_seats = parseInt($scope.currentRoster.total_seats) + parseInt($scope.currentRoster.vehicle_capacity[key]);
+      else {
+        $scope.currentRoster.total_seats = 0 + parseInt($scope.currentRoster.vehicle_capacity[key]);
       }
+
+    }
     $scope.disableDone($scope.currentRoster);
 
   }
@@ -442,9 +443,9 @@ $scope.downloadSample= function() {
       } else {
         $scope.toggleView = true;
         ToasterService.showError('Error', res['message']);
-        setTimeout(()=>{
+        setTimeout(() => {
           ToasterService.clearToast();
-        },0)
+        }, 0)
         return;
       }
     }, function (error) {
