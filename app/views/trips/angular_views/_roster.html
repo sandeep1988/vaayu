@@ -454,7 +454,7 @@
 
   </div>
 
-  <div id="myModal" class="vaayu-modal" ng-init="CheckIsDownloadeble()" style="display: block;z-index: 4;" ng-show="showUploadDialog">
+  <div id="myModal" class="vaayu-modal" style="display: block;z-index: 4;" ng-show="showUploadDialog">
 
     <!-- Modal content -->
     <div class="vaayu-modal-content" style="width:450px;">
@@ -482,7 +482,7 @@
           </div>
         </div>
         <div class="vaayu-modal-footer">
-          <button class="vaayu-pop-action-btn" ng-click="downloadSample()">
+          <button class="vaayu-pop-action-btn" ng-click="CheckIsDownloadeble()">
                 download sample
           </button>
           <button class="vaayu-pop-action-btn" type="button" ng-click="uploadExcelData()">Upload</button>
