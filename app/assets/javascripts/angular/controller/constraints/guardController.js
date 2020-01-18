@@ -24,6 +24,7 @@ app.controller('createGuard', function ($scope, $http, SessionService, Constrain
       };
 
       $scope.submitForm = function (form, isValid) {
+        
         console.log($scope.$parent.siteID)
         console.log('for', $scope.for)
         console.log('when', $scope.when)
