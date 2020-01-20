@@ -68,7 +68,7 @@ app.controller('createGuard', function ($scope, $http, SessionService, Constrain
 
       //   $http({
       //     method: 'POST',
-      //     url: 'http://api.mllvaayu.com/' + 'constraint/insert',
+      //     url: 'http://apiptsdemo.devmll.com/' + 'constraint/insert',
       //     headers: {
       //       'Content-Type': 'application/json',
       //       'uid': SessionService.uid,

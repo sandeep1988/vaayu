@@ -103,7 +103,7 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
 
     // $http({
     //   method: 'POST',
-    //   url: 'http://api.mllvaayu.com:8001/api/v1/getAllSiteList',
+    //   url: 'http://apiptsdemo.devmll.com:8001/api/v1/getAllSiteList',
     //   headers: {
     //     'Content-Type': 'application/json',
     //     'uid': SessionService.uid,
