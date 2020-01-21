@@ -187,16 +187,10 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.isDownload = false;
+  $scope.isLoader =false;
 
   $scope.CheckIsDownloadeble = function () {
-    // RosterService.isDownloadable($scope.selectedSite.id, function (res) {
-    //   console.log('response: ', res)
-    //   if (res.success == false) {
-    //     $scope.isDownload = false;
-    //   } else {
-    //     $scope.isDownload = true;
-    //   }
-    // });
+    
     $http({
       method: 'GET',
       url: this.baseUrl2 + 'is-downloadable-employee-excel/' + $scope.selectedSite.id
@@ -204,11 +198,13 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
         console.log('response: ', res)
         if (res.success == false) {
           ToasterService.clearToast();
+          $scope.toggleView = true;
           ToasterService.showError('Error', res.data.message)
         } else {
-          $scope.downloadSample();
           ToasterService.clearToast();
+          $scope.toggleView = true;
           ToasterService.showSuccess('Success', res.data.message)
+          $scope.downloadSample();
         }
       }, function errorCallback(err) {
         console.log('error: ', err)
@@ -217,16 +213,22 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.downloadSample = function () {
-    if ($scope.isDownload) {
       var url = this.baseUrl + 'employeeupload/downloadEmployeeExcel/' + $scope.selectedSite.id;
-      var a = document.createElement("a");
-      a.href = url;
-      a.target = "_self";
-      a.click();
-    } else {
-      $scope.toggleView = true;
-      ToasterService.showError('Error', "CutOff time does not exists for this site")
-    }
+      $scope.isLoader =true;
+      $http({
+        method: 'GET',
+        url: url,
+        responseType: 'arraybuffer'
+      }).then(function successCallback(data) {
+          console.log('response: ', data)
+          $scope.isLoader =false;
+          var blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+          var objectUrl = URL.createObjectURL(blob);
+          window.open(objectUrl);
+        }, function errorCallback(err) {
+          $scope.isLoader =false;
+          console.log('error: ', err)
+        });
   }
 
 
