@@ -62,6 +62,18 @@ module Overrides
       end
     end
 
+    # DELETE /resource/sign_out
+    def destroy
+      if @resource.present?
+        if @resource.role.present?
+          if @resource.role == "driver"
+            @resource.entity.update(status: "off_duty")
+          end
+        end
+      end
+      super
+    end
+
     protected
     # Changes:
     # - removed data from response structure
