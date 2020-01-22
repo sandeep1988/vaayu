@@ -1,4 +1,4 @@
-app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionService, ToasterService, $timeout) {
+app.controller('contractListAddCtrl', function ($scope, $http, $state, BASE_URL_API_8003,SessionService, ToasterService, ContractService, $timeout) {
 
     this.$onInit = function () {
         console.log('onit - contractListAddCtrl');
@@ -13,7 +13,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
 
         $scope.tab = 'CUSTOMER';
         console.log($scope.tab);
-        
+
     };
 
     $scope.fileObject;
@@ -24,12 +24,12 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     $scope.selectedUIDs = [];
 
     $scope.contract_type = [
-        { name: 'PER KM',   value: 'Per km' },
+        { name: 'PER KM', value: 'Per km' },
         { name: 'PER HEAD', value: 'Per head', },
         { name: 'PER ZONE', value: 'Per zone', },
         { name: 'PER SLAB', value: 'Per slab', },
         { name: 'PER PACKAGE', value: 'Per package', },
-        { name: 'PER TRIP',   value: 'Per trip' },
+        { name: 'PER TRIP', value: 'Per trip' },
     ];
 
     $scope.uniqueId = [
@@ -60,22 +60,22 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
             "value": "trip_time"
         },
         {
-            id:6,
+            id: 6,
             "name": "From to To Time",
             "value": "from_time_to_time"
         },
         {
-            id:7,
+            id: 7,
             "name": "KM",
             "value": "trip_km"
         },
         {
-            id:8,
+            id: 8,
             "name": "Trip Date",
             "value": "trip_date"
         },
         {
-            id:9,
+            id: 9,
             "name": "AC/ Non AC",
             "value": "ac_nonac"
         },
@@ -135,8 +135,8 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         // {"name": "Per Trip", "value": "Per Trip"},
         { "name": "Daily", "value": "Daily" },
         { "name": "Weekly", "value": "Weekly" },
-        { "name": "Fortnightly",  "value": "Fortnightly" },
-        { "name": "Monthly",  "value": "Monthly" },
+        { "name": "Fortnightly", "value": "Fortnightly" },
+        { "name": "Monthly", "value": "Monthly" },
         // {  "name": "Quarterly", "value": "Quarterly"  }
     ]
     $scope.submitResponse;
@@ -177,30 +177,44 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     // };
     $scope.fetchSiteList = () => {
 
-        $http({
-            method: 'POST',
-            url: 'http://apiptsdemo.devmll.com:8001/api/v1/getAllSiteList',
-            headers: {
-                'Content-Type': 'application/json',
-                'uid': SessionService.uid,
-                'access_token': SessionService.access_token,
-                'client': SessionService.client
-            },
-            data: { test: 'test' }
-        })
-            .then(function (res) {
-                if (res.data['success']) {
-                    $scope.siteList = res.data.data.list;
-                    // $scope.$broadcast('onSiteListReceived',res.data.data.list);
-                    console.log(JSON.stringify($scope.siteList))
-                } else {
-                    alert(res.data['message']);
-                }
+        ContractService.getSiteList(function (res) {
 
-            }).catch(err => {
-                // ToasterService.showError('Error', 'Something went wrong, Try again later.');
-                console.log(err)
-            });
+            if (res['success']) {
+                $scope.siteList = res.data.list;
+                $scope.selectedSite = $scope.siteList[0];
+                // $scope.$broadcast('onSiteListReceived',res.data.data.list);
+            } else {
+                console.error("ContractService.getAllSiteList error", res);
+            }
+
+        }, function (error) {
+            console.error(error);
+        });
+
+        // $http({
+        //     method: 'POST',
+        //     url: 'http://apiptsdemo.devmll.com:8001/api/v1/getAllSiteList',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'uid': SessionService.uid,
+        //         'access_token': SessionService.access_token,
+        //         'client': SessionService.client
+        //     },
+        //     data: { test: 'test' }
+        // })
+        //     .then(function (res) {
+        //         if (res.data['success']) {
+        //             $scope.siteList = res.data.data.list;
+        //             // $scope.$broadcast('onSiteListReceived',res.data.data.list);
+        //             console.log(JSON.stringify($scope.siteList))
+        //         } else {
+        //             alert(res.data['message']);
+        //         }
+
+        //     }).catch(err => {
+        //         // ToasterService.showError('Error', 'Something went wrong, Try again later.');
+        //         console.log(err)
+        //     });
 
     };
 
@@ -209,9 +223,9 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         // console.log(e.files)
         $scope.fileObject = e.files[0];
         console.log('selected file', $scope.fileObject)
-        $timeout(()=>{
+        $timeout(() => {
             $scope.tempfileName = $scope.fileObject.name;
-        },50)
+        }, 50)
     }
 
     $scope.getSelectedUDIDs = () => {
@@ -244,7 +258,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     //         });
     //     console.log('download CSV');
     // }
-    
+
     $scope.isValid = () => {
         if ($scope.selectedUIDs.length == 0) {
             $scope.toggleView = true;
@@ -281,7 +295,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
     }
 
     $scope.createContract = function () {
-        
+
         // var file=$scope.myFile;
         if (!$scope.isValid()) {
             return;
@@ -291,7 +305,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
 
         var formData = new FormData();
         formData.append("customer_id", "1");
-        
+
         formData.append("unique_identification", $scope.selectedUIDtoSend);
         formData.append("billing_cycle", $scope.bcycle);
         formData.append("contract_type", $scope.ctype);
@@ -302,20 +316,20 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         if ($scope.tab == 'BA') {
             formData.append("ba_id", $scope.baID);
             contractType = 'bacontract'
-        } 
+        }
         var request = new XMLHttpRequest();
         var vm = $scope;
-        request.open("POST", "http://apiptsdemo.devmll.com:8003/api/v1/" + contractType + "/upload");
+        request.open("POST", BASE_URL_API_8003 + contractType + "/upload");
         // request.open("POST", "https://a7c05928.ngrok.io/api/v1/" + contractType + "/upload");
         request.onload = function () {
             console.log(request.response);
             if (request.readyState === request.DONE) {
                 if (request.status === 200) {
                     // console.log(request.response);
-                    vm.submitResponse = JSON.parse(request.response);   
+                    vm.submitResponse = JSON.parse(request.response);
                     if (vm.submitResponse['success']) {
                         $scope.toggleView = true;
-            ToasterService.clearToast();
+                        ToasterService.clearToast();
                         ToasterService.showSuccess('Success', 'Contract created successfully.');
                         console.log('Contract created successfully.');
                         $scope.getContracts();
@@ -325,31 +339,31 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
                             let obj = vm.submitResponse.data.allowParameters
                             for (var key in obj) {
                                 if (obj.hasOwnProperty(key)) {
-                                    let keyTemp="";
-                                    if(key=="billing_cycle"){
-                                        keyTemp="<b>Billing Cycle</b>";
-                                    }else if(key=="unique_identifier"){
-                                        keyTemp="<b>Unique Identifier</b>";
-                                    }else{
-                                        keyTemp=key;
+                                    let keyTemp = "";
+                                    if (key == "billing_cycle") {
+                                        keyTemp = "<b>Billing Cycle</b>";
+                                    } else if (key == "unique_identifier") {
+                                        keyTemp = "<b>Unique Identifier</b>";
+                                    } else {
+                                        keyTemp = key;
                                     }
-                                    msg +=  keyTemp+' must be '+obj[key] + "\n";
+                                    msg += keyTemp + ' must be ' + obj[key] + "\n";
                                 }
                             }
                             $scope.toggleView = true;
-            ToasterService.clearToast();
-                            ToasterService.showError_html('Error', msg.replace(/(\r\n|\n|\r)/gm, "<br>"));   
+                            ToasterService.clearToast();
+                            ToasterService.showError_html('Error', msg.replace(/(\r\n|\n|\r)/gm, "<br>"));
                         } else {
                             $scope.toggleView = true;
-            ToasterService.clearToast();
-                            ToasterService.showError_html('Error', vm.submitResponse['message']);   
+                            ToasterService.clearToast();
+                            ToasterService.showError_html('Error', vm.submitResponse['message']);
                         }
-                    }                
-                    
+                    }
+
                 }
             } else {
                 $scope.toggleView = true;
-            ToasterService.clearToast();
+                ToasterService.clearToast();
                 ToasterService.showError('Error', 'Something went wrong, Try again later.');
             }
         };
@@ -416,38 +430,57 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
                 return
             }
         }
-        let url = 'http://apiptsdemo.devmll.com/getContractListByCustId?custId=1&custType=' + $scope.tab + '&siteId=' + urlEnd;
-        // let url = 'http://4607df07.ngrok.io/api/v1/getContractListByCustId?custId=1&custType=' + $scope.tab + '&siteId=' + urlEnd;
-        console.log(url)
-        $http({
-            method: 'GET',
-            url: url,
-            headers: {
-                'Content-Type': 'application/json',
-                'uid': SessionService.uid,
-                'access_token': SessionService.access_token,
-                'client': SessionService.client
-            },
-            data: { test: 'test' }
-        }).then(function (res) {
-            console.log('getcontracts', res);
-            if (res.data['success']) {
-                
+
+        ContractService.getAllContracts({ tabType: $scope.tab, urlEnd }, res => {
+
+            if (res['success']) {
                 if ($scope.tab === 'BA') {
-                    $scope.bacontractList = res.data.data;
+                    $scope.bacontractList = res.data;
                 } else {
-                    $scope.contractList = res.data.data;
+                    $scope.contractList = res.data;
                 }
                 // $scope.$broadcast('onSiteListReceived',res.data.data.list);
-                
             } else {
-                alert(res.data['message']);
+                alert(res['message']);
             }
 
-        }).catch(err => {
-            console.log(err)
+        }, er => {
+            console.log('getAllContracts er', er)
             ToasterService.showError('Error', 'Something went wrong, Try again later.');
         });
+
+        // let url = 'http://apiptsdemo.devmll.com/getContractListByCustId?custId=1&custType=' + $scope.tab + '&siteId=' + urlEnd;
+        // // let url = 'http://4607df07.ngrok.io/api/v1/getContractListByCustId?custId=1&custType=' + $scope.tab + '&siteId=' + urlEnd;
+        // console.log(url)
+        // $http({
+        //     method: 'GET',
+        //     url: url,
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'uid': SessionService.uid,
+        //         'access_token': SessionService.access_token,
+        //         'client': SessionService.client
+        //     },
+        //     data: { test: 'test' }
+        // }).then(function (res) {
+        //     console.log('getcontracts', res);
+        //     if (res.data['success']) {
+
+        //         if ($scope.tab === 'BA') {
+        //             $scope.bacontractList = res.data.data;
+        //         } else {
+        //             $scope.contractList = res.data.data;
+        //         }
+        //         // $scope.$broadcast('onSiteListReceived',res.data.data.list);
+
+        //     } else {
+        //         alert(res.data['message']);
+        //     }
+
+        // }).catch(err => {
+        //     console.log(err)
+        //     ToasterService.showError('Error', 'Something went wrong, Try again later.');
+        // });
     }
 
     $scope.downloadSampleFile = () => {
@@ -480,51 +513,43 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state, SessionSe
         }
 
         var a = document.createElement("a");
-        let url = 'http://apiptsdemo.devmll.com:8003/api/v1/contract/download-samplefile/'+id+'/'+type+'/'+$scope.ctype
+        let url = BASE_URL_API_8003+'contract/download-samplefile/' + id + '/' + type + '/' + $scope.ctype
         a.href = url;
         a.download = 'contract_sample.xlsx';
-        a.click();   
+        a.click();
     }
 
     $scope.fetchBAList = () => {
         if (!$scope.baID && $scope.tab === 'BA') {
             return;
         }
-        $http({
-            method: 'POST',
-            url: 'http://apiptsdemo.devmll.com/induction/getAllBaList',
-            headers: {
-                'Content-Type': 'application/json',
-                'uid': SessionService.uid,
-                'access_token': SessionService.access_token,
-                'client': SessionService.client
-            },
-            data: { test: 'test' }
-        })
-            .then(function (res) {
-                if (res.data['success']) {
-                    $scope.baList = res.data.data.list;
-                    // $scope.$broadcast('onSiteListReceived',res.data.data.list);
-                    console.log(JSON.stringify($scope.baList))
-                } else {
-                    alert(res.data['message']);
-                }
 
-            }).catch(err => {
-                $scope.toggleView = true;
+        ContractService.getBAList(res => {
+            console.log('getBAList', res)
+            if (res['success']) {
+                $scope.baList = res.data.list;
+                // $scope.$broadcast('onSiteListReceived',res.data.data.list);
+                console.log(JSON.stringify($scope.baList))
+            } else {
+                alert(res['message']);
+            }
+
+        }, er => {
+            $scope.toggleView = true;
             ToasterService.clearToast();
-                ToasterService.showError('Error', 'Something went wrong, Try again later.');
-                console.log(err)
-            });
+            ToasterService.showError('Error', 'Something went wrong, Try again later.');
+            console.log(err)
+        });
+
 
     };
 
 
     $scope.getSelectedBA = () => {
         var name = 'NA';
-        angular.forEach($scope.baList,function(item,idx,shiftArray){
-            if(item.id == $scope.baID){
-              name = item.legal_name;
+        angular.forEach($scope.baList, function (item, idx, shiftArray) {
+            if (item.id == $scope.baID) {
+                name = item.legal_name;
             }
         });
         return name;

@@ -1,4 +1,4 @@
-app.controller('constraintController', function ($scope, $http, $state, SessionService, ToasterService, $timeout,constraintService,RosterService) {
+app.controller('constraintController', function ($scope, $http, $state, ConstraintService, SessionService, ToasterService, $timeout,constraintService,RosterService) {
 
   $scope.siteNames = [];
   $scope.siteID = null;
@@ -37,25 +37,13 @@ app.controller('constraintController', function ($scope, $http, $state, SessionS
     console.log(SessionService.access_token);
     console.log(SessionService.client);
 
-    $http({
-      method: 'GET',
-      url: 'http://apiptsdemo.devmll.com/' + 'constraint/getall/site/' + id,
-      headers: {
-        // 'Content-Type': 'application/json',
-        'uid': SessionService.uid,
-        'access_token': SessionService.access_token, //'8HP_3YQagGCUoWCXiCR_cg'
-        'client': SessionService.client//'DDCqul04WXTRkxBHTH3udA',
-      },
-      data: { test: 'test' }
-    }).then(function (res) {
-
-      if (res.data['success']) {
+    ConstraintService.getAllConstraints({id}, res => {
+      if (res['success']) {
         $scope.max_trip_time = null;
         $scope.distance = null;
-        var constraintList = res.data.data;
+        var constraintList = res.data;
         var guardConstraints = [];
         console.log('constraintList',constraintList);
-        
         
         for (i = 0; i < constraintList.length; i++) {
           if (constraintList[i].type === 'time') {
@@ -72,12 +60,13 @@ app.controller('constraintController', function ($scope, $http, $state, SessionS
         
         arr = $scope.constraintList.sort((a, b) => a.id > b.id ? -1 : 1);
       } else {
-        alert(res.data['message']);
+        ToasterService.showError('Error', res['message']);
       }
-    }).catch(err => {
-      console.log(err)
+    }, er => {
+      console.log(er)
       // ToasterService.showError('Error', 'Something went wrong, Try again later.');
     });
+
   }
 
 
@@ -99,30 +88,43 @@ app.controller('constraintController', function ($scope, $http, $state, SessionS
 
   $scope.fetchSiteList = () => {
 
-    $http({
-      method: 'POST',
-      url: 'http://apiptsdemo.devmll.com:8001/api/v1/getAllSiteList',
-      headers: {
-        'Content-Type': 'application/json',
-        'uid': SessionService.uid,
-        'access_token': SessionService.access_token, //'8HP_3YQagGCUoWCXiCR_cg'
-        'client': SessionService.client//'DDCqul04WXTRkxBHTH3udA',
-      },
-      data: { test: 'test' }
-    })
-      .then(function (res) {
-        if (res.data['success']) {
-          $scope.siteNames = res.data.data.list;
-          $scope.$broadcast('onSiteListReceived', res.data.data.list);
-          console.log(JSON.stringify($scope.siteNames))
-        } else {
-          ToasterService.showError('Error', res.data['message']);
-        }
+    ConstraintService.getSiteList(res => {
+      if (res['success']) {
+        $scope.siteNames = res.data.list;
+        $scope.$broadcast('onSiteListReceived', res.data.list);
+        console.log(JSON.stringify($scope.siteNames))
+      } else {
+        ToasterService.showError('Error', res['message']);
+      }
+    }, er => {
+      console.log(err)
+      ToasterService.showError('Error', 'Something went wrong, Try again later.');
+    });
 
-      }).catch(err => {
-        console.log(err)
-        ToasterService.showError('Error', 'Something went wrong, Try again later.');
-      });
+    // $http({
+    //   method: 'POST',
+    //   url: 'http://apiptsdemo.devmll.com:8001/api/v1/getAllSiteList',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'uid': SessionService.uid,
+    //     'access_token': SessionService.access_token, //'8HP_3YQagGCUoWCXiCR_cg'
+    //     'client': SessionService.client//'DDCqul04WXTRkxBHTH3udA',
+    //   },
+    //   data: { test: 'test' }
+    // })
+    //   .then(function (res) {
+    //     if (res.data['success']) {
+    //       $scope.siteNames = res.data.data.list;
+    //       $scope.$broadcast('onSiteListReceived', res.data.data.list);
+    //       console.log(JSON.stringify($scope.siteNames))
+    //     } else {
+    //       ToasterService.showError('Error', res.data['message']);
+    //     }
+
+    //   }).catch(err => {
+    //     console.log(err)
+    //     ToasterService.showError('Error', 'Something went wrong, Try again later.');
+    //   });
   };
 
 

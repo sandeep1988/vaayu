@@ -2,7 +2,7 @@
 
 // Register `phoneList` component, along with its associated controller and template
 angular.
-  module('app').controller('addZone', function ($scope, $http, $state, SessionService, ToasterService) {
+  module('app').controller('addZone', function ($scope, $http, $state, ConstraintService, SessionService, ToasterService) {
     this.$onInit = () => {
       console.log('onInit called addZone');
       $scope.fetchSiteList();
@@ -17,27 +17,21 @@ angular.
     $scope.zipcode = null;
 
     $scope.fetchSiteList = () => {
-      $http({
-        method: 'POST',
-        url: 'http://apiptsdemo.devmll.com:8001/api/v1/getAllSiteList',
-        headers: {
-          'Content-Type': 'application/json',
-          'uid': SessionService.uid,
-          'access_token': SessionService.access_token,
-          'client': SessionService.client
-        },
-        data: { test: 'test' }
-      }).then(res => {
-        if (res.data['success']) {
-          $scope.site_list = res.data.data.list;
-          console.log('addzone sites = ' + JSON.stringify($scope.site_list))
+
+      ConstraintService.getSiteList(res => {
+        if (res['success']) {
+          $scope.site_list = res.data.list;
+          $scope.$broadcast('onSiteListReceived', res.data.list);
+          
         } else {
-          alert(res.data['message']);
+          ToasterService.showError('Error', res['message']);
         }
-      }).catch(err => {
+      }, er => {
         console.log(err)
+        ToasterService.showError('Error', 'Something went wrong, Try again later.');
       });
-    };
+    }
+
 
     // $scope.$on("onSiteListReceived", (evt, list) => {
     //   this.siteNames = list;
@@ -52,23 +46,16 @@ angular.
 
 
     $scope.fetchZones = () => {
-      console.log('fetchZones');
-      $http({
-        method: 'GET',
-        url: 'http://apiptsdemo.devmll.com:8003/api/v1/zones/' + $scope.siteID,
-      })
-        .then((res) => {
-
-          if (res.data['success']) {
-            $scope.zoneList = res.data.data.zoneList;
-            console.log($scope.zoneList);
-          } else {
-            ToasterService.showError('Error', res.data['message']);
-          }
-        }).catch(err => {
-          console.log(err)
-          ToasterService.showError('Error', 'Something went wrong, Try again later.');
-        });
+      ConstraintService.getZones({ siteId: $scope.siteID }, res => {
+        if (res['success']) {
+          $scope.zoneList = res.data.zoneList;
+          
+        } else {
+          ToasterService.showError('Error', res['message']);
+        }
+      }, er => {
+        ToasterService.showError('Error', 'Something went wrong, Try again later.');
+      });
     }
 
     $scope.submitZone = (form) => {
@@ -89,17 +76,17 @@ angular.
     $scope.isValidZipcodes = () => {
       let array = $scope.zipcode.split(',');
       for (let item of array) {
-         if (item.trim().length != 6) {
-            ToasterService.showError('Error', 'Invalid zipcode, must contain exact 6 digits.');
-            return false;
-         }
+        if (item.trim().length != 6) {
+          ToasterService.showError('Error', 'Invalid zipcode, must contain exact 6 digits.');
+          return false;
+        }
       }
       return true;
     }
 
     $scope.addZone = () => {
 
-      let data = {
+      let params = {
         site_id: parseInt($scope.siteID),
         name: $scope.zoneName,
         latitude: $scope.latitude + '',
@@ -112,84 +99,59 @@ angular.
         // "longitude":"73.0939",
         // "zipcode":"421202"
       }
-      console.log('body' + JSON.stringify(data))
-      $http({
-        method: 'POST',
-        url: 'http://apiptsdemo.devmll.com/' + 'createZones',
-        // url: 'http://localhost:8002/api/v1/' + 'createZones',
-        headers: {
-          'content-type': 'application/json',
-          'uid': SessionService.uid,
-          'access_token': SessionService.access_token, //'8HP_3YQagGCUoWCXiCR_cg'
-          'client': SessionService.client//'DDCqul04WXTRkxBHTH3udA',
-        },
-        data: data
-      })
+      console.log('body' + params)
 
-        .then((res) => {
-          console.log(JSON.stringify(res));
-          if (res.data['success']) {
-            ToasterService.showSuccess('Success', 'Zone added successfully.');
-            console.log(JSON.stringify(res.data))
-            $scope.fetchZones()
-          } else {
-            ToasterService.showError('Error', res.data['message']);
-          }
-        }).catch(err => {
-          console.log(err)
-          ToasterService.showError('Error', 'Something went wrong, Try again later.');
-        });
+      ConstraintService.createZones(params, res => {
+        if (res['success']) {
+          ToasterService.showSuccess('Success', 'Zone added successfully.');
+          console.log(JSON.stringify(res.data))
+          $scope.fetchZones()
+        } else {
+          ToasterService.showError('Error', res['message']);
+        }
+      }, er => {
+        ToasterService.showError('Error', 'Something went wrong, Try again later.');
+      });
     }
 
     $scope.deleteZone = (zone) => {
 
-      $http({
-        method: 'GET',
-        url: "http://apiptsdemo.devmll.com/delete_zone/" + zone.id,
-        // url: "https://c22e1ea0.ngrok.io/api/v1/delete_zone/"+ zone.id,
-        headers: {
-          'Content-Type': 'application/json',
-          'uid': SessionService.uid,
-          'access_token': SessionService.access_token, //'8HP_3YQagGCUoWCXiCR_cg'
-          'client': SessionService.client//'DDCqul04WXTRkxBHTH3udA',
-        },
-      }).then((res) => {
-        console.log(JSON.stringify(res));
-        if (res.data['success']) {
-          ToasterService.showSuccess('Success', res.data['message']);
+      ConstraintService.delete_zone({ zoneId: zone.id }, res => {
+        if (res['success']) {
+          ToasterService.showSuccess('Success', res['message']);
           console.log('zone deleted', JSON.stringify(res.data))
           $scope.fetchZones()
         } else {
-          ToasterService.showError('Error', res.data['message']);
+          ToasterService.showError('Error', res['message']);
         }
-      }).catch(err => {
-        console.log(err)
+      }, er => {
         ToasterService.showError('Error', 'Something went wrong, Try again later.');
       });
+    
     }
 
     $scope.getSelectedSite = (siteID) => {
       var name = 'NA';
       for (const item of $scope.site_list) {
-        if(item.id == siteID){
+        if (item.id == siteID) {
           name = item.name;
           break;
         }
       }
       // angular.forEach($scope.site_list,function(item,idx,shiftArray){
-        
+
       // });
       return name;
-  }
+    }
 
-  // $scope.zoneOnKeyPress = (value) => {
-  //   var array = value.split(",");
-  //   console.log(array)
-  //   // if (value.length == ((6 * array.length)+)) return false; 
-  //   // if (/^([0-9]){0,6}(,){1}+$/.test(panValue1)) {
-      
-  //   // }
-  // }
+    // $scope.zoneOnKeyPress = (value) => {
+    //   var array = value.split(",");
+    //   console.log(array)
+    //   // if (value.length == ((6 * array.length)+)) return false; 
+    //   // if (/^([0-9]){0,6}(,){1}+$/.test(panValue1)) {
+
+    //   // }
+    // }
 
     // // Restricts input for the given textbox to the given inputFilter.
     // $scope.setInputFilter = (textbox, inputFilterRegex) => {

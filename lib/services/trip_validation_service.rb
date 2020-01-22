@@ -201,7 +201,7 @@ class TripValidationService
         @prev_notification = Notification.where(:trip => @et.trip, :driver => @et.trip.driver, :employee => @et.employee, :message => 'female_exception_route_resequenced', :resolved_status => false).first
 
         if @prev_notification.blank?
-          @notification = Notification.create!(:trip => @et.trip, :driver => @et.trip.driver, :employee => @et.employee, :message => 'female_exception_route_resequenced', :new_notification => true, :resolved_status => false, :reporter => 'Moove System')
+          @notification = Notification.create!(:trip => @et.trip, :driver => @et.trip.driver, :employee => @et.employee, :message => 'female_exception_route_resequenced', :new_notification => true, :resolved_status => false, :reporter => 'Vaayu System')
           @notification.send_notifications
           ResolveNotification.perform_at(Time.now + 10.minutes, @notification.id)
         end
@@ -251,7 +251,7 @@ class TripValidationService
       @notification = Notification.where(:trip => @employee_trip.trip, :driver => @employee_trip.trip.driver, :employee => @employee_trip.employee,:employee_trip => @employee_trip, :message => 'female_exception_female_removed', :resolved_status => false).first
 
       if @notification.blank?
-        Notification.create!(:trip => @employee_trip.trip, :driver => @employee_trip.trip.driver, :employee => @employee_trip.employee,:employee_trip => @employee_trip, :message => 'female_exception_female_removed', :new_notification => true, :resolved_status => false, :reporter => 'Moove System').send_notifications
+        Notification.create!(:trip => @employee_trip.trip, :driver => @employee_trip.trip.driver, :employee => @employee_trip.employee,:employee_trip => @employee_trip, :message => 'female_exception_female_removed', :new_notification => true, :resolved_status => false, :reporter => 'Vaayu System').send_notifications
       end
 
       @employee_trip.remoe_employee_trip

@@ -53,31 +53,31 @@ class Vehicle < ApplicationRecord
 
   ### Upload Docs ##
   has_attached_file :insurance_doc
-   validates_attachment :insurance_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
+   validates_attachment :insurance_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
   has_attached_file :rc_book_doc
-    validates_attachment :rc_book_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf )} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
+    validates_attachment :rc_book_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document )} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
   has_attached_file :puc_doc
-    validates_attachment :puc_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf )} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
+    validates_attachment :puc_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document )} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
   has_attached_file :commercial_permit_doc
-    validates_attachment :commercial_permit_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf )} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
+    validates_attachment :commercial_permit_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document )} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
   has_attached_file :road_tax_doc
-    validates_attachment :road_tax_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf )} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
+    validates_attachment :road_tax_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document )} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
   # has_attached_file :authorization_certificate_doc
   #   validates_attachment :authorization_certificate_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document)} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
   has_attached_file :vehicle_picture_doc
-    validates_attachment :vehicle_picture_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf )} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
+    validates_attachment :vehicle_picture_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document )} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
   has_attached_file :fitness_doc
-    validates_attachment :fitness_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf )} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
+    validates_attachment :fitness_doc, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document )} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
     
   has_attached_file :km_doc_upload
-    validates_attachment :km_doc_upload, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf )} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
+    validates_attachment :km_doc_upload, :content_type => {:content_type => %w(image/jpeg image/jpg image/png application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document )} , :if => Proc.new{|f| f.registration_steps == "Step_3"}
 
   after_update :update_notification
 

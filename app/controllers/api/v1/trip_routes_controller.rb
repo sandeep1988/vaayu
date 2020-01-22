@@ -85,7 +85,7 @@ module API::V1
           @prev_no_show_approved_notification = Notification.where(:trip => @trip, :driver => @trip.driver, :employee => @trip_route.employee, :message => 'employee_no_show_approved', :resolved_status => false).first
 
           if @prev_no_show_approved_notification.blank?
-            @no_show_approved_notification = Notification.create!(:trip => @trip, :driver => @trip.driver, :employee => @trip_route.employee, :message => 'employee_no_show_approved', :resolved_status => false, :new_notification => true, :reporter => "Moove System")
+            @no_show_approved_notification = Notification.create!(:trip => @trip, :driver => @trip.driver, :employee => @trip_route.employee, :message => 'employee_no_show_approved', :resolved_status => false, :new_notification => true, :reporter => "Vaayu System")
             @no_show_approved_notification.send_notifications
             ResolveNotification.perform_at(Time.now + 10.minutes, @no_show_approved_notification.id)
           end

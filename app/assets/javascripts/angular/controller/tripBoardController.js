@@ -81,6 +81,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
   $scope.FilterStat = function (item) {
     $scope.search = $filter('uppercase')(item);
+    $scope.sos_panic='';
   }
 
   $scope.FilterSosStat = function (item) {
@@ -166,12 +167,12 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     });
   }
 
-  $scope.getCurrentVehicleLocation = () => {
+  $scope.getCurrentVehicleLocation = (row) => {
 
     // $scope.toggleView = false;
     // ToasterService.clearToast();
 
-    VehicleLocation.get({ id: $scope.modelData.trip_id }, function (location) {
+    VehicleLocation.get({ id: row.trip_id }, function (location) {
       if (location.success) {
         var res = location.data.current_location;
         console.log("data : " + res);
@@ -238,6 +239,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
           }
         }
       } else {
+        // ToasterService.showError('Error', 'Directions request failed due to ' + status);
         window.alert('Directions request failed due to ' + status);
       }
     });
@@ -273,7 +275,10 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         $scope.toggleView = true;
         ToasterService.showSuccess('Success', data['message']);
         trip.trip_is_panic = data.data.is_trip_panic;
-        trip.trip_driver_is_panic = false;
+        if(!data.data.is_trip_panic){
+          trip.trip_driver_is_panic = false;
+        }
+        $scope.getAllTrips();
       }
 
     }, function (error) {
@@ -438,18 +443,25 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     console.log('row', row);
     $scope.selectedTripId = row.trip_id
 
+    $scope.getVehicleListForTrip(row);
+
     $scope.showPopup = true;
 
     $scope.isOpen = true;
-    if (checkStatus === 'On Going') {
-      this.getCurrentVehicleLocation();
+ 
+    if (checkStatus.toLowerCase() === 'on going') {
+      $scope.getCurrentVehicleLocation(row);
     }
-
 
     $scope.getTripDetails();
 
     $interval(function () {
-      $scope.getTripDetails();
+      if($scope.isOpen) {
+        if (checkStatus.toLowerCase() === 'on going') {
+          $scope.getCurrentVehicleLocation(row);
+        }
+        $scope.getTripDetails();
+      }
     }, 1000 * 60);
 
 
@@ -506,6 +518,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     closepop.onclick = function () {
       modal.style.display = "none";
       $scope.isOpen = false;
+      $scope.getAllTrips();
     }
 
 
@@ -513,6 +526,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     window.onclick = function (event) {
       if (event.target == modal) {
         modal.style.display = "none";
+        $scope.isOpen = false;
       }
     }
 
@@ -532,9 +546,11 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     var shiftType = trip.trip_type_status
 
     let params = {
-      siteId, shiftId, shiftType,
+      siteId:siteId, 
+      shiftId:shiftId, 
+      shiftType:shiftType,
       selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
-      driverStatus: 'on_duty' //$scope.selected_vehicle_status
+      driverStatus: 'on_duty', //$scope.selected_vehicle_status
     }
     console.log('getVehicleListForTrip req', params)
     RouteService.postVehicleList(params, function (res) {
@@ -561,10 +577,20 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   }
 
   $scope.searchAllVehicles = (vehicleList, trip) => {
+  
+    var siteId = $scope.selectedSiteID
     var shiftId = trip.shift_id
     var shiftType = trip.trip_type_status
 
-    let params = { shiftId, shift_type: shiftType, searchBy: '' };
+    let params = {
+      siteId:siteId, 
+      shiftId:shiftId, 
+      shiftType:shiftType,
+      selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
+      driverStatus: 'on_duty', //$scope.selected_vehicle_status
+    }
+
+    // let params = { shiftId, shift_type: shiftType, searchBy: '' };
     console.log('searchAllVehicles req', params)
     RouteService.searchVechicle(params, function (res) {
       console.log('searchAllVehicles res', res)
