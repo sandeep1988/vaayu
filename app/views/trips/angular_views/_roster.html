@@ -1,5 +1,9 @@
 <div class="vayau-routing vayau-roster" ng-controller="rosterCtrl"  ng-init="init()">
 
+  <div class="loader-wrapper" ng-if="isLoader">
+    <div class="ng-loader" ></div>
+  </div>
+  
   <div class="container-fluid mt-4">
     <div class="row">
       <div class="col-md-8">
@@ -403,6 +407,9 @@
     </div>
   </div>
 
+ 
+  
+
 
   <div id="myModal" class="vaayu-modal" style="display: block;z-index: 4;" ng-show="showPopup">
 
@@ -491,3 +498,4 @@
     </div>
   </div>
 </div>
+
