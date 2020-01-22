@@ -16,7 +16,9 @@ class SessionsController < Devise::SessionsController
 	  	  flash.now[:notice] = 'Your password has expired, kindly reset your password.'
 	  		self.resource = resource_class.new(sign_in_params)	
 	  		render :new
+
 		else		
+
 	  		super
 	  	end
 	else
