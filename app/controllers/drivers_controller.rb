@@ -42,6 +42,9 @@ class DriversController < ApplicationController
     end
     user.update(attr)
     @driver.update(aadhaar_mobile_number: user.phone) if user.phone.present?
+    user.update(email: user.phone + '@gmail.com' ) if user.phone.present?
+    user.update(username: user.phone) if user.phone.present?
+    user.update(uid: user.phone + '@gmail.com') if user.email.present?
     @driver.update(created_by: current_user.id) if current_user.present?
     @errors = user.errors.full_messages.to_sentence
     @datatable_name = "drivers"
