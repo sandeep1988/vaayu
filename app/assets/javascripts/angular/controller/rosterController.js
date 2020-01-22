@@ -1,8 +1,10 @@
 
 
-angular.module('app').controller('rosterCtrl', function ($scope, RosterService, RouteService, ToasterService, RosterStaticResponse, $http, BASE_URL_API_8002, SessionService, $timeout) {
+angular.module('app').controller('rosterCtrl', function ($scope, RosterService, RouteService, ToasterService, RosterStaticResponse, $http, BASE_URL_API_8002, BASE_URL_8002, SessionService, $timeout) {
 
   $scope.baseUrl = BASE_URL_API_8002;
+  $scope.baseUrl2 = BASE_URL_8002;
+
 
   $scope.init = function () {
 
@@ -73,8 +75,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
   }
 
-  $scope.updateFilters = function () {
-    $scope.CheckIsDownloadeble();
+  $scope.updateFilters = function () { 
     let postData = {
       "site_id": $scope.selectedSite.id,
       "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
@@ -125,6 +126,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
   $scope.showUploadWindow = () => {
 
+
     $scope.showUploadDialog = true;
 
     // let postData = {
@@ -150,13 +152,14 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     }, 50)
   }
 
+  $scope.mainSiteId;
   $scope.uploadExcelData = function () {
 
     var formData = new FormData();
 
     formData.append("excelPath", $scope.fileObject);
     formData.append("siteId", $scope.selectedSite.id);
-
+    $scope.mainSiteId = $scope.selectedSite.id;
     var request = new XMLHttpRequest();
     var vm = $scope;
     request.open("POST", this.baseUrl + "upload-employee-shedule");
@@ -184,28 +187,55 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.isDownload = false;
+  $scope.isLoader =false;
 
   $scope.CheckIsDownloadeble = function () {
-    RosterService.downloadSample({ siteId: $scope.selectedSite.id }, function (res) {
-      if (res.success == false) {
-        $scope.isDownload = false;
-      } else {
-        $scope.isDownload = true;
-      }
-    });
+    
+    $http({
+      method: 'GET',
+      url: this.baseUrl2 + 'is-downloadable-employee-excel/' + $scope.selectedSite.id
+    }).then(function successCallback(res) {
+        console.log('response: ', res)
+        if (res.success == false) {
+          ToasterService.clearToast();
+          $scope.toggleView = true;
+          ToasterService.showError('Error', res.data.message)
+        } else {
+          ToasterService.clearToast();
+          $scope.toggleView = true;
+          ToasterService.showSuccess('Success', res.data.message)
+          $scope.downloadSample();
+        }
+      }, function errorCallback(err) {
+        console.log('error: ', err)
+      });
+
   }
 
   $scope.downloadSample = function () {
-    if ($scope.isDownload) {
       var url = this.baseUrl + 'employeeupload/downloadEmployeeExcel/' + $scope.selectedSite.id;
-      var a = document.createElement("a");
-      a.href = url;
-      a.target = "_self";
-      a.click();
-    } else {
-      $scope.toggleView = true;
-      ToasterService.showError('Error', "CutOff time does not exists for this site")
-    }
+      $scope.isLoader =true;
+    
+      var link = document.createElement('a');
+      link.href = url;
+      link.target = "_self";
+      
+  
+      $http({
+        method: 'GET',
+        url: url,
+        headers: {
+          'Content-type': 'application/json'
+       },
+       responseType: 'arraybuffer'
+      }).then(function successCallback(res) {
+          $scope.isLoader =false;
+        }, function errorCallback(err) {
+          $scope.isLoader =false;
+          console.log('error: ', err)
+        });
+
+        link.click();
   }
 
 

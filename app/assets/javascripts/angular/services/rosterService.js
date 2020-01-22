@@ -15,6 +15,10 @@ angular.module('app').factory('RosterService', ['$resource', 'BASE_URL_8002', 'B
         url: BASE_URL_API_8002 + 'employeeupload/downloadEmployeeExcel/:siteId',
         method: "GET"
       },
+      isDownloadable: {
+        url: BASE_URL_8002 + 'is-downloadable-employee-excel/:site_id',
+        method: "GET"
+      },
       getAllSiteList: {
         url: BASE_URL + 'getAllSiteList',
         method: "POST"

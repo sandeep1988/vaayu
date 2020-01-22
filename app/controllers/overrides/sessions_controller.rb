@@ -4,7 +4,6 @@ module Overrides
     # Changes:
     # - Use email/username/phone for login
     def create
-      
       # Check
       field = (resource_params.keys.map(&:to_sym) & resource_class.authentication_keys).first
 
@@ -30,7 +29,7 @@ module Overrides
       app = resource_params[:app]
       if app.blank? 
         render_create_error_app_not_specified
-      elsif resource_params[:app] == "driver" && @resource.entity.present? && (@resource.entity.blacklisted? || !@resource.entity.active? || @resource.entity.compliance_status != "Ready For Allocation" || (@resource.entity.induction_status.present? && @resource.entity.induction_status != "Inducted"))
+      elsif resource_params[:app] == "driver" && @resource.present? && @resource.entity.present? && (@resource.entity.blacklisted? || !@resource.entity.active? || @resource.entity.compliance_status != "Ready For Allocation" || (@resource.entity.induction_status.present? && @resource.entity.induction_status != "Inducted"))
         render_blocked_user
       elsif @resource and valid_params?(field, q_value) and @resource.valid_password?(resource_params[:password]) and (!@resource.respond_to?(:active_for_authentication?) or @resource.active_for_authentication?) and @resource.has_access_to_app?(resource_params[:app])
 
@@ -60,6 +59,18 @@ module Overrides
       else
         render_create_error_bad_credentials
       end
+    end
+
+    # DELETE /resource/sign_out
+    def destroy
+      if @resource.present?
+        if @resource.role.present?
+          if @resource.role == "driver"
+            @resource.entity.update(status: "off_duty")
+          end
+        end
+      end
+      super
     end
 
     protected

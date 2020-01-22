@@ -24,7 +24,6 @@ app.controller('createGuard', function ($scope, $http, SessionService, Constrain
       };
 
       $scope.submitForm = function (form, isValid) {
-        
         console.log($scope.$parent.siteID)
         console.log('for', $scope.for)
         console.log('when', $scope.when)
@@ -37,7 +36,7 @@ app.controller('createGuard', function ($scope, $http, SessionService, Constrain
           ToasterService.showError('Error', 'Select Site Name');
           return true;
         }
-        if (isValid) {
+        if ($scope.for && $scope.when && $scope.event) {
           $scope.addGuard();
         }
 

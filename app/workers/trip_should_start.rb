@@ -18,7 +18,7 @@ class TripShouldStart
       @notification = Notification.where(:trip => trip, :driver => driver,  :message => 'trip_should_start', :resolved_status => false).first
 
       if @notification.blank?
-    	 Notification.create!(:trip => trip, :driver => driver,  :message => 'trip_should_start', :resolved_status => false, :new_notification => true, :reporter => 'Moove System').send_notifications
+    	 Notification.create!(:trip => trip, :driver => driver,  :message => 'trip_should_start', :resolved_status => false, :new_notification => true, :reporter => 'Vaayu System').send_notifications
       end
     end
   end
