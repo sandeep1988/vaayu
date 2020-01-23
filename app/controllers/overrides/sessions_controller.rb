@@ -67,6 +67,7 @@ module Overrides
         if @resource.role.present?
           if @resource.role == "driver"
             @resource.entity.update(status: "off_duty")
+            @resource.entity.update(vehicle: nil)
           end
         end
       end
