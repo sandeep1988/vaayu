@@ -215,20 +215,27 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   $scope.downloadSample = function () {
       var url = this.baseUrl + 'employeeupload/downloadEmployeeExcel/' + $scope.selectedSite.id;
       $scope.isLoader =true;
+    
+      var link = document.createElement('a');
+      link.href = url;
+      link.target = "_self";
+      
+  
       $http({
         method: 'GET',
         url: url,
-        responseType: 'arraybuffer'
-      }).then(function successCallback(data) {
-          console.log('response: ', data)
+        headers: {
+          'Content-type': 'application/json'
+       },
+       responseType: 'arraybuffer'
+      }).then(function successCallback(res) {
           $scope.isLoader =false;
-          var blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
-          var objectUrl = URL.createObjectURL(blob);
-          window.open(objectUrl);
         }, function errorCallback(err) {
           $scope.isLoader =false;
           console.log('error: ', err)
         });
+
+        link.click();
   }
 
 

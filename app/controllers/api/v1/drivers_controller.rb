@@ -198,7 +198,7 @@ module API::V1
         @error = "Driver has a active trip"
         render '_active_trip', status: 424
       else
-        unless @driver.go_off_duty!
+        unless @driver.update(status: "off_duty")
           render '_errors', status: 422
         end
       end
