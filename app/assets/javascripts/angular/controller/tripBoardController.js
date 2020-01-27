@@ -401,7 +401,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         $scope.selectedVehicle = {};
         var trip_status = $scope.modelData.current_status.toLowerCase().trim();
         if (trip_status === 'pending acceptance' || trip_status === 'accepted' || trip_status === 'delayed') {
-          $scope.getVehicleListForTrip(data);
+          $scope.getVehicleListForTrip($scope.modelData);
         }
 
         var waypts = [];
