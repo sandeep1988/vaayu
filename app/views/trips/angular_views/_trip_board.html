@@ -207,7 +207,7 @@
   <div id="myModal" class="vaayu-modal" style="display: block;" ng-if="showPopup">
 
     <!-- Modal content -->
-    <div class="vaayu-modal-content">
+    <div class="vaayu-modal-content" style="width: 90%;margin-left: 95px;">
       <div class="vaayu-modal-header">
 
         <span> Route - {{modelData.route_id}}</span>
@@ -231,6 +231,7 @@
                     <th>ETA</th>
                     <th>Call</th>
                     <th>Emergency</th>
+                    <th>Panic Type</th>
                   </tr>
                 </thead>
                 <tbody class="pop-table-body">
@@ -277,6 +278,7 @@
                         </form>
                       </div> -->
                     </td>
+                    <td>{{item.exception_type !== 'Not Panic' ? item.exception_type : ''}}</td>
                   </tr>
                 </tbody>
               </table>
