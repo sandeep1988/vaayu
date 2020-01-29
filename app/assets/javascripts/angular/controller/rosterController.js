@@ -21,7 +21,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     $scope.isAddMenuOpen = false;
     $scope.isAddMenuOpen2 = false;
 
-    $scope.today();
+
 
     $scope.defaultVehiclesList = {
       HATCHBACK: 0,
@@ -42,10 +42,11 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       TRUCK: 8,
       TT: 10
     }
+
+    $scope.isDoneDisabled = true;
     // date picket
     $scope.toggleMin();
-    $scope.isDoneDisabled = true;
-
+    $scope.today();
     $scope.dateOptions = {
       formatYear: 'yy',
       startingDay: 1
@@ -301,7 +302,6 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
     $scope.opened = true;
   };
-
   //date picker function
 
   $scope.generateRoutes = function (roster) {
