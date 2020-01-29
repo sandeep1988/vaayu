@@ -257,9 +257,12 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
   $scope.getRosters = (postData) => {
     console.log('getRosters params', postData)
+    $scope.isLoader= true;
     RosterService.get(postData, function (data) {
       console.log('rosters res', data);
       if (data.data) {
+        $scope.isLoader =false;
+        console.log('loader off');
         // var data = RosterStaticResponse.staticResponse;
         $scope.rosters = data.data.shiftdetails;
         $scope.stats = data.data.stats;
@@ -268,6 +271,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       }
     }
       , function (error) {
+        $scope.isLoader =false;
         console.error(error);
       });
   }
@@ -314,16 +318,18 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       "shift_type": roster.trip_type // 0 -checkin 1-checout
     }
     console.log('route generate req', postData)
-
+    $scope.isLoader = true;
     RouteService.getRoutes(postData,
       (res) => {
         console.log('route generate res', res);
         if (res['success']) {
           $scope.toggleView = true;
+          $scope.isLoader =false;
           ToasterService.showSuccess('Success', 'Route generated successfully.');
           $scope.updateFilters();
         } else {
           $scope.toggleView = true;
+          $scope.isLoader =false;
           ToasterService.showError('Error', res['message']);
 
           if (res['is_routes_generated'] === false) {
@@ -341,6 +347,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
         console.error(error);
       });
   }
+
 
   $scope.addVehicleToRoster = function (roster) {
     $scope.currentRoster = angular.copy(roster);
