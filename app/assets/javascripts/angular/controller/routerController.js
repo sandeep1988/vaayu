@@ -903,9 +903,13 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         console.log("Vehicle Assign", data);
         if (data['success']) {
           isAssign = false;
-        } else {
+          // ToasterService.clearToast();
           $scope.toggleView = true;
-          ToasterService.showError('Error', data['message']);
+          ToasterService.showSuccess('Success', data['msg']);
+        } else {
+          // ToasterService.clearToast();
+          $scope.toggleView = true;
+          ToasterService.showError('Error', data['msg']);
         }
         $scope.resetRoute();
       })
