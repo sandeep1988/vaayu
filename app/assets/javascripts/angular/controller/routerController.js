@@ -696,6 +696,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         return;
       }
       $scope.routes = data;
+      // $scope.routes =RouteStaticResponse.route_response;
 
       if ($scope.routes.data) {
         try {

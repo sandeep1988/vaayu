@@ -35,7 +35,7 @@
 
     <div class="tab-content">
         <div id="home" class="tab-pane fade  bg" ng-class="{'in active show':isSet(1)}" ng-controller='createGuard'>
-            <form name="form" ng-submit="submitForm(form.$valid)" novalidate>
+            <form name="form"  novalidate>
                 <div class="tab-content-area ">
                     <div class="row mb-2 ">
                         <div class="col-md-4 ">
@@ -125,7 +125,7 @@
                             </div>
                             <div class="col-md-12">
                                 <button type="button" class="btn btn-primary main-submit-btn"
-                                    ng-click="submitForm(form.$valid)">Submit</button>
+                                    ng-click="submitForm(form, form.$valid)">Submit</button>
 
                             </div>
                         </div>

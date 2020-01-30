@@ -47,3 +47,4 @@ jmeter/results/*
 !jmeter/results/.keep
 
 prod_dump.sql
+vendor

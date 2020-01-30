@@ -36,7 +36,7 @@ app.controller('createGuard', function ($scope, $http, SessionService, Constrain
           ToasterService.showError('Error', 'Select Site Name');
           return true;
         }
-        if (isValid) {
+        if ($scope.for && $scope.when && $scope.event) {
           $scope.addGuard();
         }
 
