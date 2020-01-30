@@ -416,11 +416,8 @@ class EmployeeTrip < ApplicationRecord
   def self.create_employee_trip(attributes, dates, trip_type="")
     attrs = []
     attributes.first.merge({site_id: attributes.last[:site_id]}) if attributes.last[:id].present?
-    attributes.select { |et| et[:id].blank? }.each_with_index { |et_attr, i| 
-      attrs << et_attr.slice("site_id", "employee_id", "bus_rider", "shift_id").merge({date: Time.mktime(Date.parse(et_attr['schedule_date']).year, Date.parse(et_attr['schedule_date']).month, Date.parse(et_attr['schedule_date']).day, dates[i].hour, dates[i].min), trip_type: trip_type.blank? ? i : trip_type, state: 0, schedule_date: Time.zone.parse("#{et_attr['schedule_date']} 10:00:00")}) if et_attr.present? }
+    attributes.select { |et| et[:id].blank? }.each_with_index { |et_attr, i| attrs << et_attr.slice("site_id", "employee_id", "bus_rider", "shift_id").merge({date: dates[i], trip_type: trip_type.blank? ? i : trip_type, state: 0, schedule_date: Time.zone.parse("#{et_attr['schedule_date']} 10:00:00")}) if et_attr.present? }
     EmployeeTrip.create(attrs)
-    Rails.logger.info " ======================= After Create ======================="
-    Rails.logger.info "after create #{attrs} "
     update_employee_trip([{}, attributes.last], [{}, dates.last]) if attributes.last[:id].present?
   end
 
@@ -429,13 +426,7 @@ class EmployeeTrip < ApplicationRecord
       next if et_attr.blank?
       if et_attr["id"].present?
         et = EmployeeTrip.where(id: et_attr["id"], status: ['upcoming', 'unassigned', 'reassigned']).first
-        Rails.logger.info " ======================= Before update ======================="
-        Rails.logger.info "before update schedule_date : #{et.schedule_date}, date: #{et.date} "
         et.update_attributes(et_attr.slice("site_id", "bus_rider", "shift_id").merge({date: dates[i], trip_type: trip_type.blank? ? i : trip_type, schedule_date: Time.zone.parse("#{et_attr['schedule_date']} 10:00:00")})) if et.present?
-        up_date = Time.mktime(et.schedule_date.year, et.schedule_date.month, et.schedule_date.day, et.date.hour, et.date.min)
-        et.update(date: up_date) if up_date.present?
-        Rails.logger.info " ======================= After update ======================="
-        Rails.logger.info "after update schedule_date : #{et.schedule_date}, date: #{et.date} "
       else
         create_employee_trip([{}, et_attr], ["", dates[i]])
       end
