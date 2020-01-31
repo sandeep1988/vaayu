@@ -161,6 +161,7 @@
               <thead>
                 <tr>
                   <th>Sr.No</th>
+                  <th>Trip Id</th>
                   <th>Shift</th>
                   <th>Shift Time</th>
                   <th>Vehicle Type</th>
@@ -175,10 +176,12 @@
                 <tr ng-class="getRowColor($index, roster)"
                   ng-repeat="roster in rosters  | filter :{current_status:search, trip_is_panic:sos_panic} track by $index">
                   <td> {{$index+1}}</td>
+                  <td>{{roster.trip_id}}</td>
                   <td>
                     <a href="">{{roster.trip_type == 'Check In' ? 'Pick Up' : 'Drop Off'}}</a>
                   </td>
                   <td>{{roster.shift_time}}</td>
+                  
                   <td>{{roster.vehicle_type}}</td>
                   <td>{{roster.vehicle_number}}</td>
                   <td>{{roster.driver_name}}</td>

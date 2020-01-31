@@ -181,7 +181,7 @@
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   background-color: #ffffff;
   width:400px;
-  z-index: 10000;
+  z-index: 1;
 }
 
 .vayau-routing .employee-cluster-panel {
