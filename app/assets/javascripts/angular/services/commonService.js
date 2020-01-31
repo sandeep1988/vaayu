@@ -19,6 +19,7 @@ if (document.domain === PROD_OPERATOR_URL) {
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');
     angular.module('app').constant('BASE_URL_API_8002', NODE_API_URL+':8002/api/v1/');
     angular.module('app').constant('BASE_URL_API_8003', NODE_API_URL+':8003/api/v1/');
+    angular.module('app').constant('BASE_URL_API_8004', NODE_API_URL+':8004/api/v1/');
     angular.module('app').constant('BASE_URL_RUBY', 'http://'+PROD_OPERATOR_URL+'/api/v2/');    
     
 } else if (document.domain === SANDBOX_OPERATOR_URL) {
@@ -27,6 +28,7 @@ if (document.domain === PROD_OPERATOR_URL) {
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');
     angular.module('app').constant('BASE_URL_API_8002', NODE_API_URL+':8002/api/v1/');
     angular.module('app').constant('BASE_URL_API_8003', NODE_API_URL+':8003/api/v1/');
+    angular.module('app').constant('BASE_URL_API_8004', NODE_API_URL+':8004/api/v1/');
     angular.module('app').constant('BASE_URL_RUBY', 'http://'+SANDBOX_OPERATOR_URL+'/api/v2/'); 
 
 } else if (document.domain === QA_OPERATOR_URL) {
@@ -35,6 +37,7 @@ if (document.domain === PROD_OPERATOR_URL) {
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');
     angular.module('app').constant('BASE_URL_API_8002', NODE_API_URL+':8002/api/v1/');
     angular.module('app').constant('BASE_URL_API_8003', NODE_API_URL+':8003/api/v1/');
+    angular.module('app').constant('BASE_URL_API_8004', NODE_API_URL+':8004/api/v1/');
     angular.module('app').constant('BASE_URL_RUBY', 'http://'+QA_OPERATOR_URL+'/api/v2/'); 
 
 } else {//if (document.domain === SECURITY_OPERATOR_URL) 
@@ -43,6 +46,7 @@ if (document.domain === PROD_OPERATOR_URL) {
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');
     angular.module('app').constant('BASE_URL_API_8002', NODE_API_URL+':8002/api/v1/');
     angular.module('app').constant('BASE_URL_API_8003', NODE_API_URL+':8003/api/v1/');
+    angular.module('app').constant('BASE_URL_API_8004', NODE_API_URL+':8004/api/v1/');
     angular.module('app').constant('BASE_URL_RUBY', 'http://'+SECURITY_OPERATOR_URL+'/api/v2/'); 
     
 } 
