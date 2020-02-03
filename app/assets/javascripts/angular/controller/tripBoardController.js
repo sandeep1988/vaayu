@@ -441,12 +441,18 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   $scope.showCompleteButton = false;
   $scope.sendCompleteParams;
   $scope.completeTrip = () => {
-    console.log('complete function')
     var params = $scope.sendCompleteParams;
-    TripboardService.forceCompleteTrip(params, (data) => {
-      $scope.toggleView = true;
+    if (confirm("Are you sure you want to complete the trip?") == true) {
+      console.log('execute api here')
+      TripboardService.forceCompleteTrip(params, (data) => {
+        $scope.toggleView = true;
         ToasterService.showError('Success', data['message']);
-    })
+      })
+      return true
+    } else {
+      return false
+    }
+    
 
   }
 
