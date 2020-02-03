@@ -39,9 +39,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService) {
 
 
-  $scope.toggleView = false;
+  // $scope.toggleView = false;
   $scope.disableBtn = false;
-  ToasterService.clearToast();
+  // ToasterService.clearToast();
   $scope.place = {};
   // Map.init();
 
@@ -108,7 +108,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.init = function () {
     $scope.toggleView = false;
 
-    ToasterService.clearToast();
+    // ToasterService.clearToast();
     $scope.stats = {
       "no_of_routes": 0,
       "male_count": 0,
@@ -207,9 +207,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.removeVehicle = (vehicle, route) => {
 
-    $scope.toggleView = false;
-
-    ToasterService.clearToast();
     console.log('route', route.routeId, route)
     RouteService.removeVehicle({ routeId: route.routeId }, res => {
       console.log(res)
@@ -218,7 +215,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         ToasterService.showSuccess('Success', res['message']);
         $scope.resetRoute()
       } else {
-        ToasterService.clearToast();
         $scope.toggleView = true;
         ToasterService.showError('Error', res['message']);
       }
@@ -228,9 +224,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.removeGuard = (guard, route) => {
-    $scope.toggleView = false;
-
-    ToasterService.clearToast();
     console.log('route', route.routeId, route)
     RouteService.removeGuard({ routeId: String(route.routeId), guardId: String(guard.guardId) }, res => {
       if (res['success']) {
@@ -238,7 +231,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         ToasterService.showSuccess('Success', res['message']);
         $scope.resetRoute()
       } else {
-        ToasterService.clearToast();
         $scope.toggleView = true;
         ToasterService.showError('Error', res['message']);
       }
@@ -249,9 +241,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.getVehicleListForSite = function (siteId, shiftId, shiftType) {
 
-    $scope.toggleView = false;
+    // $scope.toggleView = false;
 
-    ToasterService.clearToast();
     if (siteId == null || shiftId == null || shiftType == null) {
       return;
     }
@@ -291,9 +282,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.getGuardListForSite = function (siteId, shiftId, shiftType) {
 
-    $scope.toggleView = false;
+    // $scope.toggleView = false;
 
-    ToasterService.clearToast();
     if (siteId == null || shiftId == null) {
       return;
     }
@@ -318,8 +308,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.updateFilters = function () {
-    $scope.toggleView = false;
-    ToasterService.clearToast();
+    // $scope.toggleView = false;
     let postData = {
       "site_id": $scope.siteId,
       "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
@@ -481,7 +470,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           $scope.toggleView = true;
           ToasterService.showSuccess('Success', res['message']);
         } else {
-          ToasterService.clearToast();
           $scope.toggleView = true;
           ToasterService.showError('Error', res['message']);
           return;
@@ -599,9 +587,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.showStaticData = (res) => {
-    $scope.toggleView = false;
+    // $scope.toggleView = false;
 
-    ToasterService.clearToast();
+    // ToasterService.clearToast();
     $scope.routes = res;
 
     $scope.originalRoutes = angular.copy($scope.routes.data.routes);
@@ -656,8 +644,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.generateRoute = function (siteId, shiftId, filterDate, shiftType) {
 
-    $scope.toggleView = false;
-    ToasterService.clearToast();
+    // $scope.toggleView = false;
+    // ToasterService.clearToast();
     if (!$scope.siteId) {
       $scope.toggleView = true;
       ToasterService.showError('Error', 'Select Site.');
@@ -686,11 +674,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     RouteService.getRoutes(postData, (data) => {
 
-      $scope.toggleView = false;
-      ToasterService.clearToast();
+      // $scope.toggleView = false;
+      // ToasterService.clearToast();
       console.log(data);
       if (!data['success']) {
-        ToasterService.clearToast();
+        // ToasterService.clearToast();
         $scope.toggleView = true;
         ToasterService.showError('Error', data['message']);
         return;
@@ -709,7 +697,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           $scope.routes = RouteStaticResponse.emptyResponse;
           $scope.routes.data.routes = [];
           $scope.toggleView = true;
-          ToasterService.showToast('info', 'Response Received', 'No Routes found for this shift')
+          // ToasterService.showSuccess('info', 'Response Received', 'No Routes found for this shift')
           console.log('error', err)
         }
         $scope.showRouteData()
@@ -720,9 +708,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.showRouteData = () => {
-    $scope.toggleView = false;
+    // $scope.toggleView = false;
 
-    ToasterService.clearToast();
+    // ToasterService.clearToast();
     angular.forEach($scope.routes.data.routes, function (route, index, routeArray) {
       route.allowed = "all";
 
@@ -892,6 +880,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.dropVehicleCallback = function (container, index, item, external, type) {
     console.log('modified route after drag', container);
+    // $scope.toggleView = false;
     var isAssign = true;
     if (isAssign) {
       var postData = {
@@ -903,13 +892,17 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         console.log("Vehicle Assign", data);
         if (data['success']) {
           isAssign = false;
-          // ToasterService.clearToast();
+          ToasterService.clearToast();
           $scope.toggleView = true;
-          ToasterService.showSuccess('Success', data['msg']);
+          if(data['message']){
+            ToasterService.showSuccess('Success', data['message']);
+          } else {
+            ToasterService.showSuccess('Success', data['data'].msg)
+          }
         } else {
           // ToasterService.clearToast();
           $scope.toggleView = true;
-          ToasterService.showError('Error', data['msg']);
+          ToasterService.showError('Error', data['data'].msg);
         }
         $scope.resetRoute();
       })
@@ -1025,7 +1018,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           try {
             $scope.toggleView = true;
             console.log('In try loop');
-            ToasterService.showToast('info', 'Response Received', $scope.routes.data.routes.length + ' Routes found for this shift')
+            // ToasterService.showToast('info', 'Response Received', $scope.routes.data.routes.length + ' Routes found for this shift')
             $scope.originalRoutes = angular.copy($scope.routes.data.routes);
             $scope.stats = $scope.routes.data.tats[0];
             console.log($scope.model2)
@@ -1034,7 +1027,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
             $scope.routes = RouteStaticResponse.emptyResponse;
             $scope.routes.data.routes = [];
             $scope.toggleView = true;
-            ToasterService.showToast('info', 'Response Received', 'No Routes found for this shift')
+            // ToasterService.showToast('info', 'Response Received', 'No Routes found for this shift')
             console.log('error', err)
           }
           $scope.showRouteData()

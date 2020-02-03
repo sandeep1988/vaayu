@@ -9,7 +9,10 @@
               <option ng-repeat="site in siteList" ng-value="site.id">{{site.name}}</option>
             </select>
           </div>
-          <toaster-container ng-show="toggleView"></toaster-container>
+          <toaster-container ng-show="toggleView" toaster-options='{"showDuration": "300",
+          "hideDuration": "1000",
+          "timeOut": "2000",
+          "extendedTimeOut": "1000",}''></toaster-container>
           <div class="form-group pr-2">
             <select id="disabledSelect" class="form-control" ng-model="selectedShift">
               <option ng-repeat="shift in shifts" value="{{shift}}">{{shift.name + ' ('+shift.shift_type+')'}}
