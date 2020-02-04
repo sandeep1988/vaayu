@@ -82,7 +82,9 @@
     "swiper": "^5.0.3",
     "AngularJS-Toaster": "angularjs-toaster#^3.0.0",
     "angular-bootstrap": "^2.5.0",
-    "jstz": "*"
+    "jstz": "*",
+    "google-maps-utility-library-v3": "*",
+    "google-maps-utility-library-v3-markerwithlabel": "^1.1.10"
   },
   "resolutions": {
     "get-size": "~1.1.7",
