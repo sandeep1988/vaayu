@@ -7,7 +7,7 @@
   <div class="container-fluid mt-4">
     <div class="row">
       <div class="col-md-8">
-        <toaster-container ng-show="toggleView"></toaster-container>
+        <toaster-container ng-if="toggleView"></toaster-container>
         <form class="form-inline">
           <div class="form-group pr-2">
             <select ng-model="selectedSite" ng-options="site.name for site in siteList track by site.id"
@@ -511,7 +511,7 @@
           <button class="vaayu-pop-action-btn" ng-click="CheckIsDownloadeble()">
                 download sample
           </button>
-          <button class="vaayu-pop-action-btn" type="button" ng-click="uploadExcelData()">Upload</button>
+          <button class="vaayu-pop-action-btn" type="button" ng-click="uploadExcelData()" ng-disabled="disableBtn">Upload</button>
         </div>
       </div>
     </div>

@@ -90,6 +90,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
   }
 
+  $scope.disableBtn = true;
+
   $scope.showPopup = false;
 
   $scope.showPopupWindow = (roster) => {
@@ -148,6 +150,9 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     // console.log(e.files)
     $scope.fileObject = e.files[0];
     console.log('selected file', $scope.fileObject)
+    if($scope.fileObject){
+      $scope.disableBtn = false;
+    }
     $timeout(() => {
       $scope.tempfileName = $scope.fileObject.name;
     }, 50)
@@ -156,35 +161,55 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   $scope.mainSiteId;
   $scope.uploadExcelData = function () {
 
-    var formData = new FormData();
-
-    formData.append("excelPath", $scope.fileObject);
-    formData.append("siteId", $scope.selectedSite.id);
-    $scope.mainSiteId = $scope.selectedSite.id;
-    var request = new XMLHttpRequest();
-    var vm = $scope;
-    request.open("POST", this.baseUrl + "upload-employee-shedule");
-    request.onload = function () {
-      var resData = JSON.parse(request.response)
-      // alert(resData.success);
-      if (resData.success) {
-        $scope.toggleView = true;
-        ToasterService.showSuccess('Success', "File upload success");
-      } else {
-        $scope.toggleView = true;
-        showErrorToast('Error', 'resData.message')
-      }
-    };
-
-    function showErrorToast(error, message) {
-      ToasterService.showError(error, message);
-
+    if($scope.fileObject){
+      var formData = new FormData();
+      $scope.isLoader =true;
+      formData.append("excelPath", $scope.fileObject);
+      formData.append("siteId", $scope.selectedSite.id);
+      $scope.mainSiteId = $scope.selectedSite.id;
+      var request = new XMLHttpRequest();
+      var vm = $scope;
+      request.open("POST", this.baseUrl + "upload-employee-shedule");
+      request.onload = function () {
+        var resData = JSON.parse(request.response)
+        // alert(resData.success);
+        console.log('resData', resData)
+        
+        if (resData.success) {
+          $scope.isLoader =false;
+          $scope.toggleView = true;
+          ToasterService.showSuccess('Success', "File upload success");
+        } else {
+          if(Array.isArray(resData.errors) && resData.errors.length != 0){
+            $scope.isLoader =false;
+            $scope.toggleView = true;
+            ToasterService.showSuccess('Error', resData.errors.toString());
+          } else {
+            $scope.isLoader =false;
+            $scope.toggleView = true;
+            ToasterService.showSuccess('Error', resData.message);
+          }
+          
+          // showErrorToast('Error', resData.message)
+        }
+      };
+  
+      
+  
+      request.setRequestHeader('uid', SessionService.uid);
+      request.setRequestHeader('access_token', SessionService.access_token);
+      request.setRequestHeader('client', SessionService.client)
+      request.send(formData);
+    }else{
+      $scope.toggleView = true;
+      $scope.isLoader =false;
+      showErrorToast('Error', 'Please select File First!')
     }
+    
+  }
 
-    request.setRequestHeader('uid', SessionService.uid);
-    request.setRequestHeader('access_token', SessionService.access_token);
-    request.setRequestHeader('client', SessionService.client)
-    request.send(formData);
+  function showErrorToast(error, message) {
+    ToasterService.showError(error, message);
   }
 
   $scope.isDownload = false;
