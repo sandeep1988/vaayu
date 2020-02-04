@@ -373,6 +373,13 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     console.log($scope.currentRoster);
   }
 
+  $scope.showGenerateDialog = false;
+
+  $scope.showGeneratePopup = (roster) => {
+    $scope.showGenerateDialog = true;
+    // $scope.generateRoutes(roster);
+  }
+
   $scope.hideAddMenu = function () {
     $scope.isAddMenuOpen = false;
     $scope.defaultVehiclesList = {

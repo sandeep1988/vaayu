@@ -460,7 +460,26 @@
     </div>
 
   </div>
-
+  <div id="myModal" class="vaayu-modal" style="display: block;z-index: 4;" ng-show="showGenerateDialog">
+    <div class="vaayu-modal-content" style="width:450px;">
+      <div class="vaayu-modal-header">
+        <span>Generate Routes</span>
+        <span class="vaayu-pop-close closepop" ng-click="showGenerateDialog=false">&times;</span>
+      </div>
+      <div class="vaayu-modal-body">
+        <div class="row container-fluid">
+          <div class="col-md-12" style="text-align: center;">
+            <div class="btn-group">
+              <div class="input-group">
+                <button class="btn btn-sm-vaayu btn-terniary btn-sm pull-left route-button">Fresh Route</button>
+                <button class="btn btn-sm-vaayu btn-terniary btn-sm pull-left route-button" style="margin-left: 10px;">Copy Route</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div id="myModal" class="vaayu-modal" style="display: block;z-index: 4;" ng-show="showUploadDialog">
 
     <!-- Modal content -->
