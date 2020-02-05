@@ -374,9 +374,10 @@ class TripsController < ApplicationController
           to = driver.user.phone.to_i
           message = "Hello! New trip has been assigned to you, kindly sign into app to accept the trip."
           sms = HTTParty.get("http://mahindrasms.com:8080/mConnector/dispatchapi?cname=mnmlog&tname=mnmlog&login=mnmlog&to=#{to}&text=#{message}")
-          render :json => { :success => 'Driver successfully assigned' }
+          # render :json => { :success => 'Driver successfully assigned' }
+          render :json => { :success => 'Driver successfully assigned', :error => false }
         else
-          render :json => { :error => 'Something wrong' }
+          render :json => { :error => 'Something wrong',:error => false }
         end
       end
     end
