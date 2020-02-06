@@ -63,7 +63,24 @@
     color: white;
     text-align:right;
   }
-  
+  .bgRed{
+    color:red !important;
+  }
+  .temporaryRoute {
+    position: fixed;
+    top: 20%;
+    right: -10px;
+    width: 258px !important;
+    z-index: 1;
+  }
+
+  .temporaryRoute .employee-cluster-panel-heading-meta , .temporaryRoute .vayau-panel-footer{
+    display: none;
+  }
+
+  .temporaryRoute .employee-cluster-panel-body {
+    height: 300px;
+  }
   /* Modal Content */
   .vaayu-modal-content {
     position: relative;
