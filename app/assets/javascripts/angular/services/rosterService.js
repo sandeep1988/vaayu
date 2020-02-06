@@ -1,6 +1,6 @@
 
-angular.module('app').factory('RosterService', ['$resource', 'BASE_URL_8002', 'BASE_URL','BASE_URL_API_8002',
-  function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002) {
+angular.module('app').factory('RosterService', ['$resource', 'BASE_URL_8002','BASE_URL_API_8005','BASE_URL','BASE_URL_API_8002',
+  function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_8005) {
     return $resource(BASE_URL_8002 + 'roasterlist', {}, {
       // query: { method: "GET", isArray: true },
       // create: { method: "POST"},
@@ -38,6 +38,14 @@ angular.module('app').factory('RosterService', ['$resource', 'BASE_URL_8002', 'B
       uploadExcel :{
         url: BASE_URL_8002 + 'upload-employee-shedule',
         method: "POST"
+      },
+      exportReport: {
+        url: BASE_URL_API_8005 + '/tripReport/ksjdfhsi5735936',
+        method: "POST"
+      },
+      copyRoutes: {
+        url: BASE_URL_8002 + 'copyexistingroutes',
+        method: 'POST'
       }
     });
 

@@ -1,15 +1,15 @@
 
 
-angular.module('app').controller('rosterCtrl', function ($scope, RosterService, RouteService, ToasterService, RosterStaticResponse, $http, BASE_URL_API_8002, BASE_URL_8002, SessionService, $timeout) {
+angular.module('app').controller('rosterCtrl', function ($scope, RosterService, RouteService, ToasterService, RosterStaticResponse, $http, BASE_URL_API_8002, BASE_URL_8002,SessionService, $timeout) {
 
   $scope.baseUrl = BASE_URL_API_8002;
   $scope.baseUrl2 = BASE_URL_8002;
 
-
+  $scope.toggleView = false;
   $scope.init = function () {
 
-    $scope.toggleView = false;
-    ToasterService.clearToast();
+    $scope.toggleView = true;
+    ToasterService.showSuccess('Success', 'Success');
     $scope.SelectedEmp = [];
     $scope.example14settings = {
       scrollableHeight: '200px',
@@ -55,9 +55,14 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
     $scope.format = $scope.formats[0];
 
+    $scope.toDateFormat = $scope.formats[0];
+    $scope.toCopyDateFormat = $scope.formats[0];
+
     $scope.getAllSiteList();
 
   }
+
+  $scope.selectedSiteId;
 
   $scope.getAllSiteList = () => {
     RosterService.getAllSiteList(function (data) {
@@ -81,6 +86,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       "site_id": $scope.selectedSite.id,
       "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
     }
+    $scope.selectedSiteId = $scope.selectedSite.id;
 
     if ($scope.shift_type) {
       postData.shift_type = $scope.shift_type;
@@ -95,6 +101,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   $scope.showPopup = false;
 
   $scope.showPopupWindow = (roster) => {
+
     console.log('selectedRoster', roster)
     $scope.selectedRoster = roster;
     let postData = {
@@ -223,11 +230,9 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     }).then(function successCallback(res) {
         console.log('response: ', res)
         if (res.success == false) {
-          ToasterService.clearToast();
           $scope.toggleView = true;
           ToasterService.showError('Error', res.data.message)
         } else {
-          ToasterService.clearToast();
           $scope.toggleView = true;
           ToasterService.showSuccess('Success', res.data.message)
           $scope.downloadSample();
@@ -291,6 +296,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
         console.log('loader off');
         // var data = RosterStaticResponse.staticResponse;
         $scope.rosters = data.data.shiftdetails;
+        console.log('check rosters', $scope.rosters)
         $scope.stats = data.data.stats;
 
 
@@ -305,6 +311,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   // datepicker function
   $scope.today = function () {
     $scope.filterDate = new Date();
+    $scope.toDate = new Date();
+    $scope.toCopyDate = new Date();
   };
 
   $scope.clear = function () {
@@ -324,7 +332,6 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   $scope.open = function ($event) {
     $event.preventDefault();
     $event.stopPropagation();
-
     $scope.opened = true;
   };
   //date picker function
@@ -364,12 +371,13 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
           }
         }
         $scope.disable_roster_button = false;
-
+        $scope.closeAll()
       }, (error) => {
         $scope.disable_roster_button = false;
         $scope.toggleView = true;
         ToasterService.showError('Error', 'Something went wrong, Try again later.');
         console.error(error);
+        $scope.closeAll();
       });
   }
 
@@ -397,13 +405,79 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     $scope.isAddMenuOpen = true;
     console.log($scope.currentRoster);
   }
-
+// date picker custom
+  $scope.toCopyDate;
+  $scope.toDate;
   $scope.showGenerateDialog = false;
+  $scope.rosterData;
+  $scope.filterDate;
+  $scope.isDateBoxOpen = false;
+  $scope.closeAll = () => {
+    $scope.showGenerateDialog = false;
+    $scope.isDateBoxOpen = false;
+  }
+  $scope.updateDateFilters = function (value, date) {
+    if(value === 'to'){
+        $scope.filterDate = moment(date).format('YYYY-MM-DD')
+    } else if(value === 'copy' ){
+      $scope.toCopyDate = moment(date).format('YYYY-MM-DD');          
+}
+
+$scope.onSubmit = () => {
+  if($scope.toDate && $scope.toCopyDate){
+    
+    let postData=  {
+        "siteId": String($scope.selectedSiteId),
+        "shiftId": String($scope.rosterData.id),
+        "tripType": String($scope.rosterData.trip_type),
+        "to_date": moment($scope.filterDate).format('YYYY-MM-DD'),
+        "tocopy_date": moment($scope.toCopyDate).format('YYYY-MM-DD')
+      }
+
+      RosterService.copyRoutes(postData, function(res){
+        $scope.closeAll();
+        $scope.toggleView = true;
+        ToasterService.showSuccess('Success', res.message);
+      }, function(err){
+        $scope.closeAll();
+        $scope.toggleView = true;
+        ToasterService.showSuccess('Error', err.message);
+      })
+  }
+}
+}
+// $scope.toCopyDateOpened = false;
+// $scope.toDateOpened = false;
+  $scope.toCopyDateOpen = function ($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    $scope.toCopyDateOpened = true;
+  };
+
+  $scope.toDateOpen = function ($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      $scope.toDateOpened = true;
+  };
 
   $scope.showGeneratePopup = (roster) => {
     $scope.showGenerateDialog = true;
+    $scope.rosterData = roster;
+    console.log('roster', roster)
     // $scope.generateRoutes(roster);
   }
+
+  $scope.copyRoutes = () => {
+    $scope.isDateBoxOpen = true;
+  }
+
+  $scope.onFreshRoutes = () => {
+    $scope.generateRoutes($scope.rosterData)
+    $scope.closeAll();
+  }
+
+
+
 
   $scope.hideAddMenu = function () {
     $scope.isAddMenuOpen = false;
