@@ -222,7 +222,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       url: this.baseUrl2 + 'is-downloadable-employee-excel/' + $scope.selectedSite.id
     }).then(function successCallback(res) {
         console.log('response: ', res)
-        if (res.success == false) {
+        if (res['data'].success == false) {
           ToasterService.clearToast();
           $scope.toggleView = true;
           ToasterService.showError('Error', res.data.message)
