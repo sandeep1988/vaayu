@@ -181,7 +181,7 @@
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   background-color: #ffffff;
   width:400px;
-  z-index: 1;
+  z-index: 2;
 }
 
 .vayau-routing .employee-cluster-panel {
@@ -376,7 +376,8 @@
 }
 
 .vayau-routing .card-panel .employee-list-group {
-  padding: 15px 15px 0 15px;
+  padding: 15px;
+  height: 100%;
 }
 
 .vayau-panel-footer .employee-list-group {
@@ -453,7 +454,11 @@
   text-align: left;
   color: #6c6c6c;
 }
-
+.pullUpLabel {
+  position: relative;
+  top: -13px;
+  color:#000;
+}
 .vayau-panel-footer .employee-list-group .employee-list-group-item.guard-add {
   width: 95px;
   height: 38px;
