@@ -160,6 +160,26 @@ angular.module('app').controller('reportCtrl', function ($scope,RosterService, R
             link.click();
         }
 
+        $scope.checkIsDownloadable = () => {
+            $http({
+                method: 'GET',
+                url: 'http://api.mllvaayu.com/isReportsDownloadable/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate
+              }).then(function successCallback(res) {
+                  console.log('response: ', res)
+                  if (res['data'].success == false) {
+                    ToasterService.clearToast();
+                    $scope.toggleView = true;
+                    ToasterService.showError('Error', res.data.message)
+                } else {
+                    $scope.downloadReport();
+                    $scope.toggleView = true;
+                    ToasterService.showSuccess('Success', res.data.message)
+                  }
+                }, function errorCallback(err) {
+                  console.log('error: ', err)
+                });
+        }
+
         $scope.downloadReport = function(){
             var url = 'http://api.mllvaayu.com:8005/api/v1/' + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
             if($scope.reportId && $scope.siteId && $scope.fromDate && $scope.toDate ){
