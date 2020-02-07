@@ -152,19 +152,17 @@ angular.module('app').controller('reportCtrl', function ($scope,RosterService, R
              responseType: 'arraybuffer'
             }).then(function successCallback(res) {
                 $scope.isLoader =false;
+                $scope.isChanged = true;
               }, function errorCallback(err) {
                 $scope.isLoader =false;
                 console.log('error: ', err)
               });
-              if($scope.isChanged){
-                  link.click();
-              }
+            link.click();
         }
 
         $scope.downloadReport = function(){
             var url = 'http://api.mllvaayu.com:8005/api/v1/' + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
             if($scope.reportId && $scope.siteId && $scope.fromDate && $scope.toDate ){
-                $scope.isChanged = true;
                 $scope.downloadSample(url);
             }
         }

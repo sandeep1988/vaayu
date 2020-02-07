@@ -485,13 +485,14 @@
               <div class="form-group pr-2">
                   <div class="form-group pr-2">
                     <p class="input-group custom-date date_style">
-                      <input type="text" class="form-control data_in_style" datepicker-popup="{{toCopyDateFormat}}" ng-model="toCopyDate" is-open="toCopyDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"
-                      ng-change="updateDateFilters('copy', toCopyDate)">
+                      <input type="text" class="form-control data_in_style" datepicker-popup="{{toCopyDateFormat}}" ng-model="toCopyDate" ng-change="updateDateFilters('copy', toCopyDate)" is-open="toCopyDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"
+                      >
                       <span class="input-group-btn-datePicket">
                         <button type="button" class="btn btn-default data_in_style" ng-click="toCopyDateOpen($event)">
                             <i class="fa fa-calendar"></i>
                         </button>
                       </span>
+                      
                     </p>
                   </div>
                   <button class="btn btn-terniary-blue" ng-click="onSubmit()">OK</button>
