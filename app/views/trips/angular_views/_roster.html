@@ -7,7 +7,7 @@
   <div class="container-fluid mt-4">
     <div class="row">
       <div class="col-md-8">
-        <toaster-container ng-show="toggleView"></toaster-container>
+        <toaster-container ng-if="toggleView"></toaster-container>
         <form class="form-inline">
           <div class="form-group pr-2">
             <select ng-model="selectedSite" ng-options="site.name for site in siteList track by site.id"
@@ -17,7 +17,7 @@
           </div>
           <div class="form-group pr-2">
             <p class="input-group custom-date date_style">
-              <input type="text" class="form-control data_in_style" datepicker-popup="{{format}}" ng-model="filterDate"
+              <input type="text" class="form-control data_in_style" datepicker-popup="{{format}}" ng-model="filterDate" ng-change="updateDateFilters('to', filterDate)"
                 is-open="opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)"
                  ng-required="true" close-text="Close" />
               <span class="input-group-btn-datePicket">
@@ -185,14 +185,14 @@
                     </button>
                     <button
                       ng-if="!roster.routesGenerated && !roster.disableGenerate && roster.generateButtonLabel=='generate'"
-                      ng-click="generateRoutes(roster)" type="button"
+                      ng-click="showGeneratePopup(roster)" type="button"
                       class="btn btn-sm-vaayu btn-terniary-blue btn-sm" style="width:48%;">
                       Generate
                     </button>
 
                      <button
                       ng-if="!roster.routesGenerated && !roster.disableGenerate && roster.generateButtonLabel =='regenerate'"
-                      ng-click="generateRoutes(roster)" type="button"
+                      ng-click="showGeneratePopup(roster)" type="button"
                       class="btn btn-sm-vaayu btn-sm pull-right" style="color:#fff;background:#65b9da; width: 48%;">
                       Re-Generate
                     </button>
@@ -460,7 +460,49 @@
     </div>
 
   </div>
+  <div id="myModal" class="vaayu-modal" style="display: block;z-index: 4;" ng-show="showGenerateDialog">
+    <div class="vaayu-modal-content generate-modal" style="max-width:750px;">
+      <div class="vaayu-modal-header">
+        <span>Generate Routes</span>
+        <span class="vaayu-pop-close closepop" ng-click="closeAll()">&times;</span>
+      </div>
+      <div class="vaayu-modal-body">
+        <div class="row container-fluid">
+          <div class="col-md-12" style="text-align: center;">
+            <div class="btn-group">
+              <div class="input-group">
+                <button class="btn btn-sm-vaayu btn-terniary btn-sm pull-left route-button" ng-click="copyRoutes()">Copy/Generate Route</button>
+                <button class="btn btn-sm-vaayu btn-terniary btn-sm pull-left route-button" style="margin-left: 10px;" ng-click="onFreshRoutes()">Fresh Route</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row container-fluid date-box" ng-if="isDateBoxOpen">  
+          <div class="col-md-12" style="margin-bottom: 15px;">To Copy Date</div>
+          <div class="col-md-12">
+            <form class="form-inline">
+              <div class="form-group pr-2">
+                  <div class="form-group pr-2">
+                    <p class="input-group custom-date date_style">
+                      <input type="text" class="form-control data_in_style" datepicker-popup="{{toCopyDateFormat}}" ng-model="toCopyDate" is-open="toCopyDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"
+                      ng-change="updateDateFilters('copy', toCopyDate)">
+                      <span class="input-group-btn-datePicket">
+                        <button type="button" class="btn btn-default data_in_style" ng-click="toCopyDateOpen($event)">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                      </span>
+                    </p>
+                  </div>
+                  <button class="btn btn-terniary-blue" ng-click="onSubmit()">OK</button>
 
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div id="myModal" class="vaayu-modal" style="display: block;z-index: 4;" ng-show="showUploadDialog">
 
     <!-- Modal content -->
@@ -492,10 +534,9 @@
           <button class="vaayu-pop-action-btn" ng-click="CheckIsDownloadeble()">
                 download sample
           </button>
-          <button class="vaayu-pop-action-btn" type="button" ng-click="uploadExcelData()">Upload</button>
+          <button class="vaayu-pop-action-btn" type="button" ng-click="uploadExcelData()" ng-disabled="disableBtn">Upload</button>
         </div>
       </div>
     </div>
   </div>
 </div>
-

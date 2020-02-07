@@ -1,5 +1,12 @@
 
 // Services 
+// <<<<<<< HEAD
+// angular.module('app').constant('BASE_URL', 'http://apiptsdemo.devmll.com:8001/api/v1/');
+// angular.module('app').constant('BASE_URL_8002', 'http://apiptsdemo.devmll.com/');
+// angular.module('app').constant('BASE_URL_API_8002', 'http://apiptsdemo.devmll.com:8002/api/v1/');
+// angular.module('app').constant('BASE_URL_API_8003', 'http://apiptsdemo.devmll.com:8003/api/v1/');
+// angular.module('app').constant('BASE_URL_RUBY', 'http://apiptsdemo.devmll.com/api/v2/');
+// =======
 
 const PROD_OPERATOR_URL = 'operator.mllvaayu.com';
 const SANDBOX_OPERATOR_URL = 'sandboxoperator.mllvaayu.com';
@@ -12,6 +19,8 @@ if (document.domain === PROD_OPERATOR_URL) {
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');
     angular.module('app').constant('BASE_URL_API_8002', NODE_API_URL+':8002/api/v1/');
     angular.module('app').constant('BASE_URL_API_8003', NODE_API_URL+':8003/api/v1/');
+    angular.module('app').constant('BASE_URL_API_8004', NODE_API_URL+':8004/api/v1/');
+    angular.module('app').constant('BASE_URL_API_8005', NODE_API_URL+'/');
     angular.module('app').constant('BASE_URL_RUBY', 'http://'+PROD_OPERATOR_URL+'/api/v2/');    
     
 } else if (document.domain === SANDBOX_OPERATOR_URL) {
@@ -20,6 +29,8 @@ if (document.domain === PROD_OPERATOR_URL) {
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');
     angular.module('app').constant('BASE_URL_API_8002', NODE_API_URL+':8002/api/v1/');
     angular.module('app').constant('BASE_URL_API_8003', NODE_API_URL+':8003/api/v1/');
+    angular.module('app').constant('BASE_URL_API_8004', NODE_API_URL+':8004/api/v1/');
+    angular.module('app').constant('BASE_URL_API_8005', NODE_API_URL+'/');
     angular.module('app').constant('BASE_URL_RUBY', 'http://'+SANDBOX_OPERATOR_URL+'/api/v2/'); 
 
 } else if (document.domain === QA_OPERATOR_URL) {
@@ -28,6 +39,8 @@ if (document.domain === PROD_OPERATOR_URL) {
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');
     angular.module('app').constant('BASE_URL_API_8002', NODE_API_URL+':8002/api/v1/');
     angular.module('app').constant('BASE_URL_API_8003', NODE_API_URL+':8003/api/v1/');
+    angular.module('app').constant('BASE_URL_API_8004', NODE_API_URL+':8004/api/v1/');
+    angular.module('app').constant('BASE_URL_API_8005', NODE_API_URL+'/');
     angular.module('app').constant('BASE_URL_RUBY', 'http://'+QA_OPERATOR_URL+'/api/v2/'); 
 
 } else {//if (document.domain === SECURITY_OPERATOR_URL) 
@@ -36,6 +49,8 @@ if (document.domain === PROD_OPERATOR_URL) {
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');
     angular.module('app').constant('BASE_URL_API_8002', NODE_API_URL+':8002/api/v1/');
     angular.module('app').constant('BASE_URL_API_8003', NODE_API_URL+':8003/api/v1/');
+    angular.module('app').constant('BASE_URL_API_8004', NODE_API_URL+':8004/api/v1/');
+    angular.module('app').constant('BASE_URL_API_8005', NODE_API_URL+'/');
     angular.module('app').constant('BASE_URL_RUBY', 'http://'+SECURITY_OPERATOR_URL+'/api/v2/'); 
     
 } 
