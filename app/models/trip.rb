@@ -809,7 +809,7 @@ class Trip < ApplicationRecord
       trip_route = self.trip_routes.order('scheduled_route_order ASC').where.not(status: [:canceled, :missed ]).first
 
       if trip_route.present?
-        #Get the time taken to reach driver start location and first valid user pick up location
+        #Get the time taken to reach driver start location and first valid user Login location
         start_location = self.start_location
         end_location = [trip_route.scheduled_start_location[:lat], trip_route.scheduled_start_location[:lng]]
         route = GoogleService.new.directions(
@@ -904,7 +904,7 @@ class Trip < ApplicationRecord
     if self.check_in?
       #Get the first valid trip route
       trip_route = self.trip_routes.order('scheduled_route_order ASC').where.not(status: [:canceled, :missed ]).first
-      #Get the time taken to reach driver start location and first valid user pick up location
+      #Get the time taken to reach driver start location and first valid user Login location
       start_location = self.start_location
       end_location = [trip_route.scheduled_start_location[:lat], trip_route.scheduled_start_location[:lng]]
       route = GoogleService.new.directions(

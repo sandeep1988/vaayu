@@ -663,7 +663,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           $scope.originalRoutes = angular.copy($scope.routes.data.routes);
           $scope.stats = $scope.routes.data.tats[0];
         } catch (err) {
-          $scope.stats = { no_of_routes: 0, kilometres: 0, male_count: 0, female_count: 0, special: 0 };
+          $scope.stats = { no_of_routes: 0, kilometres: 0, male_count: 0, female_count: 0, special: 0, on_duty_vehicle: 0 };
           $scope.routes = RouteStaticResponse.emptyResponse;
           $scope.routes.data.routes = [];
           $scope.toggleView = true;

@@ -14,7 +14,7 @@ class TripRoute < ApplicationRecord
   serialize :scheduled_start_location, Hash
   serialize :scheduled_end_location, Hash
 
-  #Driver pick up and drop locations
+  #Driver Login and drop locations
   serialize :driver_arrived_location, Hash
   serialize :check_in_location, Hash
   serialize :drop_off_location, Hash
@@ -112,7 +112,7 @@ class TripRoute < ApplicationRecord
     end
   end
 
-  # Check when driver will drop off an employee
+  # Check when driver will Log out an employee
   def approximate_drop_off_date
     if trip.check_in?
       trip.approximate_trip_end_date
@@ -132,7 +132,7 @@ class TripRoute < ApplicationRecord
     end
   end
 
-  # Check when driver will drop off an employee according to the planned date
+  # Check when driver will Log out an employee according to the planned date
   def planned_drop_off_date
     if trip.check_in?
       trip.planned_trip_end_date
@@ -142,12 +142,12 @@ class TripRoute < ApplicationRecord
     end
   end  
 
-  # Display eta (pick up of drop off time depends on trip type)
+  # Display eta (Login of Log out time depends on trip type)
   def eta
     trip.check_in? ? approximate_driver_arrive_date : approximate_drop_off_date
   end
 
-  # Display planned eta (pick up of drop off time depends on trip type)
+  # Display planned eta (Login of Log out time depends on trip type)
   def planned_eta
     trip.check_in? ? planned_driver_arrive_date : planned_drop_off_date
   end  
