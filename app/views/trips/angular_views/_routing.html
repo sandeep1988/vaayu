@@ -205,7 +205,7 @@
                             dnd-dragover="dragoverCallback(container,index, external, type)"
                             dnd-drop="dropItemCallback(container,index, item, external, type)"
                             dnd-inserted="dropCallback(container,index, item, external, type)"
-                            dnd-inserted="logListEvent('inserted at', index, external, type)" class="itemlist">
+                            class="itemlist">
                             <li ng-if="container.employees.length" class="input-group employee-list-group-item"
                               ng-repeat="item in container.employees" dnd-draggable="item" dnd-type="'item'"
                               dnd-dragstart="logEvent('Started to drag an item')"

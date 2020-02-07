@@ -847,16 +847,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.dropCallback = async function (container, index, item, external, type) {
-      if ($scope.routeChangedIds.indexOf(container.routeId) === -1) {
-        $scope.routeChangedIds.push(container.routeId)
-       
-        $scope.isDisabled = false;
-      }
-
       if(container.subtype=="unallocated"){
-          // $scope.checkDroppable(container,index,item);
-          // $scope.saveRoutes();
-          return item;
+          $scope.saveRoutes();
       }else{
         var postData=getRoutePostData();
       
@@ -864,7 +856,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           if(response.success){
             // $scope.checkDroppable(container,index,item);
             $scope.updateRouteConstraint(response,postData);
-            return item;
+            // return item;
           }else{
             var htmlBody=$scope.returnHTML(response);
             
@@ -874,9 +866,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
               useBootstrap: false,
               content: htmlBody,
               scope: $scope,
-              onClose:function(){
-                
-              },
+             
               buttons: {
                   cancel: {
                     text: 'Revert',
@@ -891,10 +881,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
                       text: 'Proceed',
                       btnClass: 'btn-orange',
                       action: function(scope, button){
-                        scope.saveRoutes();
-                        // scope.checkDroppable(container,index,item);
                         scope.updateRouteConstraint(response,postData);
-                        return item;
                       }
                   }
               }
@@ -904,27 +891,24 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       }
   };
 
-  $scope.updateModel =function(){
-    $scope.model2 = $scope.newModel;
-    // return false;
-  }
-
   $scope.updateRouteConstraint = function(response,postData){
      $scope.resData=response.data.errLogs;
 
      angular.forEach($scope.model2, function (route) {
       angular.forEach($scope.resData, function (item) {
-        if (route.routeId === item.routeId) {
+        if (route.routeId == item.routeId) {
           route.total_distance = item.distance.distance;
           route.total_time = item.time.duration;
           
-          if(item.guard.length){
+          if(item.guard){
             route.guard_constraint_failed=item.guard ? true :false;
             route.guard_required=item.guard.guard_required;
           }
         }
       })
     })
+
+    $scope.saveRoutes();
 
   }
 
