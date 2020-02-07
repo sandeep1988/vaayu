@@ -89,6 +89,7 @@
 //= require angular-bootstrap
 //= require angular/rzslider
 //= require angular/angularjs-dropdown-multiselect
+//= require angular/angular-confirm.min.js
 //= require angular/config
 
 //= require_tree ./angular

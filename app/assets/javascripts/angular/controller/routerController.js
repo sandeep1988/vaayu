@@ -36,7 +36,7 @@ app.directive('focusMe', function ($timeout) {
 
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService,
   AutoAllocationService,
-  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService) {
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm) {
 
 
   $scope.toggleView = false;
@@ -76,6 +76,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     var stepDisplay = new google.maps.InfoWindow;
 
 
+
+
     // var waypts = [
     //   {
     //     location: 'Kandivali Station (W), Parekh Nagar, Kandivali, Mumbai, Maharashtra',
@@ -90,6 +92,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // calculateAndDisplayRoute( directionsService, directionsRenderer, waypts)
 
   }
+
+  $scope.isLoader = false;
 
   $scope.selected_vehicle_status = 'on_duty';
 
@@ -372,21 +376,44 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.isDisabled = true;
 
+  function removeDumplicateValue(myArray){ 
+    var newArray = [];
+    angular.forEach(myArray, function(value, key) {
+      var exists = false;
+      angular.forEach(newArray, function(val2, key) {
+        if(angular.equals(value.routeId, val2.routeId)){ exists = true }; 
+      });
+      if(exists == false && value.routeId != "") { newArray.push(value); }
+    });
+    return newArray;
+  }
+
   $scope.finalizeRoutes = () => {
-    if ($scope.finalizeArray.length === 0) {
+
+    angular.forEach($scope.model2, function (containers) {
+      angular.forEach(containers, function (container) {
+        if (container.routeId && container.route_selected) {
+          $scope.finalizeArray.push({ routeId: container.routeId });
+        }
+      })
+    })
+
+    $scope.newFinalizeArray=removeDumplicateValue($scope.finalizeArray);
+
+    if ($scope.newFinalizeArray.length === 0) {
       $scope.toggleView = true;
       ToasterService.showError('Error', 'Kindly select a route before save')
       return;
+    }else{
+      let postdata = { routesFinalizeArray: $scope.newFinalizeArray }
+      FinalizeService.query(postdata, (data) => {
+        $scope.resetRoute();
+        $scope.allRouteSelected=false;
+      }, err => {
+        $scope.toggleView = true;
+        ToasterService.showError('Error', 'Something went wrong')
+      });
     }
-    let postdata = { routesFinalizeArray: $scope.finalizeArray }
-    console.log('finalizeRoutes request object', postdata)
-    FinalizeService.query(postdata, (data) => {
-      console.log('finalizeRoutes ', data);
-      $scope.resetRoute();
-    }, err => {
-      $scope.toggleView = true;
-      ToasterService.showError('Error', 'Something went wrong')
-    });
   }
 
   $scope.roundValue = (val) => {
@@ -394,104 +421,28 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.saveRoutes = function () {
-    var changedRoutes = [];
+    var postData=getRoutePostData();
+    $scope.isDisabled = true;
 
-    angular.forEach($scope.routes.data.routes, function (route) {
-      angular.forEach($scope.routeChangedIds, function (routeId) {
-        if (route.routeId === routeId) {
-          changedRoutes.push(route);
-        }
-      })
-    })
-
-
-
-    var finalChangedRoutes = [];
-    angular.forEach(changedRoutes, function (route) {
-
-      if (route.guard_required) {
-        route.guard_required = "Y";
+    RouteUpdateService.query(postData, function (res) {
+      $scope.isDisabled = false;
+      if (res['success']) {
+        $scope.resetRoute();
+        $scope.toggleView = true;
+        ToasterService.showSuccess('Success', res['message']);
       } else {
-        route.guard_required = "N";
+        ToasterService.clearToast();
+        $scope.toggleView = true;
+        ToasterService.showError('Error', res['message']);
+        $scope.resetRoute();
+        return;
       }
-      var employee_nodes = [];
-      angular.forEach(route.employees, function (emp) {
-        employee_nodes.push(emp.empId);
-      })
-      var data = {
-        "route_id": route.routeId,
-        "vehicle_category": route.vehicle_type,
-        "employee_nodes": employee_nodes,
-        "guard_required": route.guard_required
-      }
-      finalChangedRoutes.push(data);
     })
-
-    var original_routes = [];
-
-
-    var originalChangedRoutes = [];
-
-    angular.forEach($scope.originalRoutes, function (route) {
-      angular.forEach($scope.routeChangedIds, function (routeId) {
-        if (route.routeId === routeId) {
-          originalChangedRoutes.push(route);
-        }
-      })
-    })
-
-    angular.forEach(originalChangedRoutes, function (originalRoute) {
-      if (originalRoute.guard_required) {
-        originalRoute.guard_required = "Y";
-      } else {
-        originalRoute.guard_required = "N";
-      }
-
-      var employee_nodes = [];
-      angular.forEach(originalRoute.employees_nodes_addresses, function (orgEmp) {
-        employee_nodes.push(orgEmp.empId);
-      })
-      var data = {
-        "route_id": originalRoute.routeId,
-        "vehicle_category": originalRoute.vehicle_type,
-        "employee_nodes": employee_nodes,
-        "guard_required": originalRoute.guard_required
-      }
-      original_routes.push(data);
-    })
-
-    if (finalChangedRoutes.length) {
-      let shift = JSON.parse($scope.selectedShift);
-      let postData = {
-        "site_id": parseInt($scope.siteId),
-        "shift_id": parseInt(shift.id),
-        "to_date": moment($scope.filterDate).format('YYYY-MM-DD'),
-        "shift_type": String(shift.trip_type),
-        "updated_routes": finalChangedRoutes,
-        "original_routes": original_routes
-      }
-
-      $scope.isDisabled = true;
-
-      RouteUpdateService.query(postData, function (res) {
-        console.log('save button cick res', res)
-        $scope.isDisabled = false;
-        if (res['success']) {
-          $scope.resetRoute();
-          $scope.toggleView = true;
-          ToasterService.showSuccess('Success', res['message']);
-        } else {
-          ToasterService.clearToast();
-          $scope.toggleView = true;
-          ToasterService.showError('Error', res['message']);
-          return;
-        }
-      })
-    }
   }
 
   $scope.resetRoute = function () {
 
+    $scope.isLoader = true;
     $scope.finalizeArray = [];
     $scope.routeChangedIds = [];
 
@@ -536,7 +487,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
 
     angular.forEach($scope.routes.data.routes, function (route, index, routeArray) {
-      if (index === routeArray.length - 1) {
+      if (index === routeArray.length - 2) {
         routeId = route.routeId
       }
     });
@@ -565,8 +516,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber, to_date: moment($scope.filterDate).format('YYYY-MM-DD') };
     RouteService.searchVechicle(params, function (res) {
-      console.log('vehicle search response', res)
-      console.log('vs response', JSON.stringify(res))
       if (res['success']) {
         $scope.vehicleList = res.data;
         var allowtypes = [];
@@ -577,8 +526,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
             allowtypes.push(item.type)
           }
         })
-        console.log('allowtypes', allowtypes);
-
+      
         $scope.vehicals = [
           {
             label: "Vehical",
@@ -589,7 +537,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         ];
       } else {
         //ToasterService.showError('Error', res['message']);
-        console.log(res['message']);
       }
     }, function (error) {
       console.log(error);
@@ -654,7 +601,20 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   }
 
+
+  $scope.checkSiteTime =function(time){
+    return time > $scope.site_time;
+  }
+  $scope.checkSiteDistance =function(distance){
+   return distance > $scope.site_distance;
+  }
+
   $scope.generateRoute = function (siteId, shiftId, filterDate, shiftType) {
+
+    RouteService.getConstraintsForSite({site_id:siteId},function (res) {
+      $scope.site_time =res.data.time;
+      $scope.site_distance =res.data.distance;
+    });
 
     $scope.toggleView = false;
     ToasterService.clearToast();
@@ -682,13 +642,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       "search": "1",
       "shift_type": shift.trip_type + '' // 0 -checkin 1-checout
     }
-    console.log('postData', postData)
-
+  
     RouteService.getRoutes(postData, (data) => {
-
+      $scope.isLoader=false;
       $scope.toggleView = false;
       ToasterService.clearToast();
-      console.log(data);
+      
       if (!data['success']) {
         ToasterService.clearToast();
         $scope.toggleView = true;
@@ -703,14 +662,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           // ToasterService.showToast('info', 'Response Received', $scope.routes.data.routes.length+' Routes found for this shift')
           $scope.originalRoutes = angular.copy($scope.routes.data.routes);
           $scope.stats = $scope.routes.data.tats[0];
-          console.log($scope.model2)
         } catch (err) {
           $scope.stats = { no_of_routes: 0, kilometres: 0, male_count: 0, female_count: 0, special: 0 };
           $scope.routes = RouteStaticResponse.emptyResponse;
           $scope.routes.data.routes = [];
           $scope.toggleView = true;
           ToasterService.showToast('info', 'Response Received', 'No Routes found for this shift')
-          console.log('error', err)
         }
         $scope.showRouteData()
       }
@@ -749,7 +706,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         route.vehicle = [];
       }
 
+      if(route.subtype=="unallocated"){
+         route.vehicle_allocated='';
+       }
+
       angular.forEach(route.employees_nodes_addresses, function (employee, idx, emmplyeeArray) {
+        
         employee.type = "employee";
         employee.effectAllowed = "all";
       })
@@ -769,8 +731,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     $scope.fullModel = [$scope.routes.data.routes];
     $scope.model2 = $scope.fullModel;
-    console.log('scope model2');
-
   }
 
   $scope.collapsiblePanel = function (item) {
@@ -856,10 +816,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.routeChangedIds = [];
 
   $scope.checkBoxChanged = function (container) {
-    console.log(container);
     if ($scope.routeChangedIds.indexOf(container.routeId) === -1) {
       $scope.routeChangedIds.push(container.routeId)
-
       $scope.isDisabled = false;
     }
   };
@@ -869,10 +827,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.dragoverCallback = function (container, index, external, type, callback) {
     if ($scope.routeChangedIds.indexOf(container.routeId) === -1) {
       $scope.routeChangedIds.push(container.routeId)
-      console.log($scope.routeChangedIds);
       $scope.isDisabled = false;
     }
-
+    $scope.newModel=angular.copy($scope.model2)
     if (type == 'container' && !external) {
       console.log('Container being dragged contains ' + callback() + ' items');
     }
@@ -880,43 +837,299 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   };
 
 
-
-  $scope.dropCallback = function (container, index, item, external, type) {
+  $scope.dropItemCallback = function (container, index, item, external, type) {
     if ($scope.routeChangedIds.indexOf(container.routeId) === -1) {
       $scope.routeChangedIds.push(container.routeId)
-      console.log($scope.routeChangedIds);
       $scope.isDisabled = false;
     }
+
     return item;
+  }
+
+  $scope.dropCallback = async function (container, index, item, external, type) {
+      if(container.subtype=="unallocated"){
+          $scope.saveRoutes();
+      }else{
+        var postData=getRoutePostData();
+      
+        RouteService.constraintCheck(postData,function (response) {
+          if(response.success){
+            // $scope.checkDroppable(container,index,item);
+            $scope.updateRouteConstraint(response,postData);
+            // return item;
+          }else{
+            var htmlBody=$scope.returnHTML(response);
+            
+            $ngConfirm({
+              title: 'Constraint Failed!',
+              boxWidth: '40%',
+              useBootstrap: false,
+              content: htmlBody,
+              scope: $scope,
+             
+              buttons: {
+                  cancel: {
+                    text: 'Revert',
+                    btnClass: 'btn-blue',
+                    action: function (scope) {
+                      scope.model2=scope.newModel;
+                      $ngConfirm("Reverted successfully")
+                      // return false;
+                    }
+                  },
+                  procced: {
+                      text: 'Proceed',
+                      btnClass: 'btn-orange',
+                      action: function(scope, button){
+                        scope.updateRouteConstraint(response,postData);
+                      }
+                  }
+              }
+            });
+          }
+        });
+      }
   };
+
+  $scope.updateRouteConstraint = function(response,postData){
+     $scope.resData=response.data.errLogs;
+
+     angular.forEach($scope.model2, function (route) {
+      angular.forEach($scope.resData, function (item) {
+        if (route.routeId == item.routeId) {
+          route.total_distance = item.distance.distance;
+          route.total_time = item.time.duration;
+          
+          if(item.guard){
+            route.guard_constraint_failed=item.guard ? true :false;
+            route.guard_required=item.guard.guard_required;
+          }
+        }
+      })
+    })
+
+    $scope.saveRoutes();
+
+  }
+
+  $scope.returnVehicleHTML =function(response){
+    $scope.res=response.data.errLogs;
+
+    var html = '<div ng-repeat="item in res" ng-if="res.length">'+
+                '<div class="">'+
+                  '<div class="card-header">Trip_Id :{{item.tripId}}</div><hr>'+
+                  '<div class="card-body" style="min-height:auto !important;">'+
+                    '<div class="alert alert-danger" role="alert" ng-if="item.vehicle">'+
+                      '{{item.vehicle.reason}}'+
+                    '</div>'+
+                  '</div>'+
+                '</div>'+
+              '</div>'+
+              '<div ng-if="!res.length">Something Went Wrong!</div>';
+
+    return html;
+  }
+
+  $scope.returnHTML =function(response){
+    $scope.res=response.data.errLogs;
+
+    var html = '<div ng-repeat="item in res" ng-if="res.length">'+
+                '<div class="">'+
+                  '<div class="card-header">Trip_Id :{{item.tripId}}</div><hr>'+
+                  '<div class="card-body" style="min-height:auto !important;">'+
+                    '<div ng-if="item.guard.errors" ng-repeat="error in item.guard.errors">'+
+                      '<div class="alert alert-danger" role="alert">'+
+                        '{{error.reason}}'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="alert alert-danger" role="alert" ng-if="item.time">'+
+                        '{{item.time.reason}}'+
+                    '</div>'+
+                    '<div class="alert alert-danger" role="alert" ng-if="item.distance">'+
+                      '{{item.distance.reason}}'+
+                    '</div>'+
+                    '<div class="alert alert-danger" role="alert" ng-if="item.vehicle">'+
+                      '{{item.vehicle.reason}}'+
+                    '</div>'+
+                  '</div>'+
+                '</div>'+
+              '</div>'+
+              '<div ng-if="!res.length">Something Went Wrong!</div>';
+
+    return html;
+  }
+
+  $scope.checkDroppable = function(container,index,item) {
+      for(var key in container.employees) {
+        if(Object.keys(angular.copy(container.employees[key])).length<=1){
+            var target_index = key;
+        }
+      }
+
+      container.employees.splice(index,1,item);
+      angular.copy(container.employees).forEach(function(value, key) {
+          if(key!=target_index && angular.toJson(value)==angular.toJson(container.employees[target_index])){
+            container.employees.splice(key, 1);
+          }
+      });
+  }
+
+  function getRoutePostData(){
+    var changedRoutes = [];
+
+    angular.forEach($scope.routes.data.routes, function (route) {
+      angular.forEach($scope.routeChangedIds, function (routeId) {
+        if (route.routeId === routeId) {
+          changedRoutes.push(route);
+        }
+      })
+    })
+
+    var finalChangedRoutes = [];
+    angular.forEach(changedRoutes, function (route) {
+
+      if (route.guard_required==true) {
+        route.guard_required = "Y";
+      } else {
+        route.guard_required = "N";
+      }
+      var employee_nodes = [];
+      angular.forEach(route.employees, function (emp) {
+        if(emp.empId){
+          employee_nodes.push(emp.empId);
+        }
+      })
+      var data = {
+        "route_id": route.routeId,
+        "trip_id" :route.tripId,
+        "vehicle_category": route.vehicle_type,
+        "employee_nodes": employee_nodes,
+        "guard_required": route.guard_required
+      }
+      finalChangedRoutes.push(data);
+    })
+
+    var original_routes = [];
+    var originalChangedRoutes = [];
+
+    angular.forEach($scope.originalRoutes, function (route) {
+      angular.forEach($scope.routeChangedIds, function (routeId) {
+        if (route.routeId === routeId) {
+          originalChangedRoutes.push(route);
+        }
+      })
+    })
+
+    angular.forEach(originalChangedRoutes, function (originalRoute) {
+      if (originalRoute.guard_required==true) {
+        originalRoute.guard_required = "Y";
+      } else {
+        originalRoute.guard_required = "N";
+      }
+
+      var employee_nodes = [];
+      angular.forEach(originalRoute.employees_nodes_addresses, function (orgEmp) {
+        if(orgEmp.empId){
+          employee_nodes.push(orgEmp.empId);
+        }
+      })
+      var data = {
+        "route_id": originalRoute.routeId,
+        "vehicle_category": originalRoute.vehicle_type,
+        "employee_nodes": employee_nodes,
+        "guard_required": originalRoute.guard_required
+      }
+      original_routes.push(data);
+    })
+
+    if (finalChangedRoutes.length) {
+      let shift = JSON.parse($scope.selectedShift);
+      let postData = {
+        "site_id": parseInt($scope.siteId),
+        "shift_id": parseInt(shift.id),
+        "to_date": moment($scope.filterDate).format('YYYY-MM-DD'),
+        "shift_type": String(shift.trip_type),
+        "updated_routes": finalChangedRoutes,
+        "original_routes": original_routes
+      } 
+
+      return postData;
+     }else{
+      return postData = {
+        "site_id": "",
+        "shift_id": "",
+        "to_date": "",
+        "shift_type": "",
+        "updated_routes": ""
+      } 
+     }
+  }
+  
+ 
 
   $scope.dropVehicleCallback = function (container, index, item, external, type) {
-    console.log('modified route after drag', container);
+    
     var isAssign = true;
     if (isAssign) {
-      var postData = {
-        "vehicleId": item.vehicleId,
-        "routeId": container.routeId
-      };
-
-      RouteService.assignVehicle(postData, function (data) {
-        console.log("Vehicle Assign", data);
-        if (data['success']) {
-          isAssign = false;
-          // ToasterService.clearToast();
-          $scope.toggleView = true;
-          ToasterService.showSuccess('Success', data['msg']);
-        } else {
-          // ToasterService.clearToast();
-          $scope.toggleView = true;
-          ToasterService.showError('Error', data['msg']);
+      var postRouteData=getRoutePostData();
+    
+      RouteService.constraintCheck(postRouteData,function (response) {
+        if(response.success){
+          $scope.VehicleAssignCallback(item,container);
+          return item;
+        }else{
+          var htmlBody=$scope.returnVehicleHTML(response);
+          
+          $ngConfirm({
+            title: 'Constraint Failed!',
+            boxWidth: '40%',
+            useBootstrap: false,
+            content: htmlBody,
+            scope: $scope,
+            buttons: {
+                cancel: {
+                  text: 'Revert',
+                  btnClass: 'btn-blue',
+                  action: function (scope) {
+                  
+                  }
+                },
+                procced: {
+                    text: 'Proceed',
+                    btnClass: 'btn-orange',
+                    action: function(scope, button){
+                      scope.VehicleAssignCallback(item,container);
+                      return item;
+                    }
+                }
+            }
+          });
         }
-        $scope.resetRoute();
-      })
-      return item;
+      });
     }
-
   };
+
+  $scope.VehicleAssignCallback=function(item,container){
+    var postData = {
+      "vehicleId": item.vehicleId,
+      "routeId": container.routeId
+    };
+
+    RouteService.assignVehicle(postData, function (data) {
+      if (data['success']) {
+        isAssign = false;
+        // ToasterService.clearToast();
+        $scope.toggleView = true;
+        ToasterService.showSuccess('Success', data['msg']);
+      } else {
+        // ToasterService.clearToast();
+        $scope.toggleView = true;
+        ToasterService.showError('Error', data['msg']);
+      }
+      $scope.resetRoute();
+    })
+
+  }
 
   $scope.dropGuardCallback = function (container, index, item, external, type) {
     var isAssign = true;
@@ -937,14 +1150,16 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       var finalChangedRoutes = [];
       angular.forEach(changedRoutes, function (route) {
 
-        if (route.guard_required) {
+        if (route.guard_required==true) {
           route.guard_required = "Y";
         } else {
           route.guard_required = "N";
         }
         var employee_nodes = [];
         angular.forEach(route.employees, function (emp) {
-          employee_nodes.push(emp.empId);
+          if(emp.length){
+            employee_nodes.push(emp.empId);
+          }
         })
         var data = {
           "route_id": route.routeId,
@@ -962,8 +1177,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       };
 
       RouteService.assignGuards(postData, function (data) {
-        console.log("Guard Assign");
-
         $scope.resetRoute();
       })
 
@@ -1009,14 +1222,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       "shift_type": shift.trip_type,
       scheduledDate: moment($scope.filterDate).format('YYYY-MM-DD')
     }
-    // var postData = {
-    //   "siteId": 30,
-    //   "shiftId": 138,
-    //   "customerId": 1,
-    //   "shift_type": 1,
-    //   "scheduledDate": "2019-10-24"
-    // }
-    console.log('autoAllocate postData', postData)
+    
     AutoAllocationService.query(postData, function (data) {
       console.log('autoallocation response ', data);
       if (data['success']) {
@@ -1024,33 +1230,20 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         if ($scope.routes.data) {
           try {
             $scope.toggleView = true;
-            console.log('In try loop');
             ToasterService.showToast('info', 'Response Received', $scope.routes.data.routes.length + ' Routes found for this shift')
             $scope.originalRoutes = angular.copy($scope.routes.data.routes);
             $scope.stats = $scope.routes.data.tats[0];
-            console.log($scope.model2)
           } catch (err) {
-            console.log('In catch loop');
             $scope.routes = RouteStaticResponse.emptyResponse;
             $scope.routes.data.routes = [];
             $scope.toggleView = true;
             ToasterService.showToast('info', 'Response Received', 'No Routes found for this shift')
-            console.log('error', err)
           }
           $scope.showRouteData()
         }
       } else {
-        console.log('data: ', data['message'])
         $scope.toggleView = true;
-        // ToasterService.showError('Error', data.message);
-        // setTimeout(()=>{
-        //   ToasterService.clearToast();
-        // },20)
       }
-
-      // $scope.resetRoute();
-
-
     }, function (err) {
       $scope.toggleView = true;
       ToasterService.showError('Error', 'Something went wrong..');
@@ -1131,8 +1324,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
 
     if ($scope.isSiteStatus == 1) {
-      console.log('latLng 1', site.latitude, waypts);
-
       directionsService.route({
         origin: waypts[0].location,
         destination: new google.maps.LatLng(site.latitude, site.longitude),
@@ -1197,6 +1388,21 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // $scope.getCurrentVehicleLocation();
   }
 
+  $scope.selectAllRoute =function(models){
+    if($scope.allRouteSelected){
+      angular.forEach(models, function (containers) {
+        angular.forEach(containers, function (container) {
+          container.route_selected =true;
+        })
+      })
+    }else{
+      angular.forEach(models, function (containers) {
+        angular.forEach(containers, function (container) {
+          container.route_selected =false;
+        })
+      })
+    }
+  }
  
   $scope.selectRoute = (container) => {
     if (!container.route_selected) {
@@ -1204,7 +1410,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       return;
     }
     
-    $scope.finalizeArray.push({ routeId: container.routeId });
+    // $scope.finalizeArray.push({ routeId: container.routeId });
 
     var waypts = [];
     for (let item of container.employees) {
