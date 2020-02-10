@@ -2,7 +2,7 @@
 
 
 angular.module('app').controller('reportCtrl', function ($scope,RosterService, RouteService, RouteUpdateService,$http,  
-    AutoAllocationService,BASE_URL_API_8005,
+    AutoAllocationService,BASE_URL_API_8005, BASE_URL_8002,
     FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService) {
         // $scope.baseUrl3 = BASE_URL_API_8005;
 
@@ -161,27 +161,48 @@ angular.module('app').controller('reportCtrl', function ($scope,RosterService, R
         }
 
         $scope.checkIsDownloadable = () => {
-            $http({
-                method: 'GET',
-                url: 'http://api.mllvaayu.com/isReportsDownloadable/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate
-              }).then(function successCallback(res) {
-                  console.log('response: ', res)
-                  if (res['data'].success == false) {
-                    ToasterService.clearToast();
-                    $scope.toggleView = true;
-                    ToasterService.showError('Error', res.data.message)
-                } else {
+            // $http({
+            //     method: 'GET',
+            //     url: 'http://qaapi.mllvaayu.com/isReportsDownloadable/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate
+            //   }).then(function successCallback(res) {
+            //       console.log('response: ', res)
+            //       if (res['data'].success == false) {
+            //         ToasterService.clearToast();
+            //         $scope.toggleView = true;
+            //         ToasterService.showError('Error', res.data.message)
+            //     } else {
+            //         $scope.downloadReport();
+            //         $scope.toggleView = true;
+            //         ToasterService.showSuccess('Success', res.data.message)
+            //       }
+            //     }, function errorCallback(err) {
+            //       console.log('error: ', err)
+            //     });
+
+
+            RosterService.isExcelDownloadable({siteId:$scope.siteId, fromDate: $scope.fromDate, toDate: $scope.toDate},(res, err) => {
+                if(res){
+                    console.log('response: ', res)
+                    if (res['data'].success == false) {
+                        ToasterService.clearToast();
+                        $scope.toggleView = true;
+                        ToasterService.showError('Error', res.data.message)
+                    } else {
+                        $scope.downloadReport();
+                        $scope.toggleView = true;
+                        ToasterService.showSuccess('Success', res.data.message)
+                    } 
+                } else{
                     $scope.downloadReport();
                     $scope.toggleView = true;
                     ToasterService.showSuccess('Success', res.data.message)
-                  }
-                }, function errorCallback(err) {
-                  console.log('error: ', err)
-                });
+                }
+            })
         }
 
         $scope.downloadReport = function(){
-            var url = 'http://api.mllvaayu.com:8005/api/v1/' + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
+            // var url = 'http://qaapi.mllvaayu.com:8005/api/v1/' + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
+            url = BASE_URL_8002 + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
             if($scope.reportId && $scope.siteId && $scope.fromDate && $scope.toDate ){
                 $scope.downloadSample(url);
             }

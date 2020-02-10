@@ -1,5 +1,5 @@
 
-angular.module('app').factory('RosterService', ['$resource', 'BASE_URL_8002','BASE_URL_API_8005','BASE_URL','BASE_URL_API_8002',
+angular.module('app').factory('RosterService', ['$resource', 'BASE_URL_8002','BASE_URL','BASE_URL_API_8002', 'BASE_URL_API_8005',
 function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_8005) {
   return $resource(BASE_URL_8002 + 'roasterlist', {}, {
     // query: { method: "GET", isArray: true },
@@ -40,8 +40,12 @@ function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_800
       method: "POST"
     },
     exportReport: {
-      url: BASE_URL_API_8005 + '/tripReport/ksjdfhsi5735936',
+      url: BASE_URL_API_8005 + 'tripReport/ksjdfhsi5735936',
       method: "POST"
+    },
+    isExcelDownloadable: {
+      url: BASE_URL_8002 + 'isReportsDownloadable/ksjdfhsi5735936/:siteId/:fromDate/:toDate',
+      method: 'GET'
     },
     copyRoutes: {
       url: BASE_URL_8002 + 'copyexistingroutes',
