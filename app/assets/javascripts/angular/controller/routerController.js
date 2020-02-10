@@ -830,10 +830,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       $scope.isDisabled = false;
     }
     $scope.newModel=angular.copy($scope.model2)
-    if (type == 'container' && !external) {
-      console.log('Container being dragged contains ' + callback() + ' items');
-    }
-    return index < 10; // Disallow dropping in the third row.
+ 
+    return index < 100000000; 
   };
 
 
@@ -843,20 +841,23 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       $scope.isDisabled = false;
     }
 
+    // $scope.checkDroppable(container,index,item);
     return item;
   }
 
-  $scope.dropCallback = async function (container, index, item, external, type) {
+  $scope.dropCallback = function (container, index, item, external, type) {
+      // if ($scope.routeChangedIds.indexOf(container.routeId) === -1) {
+      //   $scope.routeChangedIds.push(container.routeId)
+      //   $scope.isDisabled = false;
+      // }
+
       if(container.subtype=="unallocated"){
           $scope.saveRoutes();
       }else{
         var postData=getRoutePostData();
-      
         RouteService.constraintCheck(postData,function (response) {
           if(response.success){
-            // $scope.checkDroppable(container,index,item);
             $scope.updateRouteConstraint(response,postData);
-            // return item;
           }else{
             var htmlBody=$scope.returnHTML(response);
             
@@ -866,7 +867,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
               useBootstrap: false,
               content: htmlBody,
               scope: $scope,
-             
               buttons: {
                   cancel: {
                     text: 'Revert',
@@ -987,7 +987,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     var finalChangedRoutes = [];
     angular.forEach(changedRoutes, function (route) {
-
       if (route.guard_required==true) {
         route.guard_required = "Y";
       } else {
@@ -999,13 +998,21 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           employee_nodes.push(emp.empId);
         }
       })
-      var data = {
-        "route_id": route.routeId,
-        "trip_id" :route.tripId,
-        "vehicle_category": route.vehicle_type,
-        "employee_nodes": employee_nodes,
-        "guard_required": route.guard_required
+      if(route.routeId==0){
+        var data = {
+          "route_id": route.routeId,
+          "employee_nodes": employee_nodes,
+        }
+      }else{
+        var data = {
+          "route_id": route.routeId,
+          "trip_id" :route.tripId,
+          "vehicle_category": route.vehicle_type,
+          "employee_nodes": employee_nodes,
+          "guard_required": route.guard_required
+        }
       }
+     
       finalChangedRoutes.push(data);
     })
 
@@ -1033,12 +1040,20 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           employee_nodes.push(orgEmp.empId);
         }
       })
-      var data = {
-        "route_id": originalRoute.routeId,
-        "vehicle_category": originalRoute.vehicle_type,
-        "employee_nodes": employee_nodes,
-        "guard_required": originalRoute.guard_required
+      if(originalRoute.routeId==0){
+        var data = {
+          "route_id": originalRoute.routeId,
+          "employee_nodes": employee_nodes,
+        }
+      }else{
+        var data = {
+          "route_id": originalRoute.routeId,
+          "vehicle_category": originalRoute.vehicle_type,
+          "employee_nodes": employee_nodes,
+          "guard_required": originalRoute.guard_required
+        }
       }
+     
       original_routes.push(data);
     })
 

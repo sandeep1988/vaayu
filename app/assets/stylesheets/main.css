@@ -66,16 +66,16 @@
   .bgRed{
     color:red !important;
   }
-  .temporaryRoute {
+  /* .temporaryRoute {
     position: fixed;
     top: 20%;
     right: -10px;
     width: 258px !important;
     z-index: 1;
-  }
+  } */
 
   .temporaryRoute .employee-cluster-panel-heading-meta , .temporaryRoute .vayau-panel-footer{
-    display: none;
+    display: none !important;
   }
 
   .temporaryRoute .employee-cluster-panel-body {
