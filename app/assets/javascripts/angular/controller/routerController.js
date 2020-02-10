@@ -431,7 +431,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         $scope.toggleView = true;
         ToasterService.showSuccess('Success', res['message']);
       } else {
-        ToasterService.clearToast();
+        // ToasterService.clearToast();
         $scope.toggleView = true;
         ToasterService.showError('Error', res['message']);
         $scope.resetRoute();
