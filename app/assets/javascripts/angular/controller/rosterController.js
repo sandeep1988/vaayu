@@ -68,6 +68,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     RosterService.getAllSiteList(function (data) {
       $scope.siteList = data.data.list;
       $scope.selectedSite = $scope.siteList[0];
+      $scope.selectedSiteId = $scope.siteList[0].id;
+      console.log('data check', $scope.selectedSiteId)
       let postData = {
         "site_id": $scope.siteList[0].id,
         "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
@@ -82,6 +84,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.updateFilters = function () { 
+    
     let postData = {
       "site_id": $scope.selectedSite.id,
       "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
@@ -432,8 +435,8 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
 $scope.onSubmit = () => {
   if($scope.toDate && $scope.toCopyDate){
-    
-    let postData=  {
+
+    let postData =  {
         "siteId": String($scope.selectedSiteId),
         "shiftId": String($scope.rosterData.id),
         "tripType": String($scope.rosterData.trip_type),
