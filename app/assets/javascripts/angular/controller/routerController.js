@@ -853,11 +853,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     return item;
   }
 
-  $scope.dropCallback = function (container, index, item, external, type) {
-      // if ($scope.routeChangedIds.indexOf(container.routeId) === -1) {
-      //   $scope.routeChangedIds.push(container.routeId)
-      //   $scope.isDisabled = false;
-      // }
+
+  $scope.dropCallback = function (container, index, item, external, type,element) {
 
       if(container.subtype=="unallocated"){
           $scope.saveRoutes();

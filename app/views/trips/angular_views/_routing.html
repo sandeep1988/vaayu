@@ -146,7 +146,7 @@
             <hr class="hrLine">
         </div>
 
-        <div class="pl-0" ng-class="isShowMap ? 'col-md-8' : 'col-md-12'" style="padding-right: 0;">
+        <div class="pl-0" ng-class="isShowMap ? 'col-md-8' : 'col-md-12 pright-0'">
           <div class="tab-content-panel" style="padding-top: 0;">
             <div>
               <div class="card-panel row">
@@ -154,7 +154,7 @@
                   <div ng-repeat="containers in model2">
                     <div class="vaayu-dropzone">
                       <div class="row">
-                         <div class="pad-right-0" ng-class="isShowMap ? 'col-md-9' : 'col-md-10'" style="display: flex;">
+                         <div class="pad-right-0" ng-class="isShowMap ? 'col-md-9' : 'col-md-10'">
                             <div ng-repeat="container in containers" no-drag
                               class="employee-cluster-panel fixed-width" ng-if="container.subtype!='unallocated'">
                               <div class="employee-cluster-panel-heading"
@@ -323,13 +323,13 @@
                                 </div>
                             </div> 
                         </div>
-                        <div class="" ng-class="isShowMap ? 'col-md-3' : 'col-md-2'" >
+                        <div class="pad-right-0" ng-class="isShowMap ? 'col-md-3' : 'col-md-2'" >
                           <div ng-repeat="container in containers" no-drag
                           class="employee-cluster-panel" ng-class="{'temporaryRoute':container.subtype=='unallocated'}" ng-if="container.subtype=='unallocated'">
                         <div class="employee-cluster-panel-heading"
                           ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
                           <div class="title_container">
-                            <span class="title_text">TP{{container.tripId+' | '+container.vehicle_type}}  </span>
+                            <span class="title_text" >TP{{container.tripId+' | '+container.vehicle_type}}  </span>
                           </div>
                         </div>
 
@@ -357,7 +357,6 @@
                             </li>
                           </ul>
                         </div>
-                      
                           </div>
                         </div>
                       </div>
