@@ -49,7 +49,17 @@ class TripChangeRequest < ApplicationRecord
             Notification.create!(:trip => employee_trip.trip, :employee => employee_trip.employee, :message => 'change_request_approved', :new_notification => true, :resolved_status => true, :reporter => "Vaayu System").send_notifications    
           end          
         else
-          employee_trip.update(:date => self.new_date)
+          time_to_change = (self.new_date + 5.hours + 30.minutes).strftime("%H:%M")
+          if employee_trip.trip_type == "check_out"
+            employee.shifts.each do |shift|
+              @shift_to_change = shift.id if shift.end_time == time_to_change
+            end  
+          else 
+            employee.shifts.each do |shift|
+              @shift_to_change = shift.id if shift.start_time == time_to_change
+            end
+          end    
+          employee_trip.update(:date => self.new_date, shift_id: @shift_to_change)
         end
       when :cancel
         # if employee_trip.trip.present? && employee_trip.trip.passengers == 1

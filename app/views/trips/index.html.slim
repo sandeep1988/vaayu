@@ -25,6 +25,10 @@
             a[href="#trips-notifications" data-toggle="tab"]
               span.hidden.center[style="margin-bottom: 2px;" class="badge badge-danger" id="badge-unresolved-notification"]
               |  Status
+          li
+            a[href="#reports" data-toggle="tab"]
+              span.hidden.center[style="margin-bottom: 2px;" class="badge badge-danger" id="badge-unresolved-notification"]
+              |  Reports
               sup#new-notification.hidden
                 | *New      
           .nav-actions
@@ -39,6 +43,7 @@
         = render 'trips/employer/adhoc_trips'
       - if current_user.employer? || current_user.transport_desk_manager? || current_user.employer_shift_manager?
         = render 'trips/trip_board'
+        = render 'trips/reports'
         = render 'trips/employer/trip_requests'
         = render 'trips/operator/assigned_trips'
         = render 'trips/trips_notifications'
@@ -47,11 +52,13 @@
 
       - if current_user.operator? || current_user.operator_shift_manager?
         = render 'trips/trip_board'
+        = render 'trips/reports'
         = render 'trips/operator/assigned_trips'
         = render 'trips/trips_notifications'
 
       - if current_user
         = render 'trips/trip_board'
+        = render 'trips/reports'
         = render 'trips/employer/trip_requests'
         = render 'trips/operator/assigned_trips'
         = render 'trips/trips_notifications'
