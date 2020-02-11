@@ -62,10 +62,10 @@ $(function () {
                         data: null,
                         render: function (data){
                             if(data.trip_type == 'Check in'){
-                                return '<div>' + 'Pick Up' + '</div>'
+                                return '<div>' + 'Login' + '</div>'
                             }
                             else if(data.trip_type == 'Check out'){
-                                return '<div>' + 'Drop Off' + '</div>'                                
+                                return '<div>' + 'Log out' + '</div>'                                
                             }
                         }
                     },

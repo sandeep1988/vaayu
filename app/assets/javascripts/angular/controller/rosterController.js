@@ -249,7 +249,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     
       var link = document.createElement('a');
       link.href = url;
-      link.target = "_self";
+      link.target = "_blank";
       
   
       $http({
@@ -317,6 +317,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
 
   $scope.clear = function () {
     $scope.filterDate = null;
+    $scope.toCopyDate = null;
   };
 
   // Disable weekend selection
@@ -333,6 +334,11 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     $event.preventDefault();
     $event.stopPropagation();
     $scope.opened = true;
+  };
+  $scope.toCopyDateOpen = function ($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    $scope.toCopyDateOpened = true;
   };
   //date picker function
 

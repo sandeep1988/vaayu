@@ -253,7 +253,7 @@ describe EmployeeTrip, type: :model do
         expect(employee_trip.approximate_drop_off_date).to be > Time.now
       end
 
-      it 'should be later that pick up time', pending_refactoring: true do
+      it 'should be later that Login time', pending_refactoring: true do
         expect(employee_trip.approximate_drop_off_date).to be > employee_trip.approximate_driver_arrive_date
       end
 

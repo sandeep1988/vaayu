@@ -45,7 +45,7 @@ class EmployeeTrip < ApplicationRecord
 
   attr_accessor :check_in, :check_out
 
-  # An address where car should pick up him
+  # An address where car should Login him
   def employee_address
     employee.home_address
   end
@@ -188,17 +188,17 @@ class EmployeeTrip < ApplicationRecord
     trip_route.approximate_driver_arrive_date if trip_route.present?
   end
 
-  # Check when driver will drop off an employee
+  # Check when driver will Log out an employee
   def approximate_drop_off_date
     trip_route.approximate_drop_off_date if trip_route.present?
   end
 
-  # Display eta (pick up of drop off time depends on trip type)
+  # Display eta (Login of Log out time depends on trip type)
   def eta
     trip_route.eta if trip_route.present?
   end
 
-  # Display eta (pick up of drop off time depends on trip type)
+  # Display eta (Login of Log out time depends on trip type)
   def planned_eta
     trip_route.planned_eta if trip_route.present?
   end  
