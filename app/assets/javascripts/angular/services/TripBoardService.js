@@ -1,6 +1,6 @@
 
-angular.module('app').factory('TripboardService', ['$resource', 'BASE_URL_8002', 'BASE_URL',
-  function ($resource, BASE_URL_8002, BASE_URL) {
+angular.module('app').factory('TripboardService', ['$resource', 'BASE_URL_8002', 'BASE_URL', 'BASE_URL_API_8004',
+  function ($resource, BASE_URL_8002, BASE_URL, BASE_URL_API_8004) {
     return $resource(BASE_URL_8002 + 'tripBoardList', {}, {
       getAllTrips: { method: "POST" },
       getAllSiteList: {
@@ -10,6 +10,7 @@ angular.module('app').factory('TripboardService', ['$resource', 'BASE_URL_8002',
       savePanicResponse: { url: BASE_URL_8002 + 'save-panic-response', method: 'POST' },
       callOperator: { url: BASE_URL_8002 + 'call-generate-operator', method: 'POST' },
       addRemarkInTripForDriverPanic: { url: BASE_URL_8002 + 'addRemarkInTripForDriverPanic', method: 'POST' },
+      forceCompleteTrip: {url: BASE_URL_API_8004+ 'completeThePendingTrip', method: 'POST'}
     });
   }]);
 
