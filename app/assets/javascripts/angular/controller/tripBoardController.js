@@ -458,6 +458,13 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
   $scope.showModal = (row, checkStatus) => {
     console.log('row', row);
+    $scope.sendCompleteParams = {
+      trip_status: row['actual_status'],
+      trip_id: row['trip_id']
+    }
+    if (row['actual_status'] == 'assign_requested' || row['actual_status'] == 'assign_request_expired' || row['actual_status'] == 'assign_request_declined' || row['actual_status'] == 'assigned' || row['actual_status'] == 'active') {
+      $scope.showCompleteButton = true;
+    }
     $scope.selectedTripId = row.trip_id
 
     $scope.getVehicleListForTrip(row);
