@@ -668,7 +668,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.showRouteData = () => {
     // $scope.toggleView = false;
-
+    $scope.isLoader=false;
     // ToasterService.clearToast();
     angular.forEach($scope.routes.data.routes, function (route, index, routeArray) {
       route.allowed = "all";
@@ -846,9 +846,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.dropCallback = function (container, index, item, external, type,element) {
 
-      if(container.subtype=="unallocated"){
-          $scope.saveRoutes();
-      }else{
+      // if(container.subtype!="unallocated"){
+      //     $scope.saveRoutes();
+      // }else{
         var postData=getRoutePostData();
         RouteService.constraintCheck(postData,function (response) {
           if(response.success){
@@ -883,7 +883,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
             });
           }
         });
-      }
+      // }
   };
 
   $scope.updateRouteConstraint = function(response,postData){
@@ -895,10 +895,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           route.total_distance = item.distance.distance;
           route.total_time = item.time.duration;
           
-          if(item.guard){
+          // if(item.guard){
             route.guard_constraint_failed=item.guard ? true :false;
             route.guard_required=item.guard.guard_required;
-          }
+          // }
         }
       })
     })
