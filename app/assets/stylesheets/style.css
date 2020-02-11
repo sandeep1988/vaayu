@@ -37,6 +37,17 @@
   display: inline-block;
 }
 
+.temporaryRoute .card-panel .employee-list-group {
+  background: #fff !important;
+}
+
+.temporaryRoute .employee-cluster-panel-body .employee-list-group {
+  background: #fff !important;
+}
+
+.pad-right-0 {
+  padding-right: 0 !important;
+}
 .route-button:hover{
   color: #fff !important;
 }
@@ -196,16 +207,26 @@
   z-index: 2;
 }
 
+.pright-0 {
+  padding-right: 0 !important;
+}
+
+.temporaryRoute {
+  width:100%;
+}
+
 .vayau-routing .employee-cluster-panel {
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   background-color: #ffffff;
-  max-width: 260px;
   display: inline-block;
-  /* background-color: #eee; */
   margin-bottom: 10px;
   margin-right: 10px;
   height: max-content;
+}
+
+.fixed-width {
+  min-width: 190px !important;
 }
 
 .vayau-routing .employee-cluster-panel .employee-cluster-panel-heading .travel-group-name {
@@ -891,9 +912,26 @@
 
 .custom-panel-map {
   width:100% !important;
-  margin-top: 15px;
+  margin-top: 0px;
 }
 
+.margin-right {
+  margin-right:2px;
+}
+.custom-panel-map .travel-group-name{
+  padding: 2px 15px;
+  font-weight: bold;
+}
+
+.custom-panel-map .employee-cluster-panel-heading {
+  height: 41px;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
+  background-color: #394266;
+  display: flex;
+  align-items: center;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
 .custom-panel-map #map { 
   height: 400px;
   border-radius: 0;

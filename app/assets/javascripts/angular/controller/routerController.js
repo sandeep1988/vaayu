@@ -834,6 +834,14 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     return index < 100000000; 
   };
 
+  $scope.isShowMap =false;
+  $scope.toggleMap =function() {
+    if($scope.isShowMap){
+      $scope.isShowMap=false;
+    }else{
+      $scope.isShowMap=true;
+    }
+  }
 
   $scope.dropItemCallback = function (container, index, item, external, type) {
     if ($scope.routeChangedIds.indexOf(container.routeId) === -1) {
@@ -998,19 +1006,13 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           employee_nodes.push(emp.empId);
         }
       })
-      if(route.routeId==0){
-        var data = {
-          "route_id": route.routeId,
-          "employee_nodes": employee_nodes,
-        }
-      }else{
-        var data = {
-          "route_id": route.routeId,
-          "trip_id" :route.tripId,
-          "vehicle_category": route.vehicle_type,
-          "employee_nodes": employee_nodes,
-          "guard_required": route.guard_required
-        }
+      
+      var data = {
+        "route_id": route.routeId,
+        "trip_id" :route.tripId,
+        "vehicle_category": route.vehicle_type,
+        "employee_nodes": employee_nodes,
+        "guard_required": route.guard_required
       }
      
       finalChangedRoutes.push(data);
@@ -1040,18 +1042,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           employee_nodes.push(orgEmp.empId);
         }
       })
-      if(originalRoute.routeId==0){
-        var data = {
-          "route_id": originalRoute.routeId,
-          "employee_nodes": employee_nodes,
-        }
-      }else{
-        var data = {
-          "route_id": originalRoute.routeId,
-          "vehicle_category": originalRoute.vehicle_type,
-          "employee_nodes": employee_nodes,
-          "guard_required": originalRoute.guard_required
-        }
+     
+      var data = {
+        "route_id": originalRoute.routeId,
+        "vehicle_category": originalRoute.vehicle_type,
+        "employee_nodes": employee_nodes,
+        "guard_required": originalRoute.guard_required
       }
      
       original_routes.push(data);
