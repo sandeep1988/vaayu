@@ -51,6 +51,10 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       formatYear: 'yy',
       startingDay: 1
     };
+  $scope.copyDateOptions = {
+    formatYear: 'yy',
+    startingDay: 1
+  }
 
     $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
     $scope.format = $scope.formats[0];
@@ -340,6 +344,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     $scope.opened = true;
   };
   $scope.toCopyDateOpen = function ($event) {
+    console.log('button clicked');
     $event.preventDefault();
     $event.stopPropagation();
     $scope.toCopyDateOpened = true;
@@ -431,7 +436,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
         $scope.filterDate = moment(date).format('YYYY-MM-DD')
     } else if(value === 'copy' ){
       $scope.toCopyDate = moment(date).format('YYYY-MM-DD');          
-}
+    }
 
 $scope.onSubmit = () => {
   if($scope.toDate && $scope.toCopyDate){
@@ -500,6 +505,7 @@ $scope.onSubmit = () => {
 
 
   }
+  
 
   $scope.plusVehicle = function (key) {
     $scope.currentRoster.vehicle[key] = parseInt($scope.currentRoster.vehicle[key]) + 1;

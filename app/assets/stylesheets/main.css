@@ -29,7 +29,10 @@
   padding-top: 0px;
 }
 
-
+.vis
+{
+  display: block !important;
+}
 
 /* Modal Content/Box */
 .vaayu-modal-content {
