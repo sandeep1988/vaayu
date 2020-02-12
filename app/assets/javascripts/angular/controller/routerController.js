@@ -420,11 +420,22 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         $scope.toggleView = true;
         ToasterService.showSuccess('Success', res['message']);
       } else {
-        ToasterService.clearToast();
-        $scope.toggleView = true;
-        ToasterService.showError('Error', res['message']);
-        $scope.resetRoute();
-        return;
+        $ngConfirm({
+          title: 'Update Routes Failed!',
+          boxWidth: '40%',
+          useBootstrap: false,
+          content: res['message'],
+          scope: $scope,
+          buttons: {
+              OK: {
+                text: 'OK',
+                btnClass: 'btn-blue',
+                action: function (scope) {
+                  scope.resetRoute();
+                }
+              }
+          }
+        });
       }
     })
   }
@@ -846,13 +857,13 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.dropCallback = function (container, index, item, external, type,element) {
 
-      // if(container.subtype!="unallocated"){
-      //     $scope.saveRoutes();
-      // }else{
         var postData=getRoutePostData();
+
         RouteService.constraintCheck(postData,function (response) {
           if(response.success){
-            $scope.updateRouteConstraint(response,postData);
+            alert("Success")
+            // $scope.updateRouteConstraint(response,postData);
+            $scope.saveRoutes();
           }else{
             var htmlBody=$scope.returnHTML(response);
             
@@ -876,6 +887,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
                       text: 'Proceed',
                       btnClass: 'btn-orange',
                       action: function(scope, button){
+                        alert("procesd")
                         scope.updateRouteConstraint(response,postData);
                       }
                   }
@@ -889,17 +901,23 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.updateRouteConstraint = function(response,postData){
      $scope.resData=response.data.errLogs;
 
-     angular.forEach($scope.model2, function (route) {
-      angular.forEach($scope.resData, function (item) {
-        if (route.routeId == item.routeId) {
-          route.total_distance = item.distance.distance;
-          route.total_time = item.time.duration;
-          
-          // if(item.guard){
-            route.guard_constraint_failed=item.guard ? true :false;
-            route.guard_required=item.guard.guard_required;
-          // }
-        }
+     angular.forEach($scope.model2, function (container) {
+       angular.forEach(container, function (route) {
+        angular.forEach($scope.resData, function (item) {
+          if (route.routeId == item.routeId) {
+            if(item.distance){
+              route.total_distance = item.distance.distance;
+            }
+            if(item.time){
+              route.total_time = item.time.duration;
+            }
+            
+            if(item.guard){
+              route.guard_constraint_failed=item.guard ? true :false;
+              route.guard_required=item.guard.guard_required;
+            }
+          }
+        })
       })
     })
 
