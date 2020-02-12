@@ -204,7 +204,7 @@
                                     dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
 
                                     <div class="inner-text" title="{{item.empName}} -{{item.area}}">
-                                      <span class="empId">{{item.empId}}</span> - <span class="text-muted">{{item.area}}</span>
+                                      <span class="empId">{{item.displayEmpId}}</span> - <span class="text-muted">{{item.area}}</span>
                                     </div>
                                   </li>
                                 
@@ -350,7 +350,7 @@
                               dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
 
                               <div class="inner-text" title="{{item.empName}} -{{item.area}}">
-                                <span class="empId">{{item.empId}}</span> - <span class="text-muted">{{item.area}}</span>
+                                <span class="empId">{{item.displayEmpId}}</span> - <span class="text-muted">{{item.area}}</span>
                               </div>
                             </li>
                             
