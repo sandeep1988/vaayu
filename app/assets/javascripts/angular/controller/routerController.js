@@ -686,7 +686,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
       if (route.guard_required == "Y") {
         route.guard_required = true;
-      } else {
+      } 
+
+      if (route.guard_required == "N") {
         route.guard_required = false;
       }
 
@@ -821,6 +823,46 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       $scope.routeChangedIds.push(container.routeId)
       $scope.isDisabled = false;
     }
+    if(container.guard_required){
+      container.guard_required=true;
+    }else{
+      container.guard_required=false;
+    }
+ 
+        var postData=getRoutePostData();
+        RouteService.constraintCheck(postData,function (response) {
+          if(response.success){
+            $scope.saveRoutes();
+          }else{
+            var htmlBody=$scope.returnHTML(response);
+            
+            $ngConfirm({
+              title: 'Constraint Failed!',
+              boxWidth: '40%',
+              useBootstrap: false,
+              content: htmlBody,
+              scope: $scope,
+              buttons: {
+                  cancel: {
+                    text: 'Revert',
+                    btnClass: 'btn-blue',
+                    action: function (scope) {
+                      scope.model2=scope.newModel;
+                      $ngConfirm("Reverted successfully")
+                      // return false;
+                    }
+                  },
+                  procced: {
+                      text: 'Proceed',
+                      btnClass: 'btn-orange',
+                      action: function(scope, button){
+                        scope.updateRouteConstraint(response,postData);
+                      }
+                  }
+              }
+            });
+          }
+        });
   };
 
 
@@ -856,46 +898,42 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
 
   $scope.dropCallback = function (container, index, item, external, type,element) {
+      var postData=getRoutePostData();
 
-        var postData=getRoutePostData();
-
-        RouteService.constraintCheck(postData,function (response) {
-          if(response.success){
-            alert("Success")
-            // $scope.updateRouteConstraint(response,postData);
-            $scope.saveRoutes();
-          }else{
-            var htmlBody=$scope.returnHTML(response);
-            
-            $ngConfirm({
-              title: 'Constraint Failed!',
-              boxWidth: '40%',
-              useBootstrap: false,
-              content: htmlBody,
-              scope: $scope,
-              buttons: {
-                  cancel: {
-                    text: 'Revert',
-                    btnClass: 'btn-blue',
-                    action: function (scope) {
-                      scope.model2=scope.newModel;
-                      $ngConfirm("Reverted successfully")
-                      // return false;
-                    }
-                  },
-                  procced: {
-                      text: 'Proceed',
-                      btnClass: 'btn-orange',
-                      action: function(scope, button){
-                        alert("procesd")
-                        scope.updateRouteConstraint(response,postData);
-                      }
+      RouteService.constraintCheck(postData,function (response) {
+        if(response.success==true){
+          // $scope.updateRouteConstraint(response,postData);
+          $scope.saveRoutes();
+        }else{
+          var htmlBody=$scope.returnHTML(response);
+          
+          $ngConfirm({
+            title: 'Constraint Failed!',
+            boxWidth: '40%',
+            useBootstrap: false,
+            content: htmlBody,
+            scope: $scope,
+            buttons: {
+                cancel: {
+                  text: 'Revert',
+                  btnClass: 'btn-blue',
+                  action: function (scope) {
+                    scope.model2=scope.newModel;
+                    $ngConfirm("Reverted successfully")
+                    // return false;
                   }
-              }
-            });
-          }
-        });
-      // }
+                },
+                procced: {
+                    text: 'Proceed',
+                    btnClass: 'btn-orange',
+                    action: function(scope, button){
+                      scope.updateRouteConstraint(response,postData);
+                    }
+                }
+            }
+          });
+        }
+      });
   };
 
   $scope.updateRouteConstraint = function(response,postData){
@@ -1002,7 +1040,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     angular.forEach(changedRoutes, function (route) {
       if (route.guard_required==true) {
         route.guard_required = "Y";
-      } else {
+      }
+      if (route.guard_required==false) {
         route.guard_required = "N";
       }
       var employee_nodes = [];
@@ -1037,7 +1076,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     angular.forEach(originalChangedRoutes, function (originalRoute) {
       if (originalRoute.guard_required==true) {
         originalRoute.guard_required = "Y";
-      } else {
+      }  
+      if (originalRoute.guard_required==false) {
         originalRoute.guard_required = "N";
       }
 
@@ -1047,7 +1087,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           employee_nodes.push(orgEmp.empId);
         }
       })
-     
+      
       var data = {
         "route_id": originalRoute.routeId,
         "vehicle_category": originalRoute.vehicle_type,
@@ -1168,7 +1208,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
         if (route.guard_required==true) {
           route.guard_required = "Y";
-        } else {
+        } 
+        
+        if (originalRoute.guard_required==false) {
           route.guard_required = "N";
         }
         var employee_nodes = [];
