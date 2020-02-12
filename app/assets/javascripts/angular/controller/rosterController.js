@@ -453,6 +453,7 @@ $scope.onSubmit = () => {
         $scope.closeAll();
         $scope.toggleView = true;
         ToasterService.showSuccess('Success', res.message);
+        $scope.updateFilters()
       }, function(err){
         $scope.closeAll();
         $scope.toggleView = true;
@@ -484,6 +485,7 @@ $scope.onSubmit = () => {
 
   $scope.onFreshRoutes = () => {
     $scope.generateRoutes($scope.rosterData)
+    $scope.updateFilters();
     $scope.closeAll();
   }
 
