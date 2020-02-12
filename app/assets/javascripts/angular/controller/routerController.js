@@ -823,11 +823,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       $scope.routeChangedIds.push(container.routeId)
       $scope.isDisabled = false;
     }
-    if(container.guard_required){
-      container.guard_required=true;
-    }else{
-      container.guard_required=false;
-    }
+      if(container.guard_required){
+        container.guard_required=true;
+      }else{
+        container.guard_required=false;
+      }
  
         var postData=getRoutePostData();
         RouteService.constraintCheck(postData,function (response) {
@@ -847,9 +847,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
                     text: 'Revert',
                     btnClass: 'btn-blue',
                     action: function (scope) {
-                      scope.model2=scope.newModel;
-                      $ngConfirm("Reverted successfully")
-                      // return false;
+                      scope.resetRoute();
                     }
                   },
                   procced: {
@@ -1466,7 +1464,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
  
   $scope.selectRoute = (container) => {
     if (!container.route_selected) {
-      console.log("routes un checked");
       return;
     }
     
