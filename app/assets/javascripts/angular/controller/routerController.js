@@ -16,7 +16,6 @@ angular.module('app')
     };
   });
 
-
 app.directive('focusMe', function ($timeout) {
   return {
     link: function (scope, ele, attrs) {

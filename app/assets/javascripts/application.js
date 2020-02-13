@@ -90,6 +90,9 @@
 //= require angular/rzslider
 //= require angular/angularjs-dropdown-multiselect
 //= require angular/angular-confirm.min.js
+//= require angular/mesonary-imageload.js
+//= require angular/mesonary.js
+//= require angular/angular-mesonary.js
 //= require angular/config
 
 //= require_tree ./angular

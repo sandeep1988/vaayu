@@ -148,228 +148,220 @@
             <hr class="hrLine">
         </div>
 
-        <div class="pl-0" ng-class="isShowMap ? 'col-md-8' : 'col-md-12 pright-0'">
-          <div class="tab-content-panel" style="padding-top: 0;">
-            <div>
-              <div class="card-panel row">
-                <div class="col-md-12 pl-0">
-                  <div ng-repeat="containers in model2">
-                    <div class="vaayu-dropzone">
-                      <div class="row">
-                         <div class="pad-right-0" ng-class="isShowMap ? 'col-md-9' : 'col-md-10'">
-                            <div ng-repeat="container in containers" no-drag
-                              class="employee-cluster-panel fixed-width" ng-if="container.subtype!='unallocated'">
-                              <div class="employee-cluster-panel-heading"
-                                ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
-                                <div class="title_container">
-                                  <input type="checkbox" ng-change="selectRoute(container)" ng-model="container.route_selected"
-                                    name="route" class="tick guard_checkbox"
-                                    ng-show="container.status !== 'assign_requested'" ng-if="container.subtype!='unallocated'">
-                                  <span class="title_text">TP{{container.tripId+' | '+container.vehicle_type}}  </span>
-                                  <!-- <span class="title_text" ng-if="container.subtype=='unallocated'"> Unassigned Employee </span> -->
-                                </div>
-                              </div>
-
-                              <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
-                                style="cursor: pointer">
-                                <div class="employee-cluster-panel-heading-meta">
-                                  <div class="employee-cluster-panel-title">
-                                    <div class="row">
-                                      <div class="col-md-12 meta-header">
-                                        <span class="guard-icon"><i class="fa fa-shield"></i></span>
-                                          <input type="checkbox" ng-model="container.guard_required" ng-change="checkBoxChanged(container)" ng-disabled="container.guard.length"
-                                          name="route" class="tick guard_checkbox">
-
-                                        <span class="kilometer_time_duration" ng-class="{'bgRed':checkSiteDistance(container.total_distance)}">
-                                            {{container.total_distance}} Km 
-                                        </span>
-                                        <span>|</span>
-                                        <span class="kilometer_time_duration" ng-class="{'bgRed':checkSiteTime(container.total_time)}">
-                                            {{container.total_time}} Min
-                                          </span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <ul class="employee-list-group" dnd-list="container.employees" dnd-allowed-types="['item']"
-                                  dnd-horizontal-list="true" dnd-external-sources="true" dnd-effect-allowed="all"
-                                  dnd-dragover="dragoverCallback(container,index, external, type)"
-                                  dnd-drop="dropItemCallback(container,index, item, external, type)"
-                                
-                                  class="itemlist">
-                                  <li ng-if="container.employees.length" class="input-group employee-list-group-item" ng-class="{'male': item.gender=='M', 'female': item.gender=='F'}"
-                                    ng-repeat="item in container.employees" dnd-draggable="item" dnd-type="'item'"
-                                    dnd-dragstart="dragoverCallback(container,index, external, type)"
-                                    dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
-
-                                    <div class="inner-text" title="{{item.empName}} -{{item.area}}">
-                                      <span class="empId">{{item.displayEmpId}}</span> - <span class="text-muted">{{item.area}}</span>
-                                    </div>
-                                  </li>
-                                
-                                  <li class="dndPlaceholder">
-                                      Drop employee here
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="vayau-panel-footer" ng-if="container.employees.length">
-                                <div class="row">
-                                  <div class="col-md-6 pad-right-0">
-                                    <ul class="employee-list-group" dnd-list="container.vehicle"
-                                      dnd-drop="dropVehicleCallback(container,index, item, external, type)"
-                                      dnd-allowed-types="[container.vehicle_type]"
-                                      dnd-disable-if="container.vehicle.length >= 1">
-                                      <dnd-nodrag>
-                                        <li ng-repeat="person in container.vehicle" dnd-type="person.type"
-                                          dnd-disable-if="person.type == 'unknown'" dnd-moved="list.vehicle.splice($index, 1)"
-                                          class="input-group background-{{person.type}} employee-list-group-item vehicle-assign"
-                                          ng-if="container.vehicle.length">
-                                          <span class="input-group-addon addon-prepend vehicle_assign">
-                                            <div class="inner-addon">
-                                              <i class="fa fa-car vehicle_button" style="z-index: 8;"></i>
-                                              <i class="fa fa-times close_button"
-                                                ng-click="removeVehicle(person, container)"></i>
-                                            </div>
-                                          </span>
-
-                                          <div class="vehicle_no">
-                                            <div class="text-small">{{person.vehicleNumber}}</div>
-                                            <!-- <div class="text-big">{{person.vehicleNumber}}</div> -->
-                                          </div>
-                                        </li>
-                                      </dnd-nodrag>
-
-                                      <li ng-if="!container.vehicle.length" ng-click="showVehicalSidebar()"
-                                        class="input-group employee-list-group-item vehicle-add">
-                                        <span class="input-group-addon addon-prepend vehicle_assign">
-                                          <div class="inner-addon">
-                                            <i class="fa fa-car"></i>
-                                          </div>
-                                        </span>
-
-                                        <div class="vehicle_no">
-                                          <div class="text-small">Add Vehicle</div>
-                                        </div>
-                                      </li>
-                                      <li class="dndPlaceholder">
-                                        Drop vehicle here
-                                      </li>
-                                    </ul>
-                                  </div>
-
-                                  <div class="col-md-6 pad-left-0">
-                                    <ul class="employee-list-group" dnd-list="container.guard"
-                                      dnd-drop="dropGuardCallback(container,index, item, external, type)"
-                                      dnd-allowed-types="allowedGuardTypes" dnd-disable-if="container.guard.length >= 1">
-                                      <dnd-nodrag>
-                                        <li ng-repeat="person in container.guard" dnd-type="person.type"
-                                          dnd-disable-if="person.type == 'unknown'" dnd-moved="list.vehical.splice($index, 1)"
-                                          class="input-group background-{{person.type}} employee-list-group-item guard-assign"
-                                          ng-if="container.guard.length">
-
-                                          <span class="input-group-addon addon-prepend vehicle-assign">
-                                        
-                                            <div class="inner-addon">
-                                                <i class="fa fa-shield vehicle_button" style="z-index: 8;"></i>
-                                                <i class="fa fa-times close_button"
-                                                  ng-click="removeGuard(person, container)"></i>
-                                              </div>
-                                          </span>
-
-                                          <div class="vehicle_no">
-                                            <div class="text-small">Guard Assigned</div>
-                                          </div>
-                                        </li>
-                                      </dnd-nodrag>
-
-                                      
-                                      <li ng-if="!container.guard.length" ng-click="showGuardSidebar()" ng-show="container.guard_required"
-                                        class="input-group employee-list-group-item guard-add">
-                                        <span class="input-group-addon addon-prepend vehicle_assign">
-                                          <div class="inner-addon">
-                                            <i class="fa fa-shield"></i>
-                                          </div>
-                                        </span>
-
-                                        <div class="vehicle_no">
-                                          <div class="text-small">Add guard</div>
-                                        </div>
-                                      </li>
-                                      <li class="dndPlaceholder">
-                                        Drop guard here
-                                      </li>
-                                    </ul>
-                                  </div>
-                                </div>
+        <div ng-class="isShowMap ? 'col-md-8' : 'col-md-12 pright-0'">
+            <div class="card-panel">
+                <div ng-repeat="containers in model2">
+                  <div class="vaayu-dropzone">
+                      <div ng-class="isShowMap ? 'col-md-9' : 'col-md-10'">
+                        <masonry reload-on-resize masonry-options="{ transitionDuration: '0.4s' }"  preserve-order>
+                          <div ng-repeat="container in containers" masonry-brick no-drag  ng-class="{'masonry-brick': true}" class="employee-cluster-panel" ng-if="container.subtype!='unallocated'">
+                            <div class="employee-cluster-panel-heading"
+                              ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
+                              <div class="title_container">
+                                <input type="checkbox" ng-change="selectRoute(container)" ng-model="container.route_selected"
+                                  name="route" class="tick guard_checkbox"
+                                  ng-show="container.status !== 'assign_requested'" ng-if="container.subtype!='unallocated'">
+                                <span class="title_text">TP{{container.tripId+' | '+container.vehicle_type}}  </span>
                               </div>
                             </div>
+                            <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
+                              style="cursor: pointer">
+                              <div class="employee-cluster-panel-heading-meta">
+                                <div class="employee-cluster-panel-title">
+                                  <div class="row">
+                                    <div class="col-md-12 meta-header">
+                                      <span class="guard-icon"><i class="fa fa-shield"></i></span>
+                                        <input type="checkbox" ng-model="container.guard_required" ng-change="checkBoxChanged(container)" ng-disabled="container.guard.length"
+                                        name="route" class="tick guard_checkbox">
 
-                            <div no-drag class="employee-cluster-panel fixed-width" style="height: 235px;" ng-if="originalRoutes.length">
-                                <div class="employee-cluster-panel-heading">
-                                  <div class="title_container" >
-                                    <span class="title_text"> <i class="fa fa-plus"></i> Add Route </span>
+                                      <span class="kilometer_time_duration" ng-class="{'bgRed':checkSiteDistance(container.total_distance)}">
+                                          {{container.total_distance}} Km 
+                                      </span>
+                                      <span>|</span>
+                                      <span class="kilometer_time_duration" ng-class="{'bgRed':checkSiteTime(container.total_time)}">
+                                          {{container.total_time}} Min
+                                        </span>
+                                    </div>
                                   </div>
                                 </div>
-            
-                                <div class="employee-cluster-panel-body">
-                                  <ul class="employee-list-group itemlist" style="padding-bottom: 20px;">
-                                    <li>
-                                      <div class="drop-box" style="height: 150px;">
-                                        <div class="drop-box-label">
-                                          <button ng-click="openPopUp()" class="btn btn-default btn-block" style="height: 100%;"><i class="fa fa-plus  fa-3x"></i> <div>Add Route</div></button>
+                              </div>
+
+                              <ul class="employee-list-group" dnd-list="container.employees" dnd-allowed-types="['item']"
+                                dnd-horizontal-list="true" dnd-external-sources="true" dnd-effect-allowed="all"
+                                dnd-dragover="dragoverCallback(container,index, external, type)"
+                                dnd-drop="dropItemCallback(container,index, item, external, type)"
+                              
+                                class="itemlist">
+                                <li ng-if="container.employees.length" class="input-group employee-list-group-item" ng-class="{'male': item.gender=='M', 'female': item.gender=='F'}"
+                                  ng-repeat="item in container.employees" dnd-draggable="item" dnd-type="'item'"
+                                  dnd-dragstart="dragoverCallback(container,index, external, type)"
+                                  dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
+
+                                  <div class="inner-text" title="{{item.empName}} -{{item.area}}">
+                                    <span class="empId">{{item.displayEmpId}}</span> - <span class="text-muted">{{item.area}}</span>
+                                  </div>
+                                </li>
+                              
+                                <li class="dndPlaceholder">
+                                    Drop employee here
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="vayau-panel-footer" ng-if="container.employees.length">
+                              <div class="row">
+                                <div class="col-md-6 pad-right-0">
+                                  <ul class="employee-list-group" dnd-list="container.vehicle"
+                                    dnd-drop="dropVehicleCallback(container,index, item, external, type)"
+                                    dnd-allowed-types="[container.vehicle_type]"
+                                    dnd-disable-if="container.vehicle.length >= 1">
+                                    <dnd-nodrag>
+                                      <li ng-repeat="person in container.vehicle" dnd-type="person.type"
+                                        dnd-disable-if="person.type == 'unknown'" dnd-moved="list.vehicle.splice($index, 1)"
+                                        class="input-group background-{{person.type}} employee-list-group-item vehicle-assign"
+                                        ng-if="container.vehicle.length">
+                                        <span class="input-group-addon addon-prepend vehicle_assign">
+                                          <div class="inner-addon">
+                                            <i class="fa fa-car vehicle_button" style="z-index: 8;"></i>
+                                            <i class="fa fa-times close_button"
+                                              ng-click="removeVehicle(person, container)"></i>
+                                          </div>
+                                        </span>
+
+                                        <div class="vehicle_no">
+                                          <div class="text-small">{{person.vehicleNumber}}</div>
+                                          <!-- <div class="text-big">{{person.vehicleNumber}}</div> -->
                                         </div>
+                                      </li>
+                                    </dnd-nodrag>
+
+                                    <li ng-if="!container.vehicle.length" ng-click="showVehicalSidebar()"
+                                      class="input-group employee-list-group-item vehicle-add">
+                                      <span class="input-group-addon addon-prepend vehicle_assign">
+                                        <div class="inner-addon">
+                                          <i class="fa fa-car"></i>
+                                        </div>
+                                      </span>
+
+                                      <div class="vehicle_no">
+                                        <div class="text-small">Add Vehicle</div>
                                       </div>
+                                    </li>
+                                    <li class="dndPlaceholder">
+                                      Drop vehicle here
                                     </li>
                                   </ul>
                                 </div>
-                            </div> 
-                        </div>
-                        <div class="pad-right-0" ng-class="isShowMap ? 'col-md-3' : 'col-md-2'" >
-                          <div ng-repeat="container in containers" no-drag
-                          class="employee-cluster-panel" ng-class="{'temporaryRoute':container.subtype=='unallocated'}" ng-if="container.subtype=='unallocated'">
-                        <div class="employee-cluster-panel-heading"
-                          ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
-                          <div class="title_container">
-                            <span class="title_text" >TP{{container.tripId+' | '+container.vehicle_type}}  </span>
-                          </div>
-                        </div>
 
-                        <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
-                          style="cursor: pointer">
+                                <div class="col-md-6 pad-left-0">
+                                  <ul class="employee-list-group" dnd-list="container.guard"
+                                    dnd-drop="dropGuardCallback(container,index, item, external, type)"
+                                    dnd-allowed-types="allowedGuardTypes" dnd-disable-if="container.guard.length >= 1">
+                                    <dnd-nodrag>
+                                      <li ng-repeat="person in container.guard" dnd-type="person.type"
+                                        dnd-disable-if="person.type == 'unknown'" dnd-moved="list.vehical.splice($index, 1)"
+                                        class="input-group background-{{person.type}} employee-list-group-item guard-assign"
+                                        ng-if="container.guard.length">
 
-                          <ul class="employee-list-group" dnd-list="container.employees" dnd-allowed-types="['item']"
-                            dnd-horizontal-list="true" dnd-external-sources="true" dnd-effect-allowed="all"
-                            dnd-dragover="dragoverCallback(container,index, external, type)"
-                            dnd-drop="dropItemCallback(container,index, item, external, type)"
-                          
-                            class="itemlist">
-                            <li ng-if="container.employees.length" class="input-group employee-list-group-item" ng-class="{'male': item.gender=='M', 'female': item.gender=='F'}"
-                              ng-repeat="item in container.employees" dnd-draggable="item" dnd-type="'item'"
-                              dnd-dragstart="dragoverCallback(container,index, external, type)"
-                              dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
+                                        <span class="input-group-addon addon-prepend vehicle-assign">
+                                      
+                                          <div class="inner-addon">
+                                              <i class="fa fa-shield vehicle_button" style="z-index: 8;"></i>
+                                              <i class="fa fa-times close_button"
+                                                ng-click="removeGuard(person, container)"></i>
+                                            </div>
+                                        </span>
 
-                              <div class="inner-text" title="{{item.empName}} -{{item.area}}">
-                                <span class="empId">{{item.displayEmpId}}</span> - <span class="text-muted">{{item.area}}</span>
+                                        <div class="vehicle_no">
+                                          <div class="text-small">Guard Assigned</div>
+                                        </div>
+                                      </li>
+                                    </dnd-nodrag>
+
+                                    
+                                    <li ng-if="!container.guard.length" ng-click="showGuardSidebar()" ng-show="container.guard_required"
+                                      class="input-group employee-list-group-item guard-add">
+                                      <span class="input-group-addon addon-prepend vehicle_assign">
+                                        <div class="inner-addon">
+                                          <i class="fa fa-shield"></i>
+                                        </div>
+                                      </span>
+
+                                      <div class="vehicle_no">
+                                        <div class="text-small">Add guard</div>
+                                      </div>
+                                    </li>
+                                    <li class="dndPlaceholder">
+                                      Drop guard here
+                                    </li>
+                                  </ul>
+                                </div>
                               </div>
-                            </li>
-                            
-                            <li class="dndPlaceholder">
-                                Drop employee here
-                            </li>
-                          </ul>
-                        </div>
+                            </div>
                           </div>
-                        </div>
+                          <div no-drag class="employee-cluster-panel" masonry-brick  ng-class="{'masonry-brick': true}" ng-if="originalRoutes.length">
+                            <div class="employee-cluster-panel-heading">
+                              <div class="title_container" >
+                                <span class="title_text"> <i class="fa fa-plus"></i> Add Route </span>
+                              </div>
+                            </div>
+        
+                            <div class="employee-cluster-panel-body">
+                              <ul class="employee-list-group itemlist" style="padding-bottom: 20px;">
+                                <li>
+                                  <div class="drop-box" style="height: 150px;">
+                                    <div class="drop-box-label">
+                                      <button ng-click="openPopUp()" class="btn btn-default btn-block" style="height: 100%;"><i class="fa fa-plus  fa-3x"></i> <div>Add Route</div></button>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </masonry> 
                       </div>
-                    </div>
+                      <div ng-class="isShowMap ? 'col-md-3' : 'col-md-2'">
+                        <masonry reload-on-resize masonry-options="{ transitionDuration: '0.4s' }"  preserve-order>
+                          <div ng-repeat="container in containers" no-drag masonry-brick class="employee-cluster-panel" ng-class="{'masonry-brick': true}" ng-if="container.subtype=='unallocated'">
+                            <div class="employee-cluster-panel-heading"
+                              ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
+                              <div class="title_container">
+                                <span class="title_text" >TP{{container.tripId+' | '+container.vehicle_type}}  </span>
+                              </div>
+                            </div>
+
+                            <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
+                              style="cursor: pointer">
+
+                              <ul class="employee-list-group" dnd-list="container.employees" dnd-allowed-types="['item']"
+                                dnd-horizontal-list="true" dnd-external-sources="true" dnd-effect-allowed="all"
+                                dnd-dragover="dragoverCallback(container,index, external, type)"
+                                dnd-drop="dropItemCallback(container,index, item, external, type)"
+                              
+                                class="itemlist">
+                                <li ng-if="container.employees.length" class="input-group employee-list-group-item" ng-class="{'male': item.gender=='M', 'female': item.gender=='F'}"
+                                  ng-repeat="item in container.employees" dnd-draggable="item" dnd-type="'item'"
+                                  dnd-dragstart="dragoverCallback(container,index, external, type)"
+                                  dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
+
+                                  <div class="inner-text" title="{{item.empName}} -{{item.area}}">
+                                    <span class="empId">{{item.displayEmpId}}</span> - <span class="text-muted">{{item.area}}</span>
+                                  </div>
+                                </li>
+                                
+                                <li class="dndPlaceholder">
+                                    Drop employee here
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </masonry>
+                      </div>
                   </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-        <div class="pl-0" ng-init="initMap()" ng-class="isShowMap ? 'col-md-4' : 'ng-hide'">
+        
+        <div ng-init="initMap()" ng-class="isShowMap ? 'col-md-4' : 'ng-hide'">
           <div class="custom-panel-map">
             <div class="employee-cluster-panel-heading">
               <div class="employee-cluster-panel-title">
