@@ -23,6 +23,7 @@ angular.module('app').factory('ToasterService', (toaster) => {
             if (toClear) {
                 toaster.clear(this.hideToast, this.showError, this.showSuccess)
             }
+            toaster.clear(this.hideToast, this.showError, this.showSuccess)
             console.log('ToasterService');
             toaster.pop({type, title, body, timeout:2000});
         },
@@ -30,6 +31,7 @@ angular.module('app').factory('ToasterService', (toaster) => {
             if (toClear) {
                 toaster.clear(this.hideToast, this.showError, this.showSuccess)
             }
+            toaster.clear(this.hideToast, this.showError, this.showSuccess)
             console.log('ToasterService show Success');
             toaster.pop({ type: 'success', title, body, timeout: 2000 });
         },
@@ -37,6 +39,7 @@ angular.module('app').factory('ToasterService', (toaster) => {
             if (toClear) {
                 toaster.clear(this.hideToast, this.showError, this.showSuccess)
             }
+            toaster.clear(this.hideToast, this.showError, this.showSuccess)
             console.log('ToasterService Error');
             toaster.pop({type: 'error', title, body, timeout: 2000 });
         },

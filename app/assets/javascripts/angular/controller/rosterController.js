@@ -464,7 +464,11 @@ $scope.onSubmit = () => {
 }
 // $scope.toCopyDateOpened = false;
 // $scope.toDateOpened = false;
-  
+  $scope.toCopyDateOpen = function ($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    $scope.toCopyDateOpened = true;
+  };
 
   $scope.toDateOpen = function ($event) {
       $event.preventDefault();

@@ -11,11 +11,14 @@ class SessionsController < Devise::SessionsController
 	  		flash[:notice] = 'You are not Authorised to Sign In'
 	  		self.resource = resource_class.new(sign_in_params)	
 	  		render :new
-	  	# elsif user.present? && user.is_password_expired == true
-	  	#   flash.now[:notice] = 'Your password has expired please reset password.'
-	  	# 	self.resource = resource_class.new(sign_in_params)	
-	  	# 	render :new
-	  	else		
+
+	  	elsif user.present? && user.is_password_expired == true
+	  	  flash.now[:notice] = 'Your password has expired, kindly reset your password.'
+	  		self.resource = resource_class.new(sign_in_params)	
+	  		render :new
+
+		else		
+
 	  		super
 	  	end
 	else

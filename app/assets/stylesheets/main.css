@@ -58,8 +58,19 @@
   cursor: pointer;
 }
 
-/* Modal Header */
+  .date-box{
+    text-align: center;
+    margin-top: 15px;
+  }
 
+  .generate-modal{
+    top: 50%;
+    position: absolute;
+    left: 0;
+    transform: translateX(-50%);
+    transform: translateY(-50%);
+    padding-top: 0px;
+  }
   
   /* Modal Content/Box */
   .vaayu-modal-content {
@@ -80,7 +91,7 @@
   
   .vaayu-pop-close:hover,
   .vaayu-pop-close:focus {
-    color: black;
+    color: rgb(102, 82, 82);
     text-decoration: none;
     cursor: pointer;
   }
