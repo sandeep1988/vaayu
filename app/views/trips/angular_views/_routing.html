@@ -152,11 +152,11 @@
 
         <div ng-class="isShowMap ? 'col-md-8' : 'col-md-12 pright-0'">
             <div class="card-panel">
-                <div ng-repeat="containers in model2 track by $index">
+                <div ng-repeat="containers in model2">
                   <div class="vaayu-dropzone">
                       <!-- <div > -->
-                        <div class="width-80"  masonry="" mesonry-option="{gutter: 5}"  load-images="false" preserve-order reload-on-resize>
-                          <div ng-repeat="container in containers"  no-drag class="employee-cluster-panel masonry-brick" ng-if="container.subtype!='unallocated'">
+                        <div class="width-80"  masonry="" mesonry-option="{gutter: 5}"  load-images="false" reload-on-resize>
+                          <div ng-repeat-start="container in containers track by $index"  no-drag class="employee-cluster-panel masonry-brick" ng-if="container.subtype!='unallocated'">
                             <div class="employee-cluster-panel-heading"
                               ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
                               <div class="title_container">
@@ -300,7 +300,7 @@
                             </div>
                           </div>
 
-                          <div ng-show="$last" no-drag class="employee-cluster-panel masonry-brick"  ng-if="originalRoutes.length">
+                          <div no-drag ng-repeat-end class="employee-cluster-panel masonry-brick"  ng-if="model2.length && originalRoutes.length && $last">
                             <div class="employee-cluster-panel-heading">
                               <div class="title_container" >
                                 <span class="title_text"> <i class="fa fa-plus"></i> Add Route </span>
