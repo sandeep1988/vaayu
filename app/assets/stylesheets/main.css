@@ -278,3 +278,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.config-form .ng-invalid.ng-touched{
+  border: 1px solid red;
+}
+
+.menu3 .mb-2{
+  margin-bottom: 20px;
+}
