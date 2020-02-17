@@ -1118,7 +1118,7 @@
     float:left;
   }
   .tempRoute {
-    width:90% !important;
+    width:200px !important;
   }
 .bgRed {
   background: #e67878 !important;
@@ -1136,6 +1136,7 @@
   text-align: right;
   padding-right: 26px !important;
   padding-top: 3px;
+  cursor: pointer;
 }
 .employee-cluster-panel-title {
   width:100% !important;
@@ -1143,8 +1144,7 @@
 
 .fixed-container {
   position: fixed !important;
-  width: 255px !important;
-  /* right: 0px !important; */
-  top: 50px !important;
+  width: 208px !important;
+  top: 60px !important;
   left: auto !important;
 }
