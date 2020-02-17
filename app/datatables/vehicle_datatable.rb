@@ -14,7 +14,7 @@ class VehicleDatatable
     {
         "DT_RowId" => "#{Vehicle::DATATABLE_PREFIX}-#{@vehicle.id}",
         :id => @vehicle.id,
-        :name => @vehicle.colour + ' ' + vehicle_model + ' ' + @vehicle.model  ,
+        :name => (@vehicle.colour.present? ? @vehicle.colour : " "  +  vehicle_model  +  @vehicle.model)  ,
         :plate_number => @vehicle.plate_number,
         :ba => @vehicle.business_associate&.name,
         :driver => get_driver,
