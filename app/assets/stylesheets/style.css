@@ -219,11 +219,13 @@
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   background-color: #ffffff;
+  display: block;
   /* display: inline-block;
   margin-bottom: 10px;
   margin-right: 10px;
   height: max-content; */
 }
+
 
 .fixed-width {
   min-width: 190px !important;
@@ -591,11 +593,12 @@
   border-radius: 4px;
   padding: 2px 3px;
   background:#14a89e;
-  height: 17px;
-  width: 17px;
+  height: 15px;
+  width: 15px;
   display: flex;
   align-content: center;
   margin-right: 2px;
+  font-size: 10px;
 }
 .vayau-routing .employee-cluster-panel-body .employee-list-group {
   margin-bottom: 0;
@@ -615,7 +618,7 @@
 }
 .kilometer_time_duration {
   font-family: "Roboto";
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 900;
   line-height: 1.5;
   color: #FFF;
@@ -969,6 +972,7 @@
   height: 16px;
   width: 16px;
   margin-right: 2px;
+  margin-top:0 !important;
 }
 /* .vaayu-dropzone {
   -webkit-column-count: 6; 
@@ -1116,3 +1120,31 @@
   .tempRoute {
     width:90% !important;
   }
+.bgRed {
+  background: #e67878 !important;
+}
+.bgGreen {
+  background: #394266 !important;
+}
+.bgBlue {
+  background: #14a89e !important;
+}
+
+.vehicle_type {
+  font-size: 9px;
+  font-weight: bold;
+  text-align: right;
+  padding-right: 26px !important;
+  padding-top: 3px;
+}
+.employee-cluster-panel-title {
+  width:100% !important;
+}
+
+.fixed-container {
+  position: fixed !important;
+  width: 255px !important;
+  /* right: 0px !important; */
+  top: 50px !important;
+  left: auto !important;
+}

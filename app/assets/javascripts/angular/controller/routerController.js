@@ -6,6 +6,19 @@ angular.module('app').directive('setHeight', function ($window) {
     }
   }
 })
+angular.module('app').directive("scroll", function ($window) {
+  return function(scope, element, attrs) {
+    
+      angular.element($window).bind("scroll", function() {
+          if (this.pageYOffset >= 200) {
+               scope.boolChangeClass = true;
+           } else {
+               scope.boolChangeClass = false;
+           }
+          scope.$apply();
+      });
+  };
+});
 
 angular.module('app')
   .filter('range', function () {
@@ -1166,6 +1179,16 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
   };
 
+  $scope.getColor =function(container) {
+    if(container.is_distance_exceeded=="N" && container.is_time_exceeded=="N" && container.vehicle_utilization<100){
+      return 1;
+    }if(container.is_distance_exceeded=="Y" && container.is_time_exceeded=="Y" && !container.guard.length){
+      return 2;
+    }if(container.is_distance_exceeded=="N" && container.is_time_exceeded=="N" && container.total_seats>=container.employees.length && container.guard.length){
+      return 3;
+    }
+  }
+
   $scope.VehicleAssignCallback=function(item,container){
     var postData = {
       "vehicleId": item.vehicleId,
@@ -1179,9 +1202,22 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         $scope.toggleView = true;
         ToasterService.showSuccess('Success', data['msg']);
       } else {
-        // ToasterService.clearToast();
-        $scope.toggleView = true;
-        ToasterService.showError('Error', data['msg']);
+        $ngConfirm({
+          title: 'Constraint Failed!',
+          boxWidth: '40%',
+          useBootstrap: false,
+          content:  data['msg'],
+          scope: $scope,
+          buttons: {
+              ok: {
+                text: 'Revert',
+                btnClass: 'btn-blue',
+                action: function (scope) {
+                
+                }
+              }
+          }
+        });
       }
       $scope.resetRoute();
     })

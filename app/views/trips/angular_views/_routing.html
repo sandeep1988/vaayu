@@ -157,21 +157,21 @@
                       <!-- <div > -->
                         <div class="width-80"  masonry="" mesonry-option="{gutter: 5}"  load-images="false" reload-on-resize>
                           <div ng-repeat-start="container in containers track by $index"  no-drag class="employee-cluster-panel masonry-brick" ng-if="container.subtype!='unallocated'">
-                            <div class="employee-cluster-panel-heading"
-                              ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
+                            <div class="employee-cluster-panel-heading"  ng-class="{'bgBlue':getColor(container)==1,'bgRed':getColor(container)==2,'bgGreen':getColor(container)==3}"
+                             
+                              >
                               <div class="title_container">
                                 <input type="checkbox" ng-change="selectRoute(container)" ng-model="container.route_selected"
                                   name="route" class="tick guard_checkbox"
                                   ng-show="container.status !== 'assign_requested'" ng-if="container.subtype!='unallocated'">
-                                <span class="title_text">TP{{container.tripId+' | '+container.vehicle_type}}  </span>
+                                <span class="title_text">TP{{container.tripId}}  </span>
                               </div>
                             </div>
-                            <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
-                           >
+                            <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'>
                               <div class="employee-cluster-panel-heading-meta">
                                 <div class="employee-cluster-panel-title">
                                   <div class="row">
-                                    <div class="col-md-12 meta-header">
+                                    <div class="col-md-6 meta-header">
                                       <span class="guard-icon"><i class="fa fa-shield"></i></span>
                                         <input type="checkbox" ng-model="container.guard_required" ng-change="checkBoxChanged(container)" ng-disabled="container.guard.length"
                                         name="route" class="tick guard_checkbox">
@@ -183,6 +183,9 @@
                                       <span class="kilometer_time_duration" ng-class="{'bgRed':checkSiteTime(container.total_time)}">
                                           {{container.total_time}} Min
                                         </span>
+                                    </div>
+                                    <div class="col-md-6 vehicle_type">
+                                        {{container.vehicle_type}} <i class="fa fa-pencil"></i>
                                     </div>
                                   </div>
                                 </div>
@@ -198,7 +201,7 @@
                                   dnd-dragstart="dragoverCallback(container,index, external, type)"
                                   dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
 
-                                  <div class="inner-text" title="{{item.empName}} -{{item.area}}">
+                                  <div class="inner-text" title="{{'Name:'+ item.empName + '\n'+'Area:'+ item.area + '\n'+'Address:'+ item.emp_address}}">
                                     <span class="empId">{{item.displayEmpId}}</span> - <span class="text-muted">{{item.area}}</span>
                                   </div>
                                 </li>
@@ -321,7 +324,7 @@
                         </div> 
                    
                         <div class="width-20" masonry="">
-                          <div ng-repeat="container in containers" no-drag  class="employee-cluster-panel masonry-brick tempRoute" ng-if="container.subtype=='unallocated'">
+                          <div  scroll id="page" ng-class="{'fixed-container':boolChangeClass}" ng-repeat="container in containers" no-drag  class="employee-cluster-panel masonry-brick tempRoute" ng-if="container.subtype=='unallocated'">
                             <div class="employee-cluster-panel-heading"
                               ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
                               <div class="title_container">
@@ -341,7 +344,7 @@
                                   dnd-dragstart="dragoverCallback(container,index, external, type)"
                                   dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
 
-                                  <div class="inner-text" title="{{item.empName}} -{{item.area}}">
+                                  <div class="inner-text" title="{{'Name:'+ item.empName + '\n'+'Area:'+ item.area + '\n'+'Address:'+ item.emp_address}}">
                                     <span class="empId">{{item.displayEmpId}}</span> - <span class="text-muted">{{item.area}}</span>
                                   </div>
                                 </li>
