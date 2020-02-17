@@ -1,3 +1,5 @@
+
+
 <div class="vayau-routing" ng-init="init()" ng-controller='routeCtrl'>
   
   <div class="loader-wrapper" ng-if="isLoader">
@@ -150,11 +152,11 @@
 
         <div ng-class="isShowMap ? 'col-md-8' : 'col-md-12 pright-0'">
             <div class="card-panel">
-                <div ng-repeat="containers in model2">
+                <div ng-repeat="containers in model2 track by $index">
                   <div class="vaayu-dropzone">
-                      <div ng-class="isShowMap ? 'col-md-9' : 'col-md-10'">
-                        <masonry reload-on-resize masonry-options="{ transitionDuration: '0.4s' }"  preserve-order>
-                          <div ng-repeat="container in containers" masonry-brick no-drag  ng-class="{'masonry-brick': true}" class="employee-cluster-panel" ng-if="container.subtype!='unallocated'">
+                      <!-- <div > -->
+                        <div class="width-80"  masonry="" mesonry-option="{gutter: 5}"  load-images="false" preserve-order reload-on-resize>
+                          <div ng-repeat="container in containers"  no-drag class="employee-cluster-panel masonry-brick" ng-if="container.subtype!='unallocated'">
                             <div class="employee-cluster-panel-heading"
                               ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
                               <div class="title_container">
@@ -165,7 +167,7 @@
                               </div>
                             </div>
                             <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
-                              style="cursor: pointer">
+                           >
                               <div class="employee-cluster-panel-heading-meta">
                                 <div class="employee-cluster-panel-title">
                                   <div class="row">
@@ -190,8 +192,7 @@
                                 dnd-horizontal-list="true" dnd-external-sources="true" dnd-effect-allowed="all"
                                 dnd-dragover="dragoverCallback(container,index, external, type)"
                                 dnd-drop="dropItemCallback(container,index, item, external, type)"
-                              
-                                class="itemlist">
+                                ng-style="getStyleInPx(container.total_seats)">
                                 <li ng-if="container.employees.length" class="input-group employee-list-group-item" ng-class="{'male': item.gender=='M', 'female': item.gender=='F'}"
                                   ng-repeat="item in container.employees" dnd-draggable="item" dnd-type="'item'"
                                   dnd-dragstart="dragoverCallback(container,index, external, type)"
@@ -207,7 +208,7 @@
                                 </li>
                               </ul>
                             </div>
-                            <div class="vayau-panel-footer" ng-if="container.employees.length">
+                            <div class="vayau-panel-footer">
                               <div class="row">
                                 <div class="col-md-6 pad-right-0">
                                   <ul class="employee-list-group" dnd-list="container.vehicle"
@@ -298,13 +299,13 @@
                               </div>
                             </div>
                           </div>
-                          <div no-drag class="employee-cluster-panel" masonry-brick  ng-class="{'masonry-brick': true}" ng-if="originalRoutes.length">
+
+                          <div ng-show="$last" no-drag class="employee-cluster-panel masonry-brick"  ng-if="originalRoutes.length">
                             <div class="employee-cluster-panel-heading">
                               <div class="title_container" >
                                 <span class="title_text"> <i class="fa fa-plus"></i> Add Route </span>
                               </div>
                             </div>
-        
                             <div class="employee-cluster-panel-body">
                               <ul class="employee-list-group itemlist" style="padding-bottom: 20px;">
                                 <li>
@@ -317,11 +318,10 @@
                               </ul>
                             </div>
                           </div>
-                        </masonry> 
-                      </div>
-                      <div ng-class="isShowMap ? 'col-md-3' : 'col-md-2'">
-                        <masonry reload-on-resize masonry-options="{ transitionDuration: '0.4s' }"  preserve-order>
-                          <div ng-repeat="container in containers" no-drag masonry-brick class="employee-cluster-panel" ng-class="{'masonry-brick': true}" ng-if="container.subtype=='unallocated'">
+                        </div> 
+                   
+                        <div class="width-20" masonry="">
+                          <div ng-repeat="container in containers" no-drag  class="employee-cluster-panel masonry-brick tempRoute" ng-if="container.subtype=='unallocated'">
                             <div class="employee-cluster-panel-heading"
                               ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
                               <div class="title_container">
@@ -330,14 +330,12 @@
                             </div>
 
                             <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
-                              style="cursor: pointer">
+                              >
 
                               <ul class="employee-list-group" dnd-list="container.employees" dnd-allowed-types="['item']"
                                 dnd-horizontal-list="true" dnd-external-sources="true" dnd-effect-allowed="all"
                                 dnd-dragover="dragoverCallback(container,index, external, type)"
-                                dnd-drop="dropItemCallback(container,index, item, external, type)"
-                              
-                                class="itemlist">
+                                dnd-drop="dropItemCallback(container,index, item, external, type)" style="min-height: 400px;">
                                 <li ng-if="container.employees.length" class="input-group employee-list-group-item" ng-class="{'male': item.gender=='M', 'female': item.gender=='F'}"
                                   ng-repeat="item in container.employees" dnd-draggable="item" dnd-type="'item'"
                                   dnd-dragstart="dragoverCallback(container,index, external, type)"
@@ -354,8 +352,8 @@
                               </ul>
                             </div>
                           </div>
-                        </masonry>
-                      </div>
+                        </div>
+                     
                   </div>
                 </div>
             </div>

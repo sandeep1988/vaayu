@@ -172,9 +172,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // });
 
 
-
-
-
+    $scope.getStyleInPx =function(capacity){
+      var multiplier =(capacity % 4) > 0 ? 1 : 0
+      return {
+        'min-height': (Math.trunc(capacity/4)+ multiplier )*160+'px'
+      }
+    }
 
     RosterService.getAllSiteList(function (data) {
       $scope.siteList = data.data.list;
@@ -876,6 +879,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.isShowMap =false;
   $scope.toggleMap =function() {
+    $scope.resetRoute();
     if($scope.isShowMap){
       $scope.isShowMap=false;
     }else{
