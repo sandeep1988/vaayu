@@ -29,7 +29,7 @@
             <li class="nav-item nav-link" ng-class="{active:isSet(3)}" ng-click="setTab(3)"><a
                     href="javascript:void(0)">Distance</a></li>
             <li class="nav-item nav-link" ng-class="{active:isSet(4)}" ng-click="setTab(4)"><a
-                    href="javascript:void(0)">Zone</a></li>
+                    href="javascript:void(0)">Cut-off</a></li>
             <!-- <li class="nav-item nav-link" ng-class="{active:isSet(4)}" ng-click="setTab(4)"><a href="javascript:void(0)">Zone</a></li> -->
         </ul>
     </div>
@@ -38,7 +38,7 @@
     <div class="tab-content">
         <div id="home" class="tab-pane fade  bg" ng-class="{'in active show':isSet(1)}" ng-controller='createGuard'>
             <form name="form"  novalidate>
-                <div class="tab-content-area ">
+                <div class="tab-content-area">
                     <div class="row mb-2 ">
                         <div class="col-md-4 ">
 
@@ -55,7 +55,7 @@
                                 <input type="radio" name="radioWhen" class="mr-2" " 
                                      ng-model=" when" value='anywhere' required>Anywhere
                             </label>
-                            <span ng-show="hasError('radioWhen', 'required')" class="help-block">
+                            <span ng-show="hasError('radioWhen', 'required')" class="help-block" style="color: red">
                                 Field is required.</span>
                         </div>
 
@@ -66,7 +66,7 @@
                                  <label class=" radio-inline mb-0 mr-2">
                                 <input type="radio" ng-model="event" name="radioEvent" class="mr-2" value='drop' " required>Drop
                                  </label>
-                                 <span ng-show=" hasError('radioEvent', 'required' )" class="help-block">
+                                 <span ng-show=" hasError('radioEvent', 'required' )" class="help-block" style="color: red;">
                                 Field is required.</span>
                         </div>
                         <!-- <div class="col-md-5">
@@ -327,24 +327,27 @@
 
         <div id="menu3" class="tab-pane menu3" ng-class="{'in active show':isSet(4)}">
             <!-- <add-zone></add-zone> -->
-            <h3 class="mb-2">Configurator Tab Content</h3>
-            <form novalidate class="simple-form config-form" name="config-form">
-                <div class="row mb-2 ">
-                    <div class="col-md-3">
-                        <label>WE Cutoff Checkin: <input type="number" required class="form-control" ng-model="we_checkin" /></label><br />
+            <!-- <h3 class="mb-2">Configurator Tab Content</h3> -->
+            <div class="tab-content-area" style="position: relative; overflow: hidden;">
+                <form novalidate class="simple-form config-form" name="config-form">
+                    <div class="row mb-2 ">
+                        <div class="col-md-3">
+                            <label class="text-label">WE Cutoff Checkin: </label>
+                            <input type="number" required class="form-control" ng-model="we_checkin" /><br />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="text-label">WE Cutoff Checkout: </label><input type="number" required class="form-control" ng-model="we_checkout" /><br />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="text-label">WD Cutoff Checkin: </label><input type="number" required class="form-control" ng-model="wd_checkin" /><br />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="text-label">WD Cutoff Checkout: </label><input type="number" required class="form-control" ng-model="wd_checkout" /><br />
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <label>WE Cutoff Checkout: <input type="number" required class="form-control" ng-model="we_checkout" /></label><br />
-                    </div>
-                    <div class="col-md-3">
-                        <label>WD Cutoff Checkin: <input type="number" required class="form-control" ng-model="wd_checkin" /></label><br />
-                    </div>
-                    <div class="col-md-3">
-                        <label>WD Cutoff Checkout: <input type="number" required class="form-control" ng-model="wd_checkout" /></label><br />
-                    </div>
-                </div>
-                <input class="btn main-submit-btn" style="float: left !important;" type="submit" ng-click="onSubmit()" value="Save" />
-            </form>
+                    <input class="btn main-submit-btn" style="float: left !important;" type="submit" ng-click="onSubmit()" value="Save" />
+                </form>
+            </div>
         </div>
     </div>
 
