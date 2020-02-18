@@ -18,7 +18,9 @@ class SessionsController < Devise::SessionsController
 	  		render :new
 
 		else		
-
+				if params[:user][:remember_me] == "1"
+					cookies.signed[:user_id] = { value: user.id, expires: 2.weeks.from_now }
+				end
 	  		super
 	  	end
 	else
