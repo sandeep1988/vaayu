@@ -42,6 +42,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.disableBtn = false;
   // ToasterService.clearToast();
   $scope.place = {};
+  $scope.shiftID;
+  $scope.shiftType;
+
   // Map.init();
 
   var directionsRenderer 
@@ -1336,6 +1339,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.hideFilterSidebar = () => {
+    
     $scope.filterToggle = false;
   }
 
@@ -1348,6 +1352,14 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.onFilter = () => {
+    let param = {
+      site_id: String($scope.siteId),
+      shift_id: String($scope.selectedShift.id),
+      to_date: moment($scope.filterDate).format('YYYY-MM-DD'),
+      shift_type: String($scope.shift_type)
+      
+    }
+    console.log('param', param)
     $scope.filterToggle = true;
   }
 
