@@ -1326,12 +1326,17 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     $scope.isVehicalSidebarView = false;
     $scope.isGuardSidebarView = false;
     $scope.isFilterSidebarView = false;
+    $scope.filterToggle = false;
   }
 
   $scope.resetSidebar();
 
   $scope.hideVehicalSidebar = function () {
     $scope.isVehicalSidebarView = false;
+  }
+
+  $scope.hideFilterSidebar = () => {
+    $scope.filterToggle = false;
   }
 
   $scope.showVehicalSidebar = function () {
@@ -1341,6 +1346,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     $scope.resetSidebar();
     $scope.isVehicalSidebarView = true;
   }
+
+  $scope.onFilter = () => {
+    $scope.filterToggle = true;
+  }
+
+
 
   $scope.hideGuardSidebar = function () {
     $scope.resetSidebar();
