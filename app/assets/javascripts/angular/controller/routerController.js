@@ -1331,8 +1331,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         isAssign = false;
         // ToasterService.clearToast();
         $scope.toggleView = true;
-        ToasterService.showSuccess('Success', data['msg']);
+        ToasterService.showSuccess('Success', data['message']);
       } else {
+<<<<<<< HEAD
         $ngConfirm({
           title: 'Constraint Failed!',
           boxWidth: '40%',
@@ -1349,6 +1350,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
               }
           }
         });
+=======
+        // ToasterService.clearToast();
+        $scope.toggleView = true;
+        ToasterService.showError('Error', data['message']);
+>>>>>>> d0fe9379de82b369976d266a25e95a866dceb697
       }
       $scope.resetRoute();
     })
