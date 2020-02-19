@@ -1177,11 +1177,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         isAssign = false;
         // ToasterService.clearToast();
         $scope.toggleView = true;
-        ToasterService.showSuccess('Success', data['msg']);
+        ToasterService.showSuccess('Success', data['message']);
       } else {
         // ToasterService.clearToast();
         $scope.toggleView = true;
-        ToasterService.showError('Error', data['msg']);
+        ToasterService.showError('Error', data['message']);
       }
       $scope.resetRoute();
     })
