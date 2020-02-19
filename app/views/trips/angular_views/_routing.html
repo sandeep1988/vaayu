@@ -8,7 +8,7 @@
 
   <div class="container-fluid mt-4">
     <div class="row">
-      <div class="col-md-9">
+      <div class="col-md-8">
         <form class="form-inline">
           <div class="form-group pr-2">
             <select ng-model="siteId" class="form-control" placeholder="Select Site" ng-change="updateFilters()">
@@ -52,12 +52,13 @@
         </form>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-4">
 
         <div class="btn-toolbar float-right pad-8" role="toolbar">
 
           <div  style="float: right;">
-              <button type="button" ng-click="toggleMap()" class="btn btn-terniary-blue margin-right">Show Map</button>
+              <button type="button" ng-click="autoAllocate()" class="btn btn-terniary-blue margin-right">Auto Allocate</button>
+              <button type="button" ng-click="toggleMap()" class="btn btn-terniary-blue margin-right"><span ng-if="isShowMap">Hide Map</span><span ng-if="!isShowMap">Show Map</span></button>
               <button type="button" ng-click="finalizeRoutes()" class="btn btn-terniary-blue">Finalize Route</button>
           </div>
           <!-- <div class="btn-group" role="group">
@@ -150,12 +151,11 @@
             <hr class="hrLine">
         </div>
 
-        <div ng-class="isShowMap ? 'col-md-8' : 'col-md-12 pright-0'">
+        <div ng-class="isShowMap ? 'width80' : 'col-md-12 pright-0'">
             <div class="card-panel">
                 <div ng-repeat="containers in model2">
                   <div class="vaayu-dropzone">
-                      <!-- <div > -->
-                        <div class="width-80"  masonry="" mesonry-option="{gutter: 5}"  load-images="false" reload-on-resize>
+                        <div class="width-80" ng-class="{'mapVisible':isShowMap}"  masonry="" mesonry-option="{gutter: 10}"  load-images="false" reload-on-resize>
                           <div ng-repeat-start="container in containers track by $index"  no-drag class="employee-cluster-panel masonry-brick" ng-if="container.subtype!='unallocated'">
                             <div class="employee-cluster-panel-heading"
                               ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
@@ -300,7 +300,7 @@
                             </div>
                           </div>
 
-                          <div no-drag ng-repeat-end class="employee-cluster-panel masonry-brick"  ng-if="model2.length && originalRoutes.length && $last">
+                          <div no-drag ng-repeat-end class="employee-cluster-panel tempRoute masonry-brick"  ng-if="model2.length && originalRoutes.length && $last">
                             <div class="employee-cluster-panel-heading">
                               <div class="title_container" >
                                 <span class="title_text"> <i class="fa fa-plus"></i> Add Route </span>
@@ -320,8 +320,8 @@
                           </div>
                         </div> 
                    
-                        <div class="width-20" masonry="">
-                          <div ng-repeat="container in containers" no-drag  class="employee-cluster-panel masonry-brick tempRoute" ng-if="container.subtype=='unallocated'">
+                        <div class="width-20"  ng-class="{'mapVisible':isShowMap}" masonry="">
+                          <div scroll id="page" ng-class="{'fixed-container':boolChangeClass}" ng-repeat="container in containers" no-drag  class="employee-cluster-panel masonry-brick tempRoute" ng-if="container.subtype=='unallocated'">
                             <div class="employee-cluster-panel-heading"
                               ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
                               <div class="title_container">
@@ -353,14 +353,13 @@
                             </div>
                           </div>
                         </div>
-                     
                   </div>
                 </div>
             </div>
         </div>
         
-        <div ng-init="initMap()" ng-class="isShowMap ? 'col-md-4' : 'ng-hide'">
-          <div class="custom-panel-map">
+        <div ng-init="initMap()" ng-class="isShowMap ? 'width20' : 'ng-hide'">
+          <div class="custom-panel-map" scroll id="page" ng-class="{'fixed-container':boolChangeClass}">
             <div class="employee-cluster-panel-heading">
               <div class="employee-cluster-panel-title">
                 <span class="travel-group-name" style="color:#fff;">Selected Map View</span>

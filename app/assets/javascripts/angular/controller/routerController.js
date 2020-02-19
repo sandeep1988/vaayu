@@ -7,6 +7,20 @@ angular.module('app').directive('setHeight', function ($window) {
   }
 })
 
+angular.module('app').directive("scroll", function ($window) {
+  return function(scope, element, attrs) {
+    
+      angular.element($window).bind("scroll", function() {
+          if (this.pageYOffset >= 250) {
+               scope.boolChangeClass = true;
+           } else {
+               scope.boolChangeClass = false;
+           }
+          scope.$apply();
+      });
+  };
+});
+
 angular.module('app')
   .filter('range', function () {
     return function (items, property, min, max) {
@@ -175,7 +189,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     $scope.getStyleInPx =function(capacity){
       var multiplier =(capacity % 4) > 0 ? 1 : 0
       return {
-        'min-height': (Math.trunc(capacity/4)+ multiplier )*160+'px'
+        'min-height': (Math.trunc(capacity/4)+ multiplier )*110+'px'
       }
     }
 
@@ -417,6 +431,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     RouteUpdateService.query(postData, function (res) {
       $scope.isDisabled = false;
+      $scope.routeChangedIds=[];
       if (res['success']) {
         $scope.resetRoute();
         $scope.toggleView = true;
@@ -920,6 +935,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
                   btnClass: 'btn-blue',
                   action: function (scope) {
                     scope.model2=scope.newModel;
+                    // scope.routeChangedIds = [];
+                    scope.resetRoute();
                     $ngConfirm("Reverted successfully")
                     // return false;
                   }
