@@ -88,6 +88,7 @@
 //= require AngularJS-Toaster
 //= require angular-bootstrap
 //= require angular/rzslider
+//= require angular/ng-select
 //= require angular/angularjs-dropdown-multiselect
 //= require angular/angular-confirm
 
