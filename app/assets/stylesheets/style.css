@@ -661,7 +661,9 @@
   text-align: left;
   color: #000000;
 }
-
+.btn {
+  font-size:12px !important;
+}
 .btn-close {
   box-shadow: none;
   position: relative;
@@ -865,7 +867,7 @@
 
  .btn-terniary-blue {
   /* opacity: 0.5; */
-  height: 40px;
+  height: 32px;
   border-radius: 4px;
   background-color: #394266 !important;
   font-family: "Roboto";
@@ -952,7 +954,7 @@
 
 .vayau-routing select {
   /* width: 259px; */
-  height: 40px;
+  height: 32px;
   /* opacity: 0.5; */
   color:#000;
   border-radius: 4px;
@@ -1041,7 +1043,7 @@
   .border-bt{border:1px solid #CCC !important;}
   .nav-tabs-new{margin-top: 18px;}
   .date_style{display: flex !important;margin-bottom: 0px;height: 42px;}
-  .data_in_style{height: 40px !important;border: 1px solid #000 !important;}
+  .data_in_style{height: 32px !important;border: 1px solid #000 !important;margin-top:5px;}
   .cut_title{font-size: 16px;font-weight: 500;padding-bottom: 20px;}
   #toast-container > div{padding-left: 45px !important;}
   .action-buttons, .save-button{display: inline-block ;margin-right: 2px !important;}
@@ -1212,4 +1214,7 @@
 }
 .content > .content-body {
   font-size:12px !important;
+}
+.mt-5 {
+  margin-top:5px;
 }
