@@ -1352,14 +1352,20 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.onFilter = () => {
+    let shift = JSON.parse($scope.selectedShift);
     let param = {
-      site_id: String($scope.siteId),
-      shift_id: String($scope.selectedShift.id),
+      site_id: parseInt($scope.siteId),
+      shift_id: parseInt(shift.id),
       to_date: moment($scope.filterDate).format('YYYY-MM-DD'),
-      shift_type: String($scope.shift_type)
+      shift_type: String(shift.trip_type)
       
     }
     console.log('param', param)
+    RouteService.empLandmarkZonesList(param, (res) => {
+      console.log('empLandmark', res)
+    }, (err) => {
+      console.log('empLand err' , err)
+    })
     $scope.filterToggle = true;
   }
 
