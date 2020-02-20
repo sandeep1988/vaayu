@@ -495,13 +495,16 @@
               <div class="col-md-12">
                 <form>
                   <div class="form-group pr-2 selectWrapper">
-                    <select ng-model="zone" class="form-control" placeholder="Select Site" ng-change="zoneFilter()" style="width: 100%;">
+                    <!-- <select ng-model="zone" class="form-control" placeholder="Select Site" ng-change="zoneFilter()" style="width: 100%;" multiple="multiple">
                       <option ng-value="1" class="form-control">Option 1</option>
                       <option ng-value="2" class="form-control">Option 2</option>
                       <option ng-value="3" class="form-control">Option 3</option>
                       <option ng-value="4" class="form-control">Option 4</option>
-                    </select>
-                  </div>
+                    </select> -->
+                    <div ng-dropdown-multiselect="" ng-if="true" options="capacityObj"
+                      selected-model="selectedCapacity" checkboxes="true" class="capacity"
+                      extra-settings="example14settings" validation="required" search-placeholder="Capacity"
+                      validation-result="selectedCapacity"></div>
                 </form>
               </div>
             </div>

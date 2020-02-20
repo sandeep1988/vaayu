@@ -630,6 +630,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         }
 
         $scope.vehicleList = newarray;
+        console.log('vehicleList', $scope.vehicleList)
       } else {
         console.log(res['message']);
       }

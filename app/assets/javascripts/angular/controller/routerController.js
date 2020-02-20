@@ -96,7 +96,27 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.isLoader = false;
-
+  $scope.selectedCapacity = {}
+  $scope.example14settings = {
+    scrollableHeight: '150px',
+    scrollable: true,
+    enableSearch: true,
+    width: '300px'
+  };
+  $scope.capacityObj = [
+    {
+      name: '< 50%',
+      id: 50
+    },
+    {
+      name: '50% - 75%',
+      id: 75
+    },
+    {
+      name: '75% - 100%',
+      id: 100
+    }
+  ]
   $scope.selected_vehicle_status = 'on_duty';
 
   $scope.onVehicleStatusChange = (value) => {
@@ -1353,20 +1373,27 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.onFilter = () => {
     let shift = JSON.parse($scope.selectedShift);
-    let param = {
-      site_id: parseInt($scope.siteId),
-      shift_id: parseInt(shift.id),
-      to_date: moment($scope.filterDate).format('YYYY-MM-DD'),
-      shift_type: String(shift.trip_type)
-      
+    if(shift != null && $scope.siteId && shift.id && $scope.filterDate && shift.trip_type){
+      $scope.filterToggle = true;
+      let param = {
+        site_id: parseInt($scope.siteId),
+        shift_id: parseInt(shift.id),
+        to_date: moment($scope.filterDate).format('YYYY-MM-DD'),
+        shift_type: String(shift.trip_type)
+        
+      }
+      console.log('param', param)
+      RouteService.empLandmarkZonesList(param, (res) => {
+        console.log('empLandmark', res)
+      }, (err) => {
+        console.log('empLand err' , err)
+      })
+    } else {
+      $scope.toggleView = true;
+      ToasterService.showError('Error', 'Unexpected Error!')
     }
-    console.log('param', param)
-    RouteService.empLandmarkZonesList(param, (res) => {
-      console.log('empLandmark', res)
-    }, (err) => {
-      console.log('empLand err' , err)
-    })
-    $scope.filterToggle = true;
+    
+    
   }
 
 
