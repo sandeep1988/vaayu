@@ -164,15 +164,23 @@
                                   name="route" class="tick guard_checkbox"
                                   ng-show="container.status !== 'assign_requested'" ng-if="container.subtype!='unallocated'">
                                 <span class="title_text">TP{{container.tripId}}  </span>
-                                <div custom-select="a.vehicleNumber for a in searchVehicleAsync($searchTerm)" custom-select-options="{onSelect:onVehicleSelect(container)}" ng-model="rut['{{container.routeId}}']"></div>
+
+                                <ui-select ng-model="person.selected" on-select="onSelectCallback($item, $model,container)" title="Choose a vehicle">
+                                  <ui-select-match placeholder="Choose.">{{$select.selected.name}}</ui-select-match>
+                                  <ui-select-choices repeat="person as person in vehicleList | propsFilter: {model: $select.search, vehicleNumber: $select.search}" refresh="onVehicleSearch($select.search)" refresh-delay="400">
+                                    <div ><b>{{person.vehicleNumber}}</b></div>
+                                    <small>
+                                      model: {{person.vehicleType}}-{{person.model}} <br>
+                                    </small>
+                                  </ui-select-choices>
+                                </ui-select>
                               </div>
                             </div>
-                            <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
-                           >
+                            <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'>
                               <div class="employee-cluster-panel-heading-meta">
                                 <div class="employee-cluster-panel-title">
                                   <div class="row">
-                                    <div class="col-md-6 meta-header">
+                                    <div class="col-md-7 meta-header">
                                       <span class="guard-icon"><i class="fa fa-shield"></i></span>
                                         <input type="checkbox" ng-model="container.guard_required" ng-change="checkBoxChanged(container)" ng-disabled="container.guard.length"
                                         name="route" class="tick guard_checkbox">
@@ -185,7 +193,7 @@
                                           {{container.total_time}} Min
                                         </span>
                                     </div>
-                                    <div class="col-md-6 vehicle_type">
+                                    <div class="col-md-5 vehicle_type">
                                       {{container.vehicle_type}} <i class="fa fa-pencil"></i>
                                     </div>
                                   </div>

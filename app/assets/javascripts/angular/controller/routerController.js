@@ -97,15 +97,27 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     $scope.rut = {};
 
-    $scope.onVehicleSelect =function(container){
-      var routeId=$scope.rut["'"+container.routeId+"'"];
-      console.log($scope.rut["'"+container.routeId+"'"]);
-      if(routeId==container.routeId){
+    $scope.itemArray = [
+      {id: 1, name: 'first'},
+      {id: 2, name: 'second'},
+      {id: 3, name: 'third'},
+      {id: 4, name: 'fourth'},
+      {id: 5, name: 'fifth'},
+  ];
+  
+    $scope.onSelectCallback =function(item,model,container){
+
+      console.log(item)
+      console.log(model)
+      console.log(container)
+      // $scope.assignVehicle =$scope.rut['{{container.routeId}}'];
+     
+      if(item){
         var postRouteData=getRoutePostData();
         
         RouteService.constraintCheck(postRouteData,function (response) {
           if(response.success){
-            $scope.assignVehicleOnSelect(container);
+            $scope.assignVehicleOnSelect(container,item);
             return true;
           }else{
             var htmlBody=$scope.returnVehicleHTML(response);
@@ -128,7 +140,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
                       text: 'Proceed',
                       btnClass: 'btn-orange',
                       action: function(scope, button){
-                        scope.assignVehicleOnSelect(container);
+                        scope.assignVehicleOnSelect(container,item);
                         return true;
                       }
                   }
@@ -139,37 +151,38 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       }
     }
 
-    $scope.assignVehicleOnSelect=function(container){
+    $scope.assignVehicleOnSelect=function(container,item){
       var postData = {
-        "vehicleId": container.vehicle.vehicleId,
+        "vehicleId": item.vehicleId,
         "routeId": container.routeId
       };
   
       RouteService.assignVehicle(postData, function (data) {
         if (data['success']) {
-          isAssign = false;
+          $scope.resetRoute();
+          // isAssign = false;
           // ToasterService.clearToast();
-          $scope.toggleView = true;
-          ToasterService.showSuccess('Success', data['msg']);
+          // $scope.toggleView = true;
+          ToasterService.showSuccess('Success', data['message']);
         } else {
           $ngConfirm({
-            title: 'Constraint Failed!',
+            title: 'Error!',
             boxWidth: '40%',
             useBootstrap: false,
-            content:  data['msg'],
+            content:  data['message'],
             scope: $scope,
             buttons: {
                 ok: {
-                  text: 'Revert',
+                  text: 'Ok',
                   btnClass: 'btn-blue',
                   action: function (scope) {
-                  
+                    scope.resetRoute();
                   }
                 }
             }
           });
         }
-        $scope.resetRoute();
+        
       })
   
     }
@@ -421,7 +434,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
     
     RouteService.postVehicleList(postVehicleData, function (res) {
-      console.log('vehicle list', res)
       $scope.vehicleList = res.data;
 
       var allowtypes = [];
