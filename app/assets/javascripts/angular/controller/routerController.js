@@ -419,9 +419,29 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
       driverStatus: $scope.selected_vehicle_status
     }
-    console.log('postVehicleData', postVehicleData)
+    
     RouteService.postVehicleList(postVehicleData, function (res) {
-      $scope.vehicals = res.data;
+      console.log('vehicle list', res)
+      $scope.vehicleList = res.data;
+
+      var allowtypes = [];
+      angular.forEach($scope.vehicleList, function (item) {
+        // item.type = "vehical";
+        item.type = item.vehicleType;
+        if (!allowtypes.includes(item.type)) {
+          allowtypes.push(item.type)
+        }
+      })
+      console.log('allowtypes', allowtypes);
+
+      $scope.vehicals = [
+        {
+          label: "Vehical",
+          allowedTypes: allowtypes,
+          max: allowtypes.length + 1,
+          vehical: $scope.vehicleList
+        }
+      ];
     }, function (error) {
       console.log(error);
     });
