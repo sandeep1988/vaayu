@@ -541,6 +541,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       FinalizeService.query(postdata, (data) => {
         $scope.resetRoute();
         $scope.allRouteSelected=false;
+        $scope.toggleView = true;
+        ToasterService.showError('Success', data['message'])
       }, err => {
         $scope.toggleView = true;
         ToasterService.showError('Error', 'Something went wrong')
@@ -1453,6 +1455,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       console.log('autoallocation response ', data);
       if (data['success']) {
         $scope.routes = data;
+        $scope.toggleView = true;
+        ToasterService.showSuccess('Success', data['message'])
         if ($scope.routes.data) {
           try {
             $scope.toggleView = true;
@@ -1471,6 +1475,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         }
       } else {
         $scope.toggleView = true;
+      ToasterService.showError('Success', data['message']);
       }
     }, function (err) {
       $scope.toggleView = true;
