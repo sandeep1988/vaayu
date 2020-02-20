@@ -98,10 +98,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.isLoader = false;
   $scope.selectedCapacity = {}
   $scope.example14settings = {
-    scrollableHeight: '150px',
-    scrollable: true,
     enableSearch: true,
-    width: '300px'
+    width: '500px'
   };
   $scope.capacityObj = [
     {
@@ -116,7 +114,41 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       name: '75% - 100%',
       id: 100
     }
-  ]
+  ];
+
+  $scope.typeObj = [
+    {
+      name: 'Sedan',
+      id: 1
+    },
+    {
+      name: 'Hatchback',
+      id: 2
+    },
+    {
+      name: 'Suv',
+      id: 3
+    },
+    {
+      name: 'TT',
+      id: 4
+    },
+    {
+      name: 'Bus',
+      id: 5
+    },
+    {
+      name: 'Mini Van',
+      id: 6
+    },
+    {
+      name: 'Truck',
+      id: 7
+    }
+  ];
+
+  $scope.zoneObj = []
+
   $scope.selected_vehicle_status = 'on_duty';
 
   $scope.onVehicleStatusChange = (value) => {
@@ -1384,7 +1416,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       }
       console.log('param', param)
       RouteService.empLandmarkZonesList(param, (res) => {
-        console.log('empLandmark', res)
+        res.forEach((ele) => {
+          $scope.zoneObj.push(ele['zone'])
+        });
+        console.log('empLandmark', res, $scope.zoneObj)
       }, (err) => {
         console.log('empLand err' , err)
       })

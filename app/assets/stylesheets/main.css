@@ -296,8 +296,19 @@
   text-overflow: ellipsis;
 }
 
-.capacity .btn.btn-default{
+.filter-btn .btn.btn-default{
   width: 100%;
   display: block;
+  margin-bottom: 10px;
 }
+
+.filter-btn .btn-group{
+  display: block;
+}
+
+.filter-btn .dropdown-menu.dropdown-menu-form{
+  width: 100%;
+}
+
+
 

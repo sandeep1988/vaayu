@@ -33,7 +33,7 @@ if (document.domain === PROD_OPERATOR_URL) {
     angular.module('app').constant('BASE_URL_API_8005', NODE_API_URL+':8005/api/v1/');
     angular.module('app').constant('BASE_URL_RUBY', 'http://'+SANDBOX_OPERATOR_URL+'/api/v2/'); 
 
-} else if (document.domain === QA_OPERATOR_URL|| document.domain === 'localhost') {
+} else if (document.domain === QA_OPERATOR_URL) {
     let NODE_API_URL = 'http://qaapi.mllvaayu.com';
     angular.module('app').constant('BASE_URL', NODE_API_URL+':8001/api/v1/');
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');

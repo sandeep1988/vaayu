@@ -501,10 +501,21 @@
                       <option ng-value="3" class="form-control">Option 3</option>
                       <option ng-value="4" class="form-control">Option 4</option>
                     </select> -->
-                    <div ng-dropdown-multiselect="" ng-if="true" options="capacityObj"
-                      selected-model="selectedCapacity" checkboxes="true" class="capacity"
+                    <div ng-dropdown-multiselect="" options="capacityObj"
+                      selected-model="selectedCapacity" checkboxes="true" class="filter-btn capacity"
                       extra-settings="example14settings" validation="required" search-placeholder="Capacity"
                       validation-result="selectedCapacity"></div>
+
+                    <div ng-dropdown-multiselect="" options="typeObj"
+                      selected-model="selectedType" checkboxes="true" class="filter-btn type"
+                      extra-settings="example14settings" validation="required" search-placeholder="Type"
+                      validation-result="selectedType"></div>
+
+                    <div ng-dropdown-multiselect="" options="landmarkObj"
+                      selected-model="selectedLandmark" checkboxes="true" class="filter-btn type"
+                      extra-settings="example14settings" validation="required" search-placeholder="Landmark"
+                      validation-result="selectedLandmark"></div>
+                    
                 </form>
               </div>
             </div>
