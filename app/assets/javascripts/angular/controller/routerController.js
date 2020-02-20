@@ -233,7 +233,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.isLoader = false;
-  $scope.selectedCapacity = {}
+  $scope.selectedCapacity = {};
+  $scope.selectedType = {};
+  $scope.selectedLandmark = {};
   $scope.example14settings = {
     enableSearch: true,
     width: '500px'
@@ -284,7 +286,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
   ];
 
-  $scope.zoneObj = []
+  $scope.zoneObj = [];
+  
 
   $scope.selected_vehicle_status = 'on_duty';
 
@@ -595,7 +598,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       let postdata = { routesFinalizeArray: $scope.newFinalizeArray }
       FinalizeService.query(postdata, (data) => {
         $scope.resetRoute();
+        $scope.toggleView = true;
         $scope.allRouteSelected=false;
+        ToasterService.showError('Success', data['message'])
+
       }, err => {
         $scope.toggleView = true;
         ToasterService.showError('Error', 'Something went wrong')
@@ -1511,6 +1517,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         if ($scope.routes.data) {
           try {
             $scope.toggleView = true;
+            ToasterService.showSuccess('Success', data['message'])
             console.log('In try loop');
             // ToasterService.showToast('info', 'Response Received', $scope.routes.data.routes.length + ' Routes found for this shift')
             $scope.originalRoutes = angular.copy($scope.routes.data.routes);
@@ -1519,11 +1526,13 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
             $scope.routes = RouteStaticResponse.emptyResponse;
             $scope.routes.data.routes = [];
             $scope.toggleView = true;
+            ToasterService.showSuccess('Error', data['message'])
             // ToasterService.showToast('info', 'Response Received', 'No Routes found for this shift')
             console.log('error', err)
           }
           $scope.showRouteData()
         }
+
       } else {
         $scope.toggleView = true;
       }
