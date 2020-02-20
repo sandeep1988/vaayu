@@ -107,7 +107,9 @@
 .vayau-routing .pad-8 {
   padding: 0 8px;
 }
-
+.vayau-routing {
+  margin-top:-9px;
+}
 .vayau-routing .card-analytic .text {
   font-family: "Roboto";
   font-weight: 400;
@@ -221,11 +223,13 @@
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   background-color: #ffffff;
+  display: block;
   /* display: inline-block;
   margin-bottom: 10px;
   margin-right: 10px;
   height: max-content; */
 }
+
 
 .fixed-width {
   min-width: 190px !important;
@@ -238,27 +242,33 @@
 }
 
 .vayau-routing .employee-cluster-panel .employee-cluster-panel-heading {
-  height: 41px;
+  height: 28px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   background-color: #394266;
   display: flex;
-  align-items: center;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+  padding-top: 0;
 }
 
 .vayau-routing .employee-cluster-panel .employee-cluster-panel-heading  .title_container {
-  font-family: "Roboto";
+  /* font-family: "Roboto";
   font-weight: 600;
   color: #ffffff;
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding-left: 10px; */
+  font-family: "Roboto";
+  font-weight: 600;
+  color:#ffffff;
   padding-left: 10px;
+  width: 100%;
+  padding-right: 10px;
 }
 .vayau-routing .employee-cluster-panel .employee-list-group .empId {
   text-transform: uppercase;
-  text-decoration: underline;
+  /* text-decoration: underline; */
   font-weight: 600;
 }
 
@@ -322,7 +332,7 @@
   background-color:#ffffff;
   margin-bottom: 5px;
   display: flex;
-  padding: 5px 0px;
+  padding: 2px 0px;
 }
 
 .vayau-routing .employee-cluster-panel .employee-list-group-item.female {
@@ -346,8 +356,8 @@
 .vehicle_assign > .inner-addon{color:#fff;} 
 .vayau-routing .employee-cluster-panel .employee-list-group-item .input-group-addon.addon-prepend {
   width: 35px;
-  height: 38px;
-  padding: 8px;
+  height: 32px;
+  padding: 6px;
   border-top-left-radius: 4px;
   border-bottom-left-radius:4px;
   float:left;
@@ -390,6 +400,7 @@
   align-items: center;
   /* display: flex; */
   /* flex: 1; */
+  font-size:12px !important;
 }
 
 .vayau-routing .employee-cluster-panel .employee-list-group-item .inner-addon {
@@ -414,7 +425,7 @@
 }
 
 .vayau-routing .card-panel .employee-list-group {
-  padding: 10px;
+  padding: 0 10px;
   height: 100%;
   background:#ebecf0;
 }
@@ -426,7 +437,7 @@
 
 .vayau-panel-footer .employee-list-group .employee-list-group-item.vehicle-assign {
   width: 95px;
-  height: 38px;
+  height: 30px;
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   border: solid 0.5px #3597ec;
@@ -436,7 +447,7 @@
 
 .vayau-panel-footer .employee-list-group .employee-list-group-item.vehicle-add {
   width: 115px;
-  height: 38px;
+  height: 30px;
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   border: dashed 0.5px #707070;
@@ -447,8 +458,8 @@
 
 .employee-cluster-panel .employee-cluster-panel-heading-meta {
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
-  background-color:#242432;
-  color:#fff;
+  background-color:#ebecf0;
+  color:#000;
   display: flex;
   height: 35px;
   align-items: center;
@@ -503,7 +514,7 @@
 }
 .vayau-panel-footer .employee-list-group .employee-list-group-item.guard-add {
   width: 95px;
-  height: 38px;
+  height: 30px;
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   /* border: solid 0.5px #707070; */
@@ -514,7 +525,7 @@
 
 .vayau-panel-footer .employee-list-group .employee-list-group-item.guard-assign {
   width: 95px;
-  height: 38px;
+  height: 30px;
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   border: solid 0.5px #707070;
@@ -589,38 +600,39 @@
   background:#ebecf0;
 }
 .vayau-routing .employee-cluster-panel-body .guard-icon {
-  border: 1px solid #fff;
   border-radius: 4px;
-  padding: 2px 3px;
-  background:#14a89e;
-  height: 17px;
-  width: 17px;
+  padding: 3px 3px;
+  background:#242432;
+  height: 15px;
+  width: 15px;
   display: flex;
   align-content: center;
   margin-right: 2px;
+  font-size: 11px;
+  color:#fff;
 }
 .vayau-routing .employee-cluster-panel-body .employee-list-group {
   margin-bottom: 0;
   min-height: 80px;
 }
 .vayau-routing .select_all_wrapper {
-  margin-top:10px !important;
+  margin-top:5px !important;
 }
 .vayau-routing .select_all_wrapper label {
   color:#000 !important;
   font-weight: 600;
   margin-left:4px;
-  font-size: 16px;
+  font-size: 12px;
 }
 .vayau-routing .select_all_wrapper  .hrLine {
-  margin: 8px 0 15px 0;
+  margin: 3px 0 10px 0;
 }
 .kilometer_time_duration {
   font-family: "Roboto";
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 900;
   line-height: 1.5;
-  color: #FFF;
+  color: #000;
 }
 
 .align-center {
@@ -651,7 +663,9 @@
   text-align: left;
   color: #000000;
 }
-
+.btn {
+  font-size:12px !important;
+}
 .btn-close {
   box-shadow: none;
   position: relative;
@@ -855,7 +869,7 @@
 
  .btn-terniary-blue {
   /* opacity: 0.5; */
-  height: 40px;
+  height: 32px;
   border-radius: 4px;
   background-color: #394266 !important;
   font-family: "Roboto";
@@ -913,7 +927,7 @@
 }
 
 .custom-panel-map {
-  width:100% !important;
+  width:210px !important;
   margin-top: 0px;
 }
 
@@ -926,7 +940,7 @@
 }
 
 .custom-panel-map .employee-cluster-panel-heading {
-  height: 41px;
+  height: 28px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   background-color: #394266;
   display: flex;
@@ -942,7 +956,7 @@
 
 .vayau-routing select {
   /* width: 259px; */
-  height: 40px;
+  height: 32px;
   /* opacity: 0.5; */
   color:#000;
   border-radius: 4px;
@@ -968,9 +982,15 @@
   outline: 0;
 }
 .vaayu-dropzone .guard_checkbox {
-  height: 16px;
+  /* height: 16px;
   width: 16px;
   margin-right: 2px;
+  margin-top:0 !important; */
+
+  height: 15px;
+  width: 15px;
+  margin-right: 2px;
+  margin-top: 4px !important;
 }
 /* .vaayu-dropzone {
   -webkit-column-count: 6; 
@@ -1025,7 +1045,7 @@
   .border-bt{border:1px solid #CCC !important;}
   .nav-tabs-new{margin-top: 18px;}
   .date_style{display: flex !important;margin-bottom: 0px;height: 42px;}
-  .data_in_style{height: 40px !important;border: 1px solid #000 !important;}
+  .data_in_style{height: 32px !important;border: 1px solid #000 !important;margin-top:5px;}
   .cut_title{font-size: 16px;font-weight: 500;padding-bottom: 20px;}
   #toast-container > div{padding-left: 45px !important;}
   .action-buttons, .save-button{display: inline-block ;margin-right: 2px !important;}
@@ -1096,12 +1116,107 @@
 
     /* Mesonary Style Goes Here */
   .masonry-brick {
-    margin: 0 8px 8px 0;
+    margin: 0 12px 12px 0;
     display: none;
-    width:200px;
-    float:left;
+    width:210px;
+    /* float:left; */
   }
 
   .masonry-brick.loaded {
       display: block;
   }
+
+  .width-80 {
+    width:80%;
+    float:left;
+  }
+
+  .width-20 {
+    width:20%;
+    float:left;
+  }
+
+  .width-80.mapVisible {
+    width:76% !important;
+    float:left;
+  }
+
+  .width-20.mapVisible {
+    width:24% !important;
+    float:left;
+  }
+  .width80 {
+    width:80% !important;
+    float:left;
+    padding-left: 15px;
+    /* padding-right: 40px; */
+  }
+
+  .width20 {
+    width:20% !important;
+    float:left;
+  }
+
+  /* .tempRoute {
+    width:200px !important;
+  } */
+.bgRed {
+  background: #e67878 !important;
+}
+.bgGreen {
+  background: #394266 !important;
+}
+.bgBlue {
+  background: #14a89e !important;
+}
+
+.vehicle_type {
+  font-size: 9px;
+  font-weight: bold;
+  text-align: right;
+  padding-right: 26px !important;
+  padding-top: 3px;
+  cursor: pointer;
+}
+.employee-cluster-panel-title {
+  width:100% !important;
+}
+
+.fixed-container {
+  position: fixed !important;
+  width: 210px !important;
+  top: 30px !important;
+  left: auto !important;
+}
+
+.vayau-routing .multiselect-parent.dropdown-multiselect .dropdown-toggle {
+  padding: 4px 9px !important;
+  float: right !important;
+  background:transparent !important;
+  color:#fff !important;
+}
+
+.vayau-routing .multiselect-parent.dropdown-multiselect .checkbox {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+.tempRoute .employee-cluster-panel-body .employee-list-group {
+  padding-top: 5px !important;
+}
+.vayau-routing .employee-cluster-panel .employee-cluster-panel-heading .tick.guard_checkbox{
+  position: relative;
+  top:3px;
+}
+.vayau-routing .employee-cluster-panel .employee-cluster-panel-body .tick.guard_checkbox{
+  position: relative;
+  top:-2px;
+}
+.tempRoute .employee-cluster-panel-heading {
+  padding-top: 6px !important;
+}
+.content > .content-body {
+  font-size:12px !important;
+}
+.mt-5 {
+  margin-top:5px;
+}

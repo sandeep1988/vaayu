@@ -6,6 +6,9 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   $scope.baseUrl2 = BASE_URL_8002;
 
   $scope.toggleView = false;
+  $scope.isDownload = false;
+  $scope.isLoader =false;
+  $scope.isGenerateLoader = false;
   $scope.init = function () {
 
     $scope.toggleView = true;
@@ -226,8 +229,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     ToasterService.showError(error, message);
   }
 
-  $scope.isDownload = false;
-  $scope.isLoader =false;
+  
 
   $scope.CheckIsDownloadeble = function () {
     
@@ -365,18 +367,16 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       "shift_type": roster.trip_type // 0 -checkin 1-checout
     }
     console.log('route generate req', postData)
-    $scope.isLoader = true;
-    RouteService.getRoutes(postData,
-      (res) => {
-        console.log('route generate res', res);
+      $scope.isGenerateLoader = true;
+      RouteService.getRoutes(postData,(res) => {
         if (res['success']) {
           $scope.toggleView = true;
-          $scope.isLoader =false;
+          $scope.isGenerateLoader =false;        
           ToasterService.showSuccess('Success', 'Route generated successfully.');
           $scope.updateFilters();
         } else {
           $scope.toggleView = true;
-          $scope.isLoader =false;
+          // $scope.isLoader =false;
           ToasterService.showError('Error', res['message']);
 
           if (res['is_routes_generated'] === false) {
@@ -394,6 +394,22 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
         console.error(error);
         $scope.closeAll();
       });
+
+
+      //  $http({
+      //       url: this.baseUrl2 + 'generateRoutes',
+      //       method: "POST",
+      //       data: postData,
+      //       headers: { 'Content-Type': 'application/json' }
+      //   }).then(function (data) {
+      //     console.log('datata', data);
+      //     $scope.isLoader = false 
+      // }, function(error) {
+      //   console.log(error)
+      // })
+
+
+
   }
 
 

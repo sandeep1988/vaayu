@@ -88,11 +88,19 @@
 //= require AngularJS-Toaster
 //= require angular-bootstrap
 //= require angular/rzslider
+//= require angular/ng-select
 //= require angular/angularjs-dropdown-multiselect
-//= require angular/angular-confirm.min.js
-//= require angular/mesonary-imageload.js
-//= require angular/mesonary.js
-//= require angular/angular-mesonary.js
+//= require angular/angular-confirm
+
+//= require angular/angular-mesonary
+//= require angular/get-size
+//= require angular/ev-emitter
+//= require angular/matches-selector
+//= require angular/utills
+//= require angular/item
+//= require angular/outlayer
+//= require angular/mesonary
+//= require angular/mesonary-imageload
 //= require angular/config
 
 //= require_tree ./angular

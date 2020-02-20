@@ -27,12 +27,12 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
   };
 
   $scope.isSet = function (tabId) {
-
     return $scope.tab === tabId;
   };
 
   $scope.fetchConstraintList = (id) => {
     $scope.selectedSiteId=id;
+    console.log('selectedSiteId',$scope.selectedSiteId);
     console.log(SessionService.uid);
     console.log(SessionService.access_token);
     console.log(SessionService.client);
@@ -66,6 +66,12 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
       console.log(er)
       // ToasterService.showError('Error', 'Something went wrong, Try again later.');
     });
+
+    ConstraintService.getConfigCutoff({id}, (response) => {
+      console.log('Response: ', response)
+    }), (error) => {
+      console.log('Error: ', error)
+    }
 
   }
 
@@ -142,5 +148,38 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
       // ToasterService.showError('Error', location['message']);
     
     });
+  }
+
+  $scope.onSubmit = () => {
+    let params = {}
+    if(!$scope.selectedSiteId){
+      ToasterService.showError('Error', 'Please select a site');
+      return false;
+    }
+    if($scope.we_checkin && $scope.we_checkout && $scope.wd_checkin && $scope.wd_checkout){
+      params['site_id'] = $scope.selectedSiteId;
+      params['WE_cutoff_checkin'] = {
+        value: $scope.we_checkin
+      }
+      params['WE_cutoff_checkout'] = {
+        value: $scope.we_checkout
+      }
+      params['WD_cutoff_checkin'] = {
+        value: $scope.wd_checkin
+      }
+      params['WD_cutoff_checkout'] = {
+        value: $scope.wd_checkout,
+        display_name: 'Cutoff time for weekday Checkout Shift'
+      }
+      console.log('params', params)
+      ConstraintService.postConfigCutoff(params, (response) => {
+        console.log(response)
+        if(!response['success']){
+          ToasterService.showError('Error', response['errors']['errorMessage'])
+        }
+      }, (error) => {
+        console.log(error)
+      })
+    }
   }
 });

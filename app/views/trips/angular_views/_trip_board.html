@@ -239,8 +239,7 @@
                   </tr>
                 </thead>
                 <tbody class="pop-table-body">
-                  <tr class="" ng-repeat="item in modelData.employees_nodes_addresses track by $index"
-                    ng-class="{'panic':item.is_panic}">
+                  <tr class="" ng-repeat="item in modelData.employees_nodes_addresses track by $index" ng-class="{'panic':item.is_panic}">
                     <td> 
                         <!-- <input type="checkbox" ng-checked="item.empCheckInStatus=='checked'" ng-disabled="item.empCheckInStatus=='checked'"
                           name="route" class="tick" style="height: 15px; width: 15px;"> -->
@@ -252,7 +251,7 @@
                             <i class="fa fa-times" style="color: red;" aria-hidden="true" ng-if="item.empCheckInStatus=='missed'"></i>
                             <span class="tooltiptext">No Show</span>
                           </div>
-                  </td>
+                    </td>
                     <td>{{item.empName}}</td>
                     <td>{{item.eta}}</td>
                     <td><button ng-click="panicCallSesion(item.empId,'Employee')"

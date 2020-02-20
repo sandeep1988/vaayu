@@ -6,6 +6,33 @@ angular.module('app').directive('setHeight', function ($window) {
     }
   }
 })
+angular.module('app').directive("scroll", function ($window) {
+  return function(scope, element, attrs) {
+    
+      angular.element($window).bind("scroll", function() {
+          if (this.pageYOffset >= 250) {
+               scope.boolChangeClass = true;
+           } else {
+               scope.boolChangeClass = false;
+           }
+          scope.$apply();
+      });
+  };
+});
+
+angular.module('app').directive("scroll", function ($window) {
+  return function(scope, element, attrs) {
+    
+      angular.element($window).bind("scroll", function() {
+          if (this.pageYOffset >= 250) {
+               scope.boolChangeClass = true;
+           } else {
+               scope.boolChangeClass = false;
+           }
+          scope.$apply();
+      });
+  };
+});
 
 angular.module('app')
   .filter('range', function () {
@@ -14,6 +41,37 @@ angular.module('app')
         return item[property] >= min && item[property] <= max;
       });
     };
+  });
+
+  angular.module('app').filter('propsFilter', function() {
+    return function(items, props) {
+      var out = [];
+  
+      if (angular.isArray(items)) {
+        items.forEach(function(item) {
+          var itemMatches = false;
+  
+          var keys = Object.keys(props);
+          for (var i = 0; i < keys.length; i++) {
+            var prop = keys[i];
+            var text = props[prop].toLowerCase();
+            if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+              itemMatches = true;
+              break;
+            }
+          }
+  
+          if (itemMatches) {
+            out.push(item);
+          }
+        });
+      } else {
+        // Let the output be the input untouched
+        out = items;
+      }
+  
+      return out;
+    }
   });
 
 app.directive('focusMe', function ($timeout) {
@@ -37,6 +95,85 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   AutoAllocationService,
   FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm) {
 
+    $scope.rut = {};
+
+    $scope.onVehicleSelect =function(container){
+      var routeId=$scope.rut["'"+container.routeId+"'"];
+      console.log($scope.rut["'"+container.routeId+"'"]);
+      if(routeId==container.routeId){
+        var postRouteData=getRoutePostData();
+        
+        RouteService.constraintCheck(postRouteData,function (response) {
+          if(response.success){
+            $scope.assignVehicleOnSelect(container);
+            return true;
+          }else{
+            var htmlBody=$scope.returnVehicleHTML(response);
+            
+            $ngConfirm({
+              title: 'Constraint Failed!',
+              boxWidth: '40%',
+              useBootstrap: false,
+              content: htmlBody,
+              scope: $scope,
+              buttons: {
+                  cancel: {
+                    text: 'Revert',
+                    btnClass: 'btn-blue',
+                    action: function (scope) {
+                    
+                    }
+                  },
+                  procced: {
+                      text: 'Proceed',
+                      btnClass: 'btn-orange',
+                      action: function(scope, button){
+                        scope.assignVehicleOnSelect(container);
+                        return true;
+                      }
+                  }
+              }
+            });
+          }
+        });
+      }
+    }
+
+    $scope.assignVehicleOnSelect=function(container){
+      var postData = {
+        "vehicleId": container.vehicle.vehicleId,
+        "routeId": container.routeId
+      };
+  
+      RouteService.assignVehicle(postData, function (data) {
+        if (data['success']) {
+          isAssign = false;
+          // ToasterService.clearToast();
+          $scope.toggleView = true;
+          ToasterService.showSuccess('Success', data['msg']);
+        } else {
+          $ngConfirm({
+            title: 'Constraint Failed!',
+            boxWidth: '40%',
+            useBootstrap: false,
+            content:  data['msg'],
+            scope: $scope,
+            buttons: {
+                ok: {
+                  text: 'Revert',
+                  btnClass: 'btn-blue',
+                  action: function (scope) {
+                  
+                  }
+                }
+            }
+          });
+        }
+        $scope.resetRoute();
+      })
+  
+    }
+  
 
   // $scope.toggleView = false;
   $scope.disableBtn = false;
@@ -227,9 +364,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     // });
 
 
-
-
-
+    $scope.getStyleInPx =function(capacity){
+      var multiplier =(capacity % 4) > 0 ? 1 : 0
+      return {
+        'min-height': (Math.trunc(capacity/4)+ multiplier )*110+'px'
+      }
+    }
 
     RosterService.getAllSiteList(function (data) {
       $scope.siteList = data.data.list;
@@ -297,9 +437,33 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
   }
 
-  $scope.getVehicleListForSite = function (siteId, shiftId, shiftType) {
 
-    // $scope.toggleView = false;
+  $scope.searchVehicleAsync = (plateNumber) => {
+    $scope.plateNumber = plateNumber;
+
+    if(plateNumber){
+      let shift = JSON.parse($scope.selectedShift);
+
+      let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber, to_date: moment($scope.filterDate).format('YYYY-MM-DD') };
+  
+      return RouteService.searchVechicle(params).$promise.then(function (result) {
+          return result.data;
+      });
+    }else{
+      let postVehicleData = {
+        siteId:$scope.siteId, shiftId:$scope.selectedShift.id, shiftType:$scope.selectedShift.trip_type,
+        selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
+        driverStatus: $scope.selected_vehicle_status
+      }
+      
+      return RouteService.postVehicleList(postVehicleData).$promise.then(function (result) {
+        return result.data;
+      });
+    }
+  
+  }
+
+  $scope.getVehicleListForSite = function (siteId, shiftId, shiftType) {
 
     if (siteId == null || shiftId == null || shiftType == null) {
       return;
@@ -312,27 +476,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
     console.log('postVehicleData', postVehicleData)
     RouteService.postVehicleList(postVehicleData, function (res) {
-      console.log('vehicle list', res)
-      $scope.vehicleList = res.data;
-
-      var allowtypes = [];
-      angular.forEach($scope.vehicleList, function (item) {
-        // item.type = "vehical";
-        item.type = item.vehicleType;
-        if (!allowtypes.includes(item.type)) {
-          allowtypes.push(item.type)
-        }
-      })
-      console.log('allowtypes', allowtypes);
-
-      $scope.vehicals = [
-        {
-          label: "Vehical",
-          allowedTypes: allowtypes,
-          max: allowtypes.length + 1,
-          vehical: $scope.vehicleList
-        }
-      ];
+      return vehicleList = res.data;
     }, function (error) {
       console.log(error);
     });
@@ -469,6 +613,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     RouteUpdateService.query(postData, function (res) {
       $scope.isDisabled = false;
+      $scope.routeChangedIds=[];
       if (res['success']) {
         $scope.resetRoute();
         $scope.toggleView = true;
@@ -931,6 +1076,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.isShowMap =false;
   $scope.toggleMap =function() {
+    $scope.resetRoute();
     if($scope.isShowMap){
       $scope.isShowMap=false;
     }else{
@@ -971,6 +1117,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
                   btnClass: 'btn-blue',
                   action: function (scope) {
                     scope.model2=scope.newModel;
+                    // scope.routeChangedIds = [];
+                    scope.resetRoute();
                     $ngConfirm("Reverted successfully")
                     // return false;
                   }
@@ -1217,6 +1365,16 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
   };
 
+  $scope.getColor =function(container) {
+    if(container.is_distance_exceeded=="N" && container.is_time_exceeded=="N" && container.vehicle_utilization<100){
+      return 1;
+    }if(container.is_distance_exceeded=="Y" && container.is_time_exceeded=="Y" && !container.guard.length){
+      return 2;
+    }if(container.is_distance_exceeded=="N" && container.is_time_exceeded=="N" && container.total_seats>=container.employees.length && container.guard.length){
+      return 3;
+    }
+  }
+
   $scope.VehicleAssignCallback=function(item,container){
     var postData = {
       "vehicleId": item.vehicleId,
@@ -1228,11 +1386,24 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         isAssign = false;
         // ToasterService.clearToast();
         $scope.toggleView = true;
-        ToasterService.showSuccess('Success', data['msg']);
+        ToasterService.showSuccess('Success', data['message']);
       } else {
-        // ToasterService.clearToast();
-        $scope.toggleView = true;
-        ToasterService.showError('Error', data['msg']);
+        $ngConfirm({
+          title: 'Constraint Failed!',
+          boxWidth: '40%',
+          useBootstrap: false,
+          content:  data['msg'],
+          scope: $scope,
+          buttons: {
+              ok: {
+                text: 'Revert',
+                btnClass: 'btn-blue',
+                action: function (scope) {
+                
+                }
+              }
+          }
+        });
       }
       $scope.resetRoute();
     })
@@ -1375,7 +1546,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.$watch('vehicals', function (vehicals) {
     $scope.modelAsJson = angular.toJson(vehicals, true);
   }, true);
-
 
   $scope.resetSidebar = function () {
     $scope.isVehicalSidebarView = false;

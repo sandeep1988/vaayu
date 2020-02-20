@@ -1,6 +1,10 @@
 <div class="vayau-routing vayau-roster" ng-controller="rosterCtrl"  ng-init="init()">
 
-  <div class="loader-wrapper" ng-if="isLoader">
+  <div class="loader-wrapper" ng-show="isLoader">
+    <div class="ng-loader" ></div>
+  </div>
+
+  <div class="loader-wrapper" ng-show="isGenerateLoader">
     <div class="ng-loader" ></div>
   </div>
   

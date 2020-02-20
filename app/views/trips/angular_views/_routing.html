@@ -1,3 +1,5 @@
+
+
 <div class="vayau-routing" ng-init="init()" ng-controller='routeCtrl'>
   
   <div class="loader-wrapper" ng-if="isLoader">
@@ -52,11 +54,12 @@
 
       <div class="col-md-4">
 
-        <div class="btn-toolbar float-right pad-8" role="toolbar">
+        <div class="btn-toolbar float-right pad-8 mt-5" role="toolbar">
 
           <div  style="float: right;">
             <button type="button" ng-click="onFilter()" class="btn btn-terniary-blue">Filter</button>
-              <button type="button" ng-click="toggleMap()" class="btn btn-terniary-blue margin-right margin-left">Show Map</button>
+              <button type="button" ng-click="autoAllocate()" class="btn btn-terniary-blue margin-right">Auto Allocate</button>
+              <button type="button" ng-click="toggleMap()" class="btn btn-terniary-blue margin-right"><span ng-if="isShowMap">Hide Map</span><span ng-if="!isShowMap">Show Map</span></button>
               <button type="button" ng-click="finalizeRoutes()" class="btn btn-terniary-blue">Finalize Route</button>
           </div>
           <!-- <div class="btn-group" role="group">
@@ -128,7 +131,7 @@
             <li ng-class="{active:isSet(1)}"><a href ng-click="setTab(1)">ALL ROUTES</a></li>
             <li ng-class="{active:isSet(2)}"><a href ng-click="setTab(2)">ALLOCATED ROUTES</a></li>
             <li ng-class="{active:isSet(3)}"><a href ng-click="setTab(3)">NOT ALLOCATED</a></li>
-            <div class="btn-toolbar btn-group-toolbar" role="toolbar">
+            <div class="btn-toolbar btn-group-toolbar " role="toolbar">
               <div class="btn-group" role="group">
                 <button type="button" ng-click="autoAllocate()" class="btn btn-terniary">Auto Allocate</button>
               </div>
@@ -149,13 +152,12 @@
             <hr class="hrLine">
         </div>
 
-        <div ng-class="isShowMap ? 'col-md-8' : 'col-md-12 pright-0'">
+        <div ng-class="isShowMap ? 'width80' : 'col-md-12 pright-0'">
             <div class="card-panel">
                 <div ng-repeat="containers in model2">
                   <div class="vaayu-dropzone">
-                      <div ng-class="isShowMap ? 'col-md-9' : 'col-md-10'">
-                        <masonry reload-on-resize masonry-options="{ transitionDuration: '0.4s' }"  preserve-order>
-                          <div ng-repeat="container in containers" masonry-brick no-drag  ng-class="{'masonry-brick': true}" class="employee-cluster-panel" ng-if="container.subtype!='unallocated'">
+                        <div class="width-80" ng-class="{'mapVisible':isShowMap}"  masonry="" mesonry-option="{gutter: 10}"  load-images="false" reload-on-resize>
+                          <div ng-repeat-start="container in containers track by $index"  no-drag class="employee-cluster-panel masonry-brick" ng-if="container.subtype!='unallocated'">
                             <div class="employee-cluster-panel-heading"
                               ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
                               <div class="title_container">
@@ -166,7 +168,7 @@
                               </div>
                             </div>
                             <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
-                              style="cursor: pointer">
+                           >
                               <div class="employee-cluster-panel-heading-meta">
                                 <div class="employee-cluster-panel-title">
                                   <div class="row">
@@ -191,8 +193,7 @@
                                 dnd-horizontal-list="true" dnd-external-sources="true" dnd-effect-allowed="all"
                                 dnd-dragover="dragoverCallback(container,index, external, type)"
                                 dnd-drop="dropItemCallback(container,index, item, external, type)"
-                              
-                                class="itemlist">
+                                ng-style="getStyleInPx(container.total_seats)">
                                 <li ng-if="container.employees.length" class="input-group employee-list-group-item" ng-class="{'male': item.gender=='M', 'female': item.gender=='F'}"
                                   ng-repeat="item in container.employees" dnd-draggable="item" dnd-type="'item'"
                                   dnd-dragstart="dragoverCallback(container,index, external, type)"
@@ -208,7 +209,7 @@
                                 </li>
                               </ul>
                             </div>
-                            <div class="vayau-panel-footer" ng-if="container.employees.length">
+                            <div class="vayau-panel-footer">
                               <div class="row">
                                 <div class="col-md-6 pad-right-0">
                                   <ul class="employee-list-group" dnd-list="container.vehicle"
@@ -299,13 +300,13 @@
                               </div>
                             </div>
                           </div>
-                          <div no-drag class="employee-cluster-panel" masonry-brick  ng-class="{'masonry-brick': true}" ng-if="originalRoutes.length">
+
+                          <div no-drag ng-repeat-end class="employee-cluster-panel tempRoute masonry-brick"  ng-if="model2.length && originalRoutes.length && $last">
                             <div class="employee-cluster-panel-heading">
                               <div class="title_container" >
                                 <span class="title_text"> <i class="fa fa-plus"></i> Add Route </span>
                               </div>
                             </div>
-        
                             <div class="employee-cluster-panel-body">
                               <ul class="employee-list-group itemlist" style="padding-bottom: 20px;">
                                 <li>
@@ -318,11 +319,10 @@
                               </ul>
                             </div>
                           </div>
-                        </masonry> 
-                      </div>
-                      <div ng-class="isShowMap ? 'col-md-3' : 'col-md-2'">
-                        <masonry reload-on-resize masonry-options="{ transitionDuration: '0.4s' }"  preserve-order>
-                          <div ng-repeat="container in containers" no-drag masonry-brick class="employee-cluster-panel" ng-class="{'masonry-brick': true}" ng-if="container.subtype=='unallocated'">
+                        </div> 
+                   
+                        <div class="width-20"  ng-class="{'mapVisible':isShowMap}" masonry="">
+                          <div scroll id="page" ng-class="{'fixed-container':boolChangeClass}" ng-repeat="container in containers" no-drag  class="employee-cluster-panel masonry-brick tempRoute" ng-if="container.subtype=='unallocated'">
                             <div class="employee-cluster-panel-heading"
                               ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
                               <div class="title_container">
@@ -331,14 +331,12 @@
                             </div>
 
                             <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
-                              style="cursor: pointer">
+                              >
 
                               <ul class="employee-list-group" dnd-list="container.employees" dnd-allowed-types="['item']"
                                 dnd-horizontal-list="true" dnd-external-sources="true" dnd-effect-allowed="all"
                                 dnd-dragover="dragoverCallback(container,index, external, type)"
-                                dnd-drop="dropItemCallback(container,index, item, external, type)"
-                              
-                                class="itemlist">
+                                dnd-drop="dropItemCallback(container,index, item, external, type)" style="min-height: 400px;">
                                 <li ng-if="container.employees.length" class="input-group employee-list-group-item" ng-class="{'male': item.gender=='M', 'female': item.gender=='F'}"
                                   ng-repeat="item in container.employees" dnd-draggable="item" dnd-type="'item'"
                                   dnd-dragstart="dragoverCallback(container,index, external, type)"
@@ -355,15 +353,14 @@
                               </ul>
                             </div>
                           </div>
-                        </masonry>
-                      </div>
+                        </div>
                   </div>
                 </div>
             </div>
         </div>
         
-        <div ng-init="initMap()" ng-class="isShowMap ? 'col-md-4' : 'ng-hide'">
-          <div class="custom-panel-map">
+        <div ng-init="initMap()" ng-class="isShowMap ? 'width20' : 'ng-hide'">
+          <div class="custom-panel-map" scroll id="page" ng-class="{'fixed-container':boolChangeClass}">
             <div class="employee-cluster-panel-heading">
               <div class="employee-cluster-panel-title">
                 <span class="travel-group-name" style="color:#fff;">Selected Map View</span>
@@ -524,7 +521,7 @@
     </div>
 
     <div class="row vayau-sidebar vehical-sidebar" ng-if="isVehicalSidebarView">
-      <div ng-repeat="list in vehicals" class="col-md-12">
+      <div  class="col-md-12">
         <div class="vaayu-sidebar-panel">
           <div class="vaayu-sidebar-heading">
             <div class="row">
@@ -573,7 +570,6 @@
           </form>
 
           <div class="vaayu-sidebar-body clearfix form-group" set-height style="overflow-y: auto">
-
             <div class="row form-group">
               <div class="col-md-6">
                 <span class="driver-List-post-filter">
@@ -585,36 +581,38 @@
               </div>
             </div>
 
-            <ul class="employee-list-group" dnd-list="list.vehical" dnd-effect-allowed="copy"
-              dnd-allowed-types="list.allowedTypes" dnd-disable-if="list.vehical.length >= 1"
-              dnd-dragover="dragoverVehicleCallback(list,index, external, type)"
-              dnd-drop="dropVehicleCallback(list,index, item, external, type)">
-              <li ng-repeat="vehical in list.vehical" dnd-draggable="vehical" no-drop
-                dnd-effect-allowed="move" dnd-type="vehical.type" dnd-disable-if="vehical.type == 'unknown'"
-                dnd-moved="list.vehical.splice($index, 1)"
-                class="background-{{vehical.type}} input-group employee-list-group-item">
+            <div ng-repeat="list in vehicals">
+                <ul class="employee-list-group" dnd-list="list.vehical" dnd-effect-allowed="copy"
+                  dnd-allowed-types="list.allowedTypes" dnd-disable-if="list.vehical.length >= 1"
+                  dnd-dragover="dragoverVehicleCallback(list,index, external, type)"
+                  dnd-drop="dropVehicleCallback(list,index, item, external, type)">
+                  <li ng-repeat="vehical in list.vehical" dnd-draggable="vehical" no-drop
+                    dnd-effect-allowed="move" dnd-type="vehical.type" dnd-disable-if="vehical.type == 'unknown'"
+                    dnd-moved="list.vehical.splice($index, 1)"
+                    class="background-{{vehical.type}} input-group employee-list-group-item">
 
-                <span class="input-group-addon addon-prepend">
-                  <div class="inner-addon">
-                    <i class="fa fa-car"></i>
-                  </div>
-                </span>
+                    <span class="input-group-addon addon-prepend">
+                      <div class="inner-addon">
+                        <i class="fa fa-car"></i>
+                      </div>
+                    </span>
 
-                <div class="inner-text">
-                  <div class="text-medium"> {{vehical.vehicleNumber}} - <i ng-if="vehical.driverStatus"> ({{vehical.driverStatus.toUpperCase()}}) </i>
-                    <i ng-if="!vehical.driverStatus"> ({{selected_vehicle_status.toUpperCase()}}) </i></div>
-                  <div class="text-big"> {{vehical.vehicleType}} - {{vehical.model}}</div>
-                </div>
+                    <div class="inner-text">
+                      <div class="text-medium"> {{vehical.vehicleNumber}} - <i ng-if="vehical.driverStatus"> ({{vehical.driverStatus.toUpperCase()}}) </i>
+                        <i ng-if="!vehical.driverStatus"> ({{selected_vehicle_status.toUpperCase()}}) </i></div>
+                      <div class="text-big"> {{vehical.vehicleType}} - {{vehical.model}}</div>
+                    </div>
 
-                <div class="input-group-addon addon-append">
-                  <i class="fa fa-bars" aria-hidden="true"></i>
-                </div>
-              </li>
+                    <div class="input-group-addon addon-append">
+                      <i class="fa fa-bars" aria-hidden="true"></i>
+                    </div>
+                  </li>
 
-              <li class="dndPlaceholder">
-                Drop any <strong>{{list.allowedTypes.join(' or ')}}</strong> here
-              </li>
-            </ul>
+                  <li class="dndPlaceholder">
+                    Drop any <strong>{{list.allowedTypes.join(' or ')}}</strong> here
+                  </li>
+                </ul>
+            </div>
           </div>
           <div class="row vaayu-sidebar-footer">
             <div class="col-md-6 pr-2">
