@@ -421,7 +421,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
     console.log('postVehicleData', postVehicleData)
     RouteService.postVehicleList(postVehicleData, function (res) {
-      return vehicleList = res.data;
+      $scope.vehicals = res.data;
     }, function (error) {
       console.log(error);
     });

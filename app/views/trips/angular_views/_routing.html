@@ -156,14 +156,15 @@
                 <div ng-repeat="containers in model2">
                   <div class="vaayu-dropzone">
                         <div class="width-80" ng-class="{'mapVisible':isShowMap}"  masonry="" mesonry-option="{gutter: 10}"  load-images="false" reload-on-resize>
-                          <div ng-repeat-start="container in containers track by $index"  no-drag class="employee-cluster-panel masonry-brick" ng-if="container.subtype!='unallocated'">
+                          <div ng-repeat-start="container in containers track by $index"  no-drag class="employee-cluster-panel masonry-brick" ng-if="container.subtype!='unallocated'"  ng-class="{'bgBlue':getColor(container)==1,'bgRed':getColor(container)==2,'bgGreen':getColor(container)==3}">
                             <div class="employee-cluster-panel-heading"
                               ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
                               <div class="title_container">
                                 <input type="checkbox" ng-change="selectRoute(container)" ng-model="container.route_selected"
                                   name="route" class="tick guard_checkbox"
                                   ng-show="container.status !== 'assign_requested'" ng-if="container.subtype!='unallocated'">
-                                <span class="title_text">TP{{container.tripId+' | '+container.vehicle_type}}  </span>
+                                <span class="title_text">TP{{container.tripId}}  </span>
+                                <div custom-select="a.vehicleNumber for a in searchVehicleAsync($searchTerm)" custom-select-options="{onSelect:onVehicleSelect(container)}" ng-model="rut['{{container.routeId}}']"></div>
                               </div>
                             </div>
                             <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
@@ -171,7 +172,7 @@
                               <div class="employee-cluster-panel-heading-meta">
                                 <div class="employee-cluster-panel-title">
                                   <div class="row">
-                                    <div class="col-md-12 meta-header">
+                                    <div class="col-md-6 meta-header">
                                       <span class="guard-icon"><i class="fa fa-shield"></i></span>
                                         <input type="checkbox" ng-model="container.guard_required" ng-change="checkBoxChanged(container)" ng-disabled="container.guard.length"
                                         name="route" class="tick guard_checkbox">
@@ -183,6 +184,9 @@
                                       <span class="kilometer_time_duration" ng-class="{'bgRed':checkSiteTime(container.total_time)}">
                                           {{container.total_time}} Min
                                         </span>
+                                    </div>
+                                    <div class="col-md-6 vehicle_type">
+                                      {{container.vehicle_type}} <i class="fa fa-pencil"></i>
                                     </div>
                                   </div>
                                 </div>
@@ -476,7 +480,7 @@
     </div>
 
     <div class="row vayau-sidebar vehical-sidebar" ng-if="isVehicalSidebarView">
-      <div ng-repeat="list in vehicals" class="col-md-12">
+      <div  class="col-md-12">
         <div class="vaayu-sidebar-panel">
           <div class="vaayu-sidebar-heading">
             <div class="row">
@@ -537,36 +541,38 @@
               </div>
             </div>
 
-            <ul class="employee-list-group" dnd-list="list.vehical" dnd-effect-allowed="copy"
-              dnd-allowed-types="list.allowedTypes" dnd-disable-if="list.vehical.length >= 1"
-              dnd-dragover="dragoverVehicleCallback(list,index, external, type)"
-              dnd-drop="dropVehicleCallback(list,index, item, external, type)">
-              <li ng-repeat="vehical in list.vehical" dnd-draggable="vehical" no-drop
-                dnd-effect-allowed="move" dnd-type="vehical.type" dnd-disable-if="vehical.type == 'unknown'"
-                dnd-moved="list.vehical.splice($index, 1)"
-                class="background-{{vehical.type}} input-group employee-list-group-item">
+            <div ng-repeat="list in vehicals">
+                <ul class="employee-list-group" dnd-list="list.vehical" dnd-effect-allowed="copy"
+                dnd-allowed-types="list.allowedTypes" dnd-disable-if="list.vehical.length >= 1"
+                dnd-dragover="dragoverVehicleCallback(list,index, external, type)"
+                dnd-drop="dropVehicleCallback(list,index, item, external, type)">
+                <li ng-repeat="vehical in list.vehical" dnd-draggable="vehical" no-drop
+                  dnd-effect-allowed="move" dnd-type="vehical.type" dnd-disable-if="vehical.type == 'unknown'"
+                  dnd-moved="list.vehical.splice($index, 1)"
+                  class="background-{{vehical.type}} input-group employee-list-group-item">
 
-                <span class="input-group-addon addon-prepend">
-                  <div class="inner-addon">
-                    <i class="fa fa-car"></i>
+                  <span class="input-group-addon addon-prepend">
+                    <div class="inner-addon">
+                      <i class="fa fa-car"></i>
+                    </div>
+                  </span>
+
+                  <div class="inner-text">
+                    <div class="text-medium"> {{vehical.vehicleNumber}} - <i ng-if="vehical.driverStatus"> ({{vehical.driverStatus.toUpperCase()}}) </i>
+                      <i ng-if="!vehical.driverStatus"> ({{selected_vehicle_status.toUpperCase()}}) </i></div>
+                    <div class="text-big"> {{vehical.vehicleType}} - {{vehical.model}}</div>
                   </div>
-                </span>
 
-                <div class="inner-text">
-                  <div class="text-medium"> {{vehical.vehicleNumber}} - <i ng-if="vehical.driverStatus"> ({{vehical.driverStatus.toUpperCase()}}) </i>
-                    <i ng-if="!vehical.driverStatus"> ({{selected_vehicle_status.toUpperCase()}}) </i></div>
-                  <div class="text-big"> {{vehical.vehicleType}} - {{vehical.model}}</div>
-                </div>
+                  <div class="input-group-addon addon-append">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                  </div>
+                </li>
 
-                <div class="input-group-addon addon-append">
-                  <i class="fa fa-bars" aria-hidden="true"></i>
-                </div>
-              </li>
-
-              <li class="dndPlaceholder">
-                Drop any <strong>{{list.allowedTypes.join(' or ')}}</strong> here
-              </li>
-            </ul>
+                <li class="dndPlaceholder">
+                  Drop any <strong>{{list.allowedTypes.join(' or ')}}</strong> here
+                </li>
+                </ul>
+            </div>
           </div>
           <div class="row vaayu-sidebar-footer">
             <div class="col-md-6 pr-2">

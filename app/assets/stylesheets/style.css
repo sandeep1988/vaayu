@@ -240,7 +240,7 @@
 }
 
 .vayau-routing .employee-cluster-panel .employee-cluster-panel-heading {
-  height: 28px;
+  height: 30px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   background-color: #394266;
   display: flex;
@@ -1217,4 +1217,16 @@
 }
 .mt-5 {
   margin-top:5px;
+}
+.custom-select {
+  position: relative;
+  vertical-align: middle;
+  font-size: 10px;
+  width: 100px;
+  float: right;
+  margin-top: 1.3px;
+}
+.custom-select > a.dropdown-toggle {
+  line-height: 24px;
+  height: 25px;
 }
