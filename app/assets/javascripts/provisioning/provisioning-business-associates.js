@@ -49,13 +49,19 @@ $(function () {
                     {
                         data: null,
                         render: function (data) {
+                          console.log(data);
                             // return '<a style="cursor:pointer" id="editBa" class="editor_edit" data-remote="true" data-ba_id="' + data.id + '">' + data.legal_name + '</a>'
                             return  data.legal_name 
                         }
                     },
                     {data: "hq_address"},
                     {data: "business_type"},
-                    {data: "name"},
+                    {
+                        data: null,
+                        render: function (data) {
+                          return  data.name 
+                        }
+                    },
                     {data: "phone"},
                     {data: "email"},
                     {
