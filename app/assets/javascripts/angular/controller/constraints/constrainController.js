@@ -157,7 +157,7 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
       return false;
     }
     if($scope.we_checkin && $scope.we_checkout && $scope.wd_checkin && $scope.wd_checkout){
-      params['site_id'] = $scope.selectedSiteId;
+      params['site_id'] = Number($scope.selectedSiteId);
       params['WE_cutoff_checkin'] = {
         value: $scope.we_checkin
       }
@@ -176,6 +176,8 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
         console.log(response)
         if(!response['success']){
           ToasterService.showError('Error', response['errors']['errorMessage'])
+        } else {
+          ToasterService.showSuccess('Success', 'Cut-off time submitted successfully!')
         }
       }, (error) => {
         console.log(error)
