@@ -2,17 +2,41 @@ default: &default
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: <%= ENV['DATABASE_NAME'] %>
+  database: moove_db #<%= ENV['DATABASE_NAME'] %>
   pool: <%= ENV.fetch('RAILS_MAX_THREADS') { 5 } %>
-  username: <%= ENV['DATABASE_USERNAME'] %>
-  password: <%= ENV['DATABASE_PASSWORD'] %>
-  host: <%= ENV['DATABASE_HOST'] %>
+  username: MOOVE_DEV #<%= ENV['DATABASE_USERNAME'] %>
+  password: NG$Pir7ySMJ9m&p9 #<%= ENV['DATABASE_PASSWORD'] %>
+  host: vaayu-prod.cjny84emnsh9.ap-south-1.rds.amazonaws.com #<%= ENV['DATABASE_HOST'] %>
   port: <%= ENV['DATABASE_PORT'] %>
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
 
  
 
 development:
   <<: *default
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
 
  
 
@@ -22,13 +46,43 @@ test:
 
  
 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
 production:
   <<: *default
 
  
 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
 staging:
   <<: *default
+
+ 
+
+ 
+
+ 
 
 
 # default: &default
@@ -43,8 +97,20 @@ staging:
 #   port: <%= ENV['DATABASE_PORT'] %>
  
 
+ 
+
+ 
+
+ 
+
 # development:
 #   <<: *default
+
+ 
+
+ 
+
+ 
 
 
 # test:
@@ -53,8 +119,32 @@ staging:
 
  
 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
 # production:
 #   <<: *default
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
 
  
 
