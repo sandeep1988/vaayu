@@ -201,7 +201,9 @@
                                         </span>
                                     </div>
                                     <div class="col-md-5 vehicle_type">
-                                      {{container.vehicle_type}} <i class="fa fa-pencil"></i>
+                                      <span ng-if="container.vehicle_type=='HATCHBACK'">HB</span>
+                                      <span ng-if="container.vehicle_type!='HATCHBACK'">{{container.vehicle_type}}</span>
+                                       <i class="fa fa-pencil"></i>
                                     </div>
                                   </div>
                                 </div>
