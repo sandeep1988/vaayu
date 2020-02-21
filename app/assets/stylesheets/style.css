@@ -1231,14 +1231,28 @@
   height: 25px;
 }
 
-.ui-select-container.ui-select-bootstrap {
+.employee-cluster-panel-heading .ui-select-container.ui-select-bootstrap {
   float:right;
 }
-.ui-select-container.ui-select-bootstrap .form-control {
+/* .vayau-panel-footer .ui-select-container .ui-select-bootstrap {
+  width:100%;
+} */
+.employee-cluster-panel-heading .ui-select-container.ui-select-bootstrap .form-control {
   height: 26px !important;
   width: 85px;
   margin-top: 2px;
   max-width: 85px !important;
   min-width: 85px !important;
   line-height: 0.7;
+}
+.vayau-panel-footer .ui-select-container.ui-select-bootstrap .form-control {
+  height: 26px !important;
+  width: 100%;
+  margin-top: 2px;
+  max-width: 100% !important;
+  min-width: 100% !important;
+  line-height: 0.7;
+}
+.textRed {
+  color:red !important;
 }

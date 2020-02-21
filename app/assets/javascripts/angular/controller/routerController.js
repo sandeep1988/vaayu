@@ -104,13 +104,63 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       {id: 4, name: 'fourth'},
       {id: 5, name: 'fifth'},
   ];
+
+  $scope.onSelectGuardCallback = function (item,model,container) {
+    var isAssign = true;
+    // $scope.saveRoutes();
+
+    $scope.routeChangedIds.push(container.routeId)
+    if (isAssign) {
+
+      var changedRoutes = [];
+
+      angular.forEach($scope.routes.data.routes, function (route) {
+        angular.forEach($scope.routeChangedIds, function (routeId) {
+          if (route.routeId === routeId) {
+            changedRoutes.push(route);
+          }
+        })
+      })
+
+
+      var finalChangedRoutes = [];
+      angular.forEach(changedRoutes, function (route) {
+
+        if (route.guard_required==true) {
+          route.guard_required = "Y";
+        } 
+        
+        if (originalRoute.guard_required==false) {
+          route.guard_required = "N";
+        }
+        var employee_nodes = [];
+        angular.forEach(route.employees, function (emp) {
+          if(emp.length){
+            employee_nodes.push(emp.empId);
+          }
+        })
+        var data = {
+          "route_id": route.routeId,
+          "vehicle_category": route.vehicle_type,
+          "employee_nodes": employee_nodes,
+          "guard_required": route.guard_required
+        }
+        finalChangedRoutes.push(data);
+      })
+
+      var postData = {
+        "guardId": item.guardId,
+        "updated_routes": finalChangedRoutes,
+        "routeId": container.routeId
+      };
+
+      RouteService.assignGuards(postData, function (data) {
+        $scope.resetRoute();
+      })
+    }
+  };
   
     $scope.onSelectCallback =function(item,model,container){
-
-      console.log(item)
-      console.log(model)
-      console.log(container)
-      // $scope.assignVehicle =$scope.rut['{{container.routeId}}'];
      
       if(item){
         var postRouteData=getRoutePostData();
