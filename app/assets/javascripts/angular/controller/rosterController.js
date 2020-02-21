@@ -376,6 +376,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
           $scope.updateFilters();
         } else {
           $scope.toggleView = true;
+          $scope.isGenerateLoader =false;  
           // $scope.isLoader =false;
           ToasterService.showError('Error', res['message']);
 
@@ -388,6 +389,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
         $scope.disable_roster_button = false;
         $scope.closeAll()
       }, (error) => {
+        $scope.isGenerateLoader =false;  
         $scope.disable_roster_button = false;
         $scope.toggleView = true;
         ToasterService.showError('Error', 'Something went wrong, Try again later.');
