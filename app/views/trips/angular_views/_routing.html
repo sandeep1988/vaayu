@@ -165,7 +165,6 @@
                                   ng-show="container.status !== 'assign_requested'" ng-if="container.subtype!='unallocated'">
                                 <span class="title_text">TP{{container.tripId}}  </span>
 
-
                                 <ui-select  ng-if="!container.vehicle.length" ng-model="person.selected" on-select="onSelectCallback($item, $model,container)" title="Choose a vehicle">
                                   <ui-select-match placeholder="Choose.">{{$select.selected.name}}</ui-select-match>
                                   <ui-select-choices repeat="person as person in vehicleList | propsFilter: {model: $select.search, vehicleNumber: $select.search}" refresh="onVehicleSearch($select.search)" refresh-delay="400">
@@ -175,23 +174,13 @@
                                     </small>
                                   </ui-select-choices>
                                 </ui-select>
-
-                                <ul class="employee-list-group hide"  ng-if="container.vehicle.length" ng-if="container.vehicle.length" dnd-disable-if="container.vehicle.length >= 1">
-                                    <li ng-repeat="person in container.vehicle" class="input-group background-{{person.type}} employee-list-group-item vehicle-assign" ng-if="container.vehicle.length">
-                                      <span class="input-group-addon addon-prepend vehicle_assign">
-                                        <div class="inner-addon">
-                                          <i class="fa fa-car vehicle_button" style="z-index: 8;"></i>
-                                          <i class="fa fa-times close_button"
-                                            ng-click="removeVehicle(person, container)"></i>
-                                        </div>
-                                      </span>
-
-                                      <div class="vehicle_no">
-                                        <div class="text-small">{{person.vehicleNumber}}</div>
-                                      </div>
-                                    </li>
-                                  
-                                </ul>
+                                       
+                                  <div id="input-outer" ng-repeat="person in container.vehicle" ng-if="container.vehicle.length">
+                                    <label>{{person.vehicleNumber}}</label>
+                                    <div id="clear" ng-click="removeVehicle(person, container)">
+                                      X
+                                    </div>
+                                  </div>
                               </div>
                             </div>
                             <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'>
@@ -250,8 +239,25 @@
                                     </ui-select-choices>
                                   </ui-select>
                               </div>
-                              <div ng-if="container.guard.length">
-                                  <ul class="employee-list-group" dnd-disable-if="container.guard.length >= 1">
+
+                              <div class="employee-cluster-panel-heading-meta" ng-if="container.guard.length">
+                                  <div class="employee-cluster-panel-title">
+                                    <div class="row">
+                                      <div class="col-md-8 meta-header">
+                                        <span class="guard-icon"><i class="fa fa-shield"></i></span> 
+                                        <span></span>
+                                        <span class="kilometer_time_duration">
+                                            Guard Assigned
+                                        </span>
+                                      </div>
+                                      <div class="col-md-4 vehicle_type" ng-repeat="person in container.guard">
+                                          <i class="fa fa-times" ng-click="removeGuard(person, container)"></i>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              <div >
+                                  <!-- <ul class="employee-list-group" dnd-disable-if="container.guard.length >= 1">
                                     <dnd-nodrag>
                                       <li ng-repeat="person in container.guard" class="input-group background-{{person.type}} employee-list-group-item guard-assign" ng-if="container.guard.length">
                                         <span class="input-group-addon addon-prepend vehicle-assign">
@@ -267,7 +273,7 @@
                                         </div>
                                       </li>
                                     </dnd-nodrag>
-                                </ul>
+                                </ul> -->
                               </div> 
                               
                               <div class="row hide">

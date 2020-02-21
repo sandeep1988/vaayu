@@ -1238,12 +1238,14 @@
   width:100%;
 } */
 .employee-cluster-panel-heading .ui-select-container.ui-select-bootstrap .form-control {
-  height: 26px !important;
-  width: 85px;
-  margin-top: 2px;
-  max-width: 85px !important;
-  min-width: 85px !important;
-  line-height: 0.7;
+  height: 20px !important;
+  width: 95px;
+  margin-top: 5px;
+  max-width: 95px !important;
+  min-width: 95px !important;
+  line-height: 0.2;
+  border-radius: 0;
+  box-shadow: none;
 }
 .vayau-panel-footer .ui-select-container.ui-select-bootstrap .form-control {
   height: 26px !important;
@@ -1252,6 +1254,47 @@
   max-width: 100% !important;
   min-width: 100% !important;
   line-height: 0.7;
+  border-radius: 0;
+  box-shadow: none;
+}
+.btn-default-focus {
+  box-shadow: none !important;
+}
+ #input-outer {
+  height: 20px;
+  width: 100px;
+  /* border: 1px #e7e7e7 solid; */
+  float: right;
+  margin-top:5px;
+}
+ #input-outer label {
+  width: 80%;
+  border: 0px;
+  outline: none;
+  color:#000;
+  background:#fff;
+  font-size: 10px;
+  padding: 3px 4px;
+  max-height: 20px;
+  min-height: 20px;
+}
+#input-outer #clear {
+  float: right;
+  width: 20%;
+  background:#394266;
+  color:#fff;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  height: 20px;
+  max-height: 20px;
+  min-height: 20px;
+  font-size: 10px;
+  padding-top: 3px;
+}
+
+#input-outer #clear:hover {
+  background: #ccc;
 }
 .textRed {
   color:red !important;
