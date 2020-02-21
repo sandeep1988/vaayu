@@ -1595,9 +1595,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       }
       console.log('param', param)
       RouteService.empLandmarkZonesList(param, (res) => {
-        res.forEach((ele) => {
-          $scope.zoneObj.push(ele['zone'])
-        });
         console.log('empLandmark', res, $scope.zoneObj)
       }, (err) => {
         console.log('empLand err' , err)

@@ -307,10 +307,17 @@
 }
 
 .filter-btn .dropdown-menu.dropdown-menu-form{
-  width: 100%;
+  width: 100% !important;
+  position: relative;
 }
 
+.vayau-routing .filter-btn .multiselect-parent.dropdown-multiselect .dropdown-toggle{
+  color: #000 !important;
+}
 
+.vayau-routing .filter-btn .multiselect-parent.dropdown-multiselect .dropdown-toggle{
+  padding: 10px !important;
+}
 
 .config-form .ng-invalid.ng-touched{
   border: 1px solid red;

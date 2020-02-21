@@ -1220,3 +1220,7 @@
 .mt-5 {
   margin-top:5px;
 }
+
+.vayau-routing .filter-btn .multiselect-parent.dropdown-multiselect .dropdown-toggle{
+  color: #000 !important;
+}
