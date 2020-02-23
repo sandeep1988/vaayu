@@ -157,7 +157,7 @@
                 <div ng-repeat="containers in model2">
                   <div class="vaayu-dropzone">
                         <div class="width-80" ng-class="{'mapVisible':isShowMap}"  masonry="" mesonry-option="{gutter: 10}"  load-images="false" reload-on-resize>
-                          <div ng-repeat-start="container in containers track by $index"  no-drag class="employee-cluster-panel masonry-brick" ng-if="container.subtype!='unallocated'">
+                          <div ng-repeat-start="container in containers | filter: criteria"  no-drag class="employee-cluster-panel masonry-brick" ng-if="container.subtype!='unallocated'">
                             <div class="employee-cluster-panel-heading"
                               ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
                               <div class="title_container">
@@ -478,7 +478,7 @@
 
     <div class="row vayau-sidebar filter-sidebar" ng-if="filterToggle">
       <div class="col-md-12 ng-scope">
-        <div class="vaayu-sidebar-panel">
+        <div class="vaayu-sidebar-panel" style="position: relative;">
           <div class="vaayu-sidebar-heading">
             <div class="row">
               <div class="col-md-10">
@@ -498,28 +498,35 @@
                       <option ng-value="3" class="form-control">Option 3</option>
                       <option ng-value="4" class="form-control">Option 4</option>
                     </select> -->
-                    <div ng-dropdown-multiselect="" options="capacityObj"
+                    <input type="text" ng-model="search" ng-change="updateRouteFilter(search)">
+                    <div ng-dropdown-multiselect="" events="clickEvents" options="capacityObj"
                       selected-model="selectedCapacity" checkboxes="true" class="filter-btn capacity"
-                      extra-settings="example14settings" validation="required" search-placeholder="Capacity"
-                      validation-result="selectedCapacity"></div>
+                      extra-settings="example14settings" search-placeholder="Capacity"
+                      ></div>
 
-                    <div ng-dropdown-multiselect="" options="typeObj"
+                    <div ng-dropdown-multiselect="" events="clickEvents" options="typeObj"
                       selected-model="selectedType" checkboxes="true" class="filter-btn type"
-                      extra-settings="example14settings" validation="required" search-placeholder="Type"
-                      validation-result="selectedType"></div>
+                      extra-settings="example14settings" search-placeholder="Type"
+                      ></div>
 
-                    <div ng-dropdown-multiselect="" options="landmarkObj"
+                    <div ng-dropdown-multiselect="" events="clickEvents" options="landmarkObj"
                       selected-model="selectedLandmark" checkboxes="true" class="filter-btn type"
-                      extra-settings="example14settings" validation="required" search-placeholder="Landmark"
-                      validation-result="selectedLandmark"></div>
-                    
-                </form>
+                      extra-settings="example14settings" search-placeholder="Landmark"
+                      ></div>
+
+                    <div ng-dropdown-multiselect="" events="clickEvents" options="zoneObj"
+                      selected-model="selectedZone" checkboxes="true" class="filter-btn type"
+                      extra-settings="example14settings" search-placeholder="Zone"
+                      ></div>
+                    </form>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-
-    </div>
-
+        </div>
+        <button class="btn btn-primary clear-btn" ng-if="filterToggle" ng-click="clearSelection()">CLEAR FILTER</button>
+        <button class="btn btn-primary clear-btn" style="left: auto; right: 10px;;" ng-if="filterToggle" ng-click="applyFilter()">APPLY</button>
     <div class="row vayau-sidebar vehical-sidebar" ng-if="isVehicalSidebarView">
       <div  class="col-md-12">
         <div class="vaayu-sidebar-panel">

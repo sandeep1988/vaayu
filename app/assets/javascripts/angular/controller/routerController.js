@@ -236,10 +236,50 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.selectedCapacity = {};
   $scope.selectedType = {};
   $scope.selectedLandmark = {};
+  $scope.selectedZone = {}
+  $scope.clickEvents = {
+    onInitDone: function(item) {console.log(item);},
+    onItemSelect: function(item) {console.log('check', $scope.selectedLandmark)},
+    onItemDeselect: function(item) {console.log(item);}
+  };
   $scope.example14settings = {
     enableSearch: true,
-    width: '500px'
+    displayProp: 'name',
+    scrollableHeight: '200px',
+    scrollable: true,
   };
+
+  $scope.updateRouteFilter =function(search){
+    $scope.criteria=search;
+  }
+  $scope.mergedValues = [{id: '', label: ''}];
+  
+  $scope.obj = {
+    zone: '',
+    landmark: '',
+    type: '',
+    capacity: ''
+  }
+
+  $scope.applyFilter = () => {  
+    $scope.obj = {
+      zone: $scope.selectedZone.label,
+      landmark: $scope.selectedLandmark.label,
+      type: $scope.selectedType.label,
+      capacity: $scope.selectedCapacity.label
+    }
+    $scope.mergedValues = $scope.selectedCapacity.concat($scope.selectedType, $scope.selectedLandmark)
+    console.log($scope.mergedValues)
+
+  }
+
+
+  $scope.clearSelection = () => {
+    $scope.selectedCapacity = {};
+    $scope.selectedType = {};
+    $scope.selectedLandmark = {};
+    $scope.selectedZone = {};
+  }
   $scope.capacityObj = [
     {
       name: '< 50%',
@@ -257,7 +297,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.typeObj = [
     {
-      name: 'Sedan',
+      name: 'SEDAN',
       id: 1
     },
     {
@@ -265,7 +305,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       id: 2
     },
     {
-      name: 'Suv',
+      name: 'SUV',
       id: 3
     },
     {
@@ -273,18 +313,19 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       id: 4
     },
     {
-      name: 'Bus',
+      name: 'BUS',
       id: 5
     },
     {
-      name: 'Mini Van',
+      name: 'MINI VAN',
       id: 6
     },
     {
-      name: 'Truck',
+      name: 'TRUCK',
       id: 7
     }
   ];
+  $scope.landmarkObj = [];
 
   $scope.zoneObj = [];
   
@@ -1593,9 +1634,28 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         shift_type: String(shift.trip_type)
         
       }
-      console.log('param', param)
+      // console.log('param', param)
       RouteService.empLandmarkZonesList(param, (res) => {
-        console.log('empLandmark', res, $scope.zoneObj)
+        // console.log('empLandmark', res, $scope.zoneObj)
+        res['data'].forEach((ele, i) => {
+          if(ele['landmark']){
+            $scope.landmarkObj.push({
+              name: ele['landmark'],
+              id: i + 1
+            })
+          }
+        })
+
+        res['data'].forEach((ele, i) => {
+          if(ele['zone']){
+            $scope.zoneObj.push({
+              name: ele['zone'],
+              id: i + 1
+            })
+          }
+        })
+
+        console.log('empLandmark', $scope.landmarkObj)
       }, (err) => {
         console.log('empLand err' , err)
       })

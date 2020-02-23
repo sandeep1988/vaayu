@@ -309,10 +309,11 @@
 .filter-btn .dropdown-menu.dropdown-menu-form{
   width: 100% !important;
   position: relative;
+  margin-bottom: 10px;
 }
 
 .vayau-routing .filter-btn .multiselect-parent.dropdown-multiselect .dropdown-toggle{
-  color: #000 !important;
+  color: #394264 !important;
 }
 
 .vayau-routing .filter-btn .multiselect-parent.dropdown-multiselect .dropdown-toggle{
@@ -325,4 +326,11 @@
 
 .menu3 .mb-2{
   margin-bottom: 20px;
+}
+
+.btn.clear-btn{
+  position: absolute;
+  left: 10px;
+  bottom: 20px;
+  cursor: pointer;
 }
