@@ -250,7 +250,7 @@
                                     </div> -->
             <div class="add-vehicle-card-container">
               <div class="row add-vehicle-card card_flex" ng-repeat="(key, value) in currentRoster.vehicle">
-
+                <div class="row" ng-if="key != 'TRUCK'">
                 <div class="col-md-5">
                   <img ng-if="key== 'SUV'" src="../assets/angular_images/ic_suv.png"
                     style="padding: 15px; height: 75px;">
@@ -273,6 +273,7 @@
                 <div class="col-md-2" ng-click="plusVehicle(key)"><i
                     class="pointer fa fa-plus-circle add-vehicle-plus-minus-button" aria-hidden="true"></i>
                 </div>
+              </div>
               </div>
               <!-- <div class="text-danger "  ng-if="!currentRoster.vehicle || !currentRoster.vehicle.length">
                                         <div class="col-md-12 text-center">
