@@ -200,7 +200,7 @@
                                           {{container.total_time}} Min
                                         </span>
                                     </div>
-                                    <div class="col-md-5 vehicle_type">
+                                    <div class="col-md-5 vehicle_type" ng-click="changeVehicleType(container)">
                                       <span ng-if="container.vehicle_type=='HATCHBACK'">HB</span>
                                       <span ng-if="container.vehicle_type!='HATCHBACK'">{{container.vehicle_type}}</span>
                                        <i class="fa fa-pencil"></i>
@@ -777,25 +777,26 @@
     </div>
   </div>
 
-  <div id="myModal" class="vaayu-modal" style="display: block;z-index: 4;" ng-show="showConfirmDialog">
-
-    <!-- Modal content -->
+         
+         
+  <div id="myModal" class="vaayu-modal" style="display: block;z-index: 100;" ng-if="showVehicleTypeDialog">
     <div class="vaayu-modal-content" style="width:450px;">
-      <div class="vaayu-modal-header">
-        <span> Confirm Drop</span>
-        <span class="vaayu-pop-close closepop" ng-click="showConfirmDialog=false">&times;</span>
-      </div>
+        <div class="vaayu-modal-header">
+          <span>Select Vehicle Type</span>
+          <span style="margin-top: -4px;" class="vaayu-pop-close closepop" ng-click="closeVehicleTypeDialog()">&times;</span>
+        </div>
       <div class="vaayu-modal-body">
         <div class="row container-fluid">
           <div class="col-md-12">
-           
+              <select ng-model="selectedType" class="form-control" placeholder="Select Vehicle Category">
+                  <option ng-repeat="item in vehicleCategoryList" ng-value="item.category_name">{{item.category_name}}</option>
+              </select>
           </div>
         </div>
         <div class="vaayu-modal-footer">
-          <button class="vaayu-pop-action-btn" ng-click="RevertRoute()">
-                Revert
-          </button>
-          <button class="vaayu-pop-action-btn" type="button" ng-click="proceedUpdates(proccedItem)">Procced</button>
+            <button type="button" class="vaayu-pop-action-btn" ng-click="updateTypes(selectedType)">
+                Done
+            </button>
         </div>
       </div>
     </div>
@@ -803,5 +804,6 @@
 </div>
 
 
+         
 
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBL-ocE6P0pPmR6Ef4DC2BKqlnlMe1pQFk&amp;libraries=places"></script> -->

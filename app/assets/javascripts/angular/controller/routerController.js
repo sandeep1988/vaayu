@@ -105,6 +105,30 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       {id: 5, name: 'fifth'},
   ];
 
+  $scope.vehicleTypeArray = [
+    {id: 1, type: 'HATCHBACK'},
+    {id: 2, type: 'TT'},
+    {id: 3, type: 'SUV'},
+    {id: 4, type: 'SEDAN'},
+    {id: 5, type: 'MINI VAN'}
+];
+
+  $scope.showVehicleTypeDialog=false;
+
+  $scope.changeVehicleType =function(container){
+    $scope.selectedContainer=container;
+    $scope.showVehicleTypeDialog=true;
+  }
+
+   $scope.closeVehicleTypeDialog = () => {
+    $scope.showVehicleTypeDialog=false;
+  }
+
+  $scope.updateTypes =function(type) {
+    alert(type);
+    $scope.closeVehicleTypeDialog();
+  }
+
   $scope.onSelectGuardCallback = function (item,model,container) {
     var isAssign = true;
     // $scope.saveRoutes();
