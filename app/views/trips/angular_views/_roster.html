@@ -250,8 +250,9 @@
                                     </div> -->
             <div class="add-vehicle-card-container">
               <div class="row add-vehicle-card card_flex" ng-repeat="(key, value) in currentRoster.vehicle">
+                <div class="col-md-12">
                 <div class="row" ng-if="key != 'TRUCK'">
-                <div class="col-md-5">
+                <div class="col-md-4">
                   <img ng-if="key== 'SUV'" src="../assets/angular_images/ic_suv.png"
                     style="padding: 15px; height: 75px;">
                   <img ng-if="key== 'TT'" src="../assets/angular_images/ic_tt.png" style="padding: 15px; height: 75px;">
@@ -264,16 +265,18 @@
                     ng-if="!(key== 'SEDAN' || key== 'TT' || key== 'SUV' || key== 'HATCHBACK' || key== 'MINI VAN')"
                     style="display: block; margin-left: 35px; text-align: left !important;">{{key}}</span>
                 </div>
+                <div class="col-md-2"></div>
                 <div class="col-md-2" ng-click="minusVehicle(key)"><i
-                    class="pointer fa fa-minus-circle add-vehicle-plus-minus-button" aria-hidden="true"></i></div>
+                    class="pointer fa fa-minus-circle add-vehicle-plus-minus-button" aria-hidden="true" style="margin-top: 10px;"></i></div>
 
                 <div class="col-md-2">
                   <h5 style="margin-top: 15px">{{value}}</h5>
                 </div>
                 <div class="col-md-2" ng-click="plusVehicle(key)"><i
-                    class="pointer fa fa-plus-circle add-vehicle-plus-minus-button" aria-hidden="true"></i>
+                    class="pointer fa fa-plus-circle add-vehicle-plus-minus-button" aria-hidden="true" style="margin-top: 10px;"></i>
                 </div>
               </div>
+            </div>
               </div>
               <!-- <div class="text-danger "  ng-if="!currentRoster.vehicle || !currentRoster.vehicle.length">
                                         <div class="col-md-12 text-center">
