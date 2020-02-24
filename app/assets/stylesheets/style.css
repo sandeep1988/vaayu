@@ -597,16 +597,22 @@
 .vayau-routing .vayau-panel-footer {
   background:#ebecf0;
 }
+.vayau-routing .bgOrange {
+  background: orange !important;
+}
+.marright_5 {
+  margin-right: -5px !important;
+}
 .vayau-routing .employee-cluster-panel-body .guard-icon {
-  border-radius: 4px;
-  padding: 3px 3px;
-  background:#242432;
-  height: 15px;
-  width: 15px;
+  border-radius: 4px 0 0 4px;
+  padding: 2px 3px;
+  background: #242432;
+  height: 13px;
+  width: 13px;
   display: flex;
   align-content: center;
   margin-right: 2px;
-  font-size: 11px;
+  font-size: 10px;
   color:#fff;
 }
 .vayau-routing .employee-cluster-panel-body .employee-list-group {
@@ -1170,7 +1176,7 @@
 
 .vehicle_type {
   font-size: 11px;
-  text-align: right;
+  /* text-align: right; */
   /* padding-right: 26px !important; */
   padding-top: 1px;
   cursor: pointer;
@@ -1214,6 +1220,17 @@
 .content > .content-body {
   font-size:12px !important;
   padding: 0px 10px !important;
+}
+.data_in_style_btn {
+  border-radius: 0 4px 4px 0 !important;
+  border-left: 0 !important;
+}
+.vehicle_type {
+  width: 34px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  float: left;
 }
 .mt-5 {
   margin-top:5px;

@@ -39,7 +39,7 @@
                   ng-change="updateFilters()"
                    />
                 <span class="input-group-btn-datePicket ">
-                  <button type="button" class="btn btn-default data_in_style" ng-click="open($event)"><i
+                  <button type="button" class="btn btn-default data_in_style data_in_style_btn" ng-click="open($event)"><i
                       class="fa fa-calendar"></i></button>
                 </span>
               </p>
@@ -186,9 +186,9 @@
                             <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'>
                               <div class="employee-cluster-panel-heading-meta">
                                 <div class="employee-cluster-panel-title">
-                                  <div class="row">
-                                    <div class="col-md-7 meta-header">
-                                      <span class="guard-icon"><i class="fa fa-shield"></i></span>
+                                  <div class="row marright_5">
+                                    <div class="col-md-8 meta-header">
+                                      <span class="guard-icon" ng-class="{'bgOrange':container.guard_required}"><i class="fa fa-shield"></i></span>
                                         <input type="checkbox" ng-model="container.guard_required" ng-change="checkBoxChanged(container)" ng-disabled="container.guard.length"
                                         name="route" class="tick guard_checkbox">
 
@@ -200,9 +200,9 @@
                                           {{container.total_time}} Min
                                         </span>
                                     </div>
-                                    <div class="col-md-5 vehicle_type" ng-click="changeVehicleType(container)">
-                                      <span ng-if="container.vehicle_type=='HATCHBACK'">HB</span>
-                                      <span ng-if="container.vehicle_type!='HATCHBACK'">{{container.vehicle_type}}</span>
+                                    <div class="col-md-4 vehicle_type " ng-click="changeVehicleType(container)">
+                                      <div class="vehicle_type" ng-if="container.vehicle_type=='HATCHBACK'">HB</div>
+                                      <div class="vehicle_type" ng-if="container.vehicle_type!='HATCHBACK'">{{container.vehicle_type}}</div>
                                        <i class="fa fa-pencil"></i>
                                     </div>
                                   </div>
