@@ -330,7 +330,7 @@ module API::V1
             end_location = [@trip_routes[@trip_routes.size - 1].scheduled_end_location[:lat], @trip_routes[@trip_routes.size - 1].scheduled_end_location[:lng]]
           elsif trip_route.check_trip_status == 'not_started'
             if duration.empty?
-              # Find the duration taken to pick up the first employee
+              # Find the duration taken to Login the first employee
               start_location = latlng
               end_location = [trip_route.scheduled_start_location[:lat], trip_route.scheduled_start_location[:lng]]
               route = GoogleService.new.directions(
@@ -353,7 +353,7 @@ module API::V1
             end_location = [@trip_routes[0].scheduled_start_location[:lat], @trip_routes[0].scheduled_start_location[:lng]]
           elsif trip_route.check_trip_status == 'on_board'
             if duration.empty?
-              # Find the duration taken to pick up the first employee              
+              # Find the duration taken to Login the first employee              
               start_location = latlng
               end_location = [trip_route.scheduled_end_location[:lat], trip_route.scheduled_end_location[:lng]]
             else

@@ -29,7 +29,8 @@
                                 <option>Disabled select</option>
                             </select>
                         </div> -->
-            <toaster-container ng-show="toggleView"></toaster-container>
+            <!-- <toaster-container ng-show="toggleView"></toaster-container> -->
+            <toaster-container></toaster-container>
             <div class="form-group pr-2" ng-init="showDropdown=false">
               <div class="form-group pr-2">
                 <p class="input-group custom-date date_style ">
@@ -161,6 +162,7 @@
               <thead>
                 <tr>
                   <th>Sr.No</th>
+                  <th>Trip Id</th>
                   <th>Shift</th>
                   <th>Shift Time</th>
                   <th>Vehicle Type</th>
@@ -175,10 +177,12 @@
                 <tr ng-class="getRowColor($index, roster)"
                   ng-repeat="roster in rosters  | filter :{current_status:search, trip_is_panic:sos_panic} track by $index">
                   <td> {{$index+1}}</td>
+                  <td>{{roster.trip_id}}</td>
                   <td>
-                    <a href="">{{roster.trip_type == 'Check In' ? 'Pick Up' : 'Drop Off'}}</a>
+                    <a href="">{{roster.trip_type == 'Check In' ? 'Login' : 'Log out'}}</a>
                   </td>
                   <td>{{roster.shift_time}}</td>
+                  
                   <td>{{roster.vehicle_type}}</td>
                   <td>{{roster.vehicle_number}}</td>
                   <td>{{roster.driver_name}}</td>
@@ -207,10 +211,10 @@
   <div id="myModal" class="vaayu-modal" style="display: block;" ng-if="showPopup">
 
     <!-- Modal content -->
-    <div class="vaayu-modal-content">
+    <div class="vaayu-modal-content" style="width: 90%;margin-left: 95px;">
       <div class="vaayu-modal-header">
 
-        <span> Route - {{modelData.route_id}}</span>
+        <span> Trip - {{modelData.trip_id}}</span>
         <!-- <span style="float: right;">
           <div ng-dropdown-multiselect=""  options="vehicleList" style="display: inline-block;"
           selected-model="SelectedEmp " checkboxes="true" extra-settings="example14settings"
@@ -231,11 +235,11 @@
                     <th>ETA</th>
                     <th>Call</th>
                     <th>Emergency</th>
+                    <th>Panic Type</th>
                   </tr>
                 </thead>
                 <tbody class="pop-table-body">
-                  <tr class="" ng-repeat="item in modelData.employees_nodes_addresses track by $index"
-                    ng-class="{'panic':item.is_panic}">
+                  <tr class="" ng-repeat="item in modelData.employees_nodes_addresses track by $index" ng-class="{'panic':item.is_panic}">
                     <td> 
                         <!-- <input type="checkbox" ng-checked="item.empCheckInStatus=='checked'" ng-disabled="item.empCheckInStatus=='checked'"
                           name="route" class="tick" style="height: 15px; width: 15px;"> -->
@@ -247,7 +251,7 @@
                             <i class="fa fa-times" style="color: red;" aria-hidden="true" ng-if="item.empCheckInStatus=='missed'"></i>
                             <span class="tooltiptext">No Show</span>
                           </div>
-                  </td>
+                    </td>
                     <td>{{item.empName}}</td>
                     <td>{{item.eta}}</td>
                     <td><button ng-click="panicCallSesion(item.empId,'Employee')"
@@ -277,6 +281,7 @@
                         </form>
                       </div> -->
                     </td>
+                    <td>{{item.exception_type !== 'Not Panic' ? item.exception_type : ''}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -389,6 +394,8 @@
         </div>
         <button type="button" class="vaayu-pop-action-btn" ng-click="changeAllocation(modelData)" ng-if="isDisable()">
           Submit</button>
+        <button type="button" class="vaayu-pop-action-btn" ng-click="completeTrip()" ng-if="showCompleteButton">
+            Force Complete</button>
         <!-- <button type="button" class="vaayu-pop-action-btn" ng-if='selectedVehicle!=null'> Change Allocation</button> -->
         <!-- Split button -->
         <!-- <div class="btn-group" uib-dropdown>

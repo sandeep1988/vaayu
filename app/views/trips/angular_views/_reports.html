@@ -1,0 +1,52 @@
+<div class="vayau-routing" ng-controller='reportCtrl' ng-init="init()">
+    <div class="container-fluid mt-4">
+        <div class="row">
+          <div class="col-md-12">
+            <form class="form-inline">
+                <div class="form-group pr-2">
+                    <select id="fromDate" ng-model="siteId" class="form-control" placeholder="Select Site" ng-change="getSiteId(siteId)">
+                        <option ng-repeat="site in siteList" ng-value="site.id">{{site.name}}</option>
+                      </select>
+                </div>
+                <div class="form-group pr-2">
+                  <select id="toDate" class="form-control" placeholder="Name" ng-model="reportValue" ng-change="getReportId(reportValue)">
+                    <option ng-repeat="report in reportType" ng-value="report.sendValue">{{report.displayValue}}</option>
+                  </select>
+                </div>
+                <div class="form-group pr-2">
+                  <div class="form-group pr-2">
+                    <p class="input-group custom-date date_style">
+                      <input type="text" class="form-control data_in_style" datepicker-popup="{{fromDateFormat}}" ng-model="fromDate" is-open="fromDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"
+                      ng-change="updateFilters('from', fromDate)">
+                      <span class="input-group-btn-datePicket">
+                        <button type="button" class="btn btn-default data_in_style" ng-click="fromDateOpen($event)">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="form-group pr-2">
+                    <div class="form-group pr-2">
+                      <p class="input-group custom-date date_style">
+                        <input type="text" class="form-control data_in_style" datepicker-popup="{{toDateFormat}}" ng-model="toDate" is-open="toDateOpened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"
+                        ng-change="updateFilters('to', toDate)">
+                        <span class="input-group-btn-datePicket">
+                          <button type="button" class="btn btn-default data_in_style" ng-click="toDateOpen($event)">
+                              <i class="fa fa-calendar"></i>
+                          </button>
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+      
+                <button type="button"
+                  class="btn btn-terniary-blue" ng-click="checkIsDownloadable()">EXPORT</button>
+              </form>
+          </div>
+        </div>
+    </div>
+
+
+</div>

@@ -24,6 +24,8 @@ $(function () {
      *  Set "add new" button active class depend on active tab
      */
     $('.provisioning .nav-tabs a').on('show.bs.tab', function (e) {
+        $(".search-section input").removeAttr('disabled');
+        $(".search-section select").removeAttr('disabled');
         var currentTab = $(this).text();
         var defaultAddClass = "editor_create add-new-item btn btn-sm btn-primary btn-fixed-width";
         var $nextTabWrap = $(e.target).closest('li');

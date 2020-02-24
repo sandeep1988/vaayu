@@ -401,7 +401,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         $scope.selectedVehicle = {};
         var trip_status = $scope.modelData.current_status.toLowerCase().trim();
         if (trip_status === 'pending acceptance' || trip_status === 'accepted' || trip_status === 'delayed') {
-          $scope.getVehicleListForTrip(data);
+          $scope.getVehicleListForTrip($scope.modelData);
         }
 
         var waypts = [];
@@ -438,9 +438,33 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     }
   }
   $scope.isOpen = false;
+  $scope.showCompleteButton = false;
+  $scope.sendCompleteParams;
+  $scope.completeTrip = () => {
+    var params = $scope.sendCompleteParams;
+    if (confirm("Are you sure you want to complete the trip?") == true) {
+      console.log('execute api here')
+      TripboardService.forceCompleteTrip(params, (data) => {
+        $scope.toggleView = true;
+        ToasterService.showError('Success', data['message']);
+      })
+      return true
+    } else {
+      return false
+    }
+    
+
+  }
 
   $scope.showModal = (row, checkStatus) => {
     console.log('row', row);
+    $scope.sendCompleteParams = {
+      trip_status: row['actual_status'],
+      trip_id: row['trip_id']
+    }
+    if (row['actual_status'] == 'assign_requested' || row['actual_status'] == 'assign_request_expired' || row['actual_status'] == 'assign_request_declined' || row['actual_status'] == 'assigned' || row['actual_status'] == 'active') {
+      $scope.showCompleteButton = true;
+    }
     $scope.selectedTripId = row.trip_id
 
     $scope.getVehicleListForTrip(row);

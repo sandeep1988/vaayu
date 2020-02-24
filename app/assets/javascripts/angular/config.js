@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ui.router','dndLists','rzSlider','ngResource', 'ui.bootstrap','toaster', 'ngAnimate', 'angularjs-dropdown-multiselect']);
+var app = angular.module('app', ['ui.router','dndLists','rzSlider','ngResource', 'ui.bootstrap','toaster', 'ngAnimate', 'angularjs-dropdown-multiselect','cp.ngConfirm','wu.masonry','AxelSoft']);
 
 
 // // Define all the routes below

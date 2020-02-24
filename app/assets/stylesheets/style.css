@@ -1,11 +1,23 @@
 .vayau-routing .card-panel .vaayu-dropzone .dndPlaceholder {
-  display: block;
-  height: 36px;
-  opacity: 0.5;
-  border: dashed 2px #707070;
-  background-color: #eaeaea;
-  margin-bottom: 4px;
-  padding: 2px 4px;
+  display: flex;
+  height: 35px;
+  border-radius: 0 !important;
+  border: dashed 2px #e2e2e2;
+  background-color:#f9f9f9 !important;
+  padding: 0px 12px;
+  align-items: center;
+  color:#aeaeae;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.vayau-routing .card-panel .vaayu-dropzone .employee-list-group .dndDraggingSource {
+  border-radius: 0px;
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.16);
+  background-color:#ffffff;
+  display: flex;
+  padding: 5px 0px;
+  opacity: 1 !important;
 }
 
 .vayau-routing .analytic-panel {
@@ -25,6 +37,17 @@
   display: inline-block;
 }
 
+.temporaryRoute .card-panel .employee-list-group {
+  background: #fff !important;
+}
+
+.temporaryRoute .employee-cluster-panel-body .employee-list-group {
+  background: #fff !important;
+}
+
+.pad-right-0 {
+  padding-right: 0 !important;
+}
 .route-button:hover{
   color: #fff !important;
 }
@@ -84,7 +107,9 @@
 .vayau-routing .pad-8 {
   padding: 0 8px;
 }
-
+.vayau-routing {
+  margin-top:-9px;
+}
 .vayau-routing .card-analytic .text {
   font-family: "Roboto";
   font-weight: 400;
@@ -181,17 +206,31 @@
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   background-color: #ffffff;
   width:400px;
-  z-index: 10000;
+  z-index: 2;
+}
+
+.pright-0 {
+  padding-right: 0 !important;
+}
+
+.temporaryRoute {
+  width:100%;
 }
 
 .vayau-routing .employee-cluster-panel {
-  /* display: inline-grid;
-  margin-right: 20px;
-  margin-bottom: 20px;
-  width: 260px; */
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   background-color: #ffffff;
+  display: block;
+  /* display: inline-block;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  height: max-content; */
+}
+
+
+.fixed-width {
+  min-width: 190px !important;
 }
 
 .vayau-routing .employee-cluster-panel .employee-cluster-panel-heading .travel-group-name {
@@ -201,31 +240,34 @@
 }
 
 .vayau-routing .employee-cluster-panel .employee-cluster-panel-heading {
-  display: table;
-  width: 100%;
-  height: 51px;
+  height: 28px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   background-color: #394266;
-  padding: 4px 10px;
+  display: flex;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  padding-top: 0;
 }
 
 .vayau-routing .employee-cluster-panel .employee-cluster-panel-heading  .title_container {
-  font-family: "Roboto";
-  font-size: 12px;
-  font-weight: 900;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: normal;
+  /* font-family: "Roboto";
+  font-weight: 600;
   color: #ffffff;
-  vertical-align: middle;
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding-left: 10px; */
+  font-family: "Roboto";
+  font-weight: 600;
+  color:#ffffff;
+  padding-left: 10px;
+  width: 100%;
+  padding-right: 10px;
 }
-.vayau-routing .employee-cluster-panel .employee-cluster-panel-heading  .title_text {
-  flex: 1;
-  margin-left: 5px;
-  margin-top: 7px;
+.vayau-routing .employee-cluster-panel .employee-list-group .empId {
+  text-transform: uppercase;
+  /* text-decoration: underline; */
+  font-weight: 600;
 }
 
 .vayau-routing .employee-cluster-panel .un_allocated_route {
@@ -282,13 +324,17 @@
   display: table-cell;
 }
 
-.vayau-routing .employee-cluster-panel .employee-list-group-item {
-  height: 37px;
-  border-radius: 4px;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
-  background-color: #ffffff;
+.vayau-routing .employee-cluster-panel .employee-cluster-panel-body .employee-list-group-item {
+  border-radius: 0px;
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.16);
+  background-color:#ffffff;
   margin-bottom: 5px;
   display: flex;
+  padding: 2px 0px;
+}
+
+.vayau-routing .employee-cluster-panel .employee-list-group-item.female {
+  background: #f3d1f1 !important;
 }
 
 .vehicle_no {
@@ -308,8 +354,8 @@
 .vehicle_assign > .inner-addon{color:#fff;} 
 .vayau-routing .employee-cluster-panel .employee-list-group-item .input-group-addon.addon-prepend {
   width: 35px;
-  height: 38px;
-  padding: 8px;
+  height: 32px;
+  padding: 6px;
   border-top-left-radius: 4px;
   border-bottom-left-radius:4px;
   float:left;
@@ -347,11 +393,12 @@
 
 .vayau-routing .employee-cluster-panel .employee-list-group-item .inner-text {
   padding: 0px 0 0 10px;
-  width: 142px;
+  width: 100%;
   float:left;
   align-items: center;
   /* display: flex; */
   /* flex: 1; */
+  font-size:12px !important;
 }
 
 .vayau-routing .employee-cluster-panel .employee-list-group-item .inner-addon {
@@ -376,7 +423,9 @@
 }
 
 .vayau-routing .card-panel .employee-list-group {
-  padding: 15px 15px 0 15px;
+  padding: 0 10px;
+  height: 100%;
+  background:#ebecf0;
 }
 
 .vayau-panel-footer .employee-list-group {
@@ -386,7 +435,7 @@
 
 .vayau-panel-footer .employee-list-group .employee-list-group-item.vehicle-assign {
   width: 95px;
-  height: 38px;
+  height: 30px;
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   border: solid 0.5px #3597ec;
@@ -396,7 +445,7 @@
 
 .vayau-panel-footer .employee-list-group .employee-list-group-item.vehicle-add {
   width: 115px;
-  height: 38px;
+  height: 30px;
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   border: dashed 0.5px #707070;
@@ -406,10 +455,13 @@
 }
 
 .employee-cluster-panel .employee-cluster-panel-heading-meta {
-  height: 42px;
-  opacity: 0.5;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
-  background-color: #eaedf1;
+  background-color:#ebecf0;
+  color:#000;
+  display: flex;
+  height: 35px;
+  align-items: center;
+  padding-left: 10px;
 }
 
 .employee-list-group-item.guard-add .input-group-addon  {
@@ -453,13 +505,17 @@
   text-align: left;
   color: #6c6c6c;
 }
-
+.pullUpLabel {
+  position: relative;
+  top: -13px;
+  color:#000;
+}
 .vayau-panel-footer .employee-list-group .employee-list-group-item.guard-add {
   width: 95px;
-  height: 38px;
+  height: 30px;
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
-  border: dashed 0.5px #707070;
+  /* border: solid 0.5px #707070; */
   background-color: #ffffff;
   cursor: pointer;
   display: table;
@@ -467,7 +523,7 @@
 
 .vayau-panel-footer .employee-list-group .employee-list-group-item.guard-assign {
   width: 95px;
-  height: 38px;
+  height: 30px;
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
   border: solid 0.5px #707070;
@@ -534,18 +590,47 @@
   border: solid 0.5px #b6b6b6;
   background-color: #82d7ad;
 }
-
-
+.vayau-routing .employee-cluster-panel-body .meta-header {
+    display: flex;
+    align-items: center;
+}
+.vayau-routing .vayau-panel-footer {
+  background:#ebecf0;
+}
+.vayau-routing .employee-cluster-panel-body .guard-icon {
+  border-radius: 4px;
+  padding: 3px 3px;
+  background:#242432;
+  height: 15px;
+  width: 15px;
+  display: flex;
+  align-content: center;
+  margin-right: 2px;
+  font-size: 11px;
+  color:#fff;
+}
+.vayau-routing .employee-cluster-panel-body .employee-list-group {
+  margin-bottom: 0;
+  min-height: 80px;
+}
+.vayau-routing .select_all_wrapper {
+  margin-top:5px !important;
+}
+.vayau-routing .select_all_wrapper label {
+  color:#000 !important;
+  font-weight: 600;
+  margin-left:4px;
+  font-size: 12px;
+}
+.vayau-routing .select_all_wrapper  .hrLine {
+  margin: 3px 0 10px 0;
+}
 .kilometer_time_duration {
   font-family: "Roboto";
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 900;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 3.70;
-  letter-spacing: normal;
-  text-align: center;
-  color: #000000;
+  line-height: 1.5;
+  color: #000;
 }
 
 .align-center {
@@ -576,7 +661,9 @@
   text-align: left;
   color: #000000;
 }
-
+.btn {
+  font-size:12px !important;
+}
 .btn-close {
   box-shadow: none;
   position: relative;
@@ -780,7 +867,7 @@
 
  .btn-terniary-blue {
   /* opacity: 0.5; */
-  height: 42px;
+  height: 32px;
   border-radius: 4px;
   background-color: #394266 !important;
   font-family: "Roboto";
@@ -792,6 +879,9 @@
   letter-spacing: normal;
   text-align: center;
   color: #FFF !important;
+  padding-left:15px;
+  padding-right: 15px;
+  min-width: 100px;
 }
 
 .btn-terniary-disable {
@@ -835,10 +925,27 @@
 }
 
 .custom-panel-map {
-  width:100% !important;
-  margin-top: 15px;
+  width:210px !important;
+  margin-top: 0px;
 }
 
+.margin-right {
+  margin-right:2px;
+}
+.custom-panel-map .travel-group-name{
+  padding: 2px 15px;
+  font-weight: bold;
+}
+
+.custom-panel-map .employee-cluster-panel-heading {
+  height: 28px;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.16);
+  background-color: #394266;
+  display: flex;
+  align-items: center;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
 .custom-panel-map #map { 
   height: 400px;
   border-radius: 0;
@@ -847,11 +954,11 @@
 
 .vayau-routing select {
   /* width: 259px; */
-  height: 42px;
+  height: 32px;
   /* opacity: 0.5; */
   color:#000;
   border-radius: 4px;
-  border: solid 1px #707070;
+  border: solid 1px #000;
   background-color: #ffffff;
   /* border: thin solid grey; */
   display: inline-block;
@@ -872,26 +979,39 @@
 .vayau-routing  select:focus {
   outline: 0;
 }
+.vaayu-dropzone .guard_checkbox {
+  /* height: 16px;
+  width: 16px;
+  margin-right: 2px;
+  margin-top:0 !important; */
 
-.vaayu-dropzone {
-  -webkit-column-count: 3; /* Chrome, Safari, Opera */
-  -moz-column-count: 3; /* Firefox */
-  column-count: 3;
-
-  -webkit-column-gap: 1em; /* Chrome, Safari, Opera */
-  -moz-column-gap: 1em; /* Firefox */
-  column-gap: 1em;
+  height: 15px;
+  width: 15px;
+  margin-right: 2px;
+  margin-top: 4px !important;
+}
+/* .vaayu-dropzone {
+  -webkit-column-count: 6; 
+  -moz-column-count: 6;
+  column-count: 6;
+  -webkit-column-gap: 2px; 
+  -moz-column-gap: 2px; 
+  column-gap: 2px;
   display: flex;
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
-.employee-cluster-panel { 
+.vaayu-dropzone>*{
+  flex: 1 1 80px;
+} */
+
+/* .employee-cluster-panel { 
   display: inline-block;
   background-color: #eee;
   margin-bottom: 10px;
   margin-right: 10px;
   width: 31%;
-}
+} */
 
 .filter-label {
   font-family: "Roboto";
@@ -923,7 +1043,7 @@
   .border-bt{border:1px solid #CCC !important;}
   .nav-tabs-new{margin-top: 18px;}
   .date_style{display: flex !important;margin-bottom: 0px;height: 42px;}
-  .data_in_style{height: 42px !important;border: 1px solid #707070 !important;}
+  .data_in_style{height: 32px !important;border: 1px solid #000 !important;margin-top:5px;}
   .cut_title{font-size: 16px;font-weight: 500;padding-bottom: 20px;}
   #toast-container > div{padding-left: 45px !important;}
   .action-buttons, .save-button{display: inline-block ;margin-right: 2px !important;}
@@ -990,3 +1110,111 @@
         transform: rotate(360deg);
       }
     }
+
+
+    /* Mesonary Style Goes Here */
+  .masonry-brick {
+    margin: 0 12px 12px 0;
+    display: none;
+    width:210px;
+    /* float:left; */
+  }
+
+  .masonry-brick.loaded {
+      display: block;
+  }
+
+  .width-80 {
+    width:80%;
+    float:left;
+  }
+
+  .width-20 {
+    width:20%;
+    float:left;
+  }
+
+  .width-80.mapVisible {
+    width:76% !important;
+    float:left;
+  }
+
+  .width-20.mapVisible {
+    width:24% !important;
+    float:left;
+  }
+  .width80 {
+    width:80% !important;
+    float:left;
+    padding-left: 15px;
+    /* padding-right: 40px; */
+  }
+
+  .width20 {
+    width:20% !important;
+    float:left;
+  }
+
+  /* .tempRoute {
+    width:200px !important;
+  } */
+.bgRed {
+  background: #e67878 !important;
+}
+.bgGreen {
+  background: #394266 !important;
+}
+.bgBlue {
+  background: #14a89e !important;
+}
+
+.vehicle_type {
+  font-size: 9px;
+  font-weight: bold;
+  text-align: right;
+  padding-right: 26px !important;
+  padding-top: 3px;
+  cursor: pointer;
+}
+.employee-cluster-panel-title {
+  width:100% !important;
+}
+
+.fixed-container {
+  position: fixed !important;
+  width: 210px !important;
+  top: 30px !important;
+  left: auto !important;
+}
+
+.vayau-routing .multiselect-parent.dropdown-multiselect .dropdown-toggle {
+  padding: 4px 9px !important;
+  float: right !important;
+  background:transparent !important;
+  color:#fff !important;
+}
+
+.vayau-routing .multiselect-parent.dropdown-multiselect .checkbox {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+.tempRoute .employee-cluster-panel-body .employee-list-group {
+  padding-top: 5px !important;
+}
+.vayau-routing .employee-cluster-panel .employee-cluster-panel-heading .tick.guard_checkbox{
+  position: relative;
+  top:3px;
+}
+.vayau-routing .employee-cluster-panel .employee-cluster-panel-body .tick.guard_checkbox{
+  position: relative;
+  top:-2px;
+}
+.tempRoute .employee-cluster-panel-heading {
+  padding-top: 6px !important;
+}
+.content > .content-body {
+  font-size:12px !important;
+}
+.mt-5 {
+  margin-top:5px;
+}
