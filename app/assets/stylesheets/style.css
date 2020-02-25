@@ -1,14 +1,15 @@
 .vayau-routing .card-panel .vaayu-dropzone .dndPlaceholder {
   display: flex;
-  height: 35px;
-  border-radius: 0 !important;
-  border: dashed 2px #000;
-  background-color:#e2e2e2 !important;
+  height: 25px;
+  border-radius: 4px !important;
+  border: 0;
+  background-color:#dde1e7 !important;
   padding: 0px 12px;
   align-items: center;
-  color:#000;
+  color:#ebecf0;
+  margin-bottom: 2px;
   font-size: 12px;
-  opacity: 0.6;
+  /* opacity: 0.6; */
 }
 
 .vayau-routing .card-panel .vaayu-dropzone .employee-list-group .dndDraggingSource {
@@ -325,9 +326,9 @@
 }
 
 .vayau-routing .employee-cluster-panel .employee-cluster-panel-body .employee-list-group-item {
-  border-radius: 0px;
-  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.16);
-  background-color:#ffffff;
+  border-radius: 2px;
+  box-shadow: 0px 2px 0px #d5d5d5;
+  background-color: #ffffff;
   margin-bottom: 5px;
   display: flex;
   padding: 2px 0px;
@@ -1255,13 +1256,13 @@
   width:100%;
 } */
 .employee-cluster-panel-heading .ui-select-container.ui-select-bootstrap .form-control {
-  height: 20px !important;
+  height: 19px !important;
   width: 95px;
   margin-top: 5px;
   max-width: 95px !important;
   min-width: 95px !important;
   line-height: 0.2;
-  border-radius: 0;
+  border-radius: 4px;
   box-shadow: none;
 }
 .vayau-panel-footer .ui-select-container.ui-select-bootstrap .form-control {
@@ -1279,14 +1280,14 @@
 }
  #input-outer {
   height: 20px;
-  width: 100px;
-  /* border: 1px #e7e7e7 solid; */
+  width: 94px;
   float: right;
-  margin-top:5px;
+  margin-top: 5px;
 }
  #input-outer label {
   width: 80%;
   border: 0px;
+  border-radius: 4px 0 0 4px;
   outline: none;
   color:#000;
   background:#fff;
@@ -1308,6 +1309,7 @@
   min-height: 20px;
   font-size: 10px;
   padding-top: 3px;
+  border-radius: 0 4px 4px 0;
 }
 
 #input-outer #clear:hover {
