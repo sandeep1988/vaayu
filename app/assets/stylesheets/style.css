@@ -1162,7 +1162,7 @@
     padding-right: 20px;
   }
 
-  @media (min-width: 1400px) {
+  @media (min-width: 1324px) {
     .width80 {
       width:87% !important;
     }
