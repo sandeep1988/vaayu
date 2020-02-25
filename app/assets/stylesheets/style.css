@@ -393,12 +393,10 @@
 }
 
 .vayau-routing .employee-cluster-panel .employee-list-group-item .inner-text {
-  padding: 0px 0 0 10px;
+  padding: 0px 4px 0 10px;
   width: 100%;
   float:left;
   align-items: center;
-  /* display: flex; */
-  /* flex: 1; */
   font-size:12px !important;
 }
 
