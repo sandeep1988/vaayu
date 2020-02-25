@@ -7,6 +7,20 @@ angular.module('app').directive('setHeight', function ($window) {
   }
 })
 
+angular.module('app').directive('setHeight1', function ($window) {
+  return {
+    link: function (scope, element, attrs) {
+      element.css('height', $window.innerHeight/1.5 + 'px');
+    }
+  }
+})
+angular.module('app').directive('setHeight2', function ($window) {
+  return {
+    link: function (scope, element, attrs) {
+      element.css('height', $window.innerHeight/1.5 + 'px');
+    }
+  }
+})
 angular.module('app').directive("scroll", function ($window) {
   return function(scope, element, attrs) {
     

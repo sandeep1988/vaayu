@@ -175,15 +175,15 @@
                                 <div class="employee-cluster-panel-title">
                                   <div class="row">
                                     <div class="col-md-12 meta-header">
-                                      <span class="guard-icon"><i class="fa fa-shield"></i></span>
+                                      <span class="guard-icon" ng-class="{'bgOrange':container.guard_required}"><i class="fa fa-shield"></i></span>
                                         <input type="checkbox" ng-model="container.guard_required" ng-change="checkBoxChanged(container)" ng-disabled="container.guard.length"
                                         name="route" class="tick guard_checkbox">
 
-                                      <span class="kilometer_time_duration" ng-class="{'bgRed':checkSiteDistance(container.total_distance)}">
+                                      <span class="kilometer_time_duration" ng-class="{'textRed':checkSiteDistance(container.total_distance)}">
                                           {{container.total_distance}} Km 
                                       </span>
                                       <span>|</span>
-                                      <span class="kilometer_time_duration" ng-class="{'bgRed':checkSiteTime(container.total_time)}">
+                                      <span class="kilometer_time_duration" ng-class="{'textRed':checkSiteTime(container.total_time)}">
                                           {{container.total_time}} Min
                                         </span>
                                     </div>
@@ -202,12 +202,12 @@
                                   dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
 
                                   <div class="inner-text" title="{{item.empName}} -{{item.area}}">
-                                    <span class="empId">{{item.displayEmpId}}</span> - <span class="text-muted">{{item.area}}</span>
+                                    <span class="empId">{{item.displayEmpId}}</span> - <span>{{item.area}}</span>
                                   </div>
                                 </li>
                               
                                 <li class="dndPlaceholder">
-                                    Drop employee here
+                                    DROP HERE
                                 </li>
                               </ul>
                             </div>
@@ -323,8 +323,8 @@
                           </div>
                         </div> 
                    
-                        <div class="width-20"  ng-class="{'mapVisible':isShowMap}" masonry="">
-                          <div scroll id="page" ng-class="{'fixed-container':boolChangeClass}" ng-repeat="container in containers" no-drag  class="employee-cluster-panel masonry-brick tempRoute" ng-if="container.subtype=='unallocated'">
+                        <div class="width-20"  ng-class="{'mapVisible':isShowMap}">
+                          <div scroll id="page" ng-class="{'fixed-container':boolChangeClass}" ng-repeat="container in containers" no-drag  class="employee-cluster-panel tempRoute" ng-if="container.subtype=='unallocated'">
                             <div class="employee-cluster-panel-heading"
                               ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
                               <div class="title_container">
@@ -335,7 +335,7 @@
                             <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
                               >
 
-                              <ul class="employee-list-group" dnd-list="container.employees" dnd-allowed-types="['item']"
+                              <ul class="employee-list-group" set-height2 dnd-list="container.employees" dnd-allowed-types="['item']"
                                 dnd-horizontal-list="true" dnd-external-sources="true" dnd-effect-allowed="all"
                                 dnd-dragover="dragoverCallback(container,index, external, type)"
                                 dnd-drop="dropItemCallback(container,index, item, external, type)" style="min-height: 400px;">
@@ -345,12 +345,12 @@
                                   dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
 
                                   <div class="inner-text" title="{{item.empName}} -{{item.area}}">
-                                    <span class="empId">{{item.displayEmpId}}</span> - <span class="text-muted">{{item.area}}</span>
+                                    <span class="empId">{{item.displayEmpId}}</span> - <span>{{item.area}}</span>
                                   </div>
                                 </li>
                                 
                                 <li class="dndPlaceholder">
-                                    Drop employee here
+                                    DROP HERE
                                 </li>
                               </ul>
                             </div>
@@ -370,7 +370,7 @@
             </div>
 
             <div class="employee-cluster-panel-body">
-              <div id="map"></div>
+              <div id="map" set-height1></div>
             </div>
           </div>
         </div>
