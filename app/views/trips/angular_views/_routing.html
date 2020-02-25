@@ -39,7 +39,7 @@
                   ng-change="updateFilters()"
                    />
                 <span class="input-group-btn-datePicket ">
-                  <button type="button" class="btn btn-default data_in_style" ng-click="open($event)"><i
+                  <button type="button" class="btn btn-default data_in_style data_in_style_btn" ng-click="open($event)"><i
                       class="fa fa-calendar"></i></button>
                 </span>
               </p>
@@ -335,7 +335,7 @@
                             <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
                               >
 
-                              <ul class="employee-list-group" set-height2 dnd-list="container.employees" dnd-allowed-types="['item']"
+                              <ul class="employee-list-group isSccorallable" set-height2 dnd-list="container.employees" dnd-allowed-types="['item']"
                                 dnd-horizontal-list="true" dnd-external-sources="true" dnd-effect-allowed="all"
                                 dnd-dragover="dragoverCallback(container,index, external, type)"
                                 dnd-drop="dropItemCallback(container,index, item, external, type)" style="min-height: 400px;">
