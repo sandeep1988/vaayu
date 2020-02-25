@@ -147,8 +147,11 @@
         </div>
 
         <div class="col-md-12 select_all_wrapper">
+          
             <input type="checkbox" ng-change="selectAllRoute(model2)" ng-model="allRouteSelected"
             name="all_route" class="tick guard_checkbox"> <label>Select All</label>
+
+            <div class="pull-right" style="margin-top:5px;"><label>Total Route </label> ( {{stats.no_of_routes}} )</div>
             <hr class="hrLine">
         </div>
 

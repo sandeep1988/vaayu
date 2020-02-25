@@ -223,13 +223,13 @@
   <div class="row vayau-sidebar filter-sidebar" ng-if="isAddMenuOpen">
     <div class="col-md-12">
       <div class="vaayu-sidebar-panel">
-        <div class="vaayu-sidebar-heading">
+        <div class="vaayu-sidebar-heading" style="padding-top: 0;">
           <div class="row">
             <div class="col-md-8">
               <h4 class="float-left"><span class="vaayu-sidebar-title">Adding vehicle </span></h4>
             </div>
             <div class="col-md-4">
-              <button type="button" ng-click="hideAddMenu()" class="btn btn-close float-right">&#x2715;</button>
+              <button type="button" ng-click="hideAddMenu()" class="btn btn-close float-right" style="float: right; top: 0;">&#x2715;</button>
             </div>
           </div>
         </div>
@@ -250,8 +250,9 @@
                                     </div> -->
             <div class="add-vehicle-card-container">
               <div class="row add-vehicle-card card_flex" ng-repeat="(key, value) in currentRoster.vehicle">
-
-                <div class="col-md-5">
+                <div class="col-md-12">
+                <div class="row" ng-if="key != 'TRUCK'">
+                <div class="col-md-4">
                   <img ng-if="key== 'SUV'" src="../assets/angular_images/ic_suv.png"
                     style="padding: 15px; height: 75px;">
                   <img ng-if="key== 'TT'" src="../assets/angular_images/ic_tt.png" style="padding: 15px; height: 75px;">
@@ -264,15 +265,18 @@
                     ng-if="!(key== 'SEDAN' || key== 'TT' || key== 'SUV' || key== 'HATCHBACK' || key== 'MINI VAN')"
                     style="display: block; margin-left: 35px; text-align: left !important;">{{key}}</span>
                 </div>
+                <div class="col-md-2"></div>
                 <div class="col-md-2" ng-click="minusVehicle(key)"><i
-                    class="pointer fa fa-minus-circle add-vehicle-plus-minus-button" aria-hidden="true"></i></div>
+                    class="pointer fa fa-minus-circle add-vehicle-plus-minus-button" aria-hidden="true" style="margin-top: 10px;"></i></div>
 
                 <div class="col-md-2">
                   <h5 style="margin-top: 15px">{{value}}</h5>
                 </div>
                 <div class="col-md-2" ng-click="plusVehicle(key)"><i
-                    class="pointer fa fa-plus-circle add-vehicle-plus-minus-button" aria-hidden="true"></i>
+                    class="pointer fa fa-plus-circle add-vehicle-plus-minus-button" aria-hidden="true" style="margin-top: 10px;"></i>
                 </div>
+              </div>
+            </div>
               </div>
               <!-- <div class="text-danger "  ng-if="!currentRoster.vehicle || !currentRoster.vehicle.length">
                                         <div class="col-md-12 text-center">
@@ -281,13 +285,13 @@
                                     </div> -->
             </div>
 
-            <div class="row add-vehicle-card-border" style="margin-top: 2em">
+            <div class="row add-vehicle-card-border" style="margin-top: 1em">
               <div class="col-md-8">
                 <h5 class="text-center" style="margin: auto">Employee Count
               </div>
               <h5 class="text-center" style="margin: auto"><span>{{currentRoster.no_of_emp}} </span></h5>
             </div>
-            <div class="row add-vehicle-card-border" style="margin-top: 2em">
+            <div class="row add-vehicle-card-border" style="margin-top: 1em">
               <div class="col-md-8">
                 <h5 class="text-center" style="    margin: auto">Seating Capacity </h5>
               </div>
