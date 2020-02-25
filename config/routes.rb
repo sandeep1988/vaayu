@@ -430,7 +430,8 @@ Rails.application.routes.draw do
       end
     end
   end
-
+  
+  resource :user_roles
   resource :configurators, only: [:show, :edit, :update]
   get "/configurations", to: "configurators#index"
   put '/update_config', to: 'configurators#update_config'

@@ -38,3 +38,10 @@ aside.side-left
             = inline_svg 'configurator.svg', class: 'sidebar-icon'
             span.sidebar-text
               | Configurator
+
+      - if can? :view, :userrole_tab
+        li[class="#{active_class(user_roles_path)}"]
+          =link_to user_roles_path do
+            = inline_svg 'provisioning-icon.svg', class: 'sidebar-icon'
+            span.sidebar-text
+              | User Role 2

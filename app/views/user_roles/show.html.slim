@@ -1,0 +1,18 @@
+= content_for :body_class, 'user-roles'
+.content-header
+  h2.content-title
+    | User Role
+.content-body
+  #error-placement
+  .row.margin-top
+    .col-md-12.margin-bottom.nav-actions-block
+      ul.nav.nav-tabs
+        li.general_settings
+          a[href="#general_settings" data-toggle="tab"]
+            | General Settings
+        li.system_settings
+          a[href="#system_settings" data-toggle="tab"]
+            | System Settings
+        li.compliance
+          a[href="#compliances" data-toggle="tab" data-source="/compliances/new"]
+            | Compliances

@@ -10,7 +10,7 @@ class Ability
       when 'admin'
         can :manage, :all
       when 'mdm_admin'
-        [:provisioning_tab, :configurators_tab].each { |page| can :view, page }
+        [:provisioning_tab, :configurators_tab, :userrole_tab].each { |page| can :view, page }
         [:people_tab, :places_tab, :things_tab].each { |page| can :view, page }
         can :crud, User do |usr|
           # employee_companies = current_user.entity&.logistics_company.employee_companies
@@ -32,6 +32,7 @@ class Ability
         can :view , :dashboard_tab
         cannot :view, :provisioning_tab
         cannot :view, :configurators_tab
+        cannot :view, :userrole_tab
         cannot :view, :billing_tab
         cannot :view, :reports_tab         
       when 'operator'
@@ -79,6 +80,7 @@ class Ability
         can :view, :provisioning_tab
         cannot :view, :dashboard_tab
         cannot :view, :configurators_tab
+        cannot :view, :userrole_tab
         cannot :view, :billing_tab
         cannot :view, :reports_tab
     #   when 'employer_shift_manager'
