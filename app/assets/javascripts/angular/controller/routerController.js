@@ -967,7 +967,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
                     scope.model2=scope.newModel;
                     // scope.routeChangedIds = [];
                     scope.resetRoute();
-                    $ngConfirm("Reverted successfully")
+                    // $ngConfirm("Reverted successfully")
                     // return false;
                   }
                 },
