@@ -35,6 +35,42 @@ angular.module('app').directive("scroll", function ($window) {
   };
 });
 
+angular.module('app').directive("dndScrollArea", dndScrollArea);
+
+dndScrollArea.$inject = ['$document', '$interval'];
+
+function dndScrollArea($document, $interval) {
+  return {
+    link: link
+  };
+
+  function link(scope, element, attributes) {
+    var inc = attributes.dndRegion === 'top' ? 10: ( attributes.dndRegion === 'bottom' ? -10 : 0);
+    var container = $document[0].getElementById(attributes.dndScrollContainer);
+    if(container) {
+      registerEvents(element,container,20,20);
+    }
+  }
+
+  function registerEvents(bar, container, inc, speed) {
+    if (!speed) {
+      speed = 20;
+    }
+    var timer;
+    angular.element(bar).on('dragenter', function() {
+      container.scrollTop += inc;
+      timer = $interval(function moveScroll() {
+        container.scrollTop += inc;
+        console.log("scrool ", container.scrollTop)
+      }, speed);
+    });
+    angular.element(bar).on('dragleave', function() {
+      $interval.cancel(timer);
+    });
+  }
+}
+
+
 angular.module('app')
   .filter('range', function () {
     return function (items, property, min, max) {
@@ -899,16 +935,16 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   };
 
 
-  // function mousemove(event) {
-  //   console.log(event);
-  //   var prevY = $('body').attr('data-prevY');
-  //   if (event.pageY < prevY) {
-  //     $(window).scrollTop($(window).scrollTop()+5);
-  //   } else {
-  //     $(window).scrollTop($(window).scrollTop()-5);
-  //   } 
-  //   $('body').attr('data-prevY', event.pageY);
-  // }
+  function mousemove(event) {
+    console.log(event);
+    var prevY = $('body').attr('data-prevY');
+    if (event.pageY < prevY) {
+      $(window).scrollTop($(window).scrollTop()+5);
+    } else {
+      $(window).scrollTop($(window).scrollTop()-5);
+    } 
+    $('body').attr('data-prevY', event.pageY);
+  }
 
 
   $scope.dragoverCallback = function (container, index, external, type, callback) {
@@ -916,6 +952,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       $scope.routeChangedIds.push(container.routeId)
       $scope.isDisabled = false;
     }
+
+    // $document.on('mousemove',mousemove);
 
     $scope.newModel=angular.copy($scope.model2)
  

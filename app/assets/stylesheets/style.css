@@ -11,6 +11,11 @@
   font-size: 12px;
   /* opacity: 0.6; */
 }
+.dnd-scroll-area {
+  height: 2px;
+  width: 100%;
+  background-color:#fff;
+}
 .isSccorallable {
   overflow-y: auto !important;
 }
