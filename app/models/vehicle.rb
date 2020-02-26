@@ -23,7 +23,7 @@ class Vehicle < ApplicationRecord
   # validates :plate_number, presence: true, uniqueness: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :plate_number, format: { with: /[a-zA-Z0-9]/, message: " only alphanumeric." }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates_length_of :plate_number, maximum: 12
-  validates :plate_number, presence: true, uniqueness: {message: "already taken"}, :if => Proc.new{|f| f.registration_steps == "Step_1"}
+  validates :plate_number, presence: true,  :uniqueness => {:case_sensitive => false}, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # validates :make, presence: true, :unless => Proc.new{|f| f.registration_steps.present? }
   validates :device_id, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :gps_provider_id, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
