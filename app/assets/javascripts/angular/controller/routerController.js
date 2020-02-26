@@ -63,7 +63,7 @@ app.directive('focusMe', function ($timeout) {
 
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService,
   AutoAllocationService,
-  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm) {
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm,$document) {
 
 
   // $scope.toggleView = false;
@@ -451,22 +451,26 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         $scope.toggleView = true;
         ToasterService.showSuccess('Success', res['message']);
       } else {
-        $ngConfirm({
-          title: 'Update Routes Failed!',
-          boxWidth: '40%',
-          useBootstrap: false,
-          content: res['message'],
-          scope: $scope,
-          buttons: {
-              OK: {
-                text: 'OK',
-                btnClass: 'btn-blue',
-                action: function (scope) {
-                  scope.resetRoute();
-                }
-              }
-          }
-        });
+        $scope.resetRoute();
+        $scope.toggleView = true;
+        ToasterService.showSuccess('Success', res['message']);
+
+        // $ngConfirm({
+        //   title: 'Update Routes Failed!',
+        //   boxWidth: '40%',
+        //   useBootstrap: false,
+        //   content: res['message'],
+        //   scope: $scope,
+        //   buttons: {
+        //       OK: {
+        //         text: 'OK',
+        //         btnClass: 'btn-blue',
+        //         action: function (scope) {
+        //           scope.resetRoute();
+        //         }
+        //       }
+        //   }
+        // });
       }
     })
   }
@@ -895,12 +899,24 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   };
 
 
+  // function mousemove(event) {
+  //   console.log(event);
+  //   var prevY = $('body').attr('data-prevY');
+  //   if (event.pageY < prevY) {
+  //     $(window).scrollTop($(window).scrollTop()+5);
+  //   } else {
+  //     $(window).scrollTop($(window).scrollTop()-5);
+  //   } 
+  //   $('body').attr('data-prevY', event.pageY);
+  // }
+
 
   $scope.dragoverCallback = function (container, index, external, type, callback) {
     if ($scope.routeChangedIds.indexOf(container.routeId) === -1) {
       $scope.routeChangedIds.push(container.routeId)
       $scope.isDisabled = false;
     }
+
     $scope.newModel=angular.copy($scope.model2)
  
     return index < 100000000; 
@@ -976,10 +992,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         angular.forEach($scope.resData, function (item) {
           if (route.routeId == item.routeId) {
             if(item.distance){
-              route.total_distance = item.distance.distance;
+              route.total_distance = item.distance.distance ? item.distance.distance : route.total_distance;
             }
             if(item.time){
-              route.total_time = item.time.duration;
+              route.total_time = item.time.duration ? item.time.duration : route.total_time;
             }
             
             if(item.guard){
