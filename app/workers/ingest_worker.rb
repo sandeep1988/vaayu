@@ -71,6 +71,7 @@ class IngestWorker
           email: emp_hash[:email],
           phone: emp_hash[:phone],
           f_name: emp_hash[:f_name],
+          m_name: emp_hash[:m_name],
           l_name: emp_hash[:l_name],
           password: 'password',
           entity_type: 'Employee',
@@ -89,6 +90,7 @@ class IngestWorker
           email: emp_hash[:email],
           phone: emp_hash[:phone],
           f_name: emp_hash[:f_name],
+          m_name: emp_hash[:m_name],
           l_name: emp_hash[:l_name],
           password: 'password',
           entity_type: 'Employee',
@@ -110,6 +112,7 @@ class IngestWorker
       if allow_update
         employee.user.update!({
           f_name: emp_hash[:f_name],
+          m_name: emp_hash[:m_name],
           l_name: emp_hash[:l_name],
           phone: emp_hash[:phone],
           email: emp_hash[:email],
