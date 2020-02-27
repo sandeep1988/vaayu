@@ -1,0 +1,66 @@
+<div ng-controller='roleAccessCtrl' ng-init="init()">
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div style="overflow: auto;">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Roles</th>
+                                <th colspan="3" ng-repeat="module in moduleColumn">{{module.name}}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td colspan="3" style="padding: 0;" ng-repeat="module in moduleColumn">
+                                    <table class="table table-bordered" style="border: 0;">
+                                        <tr>
+                                            <td style="width: 33.34%; border-top: 0; border-bottom: 0;">View</td>
+                                            <td style="width: 33.34%; border-top: 0; border-bottom: 0;">Edit</td>
+                                            <td style="width: 33.34%; border-top: 0; border-bottom: 0;">Delete</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr ng-repeat="row in tableRow">
+                                <td>
+                                    {{row.role_name_view}}
+                                </td>
+                                <td colspan="3" ng-repeat="roleModule in roleModuleAccess track by $index" style="padding: 0;">
+                                    <table class="table table-bordered" style="border: 0;">
+                                        <tr>
+                                            <td style="width: 33.34%; border-top: 0; border-bottom: 0;">
+                                                <div class="nice-checkbox" style="padding-top: 0; text-align: center;">
+                                                    <input class="boolean optional checkbox-o" type="checkbox" value="1" name="{{row.role_name | lowercase}}-{{roleModule.role_module_access[$index].module_id}}-view" id="{{row.role_name | lowercase}}-{{roleModule.role_module_access[$index].module_id}}-view" ng-checked="roleModule.role_module_access[$index].view_status">
+                                                    <label class="boolean optional" for="{{row.role_name | lowercase}}-{{roleModule.role_module_access[$index].module_id}}-view"></label>
+                                                </div>
+                                            </td>
+                                            <td style="width: 33.34%; border-top: 0; border-bottom: 0;">
+                                                <div class="nice-checkbox" style="padding-top: 0; text-align: center;">
+                                                    <input class="boolean optional checkbox-o" type="checkbox" value="1" name="{{row.role_name | lowercase}}-{{roleModule.role_module_access[$index].module_id}}-edit" id="{{row.role_name | lowercase}}-{{roleModule.role_module_access[$index].module_id}}-edit" ng-checked="roleModule.role_module_access[$index].edit_status">
+                                                    <label class="boolean optional" for="{{row.role_name | lowercase}}-{{roleModule.role_module_access[$index].module_id}}-edit"></label>
+                                                </div>
+                                            </td>
+                                            <td style="width: 33.34%; border-top: 0; border-bottom: 0;">
+                                                <div class="nice-checkbox" style="padding-top: 0; text-align: center;">
+                                                    <input class="boolean optional checkbox-o" type="checkbox" value="1" name="{{row.role_name | lowercase}}-{{roleModule.role_module_access[$index].module_id}}-delete" id="{{row.role_name | lowercase}}-{{roleModule.role_module_access[$index].module_id}}-delete" ng-checked="roleModule.role_module_access[$index].delete_status">
+                                                    <label class="boolean optional" for="{{row.role_name | lowercase}}-{{roleModule.role_module_access[$index].module_id}}-delete"></label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary">Save</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

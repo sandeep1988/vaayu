@@ -7,12 +7,16 @@
   .row.margin-top
     .col-md-12.margin-bottom.nav-actions-block
       ul.nav.nav-tabs
-        li.general_settings
-          a[href="#general_settings" data-toggle="tab"]
-            | General Settings
+        li.role_access
+          a[href="#role_access" data-toggle="tab"]
+            | Role Access
         li.system_settings
           a[href="#system_settings" data-toggle="tab"]
             | System Settings
         li.compliance
           a[href="#compliances" data-toggle="tab" data-source="/compliances/new"]
             | Compliances
+
+    .tab-content
+        = render 'user_roles/user_role'
+        
