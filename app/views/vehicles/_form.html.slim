@@ -4,7 +4,7 @@
       span.field-label
         | Info:
     .col-md-15-3
-      = f.association :business_associate, label: 'Choose associate', prompt: false, input_html: {class: 'selectboxit', :'placeholder' => ''}, required: true
+      = f.input :business_associate_id, collection: BusinessAssociate.all.map { |x| [x.legal_name, x.id] }, label: "Business Associate", prompt:true,input_html: { 'placeholder' => 'select associate' }
     .col-md-15-3
       = f.input :make, label: 'Make', required: true
   .row

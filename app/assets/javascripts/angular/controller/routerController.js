@@ -179,6 +179,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.disableBtn = false;
   // ToasterService.clearToast();
   $scope.place = {};
+  $scope.shiftID;
+  $scope.shiftType;
+
   // Map.init();
 
   var directionsRenderer 
@@ -230,6 +233,102 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.isLoader = false;
+  $scope.selectedCapacity = {};
+  $scope.selectedType = {};
+  $scope.selectedLandmark = {};
+  $scope.selectedZone = {}
+  $scope.clickEvents = {
+    onInitDone: function(item) {console.log(item);},
+    onItemSelect: function(item) {console.log('check', $scope.selectedLandmark)},
+    onItemDeselect: function(item) {console.log(item);}
+  };
+  $scope.example14settings = {
+    enableSearch: true,
+    displayProp: 'name',
+    scrollableHeight: '200px',
+    scrollable: true,
+  };
+
+  $scope.updateRouteFilter =function(search){
+    $scope.criteria=search;
+  }
+  $scope.mergedValues = [{id: '', label: ''}];
+  
+  $scope.obj = {
+    zone: '',
+    landmark: '',
+    type: '',
+    capacity: ''
+  }
+
+  $scope.applyFilter = () => {  
+    $scope.obj = {
+      zone: $scope.selectedZone.label,
+      landmark: $scope.selectedLandmark.label,
+      type: $scope.selectedType.label,
+      capacity: $scope.selectedCapacity.label
+    }
+    $scope.mergedValues = $scope.selectedCapacity.concat($scope.selectedType, $scope.selectedLandmark)
+    console.log($scope.mergedValues)
+
+  }
+
+
+  $scope.clearSelection = () => {
+    $scope.selectedCapacity = {};
+    $scope.selectedType = {};
+    $scope.selectedLandmark = {};
+    $scope.selectedZone = {};
+  }
+  $scope.capacityObj = [
+    {
+      name: '< 50%',
+      id: 50
+    },
+    {
+      name: '50% - 75%',
+      id: 75
+    },
+    {
+      name: '75% - 100%',
+      id: 100
+    }
+  ];
+
+  $scope.typeObj = [
+    {
+      name: 'SEDAN',
+      id: 1
+    },
+    {
+      name: 'Hatchback',
+      id: 2
+    },
+    {
+      name: 'SUV',
+      id: 3
+    },
+    {
+      name: 'TT',
+      id: 4
+    },
+    {
+      name: 'BUS',
+      id: 5
+    },
+    {
+      name: 'MINI VAN',
+      id: 6
+    },
+    {
+      name: 'TRUCK',
+      id: 7
+    }
+  ];
+  $scope.landmarkObj = [];
+
+  $scope.zoneObj = [];
+  
 
   $scope.selected_vehicle_status = 'on_duty';
 
@@ -540,6 +639,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       let postdata = { routesFinalizeArray: $scope.newFinalizeArray }
       FinalizeService.query(postdata, (data) => {
         $scope.resetRoute();
+        $scope.toggleView = true;
         $scope.allRouteSelected=false;
         $scope.toggleView = true;
         ToasterService.showError('Success', data['message'])
@@ -1460,6 +1560,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         if ($scope.routes.data) {
           try {
             $scope.toggleView = true;
+            ToasterService.showSuccess('Success', data['message'])
             console.log('In try loop');
             // ToasterService.showToast('info', 'Response Received', $scope.routes.data.routes.length + ' Routes found for this shift')
             $scope.originalRoutes = angular.copy($scope.routes.data.routes);
@@ -1468,11 +1569,13 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
             $scope.routes = RouteStaticResponse.emptyResponse;
             $scope.routes.data.routes = [];
             $scope.toggleView = true;
+            ToasterService.showSuccess('Error', data['message'])
             // ToasterService.showToast('info', 'Response Received', 'No Routes found for this shift')
             console.log('error', err)
           }
           $scope.showRouteData()
         }
+
       } else {
         $scope.toggleView = true;
       ToasterService.showError('Success', data['message']);
@@ -1501,12 +1604,18 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     $scope.isVehicalSidebarView = false;
     $scope.isGuardSidebarView = false;
     $scope.isFilterSidebarView = false;
+    $scope.filterToggle = false;
   }
 
   $scope.resetSidebar();
 
   $scope.hideVehicalSidebar = function () {
     $scope.isVehicalSidebarView = false;
+  }
+
+  $scope.hideFilterSidebar = () => {
+    
+    $scope.filterToggle = false;
   }
 
   $scope.showVehicalSidebar = function () {
@@ -1516,6 +1625,51 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     $scope.resetSidebar();
     $scope.isVehicalSidebarView = true;
   }
+
+  $scope.onFilter = () => {
+    let shift = JSON.parse($scope.selectedShift);
+    if(shift != null && $scope.siteId && shift.id && $scope.filterDate && shift.trip_type){
+      $scope.filterToggle = true;
+      let param = {
+        site_id: parseInt($scope.siteId),
+        shift_id: parseInt(shift.id),
+        to_date: moment($scope.filterDate).format('YYYY-MM-DD'),
+        shift_type: String(shift.trip_type)
+        
+      }
+      // console.log('param', param)
+      RouteService.empLandmarkZonesList(param, (res) => {
+        // console.log('empLandmark', res, $scope.zoneObj)
+        res['data'].forEach((ele, i) => {
+          if(ele['landmark']){
+            $scope.landmarkObj.push({
+              name: ele['landmark'],
+              id: i + 1
+            })
+          }
+        })
+
+        res['data'].forEach((ele, i) => {
+          if(ele['zone']){
+            $scope.zoneObj.push({
+              name: ele['zone'],
+              id: i + 1
+            })
+          }
+        })
+
+        console.log('empLandmark', $scope.landmarkObj)
+      }, (err) => {
+        console.log('empLand err' , err)
+      })
+    } else {
+      $scope.toggleView = true;
+      ToasterService.showError('Error', 'Unexpected Error!')
+    }
+    
+    
+  }
+
 
 
   $scope.hideGuardSidebar = function () {

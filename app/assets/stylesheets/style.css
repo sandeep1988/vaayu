@@ -182,6 +182,7 @@
    right:0;
    top:0;
    bottom: 0;
+   z-index: 100;
    width:400px;
    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
    background-color: #ffffff;
@@ -198,7 +199,8 @@
     z-index: 10000;
  }
 
-.vayau-routing .vayau-sidebar.vehical-sidebar {
+.vayau-routing .vayau-sidebar.vehical-sidebar,
+.vayau-routing .vayau-sidebar.filter-sidebar {
   position: fixed;
   right:0;
   top:0;
@@ -206,7 +208,7 @@
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   background-color: #ffffff;
   width:400px;
-  z-index: 2;
+  z-index: 100;
 }
 
 .pright-0 {
@@ -1217,4 +1219,8 @@
 }
 .mt-5 {
   margin-top:5px;
+}
+
+.vayau-routing .filter-btn .multiselect-parent.dropdown-multiselect .dropdown-toggle{
+  color: #394264 !important;
 }
