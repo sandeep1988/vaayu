@@ -379,7 +379,7 @@
       <div class="dnd-scroll-area" dnd-scroll-area dnd-region="bottom" dnd-scroll-container="collectionList"></div>
   
       <div class="row vayau-sidebar  guard-sidebar" ng-if="isGuardSidebarView">
-        <div ng-repeat="list in guards" class="col-md-12">
+        <div class="col-md-12">
           <div class="vaayu-sidebar-panel">
             <div class="vaayu-sidebar-heading">
               <div class="row">
@@ -436,34 +436,36 @@
                 </div>
               </div>
   
-              <ul class="emplyoee-list-group" dnd-list="list.guard" dnd-effect-allowed="copy"
-                dnd-allowed-types="list.allowedTypes" dnd-disable-if="list.guard.length >= list.max"
-                dnd-dragover="dragoverCallback(list,index, external, type)"
-                dnd-drop="dropCallback(list,index, item, external, type)">
-                <li ng-repeat="guard in list.guard | filter: { firstName: name,userName:name  }" no-drop
-                  dnd-draggable="guard" dnd-effect-allowed="move" dnd-type="guard.type"
-                  dnd-disable-if="guard.type == 'unknown'" dnd-moved="list.guard.splice($index, 1)"
-                  class="background-{{guard.type}} input-group employee-list-group-item">
-                  <span class="input-group-addon addon-prepend">
-                    <div class="inner-addon">
-                      <i class="fa fa-shield" aria-hidden="true"></i>
+              <div ng-repeat="list in guards">
+                <ul class="emplyoee-list-group" dnd-list="list.guard" dnd-effect-allowed="copy"
+                  dnd-allowed-types="list.allowedTypes" dnd-disable-if="list.guard.length >= list.max"
+                  dnd-dragover="dragoverCallback(list,index, external, type)"
+                  dnd-drop="dropCallback(list,index, item, external, type)">
+                  <li ng-repeat="guard in list.guard | filter: { firstName: name,userName:name  }" no-drop
+                    dnd-draggable="guard" dnd-effect-allowed="move" dnd-type="guard.type"
+                    dnd-disable-if="guard.type == 'unknown'" dnd-moved="list.guard.splice($index, 1)"
+                    class="background-{{guard.type}} input-group employee-list-group-item">
+                    <span class="input-group-addon addon-prepend">
+                      <div class="inner-addon">
+                        <i class="fa fa-shield" aria-hidden="true"></i>
+                      </div>
+                    </span>
+    
+                    <div class="inner-text">
+                      <div class="text-small">On Duty</div>
+                      <div class="text-big"> {{guard.firstName}} {{guard.lastName}}</div>
                     </div>
-                  </span>
-  
-                  <div class="inner-text">
-                    <div class="text-small">On Duty</div>
-                    <div class="text-big"> {{guard.firstName}} {{guard.lastName}}</div>
-                  </div>
-  
-                  <div class="input-group-addon addon-append">
-                    <i class="fa fa-bars" aria-hidden="true"></i>
-                  </div>
-                </li>
-  
-                <li class="dndPlaceholder">
-                  Drop any <strong>{{list.allowedTypes.join(' or ')}}</strong> here
-                </li>
-              </ul>
+    
+                    <div class="input-group-addon addon-append">
+                      <i class="fa fa-bars" aria-hidden="true"></i>
+                    </div>
+                  </li>
+    
+                  <li class="dndPlaceholder">
+                    Drop any <strong>{{list.allowedTypes.join(' or ')}}</strong> here
+                  </li>
+                </ul>
+              </div>
             </div>
             <div class="row vaayu-sidebar-footer">
               <div class="col-md-6 pr-2">
@@ -704,7 +706,7 @@
         </div>
       </div>
     </div>
-  </div>
+</div>
   
   
   
