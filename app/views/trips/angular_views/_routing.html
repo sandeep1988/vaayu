@@ -361,7 +361,7 @@
               
           </div>
           
-          <div ng-init="initMap()" ng-class="isShowMap ? 'width20' : 'ng-hide'">
+          <div ng-if="stats.no_of_routes !=0" ng-init="initMap()" ng-class="isShowMap ? 'width20' : 'ng-hide'">
             <div class="custom-panel-map" scroll id="page" ng-class="{'fixed-container':boolChangeClass}">
               <div class="employee-cluster-panel-heading">
                 <div class="employee-cluster-panel-title">
