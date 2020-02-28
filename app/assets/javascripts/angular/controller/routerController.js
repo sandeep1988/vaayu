@@ -20,6 +20,20 @@ angular.module('app').directive("scroll", function ($window) {
   };
 });
 
+angular.module('app').directive('setHeight1', function ($window) {
+  return {
+    link: function (scope, element, attrs) {
+      element.css('height', $window.innerHeight/1.5 + 'px');
+    }
+  }
+})
+angular.module('app').directive('setHeight2', function ($window) {
+  return {
+    link: function (scope, element, attrs) {
+      element.css('height', $window.innerHeight/1.5 + 'px');
+    }
+  }
+})
 angular.module('app').directive("scroll", function ($window) {
   return function(scope, element, attrs) {
     
@@ -33,6 +47,42 @@ angular.module('app').directive("scroll", function ($window) {
       });
   };
 });
+
+angular.module('app').directive("dndScrollArea", dndScrollArea);
+
+dndScrollArea.$inject = ['$document', '$interval'];
+
+function dndScrollArea($document, $interval) {
+  return {
+    link: link
+  };
+
+  function link(scope, element, attributes) {
+    var inc = attributes.dndRegion === 'top' ? 10: ( attributes.dndRegion === 'bottom' ? -10 : 0);
+    var container = $document[0].getElementById(attributes.dndScrollContainer);
+    if(container) {
+      registerEvents(element,container,20,20);
+    }
+  }
+
+  function registerEvents(bar, container, inc, speed) {
+    if (!speed) {
+      speed = 20;
+    }
+    var timer;
+    angular.element(bar).on('dragenter', function() {
+      container.scrollTop += inc;
+      timer = $interval(function moveScroll() {
+        container.scrollTop += inc;
+        console.log("scrool ", container.scrollTop)
+      }, speed);
+    });
+    angular.element(bar).on('dragleave', function() {
+      $interval.cancel(timer);
+    });
+  }
+}
+
 
 angular.module('app')
   .filter('range', function () {
@@ -93,7 +143,7 @@ app.directive('focusMe', function ($timeout) {
 
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService,
   AutoAllocationService,
-  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm) {
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm,$document) {
 
     $scope.rut = {};
 
@@ -642,7 +692,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         $scope.toggleView = true;
         $scope.allRouteSelected=false;
         $scope.toggleView = true;
-        ToasterService.showError('Success', data['message'])
+        ToasterService.showSuccess('Success', 'Routes are finalized')
       }, err => {
         $scope.toggleView = true;
         ToasterService.showError('Error', 'Something went wrong')
@@ -666,22 +716,26 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         $scope.toggleView = true;
         ToasterService.showSuccess('Success', res['message']);
       } else {
-        $ngConfirm({
-          title: 'Update Routes Failed!',
-          boxWidth: '40%',
-          useBootstrap: false,
-          content: res['message'],
-          scope: $scope,
-          buttons: {
-              OK: {
-                text: 'OK',
-                btnClass: 'btn-blue',
-                action: function (scope) {
-                  scope.resetRoute();
-                }
-              }
-          }
-        });
+        $scope.resetRoute();
+        $scope.toggleView = true;
+        ToasterService.showSuccess('Success', res['message']);
+
+        // $ngConfirm({
+        //   title: 'Update Routes Failed!',
+        //   boxWidth: '40%',
+        //   useBootstrap: false,
+        //   content: res['message'],
+        //   scope: $scope,
+        //   buttons: {
+        //       OK: {
+        //         text: 'OK',
+        //         btnClass: 'btn-blue',
+        //         action: function (scope) {
+        //           scope.resetRoute();
+        //         }
+        //       }
+        //   }
+        // });
       }
     })
   }
@@ -1110,12 +1164,26 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   };
 
 
+  function mousemove(event) {
+    console.log(event);
+    var prevY = $('body').attr('data-prevY');
+    if (event.pageY < prevY) {
+      $(window).scrollTop($(window).scrollTop()+5);
+    } else {
+      $(window).scrollTop($(window).scrollTop()-5);
+    } 
+    $('body').attr('data-prevY', event.pageY);
+  }
+
 
   $scope.dragoverCallback = function (container, index, external, type, callback) {
     if ($scope.routeChangedIds.indexOf(container.routeId) === -1) {
       $scope.routeChangedIds.push(container.routeId)
       $scope.isDisabled = false;
     }
+
+    // $document.on('mousemove',mousemove);
+
     $scope.newModel=angular.copy($scope.model2)
  
     return index < 100000000; 
@@ -1166,7 +1234,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
                     scope.model2=scope.newModel;
                     // scope.routeChangedIds = [];
                     scope.resetRoute();
-                    $ngConfirm("Reverted successfully")
+                    // $ngConfirm("Reverted successfully")
                     // return false;
                   }
                 },
@@ -1191,10 +1259,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         angular.forEach($scope.resData, function (item) {
           if (route.routeId == item.routeId) {
             if(item.distance){
-              route.total_distance = item.distance.distance;
+              route.total_distance = item.distance.distance ? item.distance.distance : route.total_distance;
             }
             if(item.time){
-              route.total_time = item.time.duration;
+              route.total_time = item.time.duration ? item.time.duration : route.total_time;
             }
             
             if(item.guard){
