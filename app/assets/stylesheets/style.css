@@ -295,14 +295,14 @@
 } */
 
 .vayau-routing .close_button{
-  position: relative; 
-  top: -22px; 
-  left: -6px;  
+  position: relative;
+  top: -22px;
+  left: -8px;
   cursor: pointer;
   z-index: 10;
-  background-color: #6c6c6c; 
-  line-height:2.8em; 
-  width:30px; 
+  background-color:#6c6c6c;
+  line-height: 2.5;
+  width: 34px;
   display: none;
 }
 
