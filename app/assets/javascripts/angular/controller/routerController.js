@@ -1463,13 +1463,14 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     let shift = JSON.parse($scope.selectedShift);
     if ($scope.getShiftType(shift.shift_type) == 1) {
       $scope.isSiteStatus = 1;
-      makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true);
+      map_markers.push(makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true));
     }
 
     if ($scope.getShiftType(shift.shift_type) == 0) {
       $scope.isSiteStatus = 0;
-      makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true);
+      map_markers.push(makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true));
     }
+
 
     if ($scope.isSiteStatus == 1) {
       directionsService.route({
@@ -1553,6 +1554,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
  
   $scope.selectRoute = (container) => {
+    clearMarkers(map_markers);
     if (!container.route_selected) {
       return;
     }
@@ -1565,7 +1567,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         location: new google.maps.LatLng(item.lat, item.lng),
         stopover: true
       });
-      makeMarker(new google.maps.LatLng(item.lat, item.lng), item.empName);
+      map_markers.push(makeMarker(new google.maps.LatLng(item.lat, item.lng), item.empName));
     }
 
     // var directionsService = new google.maps.DirectionsService();
@@ -1634,6 +1636,15 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       position: new google.maps.LatLng(19.2578, 72.8731),
       icon: "../assets/angular_images/car.png"
     })
+  }
+
+  var map_markers = [];
+
+  function clearMarkers (markers) {
+    for (var i = 0; i < markers.length; i++ ) {
+      markers[i].setMap(null);
+    }
+    markers = []
   }
 
   function makeMarker(position, title, isSite = false) {
