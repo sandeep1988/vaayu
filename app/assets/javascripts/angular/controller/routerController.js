@@ -1555,6 +1555,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
  
   $scope.selectRoute = (container) => {
     clearMarkers(map_markers);
+   
     if (!container.route_selected) {
       return;
     }
