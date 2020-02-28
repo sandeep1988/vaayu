@@ -969,6 +969,7 @@
 
 .vayau-routing select {
   /* width: 259px; */
+  width:200px !important;
   height: 32px;
   /* opacity: 0.5; */
   color:#000;
@@ -1364,4 +1365,7 @@
 }
 .textRed {
   color:red !important;
+}
+.filterBar select {
+    max-width:200px;
 }
