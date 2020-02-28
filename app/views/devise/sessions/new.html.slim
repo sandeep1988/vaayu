@@ -26,8 +26,6 @@
                   span.input-group-addon.text-muted
                     i.fa.fa-circle-o
                   = f.input :password, wrapper: false, label: false, required: false, placeholder: 'Password'
-
-                = f.input :remember_me, :wrapper => :checkbox, input_html: {class: 'checkbox-o' }, as: :boolean if devise_mapping.rememberable?
                 div.g-recaptcha data-sitekey=ENV["G_RECAPTCHA_SITE_KEY"] 
                 #captcha-api-url data_api_url=ENV["G_RECAPTCHA_URL"]
                 .form-group.form-actions

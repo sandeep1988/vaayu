@@ -46,7 +46,7 @@ class IngestEmployeeShiftWorker < IngestWorker
       l_name = emp_name[2]
     else
       f_name = emp_name[0]
-      l_name = emp_name[2]
+      l_name = emp_name[1]
     end
     if row['gender'] == "Male" || row['gender'] == "male"
       @temp_gender = '1'
