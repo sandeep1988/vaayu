@@ -172,8 +172,7 @@
                                   <span class="title_text">TP{{container.tripId+' | '+container.vehicle_type}}  </span>
                                 </div>
                               </div>
-                              <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
-                             >
+                              <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'>
                                 <div class="employee-cluster-panel-heading-meta">
                                   <div class="employee-cluster-panel-title">
                                     <div class="row">
@@ -236,7 +235,6 @@
   
                                           <div class="vehicle_no">
                                             <div class="text-small">{{person.vehicleNumber}}</div>
-                                            <!-- <div class="text-big">{{person.vehicleNumber}}</div> -->
                                           </div>
                                         </li>
                                       </dnd-nodrag>
@@ -335,9 +333,7 @@
                                 </div>
                               </div>
   
-                              <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'
-                                >
-  
+                              <div class="employee-cluster-panel-body" ng-click='getCurrentVehicleLocation()'>
                                 <ul class="employee-list-group isSccorallable" set-height2 dnd-list="container.employees" dnd-allowed-types="['item']"
                                   dnd-horizontal-list="true" dnd-external-sources="true" dnd-effect-allowed="all"
                                   dnd-dragover="dragoverCallback(container,index, external, type)"
