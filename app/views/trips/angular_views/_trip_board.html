@@ -387,10 +387,10 @@
       </div>
       <div class="vaayu-modal-footer">
         <!-- <button type="button" class="vaayu-pop-action-btn"> Change Allocation</button> -->
-        <div ng-dropdown-multiselect="" ng-if="isDisable1(modelData)" options="vehicleList"
+        <!-- <div ng-dropdown-multiselect="" ng-if="isDisable1(modelData)" options="vehicleList"
           style="display: inline-block;" selected-model="selectedVehicle " checkboxes="true"
-          extra-settings="example14settings" validation="required" search-placeholder="   Change Allocation    "
-          validation-result="selectedVehicle">
+          extra-settings="example14settings" validation="required" search-placeholder="   Change Allocation    " custom-change='changes'
+          validation-result="selectedVehicle"> -->
         </div>
         <button type="button" class="vaayu-pop-action-btn" ng-click="changeAllocation(modelData)" ng-if="isDisable()">
           Submit</button>
