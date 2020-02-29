@@ -195,8 +195,18 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
         console.log(response)
         if(!response['success']){
           ToasterService.showError('Error', response['errors']['errorMessage'])
+          $scope.we_checkin = ''
+          $scope.we_checkout = ''
+          $scope.wd_checkin = ''
+          $scope.wd_checkout = ''
         } else {
           ToasterService.showSuccess('Success', 'Cut-off time submitted successfully!')
+          $scope.we_checkin = ''
+          $scope.we_checkout = ''
+          $scope.wd_checkin = ''
+          $scope.wd_checkout = ''
+          $scope.configForm.$setUntouched()
+          $scope.configForm.$setPristine()
         }
       }, (error) => {
         console.log(error)
