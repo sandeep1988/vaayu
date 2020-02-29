@@ -121,7 +121,7 @@ class VehiclesController < ApplicationController
         :driver_name, :rc_book_no, :registration_date, :insurance_date, :fuel_type, :permit_type,
         :permit_validity_date, :puc_validity_date, :fc_validity_date, :ac, :make_year, :induction_date,
         :odometer, :spare_type, :first_aid_kit, :tyre_condition, :device_id,
-        :seats, :fuel_level, :plate_condition
+        :seats, :fuel_level, :plate_condition, :site_id, :shift_start_time, :shift_end_time
     )
   end
 
