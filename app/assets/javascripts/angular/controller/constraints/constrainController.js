@@ -1,4 +1,4 @@
-app.controller('constraintController', function ($scope, $http, $state, ConstraintService, SessionService, ToasterService, $timeout,constraintService,RosterService) {
+app.controller('constraintController', function ($scope, $http, $state, ConstraintService, SessionService, ToasterService, $timeout,constraintService,RosterService, $ngConfirm) {
 
   $scope.siteNames = [];
   $scope.siteID = null;
@@ -141,13 +141,32 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
 
   $scope.deleteConstraint =function(item){
    
-    var params = {id:item.id};
-    
-    constraintService.delete_constraint(params, function(location) {
-      $scope.fetchConstraintList($scope.selectedSiteId);
-      // ToasterService.showError('Error', location['message']);
-    
-    });
+    $ngConfirm({
+          title: 'Confirm!',
+          boxWidth: '20%',
+          useBootstrap: false,
+          content: "Are you sure?",
+          scope: $scope,
+          buttons: {
+              cancel:{
+                text: 'Cancel',
+                btnClass: 'btn-danger'
+                
+              },
+              OK: {
+                text: 'Delete',
+                btnClass: 'btn-blue',
+                action: function (scope) {
+                  var params = {id:item.id};
+                  constraintService.delete_constraint(params, function(location) {
+                    scope.fetchConstraintList(scope.selectedSiteId);
+                  });
+                }
+              }
+          }
+        });
+
+   
   }
 
   $scope.onSubmit = () => {
