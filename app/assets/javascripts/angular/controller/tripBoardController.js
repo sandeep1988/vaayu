@@ -606,15 +606,15 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     var shiftId = trip.shift_id
     var shiftType = trip.trip_type_status
 
-    let params = {
+    /*let params = {
       siteId:siteId, 
       shiftId:shiftId, 
       shiftType:shiftType,
       selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
       driverStatus: 'on_duty', //$scope.selected_vehicle_status
-    }
+    }*/
 
-    // let params = { shiftId, shift_type: shiftType, searchBy: '' };
+    let params = { shiftId, shift_type: shiftType, searchBy: '' ,to_date:moment($scope.filterDate).format('YYYY-MM-DD')};
     console.log('searchAllVehicles req', params)
     RouteService.searchVechicle(params, function (res) {
       console.log('searchAllVehicles res', res)
