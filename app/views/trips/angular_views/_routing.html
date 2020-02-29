@@ -195,7 +195,7 @@
   
                                 <ul class="employee-list-group" dnd-list="container.employees" dnd-allowed-types="['item']"
                                   dnd-horizontal-list="true" dnd-external-sources="true" dnd-effect-allowed="all"
-                                  dnd-dragover="dragoverCallback(container,index, external, type)"
+                                 
                                   dnd-drop="dropItemCallback(container,index, item, external, type)"
                                   ng-style="getStyleInPx(container.total_seats)">
                                   <li ng-if="container.employees.length" class="input-group employee-list-group-item" ng-class="{'male': item.gender=='M', 'female': item.gender=='F'}"
