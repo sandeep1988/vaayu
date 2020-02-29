@@ -247,7 +247,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
           ToasterService.showError('Error', res.data.message)
         } else {
           $scope.toggleView = true;
-          ToasterService.showSuccess('Success', res.data.message)
+          ToasterService.showSuccess('Success', 'File Downloaded Successfully!')
           $scope.downloadSample();
         }
       }, function errorCallback(err) {
