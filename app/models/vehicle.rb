@@ -15,6 +15,7 @@ class Vehicle < ApplicationRecord
   has_many :cluster_vehicles
   has_many :checklists
   has_many :compliance_notifications
+  belongs_to :site
 
   has_attached_file :photo, styles: { medium: '300x300>', thumb: '100x100>' }, default_url: 'https://wsa1.pakwheels.com/assets/default-display-image-car-638815e7606c67291ff77fd17e1dbb16.png', s3_protocol: 'http'
   validates_attachment_content_type :photo, content_type: /\Aimage\/.*\z/
