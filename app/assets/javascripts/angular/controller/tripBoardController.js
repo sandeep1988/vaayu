@@ -403,6 +403,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         if (trip_status === 'pending acceptance' || trip_status === 'accepted' || trip_status === 'delayed') {
           $scope.getVehicleListForTrip($scope.modelData);
         }
+        // $scope.getVehicleListForTrip($scope.modelData);
 
         var waypts = [];
         $scope.waypts = $scope.modelData.map_data.wayPoints;
@@ -576,7 +577,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
       driverStatus: 'on_duty', //$scope.selected_vehicle_status
     }
-    console.log('getVehicleListForTrip req', params)
+    // console.log('getVehicleListForTrip req', params)
     RouteService.postVehicleList(params, function (res) {
       console.log('vehicle list', res)
       if (!res['success']) {
@@ -584,7 +585,13 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         ToasterService.showError('Error', res['message']);
         return;
       } else {
-        $scope.searchAllVehicles(res.data, trip);
+        $scope.searchAllVehicles(res.data, trip); 
+        // var newarray = [];
+        // for (let item of res.data) {
+        //   newarray.push({ id: item.id, name: item.vehicleNumber + ' - On Site' })
+        // }
+        // $scope.vehicleList  = newarray;
+
         // $scope.vehicleList = res.data;
 
         // var array = VehicleListResponse.listResponse.data;
@@ -600,8 +607,9 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     });
   }
 
+
   $scope.searchAllVehicles = (vehicleList, trip) => {
-  
+    trip = $scope.modelData
     var siteId = $scope.selectedSiteID
     var shiftId = trip.shift_id
     var shiftType = trip.trip_type_status
@@ -614,7 +622,8 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       driverStatus: 'on_duty', //$scope.selected_vehicle_status
     }*/
 
-    let params = { shiftId, shift_type: shiftType, searchBy: '' ,to_date:moment($scope.filterDate).format('YYYY-MM-DD')};
+    let params = { shiftId, shift_type: shiftType, searchBy: '' , forceVehicleSearch: 1,
+    to_date:moment($scope.filterDate).format('YYYY-MM-DD')};
     console.log('searchAllVehicles req', params)
     RouteService.searchVechicle(params, function (res) {
       console.log('searchAllVehicles res', res)
@@ -623,10 +632,10 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         // var array = VehicleListResponse.listResponse.data;
         var newarray = [];
         for (let item of vehicleList) {
-          newarray.push({ id: item.id, name: item.vehicleNumber + ' - On Site' })
+          newarray.push({ id: item.id, name: item.vehicleNumber })
         }
         for (let item of res.data) {
-          newarray.push({ id: item.id, name: item.vehicleNumber + ' - Off Site' })
+          newarray.push({ id: item.id, name: item.vehicleNumber  })
         }
 
         $scope.vehicleList = newarray;
