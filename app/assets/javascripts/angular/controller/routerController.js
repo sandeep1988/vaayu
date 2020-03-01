@@ -97,10 +97,23 @@ app.directive('focusMe', function ($timeout) {
   };
 });
 
+angular.module('app').run(function ($rootScope) {
+  var lastTimeout;
+  var off = $rootScope.$watch('$$phase', function (newPhase) {
+    if (newPhase) {
+      if (lastTimeout) {
+        clearTimeout(lastTimeout);
+      }
+      lastTimeout = setTimeout(function () {
+        $rootScope.$broadcast('masonry.reload'); 
+      }, 100);
+    }
+  });
+});
+
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService,
   AutoAllocationService,
-  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm,$document) {
-
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm,$document,$rootScope,$interval) {
 
   // $scope.toggleView = false;
   $scope.disableBtn = false;
@@ -110,7 +123,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   var directionsRenderer 
   $scope.initMap = () => {
-
+    
     directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
@@ -171,6 +184,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.coords = []
 
 
+  
 
   $scope.init = function () {
     $scope.toggleView = false;
@@ -1454,6 +1468,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.isSiteStatus = 1;
   $scope.site;
   function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
+    
+    
     for (let item of $scope.siteList) {
       if (item.id === $scope.siteId) {
         var site = item;
