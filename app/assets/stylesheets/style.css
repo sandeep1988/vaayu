@@ -896,7 +896,7 @@
   color: #FFF !important;
   padding-left:15px;
   padding-right: 15px;
-  min-width: 100px;
+  min-width: 80px;
 }
 
 .btn-terniary-disable {
@@ -1366,6 +1366,10 @@
 .textRed {
   color:red !important;
 }
-.filterBar select {
-    max-width:200px;
+.vayau-routing .filterToolbar select {
+    max-width:156px;
+}
+
+.vayau-routing .selectFilter {
+  max-width:156px;
 }

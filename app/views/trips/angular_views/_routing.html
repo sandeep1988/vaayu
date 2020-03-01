@@ -7,11 +7,11 @@
     </div>
   
     <div class="container-fluid mt-4">
-      <div class="row filterBar">
+      <div class="row filterBar filterToolbar">
         <div class="col-md-8">
           <form class="form-inline">
             <div class="form-group pr-2">
-              <select ng-model="siteId" class="form-control" placeholder="Select Site" ng-change="updateFilters()">
+              <select ng-model="siteId" class="form-control selectFilter" placeholder="Select Site" ng-change="updateFilters()">
                 <option ng-repeat="site in siteList" ng-value="site.id">{{site.name}}</option>
               </select>
             </div>
@@ -20,7 +20,7 @@
             "timeOut": "2000",
             "extendedTimeOut": "1000",}'></toaster-container>
             <div class="form-group pr-2">
-              <select id="disabledSelect" class="form-control" ng-model="selectedShift">
+              <select id="disabledSelect" class="form-control selectFilter" ng-model="selectedShift">
                 <option ng-repeat="shift in shifts" value="{{shift}}">{{shift.name + ' ('+shift.shift_type+')'}}
                 </option>
               </select>
@@ -33,7 +33,7 @@
             <div class="form-group pr-2">
               <div class="form-group pr-2">
                 <p class="input-group custom-date date_style">
-                  <input type="text" class="form-control data_in_style" datepicker-popup="{{format}}"
+                  <input type="text" class="form-control data_in_style selectFilter" datepicker-popup="{{format}}"
                     ng-model="filterDate" is-open="opened" datepicker-options="dateOptions"
                     date-disabled="disabled(date, mode)" ng-required="true" close-text="Close"
                     ng-change="updateFilters()"
@@ -161,7 +161,7 @@
               <div id="collectionList" class="card-panel">
                   <div ng-repeat="containers in model2">
                     <div class="vaayu-dropzone">
-                          <div class="width-80" ng-class="{'mapVisible':isShowMap}"  masonry="" mesonry-option="{gutter: 10}"  load-images="false" reload-on-resize>
+                          <div class="width-80" ng-class="{'mapVisible':isShowMap}"  masonry="" mesonry-option="{gutter: 10}"  load-images="false">
                             <div ng-repeat-start="container in containers track by $index"  no-drag class="employee-cluster-panel masonry-brick" ng-if="container.subtype!='unallocated'">
                               <div class="employee-cluster-panel-heading"
                                 ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">
