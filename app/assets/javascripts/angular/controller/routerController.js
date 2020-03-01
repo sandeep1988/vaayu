@@ -1454,6 +1454,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.isSiteStatus = 1;
   $scope.site;
   function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
+    
+    
     for (let item of $scope.siteList) {
       if (item.id === $scope.siteId) {
         var site = item;
