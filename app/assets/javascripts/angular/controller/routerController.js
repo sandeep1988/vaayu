@@ -1611,49 +1611,60 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     return shiftType.toLowerCase() === 'check out' ? 1 : 0;
   }
 
-  $scope.getCurrentVehicleLocation = (vehicleNumber) => {
-    // call vehicle list api
-    // $http({
-    //   method: 'GET',
-    //   url: 'https://intouch.mapmyindia.com/Intouch/apis/getEntityList?token=z5fmo6ekwd6ucrp4k9ujf1x5jwnw25m2'
-    // })
-    //   .then(function (response) {
-    //   // console.log(JSON.stringify(response))
+  // $scope.getCurrentVehicleLocation = (vehicleNumber) => {
+    
+  //   var marker1 = new google.maps.Marker({
+  //     map: $scope.map,
+  //     position: new google.maps.LatLng(19.2578, 72.8731),
+  //     icon: "../assets/angular_images/car.png"
+  //   })
 
-    //     if (response.entity.length > 0 && response.message === 'success' && response.status === 200) {
-    //       const vehicleListData = response.entity.filter((e) => e.registrationNumber === vehicleNumber)
+  //   // call vehicle list api
+  //   // $http({
+  //   //   method: 'GET',
+  //   //   url: 'https://intouch.mapmyindia.com/Intouch/apis/getEntityList?token=z5fmo6ekwd6ucrp4k9ujf1x5jwnw25m2'
+  //   // })
+  //   //   .then(function (response) {
+  //   //   // console.log(JSON.stringify(response))
 
-    //       if (vehicleListData.length > 0) {
-    //         const entityId = vehicleListData[0].id
-    //         $http({
-    //           method: 'GET',
-    //           url: 'https://intouch.mapmyindia.com/Intouch/apis/getEntityLiveData?token=z5fmo6ekwd6ucrp4k9ujf1x5jwnw25m2&entityId=' + entityId
-    //         })
-    //           .then((vehicleData) => {
-    //           // map car icon in google map
-    //           })
-    //           .catch(() => {
-    //             ToasterService.showError('Error', 'Something went wrong, Try again later.')    
-    //           })
-    //       } else {
-    //         ToasterService.showError('Error', 'Something went wrong, Try again later.')
-    //       }
-    //     } else {
-    //       ToasterService.showError('Error', 'Something went wrong, Try again later.')
-    //     }
-    //   }).catch(err => {
-    //     console.log(err)
-    //     ToasterService.showError('Error', 'Something went wrong, Try again later.')
-    //   })
+  //   //     if (response.entity.length > 0 && response.message === 'success' && response.status === 200) {
+  //   //       const vehicleListData = response.entity.filter((e) => e.registrationNumber === vehicleNumber)
 
-    // hard coded vehicle location
-    console.log('$scope.map ', $scope.map)
-    var marker1 = new google.maps.Marker({
-      map: $scope.map,
-      position: new google.maps.LatLng(19.2578, 72.8731),
-      icon: "../assets/angular_images/car.png"
-    })
-  }
+  //   //       if (vehicleListData.length > 0) {
+  //   //         const entityId = vehicleListData[0].id
+  //   //         $http({
+  //   //           method: 'GET',
+  //   //           url: 'https://intouch.mapmyindia.com/Intouch/apis/getEntityLiveData?token=z5fmo6ekwd6ucrp4k9ujf1x5jwnw25m2&entityId=' + entityId
+  //   //         })
+  //   //           .then((vehicleData) => {
+  //   //           // map car icon in google map
+  //   //             var marker1 = new google.maps.Marker({
+  //   //                   map: $scope.map,
+  //   //                   position: new google.maps.LatLng(19.2578, 72.8731),
+  //   //                   icon: "../assets/angular_images/car.png"
+  //   //             })
+  //   //           })
+  //   //           .catch(() => {
+  //   //             // ToasterService.showError('Error', 'Something went wrong, Try again later.')    
+  //   //           })
+  //   //       } else {
+  //   //         // ToasterService.showError('Error', 'Something went wrong, Try again later.')
+  //   //       }
+  //   //     } else {
+  //   //       // ToasterService.showError('Error', 'Something went wrong, Try again later.')
+  //   //     }
+  //   //   }).catch(err => {
+  //   //     console.log(err)
+  //   //     // ToasterService.showError('Error', 'Something went wrong, Try again later.')
+  //   //   })
+
+    
+  //   // var marker1 = new google.maps.Marker({
+  //   //   map: $scope.map,
+  //   //   position: new google.maps.LatLng(19.2578, 72.8731),
+  //   //   icon: "../assets/angular_images/car.png"
+  //   // })
+  // }
 
   var map_markers = [];
 
