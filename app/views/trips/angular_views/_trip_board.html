@@ -386,16 +386,17 @@
 
       </div>
       <div class="vaayu-modal-footer">
-        <!-- <button type="button" class="vaayu-pop-action-btn"> Change Allocation</button> -->
-        <!-- <div ng-dropdown-multiselect="" ng-if="isDisable1(modelData)" options="vehicleList"
+        
+        <div ng-dropdown-multiselect=""
+            on-change="test()"
+           ng-if="isDisable1(modelData)" options="vehicleList"
           style="display: inline-block;" selected-model="selectedVehicle " checkboxes="true"
           extra-settings="example14settings" validation="required" search-placeholder="   Change Allocation    " custom-change='changes'
-          validation-result="selectedVehicle"> -->
+          validation-result="selectedVehicle">
         </div>
         <button type="button" class="vaayu-pop-action-btn" ng-click="changeAllocation(modelData)" ng-if="isDisable()">
           Submit</button>
-        <button type="button" class="vaayu-pop-action-btn" ng-click="completeTrip()" ng-if="showCompleteButton">
-            Force Complete</button>
+        <button type="button" class="vaayu-pop-action-btn" ng-click="completeTrip()" ng-if="showCompleteButton">Force Complete</button>
         <!-- <button type="button" class="vaayu-pop-action-btn" ng-if='selectedVehicle!=null'> Change Allocation</button> -->
         <!-- Split button -->
         <!-- <div class="btn-group" uib-dropdown>
@@ -416,5 +417,7 @@
 
       </div>
     </div>
+
+</div>
 
 </div>
