@@ -1185,6 +1185,18 @@
     .width-20.mapVisible {
       margin-right: 0px !important;
     }
+    .width80{
+      width:81% !important;
+    }
+    .width20{
+      width:19% !important;
+    }
+    .width-80.mapVisible {
+      width:78% !important;
+    }
+    .width-20.mapVisible {
+      width:22% !important;
+    }
   }
   @media (min-width: 1367px) {
     .tempRoute {
