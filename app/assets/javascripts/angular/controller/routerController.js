@@ -127,6 +127,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
+      mapTypeControl: false,
       center: { lat: 19.2578, lng: 72.8731 },
       mapTypeId: 'terrain'
     });
