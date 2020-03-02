@@ -1380,6 +1380,9 @@
 }
 .vayau-routing .filterToolbar select {
     max-width:156px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .vayau-routing .selectFilter {
