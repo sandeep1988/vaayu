@@ -979,12 +979,14 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.isShowMap =false;
   $scope.toggleMap =function() {
-    $scope.resetRoute();
+    // $scope.resetRoute();
+    
     if($scope.isShowMap){
       $scope.isShowMap=false;
     }else{
       $scope.isShowMap=true;
     }
+   
   }
 
   $scope.dropItemCallback = function (container, index, item, external, type) {
@@ -997,6 +999,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     return item;
   }
 
+  $interval(function reloadMesonary(){
+    $('#mesonaryContainer').masonry();
+  },20);
 
   $scope.dropCallback = function (container, index, item, external, type,element) {
       var postData=getRoutePostData();
@@ -1575,27 +1580,20 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
    
     if (!container.route_selected) {
       return;
+    }else{
+        var waypts = [];
+        for (let item of container.employees) {
+          waypts.push({
+            location: new google.maps.LatLng(item.lat, item.lng),
+            stopover: true
+          });
+          map_markers.push(makeMarker(new google.maps.LatLng(item.lat, item.lng), item.empName));
+        }
+
+        var stepDisplay = new google.maps.InfoWindow;
+        calculateAndDisplayRoute(directionsService, directionsRenderer, waypts)
     }
-    
-    // $scope.finalizeArray.push({ routeId: container.routeId });
-
-    var waypts = [];
-    for (let item of container.employees) {
-      waypts.push({
-        location: new google.maps.LatLng(item.lat, item.lng),
-        stopover: true
-      });
-      map_markers.push(makeMarker(new google.maps.LatLng(item.lat, item.lng), item.empName));
-    }
-
-    // var directionsService = new google.maps.DirectionsService();
-    
-
-    var stepDisplay = new google.maps.InfoWindow;
-
-    calculateAndDisplayRoute(directionsService, directionsRenderer, waypts)
   }
-
 
   function attachInstructionText(stepDisplay, marker, text, map) {
     google.maps.event.addListener(marker, 'click', function () {
