@@ -942,8 +942,16 @@
 .custom-panel-map {
   width:210px !important;
   margin-top: 0px;
+  float:right;
 }
-
+.fixed-container {
+  position: fixed !important;
+  width: 210px !important;
+  top: 30px !important;
+}
+.custom-panel-map.fixed-container {
+  right: 15px;
+}
 .margin-right {
   margin-right:2px;
 }
@@ -1159,6 +1167,7 @@
   .width-20.mapVisible {
     width:24% !important;
     float:left;
+    padding-right: 0 !important;
   }
   .width80 {
     width:80% !important;
@@ -1172,8 +1181,15 @@
     float:left;
     padding-right: 20px;
   }
-
-  @media (min-width: 1324px) {
+  @media (min-width: 1324px) and (max-width: 1376px) {
+    .width-20.mapVisible {
+      margin-right: 0px !important;
+    }
+  }
+  @media (min-width: 1367px) {
+    .tempRoute {
+      float:left !important;
+    }
     .width80 {
       width:87% !important;
     }
@@ -1194,24 +1210,15 @@
     .width-20.mapVisible {
       width:15% !important;
     }
-
-    /* .width-80 {
-      width:80%;
-    }
-    .width-20 {
-      width:20%;
-    }
-    .width-80.mapVisible {
-      width:80% !important;
-    }
-  
-    .width-20.mapVisible {
-      width:20% !important;
-    } */
   }
 
 .tempRoute {
   width:210px !important;
+  float:right;
+  right:15px;
+}
+.mapVisible .tempRoute {
+  right: 240px;
 }
 .bgRed {
   background: #e67878 !important;
@@ -1232,13 +1239,6 @@
 }
 .employee-cluster-panel-title {
   width:100% !important;
-}
-
-.fixed-container {
-  position: fixed !important;
-  width: 210px !important;
-  top: 30px !important;
-  left: auto !important;
 }
 
 .vayau-routing .multiselect-parent.dropdown-multiselect .dropdown-toggle {
