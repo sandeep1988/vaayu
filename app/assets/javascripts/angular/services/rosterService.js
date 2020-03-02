@@ -52,7 +52,7 @@ function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_800
       method: 'POST'
     },
     userRoles: {
-      url: 'http://10.180.3.237:4002/auth/roles-modules-list',
+      url: BASE_URL_8002 + 'auth/roles-modules-list',
       method: 'GET'
     }
 
