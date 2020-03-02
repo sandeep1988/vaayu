@@ -396,7 +396,7 @@
         </div>
         <button type="button" class="vaayu-pop-action-btn" ng-click="changeAllocation(modelData)" ng-if="isDisable()">
           Submit</button>
-        <button type="button" class="vaayu-pop-action-btn" ng-click="completeTrip()" ng-if="showCompleteButton">Force Complete</button>
+        <button type="button" class="vaayu-pop-action-btn" ng-click="completeTrip()" ng-if="isDisable1(modelData)">Force Complete</button>
         <!-- <button type="button" class="vaayu-pop-action-btn" ng-if='selectedVehicle!=null'> Change Allocation</button> -->
         <!-- Split button -->
         <!-- <div class="btn-group" uib-dropdown>
