@@ -940,7 +940,7 @@
 }
 
 .custom-panel-map {
-  /* width:210px !important; */
+  width:210px !important;
   margin-top: 0px;
 }
 
@@ -1188,11 +1188,11 @@
     }
 
     .width-80.mapVisible {
-      width:86% !important;
+      width:85% !important;
     }
   
     .width-20.mapVisible {
-      width:14% !important;
+      width:15% !important;
     }
 
     /* .width-80 {
@@ -1210,9 +1210,9 @@
     } */
   }
 
-  /* .tempRoute {
-    width:200px !important;
-  } */
+.tempRoute {
+  width:210px !important;
+}
 .bgRed {
   background: #e67878 !important;
 }
