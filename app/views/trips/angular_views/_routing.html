@@ -161,7 +161,7 @@
               <div id="collectionList" class="card-panel">
                   <div ng-repeat="containers in model2">
                     <div class="vaayu-dropzone">
-                          <div class="width-80" ng-class="{'mapVisible':isShowMap}"  masonry="" mesonry-option="{gutter: 10}"  load-images="false" reload-on-show>
+                          <div id="mesonaryContainer" class="width-80" ng-class="{'mapVisible':isShowMap}"  masonry="" mesonry-option="{gutter: 10}"  load-images="false" reload-on-show>
                             <div ng-repeat-start="container in containers track by $index"  no-drag class="employee-cluster-panel masonry-brick" ng-if="container.subtype!='unallocated'">
                               <div class="employee-cluster-panel-heading"
                                 ng-class="container.vehicle_allocated === 'Y'?'allocated_route':'un_allocated_route'">

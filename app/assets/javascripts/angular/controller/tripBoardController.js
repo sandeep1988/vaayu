@@ -309,6 +309,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     }, function (error) {
       console.error(error);
     });
+    $scope.getAllTrips()
   }
 
   $scope.panicCallSesion = function (id, type) {
@@ -444,7 +445,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   $scope.completeTrip = () => {
     var params = $scope.sendCompleteParams;
     if (confirm("Are you sure you want to complete the trip?") == true) {
-      console.log('execute api here')
+      
       TripboardService.forceCompleteTrip(params, (data) => {
         $scope.toggleView = true;
         ToasterService.showError('Success', data['message']);
