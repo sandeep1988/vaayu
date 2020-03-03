@@ -667,6 +667,18 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     }
     return false;
   }
+
+  $scope.forceCompleteStatus = (row) => {
+    console.log('force', row)
+    if(!row){
+      return false;
+    }
+
+    if(row.current_status === "On Going"){
+      return true
+    }
+    return false
+  }
   $scope.changeAllocation = (trip) => {
 
     $scope.toggleView = false;
