@@ -1483,6 +1483,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
 
     let shift = JSON.parse($scope.selectedShift);
+
+    console.log("shift_type")
+    console.log(shift.shift_type);
+    
     if ($scope.getShiftType(shift.shift_type) == 1) {
       $scope.isSiteStatus = 1;
       map_markers.push(makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true));
@@ -1500,7 +1504,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         destination: new google.maps.LatLng(site.latitude, site.longitude),
         waypoints: waypts,
         optimizeWaypoints: true,
-        travelMode: google.maps.DirectionsTravelMode.DRIVING
+        travelMode: 'DRIVING'
+
+        // travelMode: google.maps.DirectionsTravelMode.DRIVING
       }, function (response, status) {
         if (status === 'OK') {
           directionsRenderer.setDirections(response);
@@ -1576,6 +1582,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
  
   $scope.selectRoute = (container) => {
+    console.log(container);
     clearMarkers(map_markers);
 
     
@@ -1613,8 +1620,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   // Helping Functions End
 
   $scope.getShiftType = (shiftType) => {
-
-    return shiftType.toLowerCase() === 'check out' ? 1 : 0;
+    return shiftType.toLowerCase() === 'login' ? 1 : 0;
   }
 
   // $scope.getCurrentVehicleLocation = (vehicleNumber) => {
