@@ -1577,10 +1577,17 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
  
   $scope.selectRoute = (container) => {
     clearMarkers(map_markers);
-   
+
+    
+    // map.setZoom(8);
+    // map.setCenter();
+
+
     if (!container.route_selected) {
+      directionsRenderer.setMap(null);
       return;
     }else{
+      directionsRenderer.setMap($scope.map);
         var waypts = [];
         for (let item of container.employees) {
           waypts.push({
