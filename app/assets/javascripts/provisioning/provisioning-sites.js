@@ -475,6 +475,8 @@ $(function () {
                     edit_site = true
                     var html = generate_edit(response, 'site', response.logistics_company_id, orig_service_html)
                     $("#site_html").html(html)
+                    $("#addServicesDiv").css("display", "none");
+                    $(".submit-btn.form-sites").css("display", "block");
                     if (response.logistics_company_id == null) {
                         $("#cgst_1").parent().css("display", "none")
                         $("#sgst_1").parent().css("display", "none")
@@ -508,6 +510,8 @@ $(function () {
                     var html = generate_edit(response, 'site', response.logistics_company_id, orig_service_html)
                     $("#site_html").html(html)
                     $('input').attr('disabled','disabled');
+                    $("#addServicesDiv").css("display", "none");
+                    $(".submit-btn.form-sites").css("display", "none")
                     if (response.logistics_company_id == null) {
                         $("#cgst_1").parent().css("display", "none")
                         $("#sgst_1").parent().css("display", "none")
