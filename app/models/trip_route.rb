@@ -251,12 +251,12 @@ class TripRoute < ApplicationRecord
       end
       data = data.merge({data: data})
       data[:data].merge!(push_type: :driver_location_update)
-      # PushNotificationWorker.perform_async(trip_route.employee.user_id, :driver_location_update , data)
+       # PushNotificationWorker.perform_async(trip_route.employee.user_id, :driver_location_update , data)
     end
 
     data = { duration: duration[0], data: {duration: duration[0], push_type: :driver_location_update} }
     #send the push to driver as well
-    PushNotificationWorker.perform_async(driver.user_id, :driver_location_update , data)
+    # PushNotificationWorker.perform_async(driver.user_id, :driver_location_update , data)
   end
 
   def initiate_call(call_type)
