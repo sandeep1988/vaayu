@@ -477,6 +477,8 @@ $(function () {
                     $("#site_html").html(html)
                     $("#addServicesDiv").css("display", "none");
                     $(".submit-btn.form-sites").css("display", "block");
+                    $("#company").removeAttr('disabled');
+                    $("#active").removeAttr('disabled');
                     if (response.logistics_company_id == null) {
                         $("#cgst_1").parent().css("display", "none")
                         $("#sgst_1").parent().css("display", "none")
@@ -511,7 +513,9 @@ $(function () {
                     $("#site_html").html(html)
                     $('input').attr('disabled','disabled');
                     $("#addServicesDiv").css("display", "none");
-                    $(".submit-btn.form-sites").css("display", "none")
+                    $(".submit-btn.form-sites").css("display", "none");
+                    $("#company").attr('disabled','disabled');
+                    $("#active").attr('disabled','disabled');
                     if (response.logistics_company_id == null) {
                         $("#cgst_1").parent().css("display", "none")
                         $("#sgst_1").parent().css("display", "none")
