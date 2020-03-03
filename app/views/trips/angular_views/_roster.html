@@ -474,15 +474,15 @@
     <div class="vaayu-modal-content generate-modal" style="max-width:750px; padding-top: 0;">
       <div class="vaayu-modal-header" style="background: #fff; position: relative; display: block;">
         <span>Generate Routes</span>
-        <span class="vaayu-pop-close closepop" ng-click="closeAll()">&times;</span>
+        <span class="vaayu-pop-close closepop" ng-click="closeAll(); showDiv = !showDiv">&times;</span>
       </div>
       <div class="vaayu-modal-body">
         <div class="row container-fluid">
           <div class="col-md-12" style="text-align: center;">
             <div class="btn-group">
               <div class="input-group">
-                <button class="btn btn-sm-vaayu btn-terniary btn-sm pull-left route-button"  ng-click="showDiv = !showDiv()">Copy/Generate Route</button>
-                <button class="btn btn-sm-vaayu btn-terniary btn-sm pull-left route-button" style="margin-left: 10px;" ng-click="onFreshRoutes()">Fresh Route</button>
+                <button class="btn btn-sm-vaayu btn-terniary btn-sm pull-left route-button"  ng-click="showDiv = !showDiv">Copy/Generate Route</button>
+                <button class="btn btn-sm-vaayu btn-terniary btn-sm pull-left route-button" style="margin-left: 10px;" ng-click="onFreshRoutes(); showDiv = !showDiv">Fresh Route</button>
               </div>
             </div>
           </div>
@@ -504,7 +504,7 @@
                       </span>
                     </p>
                   </div>
-                  <button class="btn btn-terniary-blue" ng-click="onSubmit()">OK</button>
+                  <button class="btn btn-terniary-blue" ng-click="onSubmit(); showDiv = !showDiv">OK</button>
 
                 </div>
             </form>
