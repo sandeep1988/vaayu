@@ -475,6 +475,10 @@ $(function () {
                     edit_site = true
                     var html = generate_edit(response, 'site', response.logistics_company_id, orig_service_html)
                     $("#site_html").html(html)
+                    $("#addServicesDiv").css("display", "none");
+                    $(".submit-btn.form-sites").removeAttr('disabled');
+                    $("#company").removeAttr('disabled');
+                    $("#active").removeAttr('disabled');
                     if (response.logistics_company_id == null) {
                         $("#cgst_1").parent().css("display", "none")
                         $("#sgst_1").parent().css("display", "none")
@@ -485,10 +489,10 @@ $(function () {
             });
         });
         $(document).on('click', '#viewSite', function (e) {
-            if (current_user == 'Operator') {
+            // if (current_user == 'Operator') {
                 //$(".provisioning .edit-buttons .submit-btn").fadeOut()
                 //$(".provisioning .edit-buttons").fadeIn()
-            }
+            // }
 
             site_id = e.target.dataset.site_id
             // $("#site_html").html('')
@@ -507,6 +511,11 @@ $(function () {
                     edit_site = true
                     var html = generate_edit(response, 'site', response.logistics_company_id, orig_service_html)
                     $("#site_html").html(html)
+                    $('input').attr('disabled','disabled');
+                    $("#addServicesDiv").css("display", "none");
+                    $(".submit-btn.form-sites").attr('disabled','disabled');
+                    $("#company").attr('disabled','disabled');
+                    $("#active").attr('disabled','disabled');
                     if (response.logistics_company_id == null) {
                         $("#cgst_1").parent().css("display", "none")
                         $("#sgst_1").parent().css("display", "none")
