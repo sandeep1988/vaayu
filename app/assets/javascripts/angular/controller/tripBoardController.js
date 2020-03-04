@@ -674,10 +674,10 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       return false;
     }
 
-    if(row.current_status === "On Going"){
-      return true
+    if(row.current_status === "completed" || "Cancelled"){
+      return false
     }
-    return false
+    return true
   }
   $scope.changeAllocation = (trip) => {
 
