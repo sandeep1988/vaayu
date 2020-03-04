@@ -54,6 +54,10 @@ function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_800
     userRoles: {
       url: BASE_URL_8002 + 'auth/roles-modules-list',
       method: 'GET'
+    },
+    assignRoles: {
+      url: BASE_URL_8002 + 'permissions/assign-role-module' ,
+      method: 'POST'
     }
 
   });

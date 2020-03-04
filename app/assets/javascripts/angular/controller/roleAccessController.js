@@ -17,4 +17,8 @@ angular.module('app').controller('roleAccessCtrl', function ($scope, RosterServi
         })
     }
 
+    $scope.onCheckboxChange = (index) => {
+        console.log(index)
+    }
+
 })

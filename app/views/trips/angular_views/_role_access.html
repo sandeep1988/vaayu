@@ -34,20 +34,20 @@
                                         <tr>
                                             <td style="width: 33.34%; border-top: 0; border-bottom: 0;">
                                                 <div class="nice-checkbox" style="padding-top: 0; text-align: center;">
-                                                    <input class="boolean optional checkbox-o" type="checkbox" value="1" name="{{row.role_name | lowercase}}-{{row.role_module_access[$index].module_id}}-view" id="{{row.role_name | lowercase}}-{{row.role_module_access[$index].module_id}}-view" ng-checked="row.role_module_access[$index].view_status">
-                                                    <label class="boolean optional" for="{{row.role_name | lowercase}}-{{row.role_module_access[$index].module_id}}-view"></label>
+                                                    <input class="boolean optional checkbox-o" type="checkbox" value="1" name="{{row.role_name | lowercase}}-{{roleModule.id}}-view" id="{{row.role_name | lowercase}}-{{roleModule.id}}-view" ng-checked="row.role_module_access[roleModule.id - 1].view_status" ng-change="onCheckboxChange($index)" ng-model="row.role_name">
+                                                    <label class="boolean optional" for="{{row.role_name | lowercase}}-{{roleModule.id}}-view"></label>
                                                 </div>
                                             </td>
                                             <td style="width: 33.34%; border-top: 0; border-bottom: 0;">
                                                 <div class="nice-checkbox" style="padding-top: 0; text-align: center;">
-                                                    <input class="boolean optional checkbox-o" type="checkbox" value="1" name="{{row.role_name | lowercase}}-{{row.role_module_access[$index].module_id}}-edit" id="{{row.role_name | lowercase}}-{{row.role_module_access[$index].module_id}}-edit" ng-checked="row.role_module_access[$index].edit_status">
-                                                    <label class="boolean optional" for="{{row.role_name | lowercase}}-{{row.role_module_access[$index].module_id}}-edit"></label>
+                                                    <input class="boolean optional checkbox-o" type="checkbox" value="1" name="{{row.role_name | lowercase}}-{{roleModule.id}}-edit" id="{{row.role_name | lowercase}}-{{roleModule.id}}-edit" ng-checked="row.role_module_access[roleModule.id - 1].edit_status" ng-change="onCheckboxChange($index)" ng-model="row.role_name">
+                                                    <label class="boolean optional" for="{{row.role_name | lowercase}}-{{roleModule.id}}-edit"></label>
                                                 </div>
                                             </td>
                                             <td style="width: 33.34%; border-top: 0; border-bottom: 0;">
                                                 <div class="nice-checkbox" style="padding-top: 0; text-align: center;">
-                                                    <input class="boolean optional checkbox-o" type="checkbox" value="1" name="{{row.role_name | lowercase}}-{{row.role_module_access[$index].module_id}}-delete" id="{{row.role_name | lowercase}}-{{row.role_module_access[$index].module_id}}-delete" ng-checked="row.role_module_access[$index].delete_status">
-                                                    <label class="boolean optional" for="{{row.role_name | lowercase}}-{{row.role_module_access[$index].module_id}}-delete"></label>
+                                                    <input class="boolean optional checkbox-o" type="checkbox" value="1" name="{{row.role_name | lowercase}}-{{roleModule.id}}-delete" id="{{row.role_name | lowercase}}-{{roleModule.id}}-delete" ng-checked="row.role_module_access[roleModule.id - 1].delete_status" ng-change="onCheckboxChange($index)" ng-model="row.role_name">
+                                                    <label class="boolean optional" for="{{row.role_name | lowercase}}-{{roleModule.id}}-delete"></label>
                                                 </div>
                                             </td>
                                         </tr>
