@@ -33,12 +33,10 @@ class NotificationDatatable
 
        :driver_request_id => @notifications_data[:first_notification].driver_request_id,
 
-       :driver_name => @notifications_data[:first_notification].driver_name,
        :driver_phone => @notifications_data[:first_notification].driver_phone,
        :driver_licence => @notifications_data[:first_notification].driver_licence,
        :driver_plate => @notifications_data[:first_notification].driver_plate,
 
-       :employee_name => @notifications_data[:first_notification].employee_name,
        :employee_phone => @notifications_data[:first_notification].employee_phone,
        :move_driver_to_next_step => "",
        :resolved_status => @notifications_data[:first_notification].resolved_status,
@@ -46,8 +44,6 @@ class NotificationDatatable
        :role => @user.role,
        :badge_count => @badge_count,
        :reporter => @notifications_data[:first_notification]&.reporter
-       #:trip_route => @notifications_data[:trip_route],
-       #:trip => @notifications_data[:trip]
     }
   end
   
