@@ -27,26 +27,27 @@
                             </tr>
                             <tr ng-repeat="row in roleModuleAccess track by $index">
                                 <td>
-                                    {{row.role_name_view}}
+                                    {{row.role_name_view}}{{$index}}
                                 </td>
                                 <td colspan="3" ng-repeat="roleModule in moduleColumn" style="padding: 0;">
                                     <table class="table table-bordered" style="border: 0;">
                                         <tr>
                                             <td style="width: 33.34%; border-top: 0; border-bottom: 0;">
                                                 <div class="nice-checkbox" style="padding-top: 0; text-align: center;">
-                                                    <input class="boolean optional checkbox-o" type="checkbox" value="1" name="{{row.role_name | lowercase}}-{{roleModule.id}}-view" id="{{row.role_name | lowercase}}-{{roleModule.id}}-view" ng-checked="row.role_module_access[roleModule.id - 1].view_status" ng-change="onCheckboxChange($index)" ng-model="row.role_name">
-                                                    <label class="boolean optional" for="{{row.role_name | lowercase}}-{{roleModule.id}}-view"></label>
+                                                    <input class="boolean optional checkbox-o" type="checkbox" value="{{row.role_name | lowercase}}-{{roleModule.id}}-view" name="{{row.role_name | lowercase}}-{{roleModule.id}}-view" id="{{1}}-{{1}}-1" ng-checked="row.role_module_access[roleModule.id - 1].view_status" ng-click="onCheckboxChange($index, row.role_name, roleModule.id, 'view')"
+                                                    >
+                                                    <label class="boolean optional" for="{{1}}-{{1}}-1"></label>
                                                 </div>
                                             </td>
                                             <td style="width: 33.34%; border-top: 0; border-bottom: 0;">
                                                 <div class="nice-checkbox" style="padding-top: 0; text-align: center;">
-                                                    <input class="boolean optional checkbox-o" type="checkbox" value="1" name="{{row.role_name | lowercase}}-{{roleModule.id}}-edit" id="{{row.role_name | lowercase}}-{{roleModule.id}}-edit" ng-checked="row.role_module_access[roleModule.id - 1].edit_status" ng-change="onCheckboxChange($index)" ng-model="row.role_name">
+                                                    <input class="boolean optional checkbox-o" type="checkbox" value="{{row.role_name | lowercase}}-{{roleModule.id}}-edit" name="{{row.role_name | lowercase}}-{{roleModule.id}}-edit" id="{{row.role_name | lowercase}}-{{roleModule.id}}-edit" ng-checked="row.role_module_access[roleModule.id - 1].edit_status" ng-click="onCheckboxChange($index, row.role_name, roleModule.id, 'edit')">
                                                     <label class="boolean optional" for="{{row.role_name | lowercase}}-{{roleModule.id}}-edit"></label>
                                                 </div>
                                             </td>
                                             <td style="width: 33.34%; border-top: 0; border-bottom: 0;">
                                                 <div class="nice-checkbox" style="padding-top: 0; text-align: center;">
-                                                    <input class="boolean optional checkbox-o" type="checkbox" value="1" name="{{row.role_name | lowercase}}-{{roleModule.id}}-delete" id="{{row.role_name | lowercase}}-{{roleModule.id}}-delete" ng-checked="row.role_module_access[roleModule.id - 1].delete_status" ng-change="onCheckboxChange($index)" ng-model="row.role_name">
+                                                    <input class="boolean optional checkbox-o" type="checkbox" value="{{row.role_name | lowercase}}-{{roleModule.id}}-delete" name="{{row.role_name | lowercase}}-{{roleModule.id}}-delete" id="{{row.role_name | lowercase}}-{{roleModule.id}}-delete" ng-checked="row.role_module_access[roleModule.id - 1].delete_status" ng-click="onCheckboxChange($index, row.role_name, roleModule.id, 'delete')">
                                                     <label class="boolean optional" for="{{row.role_name | lowercase}}-{{roleModule.id}}-delete"></label>
                                                 </div>
                                             </td>
@@ -54,7 +55,7 @@
                                     </table>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary">Save</button>
+                                    <button class="btn btn-primary" ng-click="onSave($index + 1)">Save</button>
                                 </td>
                             </tr>
                         </tbody>
