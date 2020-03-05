@@ -11,9 +11,9 @@ class PushNotificationWorker
 
     fcm = FCM.new( ENV['FCM_API_KEY'] )
     fcm_prefix = ENV['FCM_TOPIC_PREFIX']
-
-    response = fcm.send_to_topic("#{fcm_prefix}_#{receiver_type}_#{receiver_id}", data)
     puts "request ------>  #{fcm_prefix}_#{receiver_type}_#{receiver_id}, #{data}"
+    response = fcm.send_to_topic("#{fcm_prefix}_#{receiver_type}_#{receiver_id}", data)
+    # puts "request ------>  #{fcm_prefix}_#{receiver_type}_#{receiver_id}, #{data}"
     puts "response ------> #{response}"
 
     raise Exceptions::PushNotificationFailedError.new(response[:response]) unless response[:status_code] == 200
