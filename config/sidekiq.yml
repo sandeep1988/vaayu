@@ -1,5 +1,6 @@
-:concurrency: 17
+:concurrency: 20
 :queues:
   - default
   - ingest_job
   - high
+  - push_notifier

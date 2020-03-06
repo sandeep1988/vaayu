@@ -2,7 +2,7 @@ require 'fcm'
 class PushNotificationWorker
 
   include Sidekiq::Worker
-  sidekiq_options :retry => 3, :dead => false
+  sidekiq_options :retry => 3, :dead => false, :queue => :push_notifier
 
   def perform(receiver_id, push_type, data, receiver_type = :user)
     if push_type != 'driver_new_trip_assignment'
