@@ -75,13 +75,21 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
          console.log($scope.CutoffListBySite);
        angular.forEach($scope.CutoffListBySite, function (value, key) {
                 console.log(key + ": " + value.request_type + ": " + value.value);
-                if(value.request_type === 'WE_cutoff_checkout'){$scope.we_checkin = parseInt(value.value)};
+                if(value.request_type === 'WE_cutoff_checkin'){$scope.we_checkin = parseInt(value.value)};
+                if(value.request_type === 'WE_cutoff_checkout'){$scope.we_checkout = parseInt(value.value)};
                 if(value.request_type === 'WD_cutoff_checkin'){$scope.wd_checkin = parseInt(value.value)};
                 if(value.request_type === 'WD_cutoff_checkout'){$scope.wd_checkout = parseInt(value.value)};
-                if(value.request_type === 'WE_cutoff_checkin'){$scope.we_checkout = parseInt(value.value)};
+                
 
 
         });
+      }
+      else
+      {
+        $scope.we_checkin = '';
+        $scope.we_checkout = '';
+        $scope.wd_checkin ='';
+        $scope.wd_checkout ='';
       }
      
 

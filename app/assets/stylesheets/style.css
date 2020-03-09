@@ -1379,7 +1379,7 @@
   color:red !important;
 }
 .vayau-routing .filterToolbar select {
-    max-width:156px;
+    max-width:200px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
