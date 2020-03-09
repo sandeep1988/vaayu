@@ -20,7 +20,7 @@ class AutoRejectManifestWorker
       # Create a notification for this trip
       @notification = Notification.where(:trip => trip, :message => 'driver_didnt_accept_trip', :resolved_status => false).first
       if @notification.blank?
-        Notification.create!(:trip => trip, :driver => trip.driver,  :message => 'driver_didnt_accept_trip', :resolved_status => false, :new_notification => true, :reporter => 'Vaayu System').send_notifications
+        Notification.create!(:trip => trip, :driver => trip.driver,  :message => 'driver_didnt_accept_trip', :resolved_status => false, :new_notification => true, :reporter => 'ALYTE System').send_notifications
       end
     end
   end

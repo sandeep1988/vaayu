@@ -165,34 +165,34 @@ en:
         still_on_board: "Employee <b>%{employee_name}:</b>: I'm still in the car on trip <span class='trip-link'>%{trip_number}</span>.<div class='buttons text-center'><a href='' data-notification-id='%{id}' data-number='%{driver_phone}' id='call-person' class='btn btn-default btn-sm'>Call driver</a> <a href='' data-notification-id='%{id}' data-number='%{employee_phone}' id='call-person' class='btn btn-default btn-sm'>Call passenger</a></div>"
         trip_completed: "Driver <b>%{driver_name}:</b> (%{driver_plate}) has finished trip <span class='trip-link'>%{trip_number}</span>. <div class='buttons text-center'><a href='' data-notification-id='%{id}' data-number='%{driver_phone}' id='call-person' class='btn btn-default btn-sm'>Call driver</a></div>"
   user:
-    sms_notification: "Dear %{full_name}, your Company's Transport Desk has invited you to register with VAAYU. Please install the VAAYU App and experience the re-imagined office commute. %{link}"
-    driver_sms_notification: "Dear %{full_name}, you have been invited to register with VAAYU. Please get in touch with the Transport Desk or your Site Incharge to get the App. %{link}"
-    welcome_sms: "VAAYU is a re-imagined way for your office commute. It easily schedules your ride to office, keeps you informed about your ride and enables you to share your ride with friends and family. Please contact your Company's Transport Desk to know more. Happy MOOVING!"
-    guard_sms_notification: "Dear #{first_name}, You have been on-boarded to VAAYU as an Escort by {customer_name}. Welcome!"
+    sms_notification: "Dear %{full_name}, your Company's Transport Desk has invited you to register with ALYTE. Please install the ALYTE App and experience the re-imagined office commute. %{link}"
+    driver_sms_notification: "Dear %{full_name}, you have been invited to register with ALYTE. Please get in touch with the Transport Desk or your Site Incharge to get the App. %{link}"
+    welcome_sms: "ALYTE is a re-imagined way for your office commute. It easily schedules your ride to office, keeps you informed about your ride and enables you to share your ride with friends and family. Please contact your Company's Transport Desk to know more!"
+    guard_sms_notification: "Dear #{first_name}, You have been on-boarded to ALYTE as an Escort by {customer_name}. Welcome!"
   push_notification:
     driver_trip_exception:
-      title: VAAYU
+      title: ALYTE
       body: Car which was assigned to pick you up broke down. Please press the panic button to contact operator.
     driver_started_trip:
-      title: VAAYU
+      title: ALYTE
       body: Driver has started the trip. The Expected Arrival Time (ETA) is %{eta}
     employee_upcoming_trip:
       title: Driver Assigned
       body:  Driver will arrive %{day} at %{time}
     employee_on_board:
-      title: VAAYU
+      title: ALYTE
       body: You are in the car.
     employee_missed_trip:
-      title: VAAYU
+      title: ALYTE
       body: You missed your trip!
     employee_trip_completed:
       title: Trip Completed!
       body: Your trip has been completed. Please rate this trip and optionally provide additional feedback.
     next_drop:
-      title: VAAYU
+      title: ALYTE
       body: You are next to be dropped off The updated ETA is %{updated_eta}
     next_pick_up:
-      title: VAAYU
+      title: ALYTE
       body: You are next to be picked up The updated ETA is %{updated_eta}
     driver_arrived:
       title: Driver has arrived at your pick-up location
