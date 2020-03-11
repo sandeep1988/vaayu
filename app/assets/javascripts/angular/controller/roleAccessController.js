@@ -42,20 +42,23 @@ angular.module('app').controller('roleAccessCtrl', function ($scope, RosterServi
 
     $scope.onCheckboxChange = (roleId, moduleId, status) => {
                
-        for(var i = 0; i < $scope.consolidatedObj['roleAccess'].length; i++){
+        // for(var i = 0; i < $scope.consolidatedObj['roleAccess'].length; i++){
+        //     let newArray = ($scope.modifyObj(roleId, moduleId, status, $scope.roleObj))
+        //     if($scope.consolidatedObj['roleAccess'][i]['role_id'] === roleId && $scope.consolidatedObj['roleAccess'][i]['module_id'] === moduleId){
+        //         $scope.consolidatedObjCopy['roleAccess'].push(newArray)
+        //     } else {
+        //         console.log('in else')
+        //         $scope.modifyObj(roleId, moduleId, status, $scope.roleObj)
+        //         $scope.consolidatedObjCopy['roleAccess'].push(newArray)
+        //     }
+        // }
+
             let newArray = ($scope.modifyObj(roleId, moduleId, status, $scope.roleObj))
-            if($scope.consolidatedObj['roleAccess'][i]['role_id'] === roleId && $scope.consolidatedObj['roleAccess'][i]['module_id'] === moduleId){
-                // $scope.consolidatedObj['roleAccess'].push(newArray)
-                $scope.consolidatedObjCopy['roleAccess'].push(newArray)
-            } else {
-                console.log('in else')
-                $scope.modifyObj(roleId, moduleId, status, $scope.roleObj)
-                $scope.consolidatedObjCopy['roleAccess'].push(newArray)
-            }
-        }
-        $scope.consolidatedObj['roleAccess'].push($scope.consolidatedObjCopy['roleAccess'])
-        $scope.consolidatedObj['roleAccess'] = $scope.consolidatedObj['roleAccess'].flat()
-        console.log('check obj',$scope.consolidatedObj['roleAccess']);
+            $scope.consolidatedObjCopy['roleAccess'].push(newArray)
+
+        // $scope.consolidatedObj['roleAccess'].push($scope.consolidatedObjCopy['roleAccess'])
+        // $scope.consolidatedObj['roleAccess'] = $scope.consolidatedObj['roleAccess'].flat()
+        console.log('check obj',$scope.consolidatedObjCopy['roleAccess']);
         
     }
 
