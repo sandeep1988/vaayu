@@ -54,11 +54,21 @@ angular.module('app').controller('roleAccessCtrl', function ($scope, RosterServi
         // }
 
             let newArray = ($scope.modifyObj(roleId, moduleId, status, $scope.roleObj))
-            $scope.consolidatedObjCopy['roleAccess'].push(newArray)
-
-        // $scope.consolidatedObj['roleAccess'].push($scope.consolidatedObjCopy['roleAccess'])
-        // $scope.consolidatedObj['roleAccess'] = $scope.consolidatedObj['roleAccess'].flat()
-        console.log('check obj',$scope.consolidatedObjCopy['roleAccess']);
+            
+            // $scope.consolidatedObj['roleAccess'].push($scope.consolidatedObjCopy['roleAccess'])
+            // $scope.consolidatedObj['roleAccess'] = $scope.consolidatedObj['roleAccess'].flat()
+            for(var i = 0; i < $scope.consolidatedObjCopy['roleAccess'].length; i++){
+                if($scope.consolidatedObjCopy['roleAccess'][i]['role_id'] === roleId && $scope.consolidatedObjCopy['roleAccess'][i]['module_id'] === moduleId){
+                    $scope.consolidatedObjCopy['view_status'] = newArray['view_status']
+                    $scope.consolidatedObjCopy['edit_status'] = newArray['edit_status']
+                    $scope.consolidatedObjCopy['delete_status'] = newArray['delete_status']
+                    console.log('check obj if',$scope.consolidatedObjCopy['roleAccess']);
+                    break;
+                } else {
+                    $scope.consolidatedObjCopy['roleAccess'].push(newArray)
+                    console.log('check obj else',$scope.consolidatedObjCopy['roleAccess']);
+                }
+            }
         
     }
 
