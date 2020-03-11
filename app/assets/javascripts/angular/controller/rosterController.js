@@ -196,15 +196,18 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
           $scope.isLoader =false;
           $scope.toggleView = true;
           ToasterService.showSuccess('Success', "File upload success");
+          $scope.tempfileName = ''
         } else {
           if(Array.isArray(resData.errors) && resData.errors.length != 0){
             $scope.isLoader =false;
             $scope.toggleView = true;
             ToasterService.showSuccess('Error', resData.errors.toString());
+            $scope.tempfileName = ''
           } else {
             $scope.isLoader =false;
             $scope.toggleView = true;
             ToasterService.showSuccess('Error', resData.message);
+            $scope.tempfileName = ''
           }
           
           // showErrorToast('Error', resData.message)
@@ -244,7 +247,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
           ToasterService.showError('Error', res.data.message)
         } else {
           $scope.toggleView = true;
-          ToasterService.showSuccess('Success', res.data.message)
+          ToasterService.showSuccess('Success', 'File Downloaded Successfully!')
           $scope.downloadSample();
         }
       }, function errorCallback(err) {
@@ -675,6 +678,11 @@ $scope.onSubmit = () => {
       }, (error) => {
         ToasterService.showError('Error', 'Something went wrong, Try again later.');
       });
+  }
+  
+  $scope.closePopUp = () => {
+    $scope.showPopup = false;
+    $scope.employee_name_search = ''
   }
 
 });

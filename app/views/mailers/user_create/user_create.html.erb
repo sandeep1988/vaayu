@@ -18,16 +18,16 @@
                           <span style="font-size:23px">Dear <%= @user.f_name %>,</span></h1>
                         <div>
                           <% if @user.driver? || @user.employee? %>
-                            <p>Welcome to VAAYU! You are now ready to use the VAAYU app</p>
-                            <p>Download the VAAYU app <span><a href=<%= @user.employee? ? Configurator.get('rider_app_android') : '' %>>Android</a> <a href=<%= @user.employee? ? Configurator.get('rider_app_ios') : '' %>>iOS</a><span></p>
+                            <p>Welcome to ALYTE! You are now ready to use the ALYTE app</p>
+                            <p>Download the ALYTE app <span><a href=<%= @user.employee? ? Configurator.get('rider_app_android') : '' %>>Android</a> <a href=<%= @user.employee? ? Configurator.get('rider_app_ios') : '' %>>iOS</a><span></p>
                           <% else %>
-                            <p>Welcome to VAAYU! You are now ready to use the platform!</p>
+                            <p>Welcome to ALYTE! You are now ready to use the platform!</p>
                             <p>Please reset a password using link at: <%= link_to 'Reset Password', edit_password_url(@user, :reset_password_token => @token) %>
                           <% end %>
                         </div>
                         <div>&nbsp;</div>
                         <div>&nbsp;</div>
-                        <div>&nbsp;- VAAYU Team</div>
+                        <div>&nbsp;- ALYTE Team</div>
                       </td>
                     </tr>
                     </tbody>

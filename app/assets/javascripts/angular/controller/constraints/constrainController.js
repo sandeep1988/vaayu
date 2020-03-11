@@ -1,4 +1,4 @@
-app.controller('constraintController', function ($scope, $http, $state, ConstraintService, SessionService, ToasterService, $timeout,constraintService,RosterService) {
+app.controller('constraintController', function ($scope, $http, $state, ConstraintService, SessionService, ToasterService, $timeout,constraintService,RosterService, $ngConfirm) {
 
   $scope.siteNames = [];
   $scope.siteID = null;
@@ -68,7 +68,31 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
     });
 
     ConstraintService.getConfigCutoff({id}, (response) => {
-      console.log('Response: ', response)
+      console.log('Response cutoff : ', response);
+      if(response.success)
+      {
+         $scope.CutoffListBySite = response.data;
+         console.log($scope.CutoffListBySite);
+       angular.forEach($scope.CutoffListBySite, function (value, key) {
+                console.log(key + ": " + value.request_type + ": " + value.value);
+                if(value.request_type === 'WE_cutoff_checkin'){$scope.we_checkin = parseInt(value.value)};
+                if(value.request_type === 'WE_cutoff_checkout'){$scope.we_checkout = parseInt(value.value)};
+                if(value.request_type === 'WD_cutoff_checkin'){$scope.wd_checkin = parseInt(value.value)};
+                if(value.request_type === 'WD_cutoff_checkout'){$scope.wd_checkout = parseInt(value.value)};
+                
+
+
+        });
+      }
+      else
+      {
+        $scope.we_checkin = '';
+        $scope.we_checkout = '';
+        $scope.wd_checkin ='';
+        $scope.wd_checkout ='';
+      }
+     
+
     }), (error) => {
       console.log('Error: ', error)
     }
@@ -141,13 +165,32 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
 
   $scope.deleteConstraint =function(item){
    
-    var params = {id:item.id};
-    
-    constraintService.delete_constraint(params, function(location) {
-      $scope.fetchConstraintList($scope.selectedSiteId);
-      // ToasterService.showError('Error', location['message']);
-    
-    });
+    $ngConfirm({
+          title: 'Confirm!',
+          boxWidth: '20%',
+          useBootstrap: false,
+          content: "Are you sure?",
+          scope: $scope,
+          buttons: {
+              cancel:{
+                text: 'Cancel',
+                btnClass: 'btn-danger'
+                
+              },
+              OK: {
+                text: 'Delete',
+                btnClass: 'btn-blue',
+                action: function (scope) {
+                  var params = {id:item.id};
+                  constraintService.delete_constraint(params, function(location) {
+                    scope.fetchConstraintList(scope.selectedSiteId);
+                  });
+                }
+              }
+          }
+        });
+
+   
   }
 
   $scope.onSubmit = () => {
@@ -176,8 +219,18 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
         console.log(response)
         if(!response['success']){
           ToasterService.showError('Error', response['errors']['errorMessage'])
+          // $scope.we_checkin = ''
+          // $scope.we_checkout = ''
+          // $scope.wd_checkin = ''
+          // $scope.wd_checkout = ''
         } else {
           ToasterService.showSuccess('Success', 'Cut-off time submitted successfully!')
+          // $scope.we_checkin = ''
+          // $scope.we_checkout = ''
+          // $scope.wd_checkin = ''
+          // $scope.wd_checkout = ''
+          $scope.configForm.$setUntouched()
+          $scope.configForm.$setPristine()
         }
       }, (error) => {
         console.log(error)

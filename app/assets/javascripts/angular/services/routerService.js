@@ -25,6 +25,11 @@ function ($resource, BASE_URL_8002, BASE_URL_API_8002, SessionService) {
         url: BASE_URL_8002 + 'reallocationDriverToTrip',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
+    },
+    empLandmarkZonesList: {
+        url: BASE_URL_8002 + 'empLandmarkZonesList',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
     }
   });
 }]);

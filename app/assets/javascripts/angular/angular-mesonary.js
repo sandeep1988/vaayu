@@ -16,7 +16,7 @@
         var self = this;
         var timeout = null;
         this.preserveOrder = false;
-        this.loadImages = true;
+        this.loadImages = false;
         this.scheduleMasonryOnce = function scheduleMasonryOnce() {
           var args = arguments;
           var found = schedule.filter(function filterFn(item) {
@@ -75,10 +75,10 @@
             _add();
             element.imagesLoaded(_layout);
           } else {
-            element.imagesLoaded(function imagesLoaded() {
+            // element.imagesLoaded(function imagesLoaded() {
               _add();
               _layout();
-            });
+            // });
           }
         };
         this.removeBrick = function removeBrick(id, element) {

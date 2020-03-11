@@ -6,6 +6,21 @@ angular.module('app').directive('setHeight', function ($window) {
     }
   }
 })
+
+angular.module('app').directive('setHeight1', function ($window) {
+  return {
+    link: function (scope, element, attrs) {
+      element.css('height', $window.innerHeight/1.5 + 'px');
+    }
+  }
+})
+angular.module('app').directive('setHeight2', function ($window) {
+  return {
+    link: function (scope, element, attrs) {
+      element.css('height', $window.innerHeight/1.5 + 'px');
+    }
+  }
+})
 angular.module('app').directive("scroll", function ($window) {
   return function(scope, element, attrs) {
     
@@ -20,19 +35,41 @@ angular.module('app').directive("scroll", function ($window) {
   };
 });
 
-angular.module('app').directive("scroll", function ($window) {
-  return function(scope, element, attrs) {
-    
-      angular.element($window).bind("scroll", function() {
-          if (this.pageYOffset >= 250) {
-               scope.boolChangeClass = true;
-           } else {
-               scope.boolChangeClass = false;
-           }
-          scope.$apply();
-      });
+angular.module('app').directive("dndScrollArea", dndScrollArea);
+
+dndScrollArea.$inject = ['$document', '$interval'];
+
+function dndScrollArea($document, $interval) {
+  return {
+    link: link
   };
-});
+
+  function link(scope, element, attributes) {
+    var inc = attributes.dndRegion === 'top' ? 10: ( attributes.dndRegion === 'bottom' ? -10 : 0);
+    var container = $document[0].getElementById(attributes.dndScrollContainer);
+    if(container) {
+      registerEvents(element,container,20,20);
+    }
+  }
+
+  function registerEvents(bar, container, inc, speed) {
+    if (!speed) {
+      speed = 20;
+    }
+    var timer;
+    angular.element(bar).on('dragenter', function() {
+      container.scrollTop += inc;
+      timer = $interval(function moveScroll() {
+        container.scrollTop += inc;
+        console.log("scrool ", container.scrollTop)
+      }, speed);
+    });
+    angular.element(bar).on('dragleave', function() {
+      $interval.cancel(timer);
+    });
+  }
+}
+
 
 angular.module('app')
   .filter('range', function () {
@@ -41,37 +78,6 @@ angular.module('app')
         return item[property] >= min && item[property] <= max;
       });
     };
-  });
-
-  angular.module('app').filter('propsFilter', function() {
-    return function(items, props) {
-      var out = [];
-  
-      if (angular.isArray(items)) {
-        items.forEach(function(item) {
-          var itemMatches = false;
-  
-          var keys = Object.keys(props);
-          for (var i = 0; i < keys.length; i++) {
-            var prop = keys[i];
-            var text = props[prop].toLowerCase();
-            if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
-              itemMatches = true;
-              break;
-            }
-          }
-  
-          if (itemMatches) {
-            out.push(item);
-          }
-        });
-      } else {
-        // Let the output be the input untouched
-        out = items;
-      }
-  
-      return out;
-    }
   });
 
 app.directive('focusMe', function ($timeout) {
@@ -91,89 +97,23 @@ app.directive('focusMe', function ($timeout) {
   };
 });
 
+angular.module('app').run(function ($rootScope) {
+  var lastTimeout;
+  var off = $rootScope.$watch('$$phase', function (newPhase) {
+    if (newPhase) {
+      if (lastTimeout) {
+        clearTimeout(lastTimeout);
+      }
+      lastTimeout = setTimeout(function () {
+        $rootScope.$broadcast('masonry.reload'); 
+      }, 100);
+    }
+  });
+});
+
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService,
   AutoAllocationService,
-  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm) {
-
-    $scope.rut = {};
-
-    $scope.onVehicleSelect =function(container){
-      var routeId=$scope.rut["'"+container.routeId+"'"];
-      console.log($scope.rut["'"+container.routeId+"'"]);
-      if(routeId==container.routeId){
-        var postRouteData=getRoutePostData();
-        
-        RouteService.constraintCheck(postRouteData,function (response) {
-          if(response.success){
-            $scope.assignVehicleOnSelect(container);
-            return true;
-          }else{
-            var htmlBody=$scope.returnVehicleHTML(response);
-            
-            $ngConfirm({
-              title: 'Constraint Failed!',
-              boxWidth: '40%',
-              useBootstrap: false,
-              content: htmlBody,
-              scope: $scope,
-              buttons: {
-                  cancel: {
-                    text: 'Revert',
-                    btnClass: 'btn-blue',
-                    action: function (scope) {
-                    
-                    }
-                  },
-                  procced: {
-                      text: 'Proceed',
-                      btnClass: 'btn-orange',
-                      action: function(scope, button){
-                        scope.assignVehicleOnSelect(container);
-                        return true;
-                      }
-                  }
-              }
-            });
-          }
-        });
-      }
-    }
-
-    $scope.assignVehicleOnSelect=function(container){
-      var postData = {
-        "vehicleId": container.vehicle.vehicleId,
-        "routeId": container.routeId
-      };
-  
-      RouteService.assignVehicle(postData, function (data) {
-        if (data['success']) {
-          isAssign = false;
-          // ToasterService.clearToast();
-          $scope.toggleView = true;
-          ToasterService.showSuccess('Success', data['msg']);
-        } else {
-          $ngConfirm({
-            title: 'Constraint Failed!',
-            boxWidth: '40%',
-            useBootstrap: false,
-            content:  data['msg'],
-            scope: $scope,
-            buttons: {
-                ok: {
-                  text: 'Revert',
-                  btnClass: 'btn-blue',
-                  action: function (scope) {
-                  
-                  }
-                }
-            }
-          });
-        }
-        $scope.resetRoute();
-      })
-  
-    }
-  
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm,$document,$rootScope,$interval) {
 
   // $scope.toggleView = false;
   $scope.disableBtn = false;
@@ -183,10 +123,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   var directionsRenderer 
   $scope.initMap = () => {
-
+    
     directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
+      mapTypeControl: false,
       center: { lat: 19.2578, lng: 72.8731 },
       mapTypeId: 'terrain'
     });
@@ -244,6 +185,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.coords = []
 
 
+  
 
   $scope.init = function () {
     $scope.toggleView = false;
@@ -382,33 +324,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
   }
 
-
-  $scope.searchVehicleAsync = (plateNumber) => {
-    $scope.plateNumber = plateNumber;
-
-    if(plateNumber){
-      let shift = JSON.parse($scope.selectedShift);
-
-      let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber, to_date: moment($scope.filterDate).format('YYYY-MM-DD') };
-  
-      return RouteService.searchVechicle(params).$promise.then(function (result) {
-          return result.data;
-      });
-    }else{
-      let postVehicleData = {
-        siteId:$scope.siteId, shiftId:$scope.selectedShift.id, shiftType:$scope.selectedShift.trip_type,
-        selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
-        driverStatus: $scope.selected_vehicle_status
-      }
-      
-      return RouteService.postVehicleList(postVehicleData).$promise.then(function (result) {
-        return result.data;
-      });
-    }
-  
-  }
-
   $scope.getVehicleListForSite = function (siteId, shiftId, shiftType) {
+
+    // $scope.toggleView = false;
 
     if (siteId == null || shiftId == null || shiftType == null) {
       return;
@@ -421,7 +339,27 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
     console.log('postVehicleData', postVehicleData)
     RouteService.postVehicleList(postVehicleData, function (res) {
-      return vehicleList = res.data;
+      console.log('vehicle list', res)
+      $scope.vehicleList = res.data;
+
+      var allowtypes = [];
+      angular.forEach($scope.vehicleList, function (item) {
+        // item.type = "vehical";
+        item.type = item.vehicleType;
+        if (!allowtypes.includes(item.type)) {
+          allowtypes.push(item.type)
+        }
+      })
+      console.log('allowtypes', allowtypes);
+
+      $scope.vehicals = [
+        {
+          label: "Vehical",
+          allowedTypes: allowtypes,
+          max: allowtypes.length + 1,
+          vehical: $scope.vehicleList
+        }
+      ];
     }, function (error) {
       console.log(error);
     });
@@ -542,7 +480,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         $scope.resetRoute();
         $scope.allRouteSelected=false;
         $scope.toggleView = true;
-        ToasterService.showError('Success', data['message'])
+        ToasterService.showSuccess('Success', 'Routes are finalized')
       }, err => {
         $scope.toggleView = true;
         ToasterService.showError('Error', 'Something went wrong')
@@ -566,22 +504,26 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         $scope.toggleView = true;
         ToasterService.showSuccess('Success', res['message']);
       } else {
-        $ngConfirm({
-          title: 'Update Routes Failed!',
-          boxWidth: '40%',
-          useBootstrap: false,
-          content: res['message'],
-          scope: $scope,
-          buttons: {
-              OK: {
-                text: 'OK',
-                btnClass: 'btn-blue',
-                action: function (scope) {
-                  scope.resetRoute();
-                }
-              }
-          }
-        });
+        $scope.resetRoute();
+        $scope.toggleView = true;
+        ToasterService.showSuccess('Success', res['message']);
+
+        // $ngConfirm({
+        //   title: 'Update Routes Failed!',
+        //   boxWidth: '40%',
+        //   useBootstrap: false,
+        //   content: res['message'],
+        //   scope: $scope,
+        //   buttons: {
+        //       OK: {
+        //         text: 'OK',
+        //         btnClass: 'btn-blue',
+        //         action: function (scope) {
+        //           scope.resetRoute();
+        //         }
+        //       }
+        //   }
+        // });
       }
     })
   }
@@ -1010,12 +952,26 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   };
 
 
+  function mousemove(event) {
+    console.log(event);
+    var prevY = $('body').attr('data-prevY');
+    if (event.pageY < prevY) {
+      $(window).scrollTop($(window).scrollTop()+5);
+    } else {
+      $(window).scrollTop($(window).scrollTop()-5);
+    } 
+    $('body').attr('data-prevY', event.pageY);
+  }
+
 
   $scope.dragoverCallback = function (container, index, external, type, callback) {
     if ($scope.routeChangedIds.indexOf(container.routeId) === -1) {
       $scope.routeChangedIds.push(container.routeId)
       $scope.isDisabled = false;
     }
+
+    // $document.on('mousemove',mousemove);
+
     $scope.newModel=angular.copy($scope.model2)
  
     return index < 100000000; 
@@ -1023,12 +979,14 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.isShowMap =false;
   $scope.toggleMap =function() {
-    $scope.resetRoute();
+    // $scope.resetRoute();
+    
     if($scope.isShowMap){
       $scope.isShowMap=false;
     }else{
       $scope.isShowMap=true;
     }
+   
   }
 
   $scope.dropItemCallback = function (container, index, item, external, type) {
@@ -1041,6 +999,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     return item;
   }
 
+  $interval(function reloadMesonary(){
+    $('#mesonaryContainer').masonry();
+  },20);
 
   $scope.dropCallback = function (container, index, item, external, type,element) {
       var postData=getRoutePostData();
@@ -1066,7 +1027,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
                     scope.model2=scope.newModel;
                     // scope.routeChangedIds = [];
                     scope.resetRoute();
-                    $ngConfirm("Reverted successfully")
+                    // $ngConfirm("Reverted successfully")
                     // return false;
                   }
                 },
@@ -1091,10 +1052,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         angular.forEach($scope.resData, function (item) {
           if (route.routeId == item.routeId) {
             if(item.distance){
-              route.total_distance = item.distance.distance;
+              route.total_distance = item.distance.distance ? item.distance.distance : route.total_distance;
             }
             if(item.time){
-              route.total_time = item.time.duration;
+              route.total_time = item.time.duration ? item.time.duration : route.total_time;
             }
             
             if(item.guard){
@@ -1312,16 +1273,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
   };
 
-  $scope.getColor =function(container) {
-    if(container.is_distance_exceeded=="N" && container.is_time_exceeded=="N" && container.vehicle_utilization<100){
-      return 1;
-    }if(container.is_distance_exceeded=="Y" && container.is_time_exceeded=="Y" && !container.guard.length){
-      return 2;
-    }if(container.is_distance_exceeded=="N" && container.is_time_exceeded=="N" && container.total_seats>=container.employees.length && container.guard.length){
-      return 3;
-    }
-  }
-
   $scope.VehicleAssignCallback=function(item,container){
     var postData = {
       "vehicleId": item.vehicleId,
@@ -1333,24 +1284,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         isAssign = false;
         // ToasterService.clearToast();
         $scope.toggleView = true;
-        ToasterService.showSuccess('Success', data['message']);
+        ToasterService.showSuccess('Success', data['msg']);
       } else {
-        $ngConfirm({
-          title: 'Constraint Failed!',
-          boxWidth: '40%',
-          useBootstrap: false,
-          content:  data['msg'],
-          scope: $scope,
-          buttons: {
-              ok: {
-                text: 'Revert',
-                btnClass: 'btn-blue',
-                action: function (scope) {
-                
-                }
-              }
-          }
-        });
+        // ToasterService.clearToast();
+        $scope.toggleView = true;
+        ToasterService.showError('Error', data['msg']);
       }
       $scope.resetRoute();
     })
@@ -1455,8 +1393,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       console.log('autoallocation response ', data);
       if (data['success']) {
         $scope.routes = data;
-        $scope.toggleView = true;
-        ToasterService.showSuccess('Success', data['message'])
         if ($scope.routes.data) {
           try {
             $scope.toggleView = true;
@@ -1475,7 +1411,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         }
       } else {
         $scope.toggleView = true;
-      ToasterService.showError('Success', data['message']);
       }
     }, function (err) {
       $scope.toggleView = true;
@@ -1497,6 +1432,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     $scope.modelAsJson = angular.toJson(vehicals, true);
   }, true);
 
+
   $scope.resetSidebar = function () {
     $scope.isVehicalSidebarView = false;
     $scope.isGuardSidebarView = false;
@@ -1516,7 +1452,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     $scope.resetSidebar();
     $scope.isVehicalSidebarView = true;
   }
-
 
   $scope.hideGuardSidebar = function () {
     $scope.resetSidebar();
@@ -1539,6 +1474,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.isSiteStatus = 1;
   $scope.site;
   function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
+    
+    
     for (let item of $scope.siteList) {
       if (item.id === $scope.siteId) {
         var site = item;
@@ -1546,15 +1483,20 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
 
     let shift = JSON.parse($scope.selectedShift);
+
+    console.log("shift_type")
+    console.log(shift.shift_type);
+    
     if ($scope.getShiftType(shift.shift_type) == 1) {
       $scope.isSiteStatus = 1;
-      makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true);
+      map_markers.push(makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true));
     }
 
     if ($scope.getShiftType(shift.shift_type) == 0) {
       $scope.isSiteStatus = 0;
-      makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true);
+      map_markers.push(makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true));
     }
+
 
     if ($scope.isSiteStatus == 1) {
       directionsService.route({
@@ -1562,7 +1504,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         destination: new google.maps.LatLng(site.latitude, site.longitude),
         waypoints: waypts,
         optimizeWaypoints: true,
-        travelMode: google.maps.DirectionsTravelMode.DRIVING
+        travelMode: 'DRIVING'
+
+        // travelMode: google.maps.DirectionsTravelMode.DRIVING
       }, function (response, status) {
         if (status === 'OK') {
           directionsRenderer.setDirections(response);
@@ -1638,29 +1582,32 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
  
   $scope.selectRoute = (container) => {
+    console.log(container);
+    clearMarkers(map_markers);
+
+    
+    // map.setZoom(8);
+    // map.setCenter();
+
+
     if (!container.route_selected) {
+      directionsRenderer.setMap(null);
       return;
+    }else{
+      directionsRenderer.setMap($scope.map);
+        var waypts = [];
+        for (let item of container.employees) {
+          waypts.push({
+            location: new google.maps.LatLng(item.lat, item.lng),
+            stopover: true
+          });
+          map_markers.push(makeMarker(new google.maps.LatLng(item.lat, item.lng), item.empName));
+        }
+
+        var stepDisplay = new google.maps.InfoWindow;
+        calculateAndDisplayRoute(directionsService, directionsRenderer, waypts)
     }
-    
-    // $scope.finalizeArray.push({ routeId: container.routeId });
-
-    var waypts = [];
-    for (let item of container.employees) {
-      waypts.push({
-        location: new google.maps.LatLng(item.lat, item.lng),
-        stopover: true
-      });
-      makeMarker(new google.maps.LatLng(item.lat, item.lng), item.empName);
-    }
-
-    // var directionsService = new google.maps.DirectionsService();
-    
-
-    var stepDisplay = new google.maps.InfoWindow;
-
-    calculateAndDisplayRoute(directionsService, directionsRenderer, waypts)
   }
-
 
   function attachInstructionText(stepDisplay, marker, text, map) {
     google.maps.event.addListener(marker, 'click', function () {
@@ -1673,52 +1620,71 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   // Helping Functions End
 
   $scope.getShiftType = (shiftType) => {
-
-    return shiftType.toLowerCase() === 'check out' ? 1 : 0;
+    return shiftType.toLowerCase() === 'login' ? 1 : 0;
   }
 
-  $scope.getCurrentVehicleLocation = (vehicleNumber) => {
-    // call vehicle list api
-    // $http({
-    //   method: 'GET',
-    //   url: 'https://intouch.mapmyindia.com/Intouch/apis/getEntityList?token=z5fmo6ekwd6ucrp4k9ujf1x5jwnw25m2'
-    // })
-    //   .then(function (response) {
-    //   // console.log(JSON.stringify(response))
+  // $scope.getCurrentVehicleLocation = (vehicleNumber) => {
+    
+  //   var marker1 = new google.maps.Marker({
+  //     map: $scope.map,
+  //     position: new google.maps.LatLng(19.2578, 72.8731),
+  //     icon: "../assets/angular_images/car.png"
+  //   })
 
-    //     if (response.entity.length > 0 && response.message === 'success' && response.status === 200) {
-    //       const vehicleListData = response.entity.filter((e) => e.registrationNumber === vehicleNumber)
+  //   // call vehicle list api
+  //   // $http({
+  //   //   method: 'GET',
+  //   //   url: 'https://intouch.mapmyindia.com/Intouch/apis/getEntityList?token=z5fmo6ekwd6ucrp4k9ujf1x5jwnw25m2'
+  //   // })
+  //   //   .then(function (response) {
+  //   //   // console.log(JSON.stringify(response))
 
-    //       if (vehicleListData.length > 0) {
-    //         const entityId = vehicleListData[0].id
-    //         $http({
-    //           method: 'GET',
-    //           url: 'https://intouch.mapmyindia.com/Intouch/apis/getEntityLiveData?token=z5fmo6ekwd6ucrp4k9ujf1x5jwnw25m2&entityId=' + entityId
-    //         })
-    //           .then((vehicleData) => {
-    //           // map car icon in google map
-    //           })
-    //           .catch(() => {
-    //             ToasterService.showError('Error', 'Something went wrong, Try again later.')    
-    //           })
-    //       } else {
-    //         ToasterService.showError('Error', 'Something went wrong, Try again later.')
-    //       }
-    //     } else {
-    //       ToasterService.showError('Error', 'Something went wrong, Try again later.')
-    //     }
-    //   }).catch(err => {
-    //     console.log(err)
-    //     ToasterService.showError('Error', 'Something went wrong, Try again later.')
-    //   })
+  //   //     if (response.entity.length > 0 && response.message === 'success' && response.status === 200) {
+  //   //       const vehicleListData = response.entity.filter((e) => e.registrationNumber === vehicleNumber)
 
-    // hard coded vehicle location
-    console.log('$scope.map ', $scope.map)
-    var marker1 = new google.maps.Marker({
-      map: $scope.map,
-      position: new google.maps.LatLng(19.2578, 72.8731),
-      icon: "../assets/angular_images/car.png"
-    })
+  //   //       if (vehicleListData.length > 0) {
+  //   //         const entityId = vehicleListData[0].id
+  //   //         $http({
+  //   //           method: 'GET',
+  //   //           url: 'https://intouch.mapmyindia.com/Intouch/apis/getEntityLiveData?token=z5fmo6ekwd6ucrp4k9ujf1x5jwnw25m2&entityId=' + entityId
+  //   //         })
+  //   //           .then((vehicleData) => {
+  //   //           // map car icon in google map
+  //   //             var marker1 = new google.maps.Marker({
+  //   //                   map: $scope.map,
+  //   //                   position: new google.maps.LatLng(19.2578, 72.8731),
+  //   //                   icon: "../assets/angular_images/car.png"
+  //   //             })
+  //   //           })
+  //   //           .catch(() => {
+  //   //             // ToasterService.showError('Error', 'Something went wrong, Try again later.')    
+  //   //           })
+  //   //       } else {
+  //   //         // ToasterService.showError('Error', 'Something went wrong, Try again later.')
+  //   //       }
+  //   //     } else {
+  //   //       // ToasterService.showError('Error', 'Something went wrong, Try again later.')
+  //   //     }
+  //   //   }).catch(err => {
+  //   //     console.log(err)
+  //   //     // ToasterService.showError('Error', 'Something went wrong, Try again later.')
+  //   //   })
+
+    
+  //   // var marker1 = new google.maps.Marker({
+  //   //   map: $scope.map,
+  //   //   position: new google.maps.LatLng(19.2578, 72.8731),
+  //   //   icon: "../assets/angular_images/car.png"
+  //   // })
+  // }
+
+  var map_markers = [];
+
+  function clearMarkers (markers) {
+    for (var i = 0; i < markers.length; i++ ) {
+      markers[i].setMap(null);
+    }
+    markers = []
   }
 
   function makeMarker(position, title, isSite = false) {

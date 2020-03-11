@@ -132,7 +132,7 @@ class User < ApplicationRecord
     result = save
     # result = false
     if result
-      # UserNotifierMailer.user_create(self, raw).deliver_now! unless self.driver? || (self.employee? && self.entity.is_guard?)
+       #UserNotifierMailer.user_create(self, raw).deliver_now! unless self.driver? || (self.employee? && self.entity.is_guard?)
       self.update_invite_count
       # send_sms if self.driver? or self.employee?
     end

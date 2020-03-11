@@ -183,8 +183,9 @@ function updateCheckInForm(etObj) {
   // }
   // console.log("<<<<<check_in shedule>>>>", check_in );
   if (etObj.site_id !== "") { currentForm.find(".check_in_location_select").val(etObj.site_id) }
+    //console.log("24234234",etObj.shift_id );
   // if (etObj.shift_id !== "") { currentForm.find(".check_in_shift_select").val(etObj.shift_id) }
-  if (check_in !== "") {createOrSelectShift(check_in, currentForm, "check_in");}
+  if (check_in !== "") {createOrSelectShift(check_in, currentForm, "check_in",etObj.shift_id);}
   [undefined, 'upcoming', 'unassigned', 'reassigned'].includes(etObj.status) ? currentForm.find(".check_in_shift_select").removeClass("disabled") : currentForm.find(".check_in_shift_select").addClass("disabled")
 }
 
@@ -202,22 +203,27 @@ function updateCheckOutForm(etObj) {
     checkOutVal = etObj.check_out;
     currentForm.find(inputField).val(checkOutVal);
   }
+
   if (etObj.site_id !== "") { currentForm.find(".check_out_location_select").val(etObj.site_id) }
   // if (etObj.shift_id !== "") { currentForm.find(".check_out_shift_select").val(etObj.shift_id) }
-  if(checkOutVal !== "") {createOrSelectShift(checkOutVal, currentForm, "check_out")}
+  if(checkOutVal !== "") {createOrSelectShift(checkOutVal, currentForm, "check_out",etObj.shift_id)}
   [undefined, 'upcoming', 'unassigned', 'reassigned'].includes(etObj.status) ? currentForm.find(".check_out_shift_select").removeClass("disabled") : currentForm.find(".check_out_shift_select").addClass("disabled")
 }
 
-function createOrSelectShift(objVal, currentForm, tripType) {
+function createOrSelectShift(objVal, currentForm, tripType, shift_id) {
   if (tripType == "check_in") {
+    // console.log( "AJAYAYYAYAYAYAAY-CHECKIN",objVal);
     currentSelect = ".check_in_shift_select";
-    shift = $.grep(allShifts, function(e){ return e.start_time == objVal })[0];
+    shift = $.grep(allShifts, function(e){
+      //console.log("aaaaaaaaaaaaaaaa", e ); 
+      return e.id == shift_id })[0];
   } else {
     currentSelect = ".check_out_shift_select";
-    shift = $.grep(allShifts, function(e){ return e.end_time == objVal })[0];
+    shift = $.grep(allShifts, function(e){ return e.id == shift_id })[0];
   }
 
   if (shift == undefined) {
+    //console.log( ">>>>>>>>>>>>>>>>>>>>>>>>>sfsdfsdf",shift );
     customShift = $.grep(currentForm.find(currentSelect).find("option"), function(e) { return $(e).text() == objVal })[0];
     if (customShift !== undefined) {
       currentForm.find(currentSelect).val($(customShift).val());
