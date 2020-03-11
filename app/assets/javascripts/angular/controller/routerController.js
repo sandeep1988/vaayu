@@ -7,6 +7,70 @@ angular.module('app').directive('setHeight', function ($window) {
   }
 })
 
+angular.module('app').directive('setHeight1', function ($window) {
+  return {
+    link: function (scope, element, attrs) {
+      element.css('height', $window.innerHeight/1.5 + 'px');
+    }
+  }
+})
+angular.module('app').directive('setHeight2', function ($window) {
+  return {
+    link: function (scope, element, attrs) {
+      element.css('height', $window.innerHeight/1.5 + 'px');
+    }
+  }
+})
+angular.module('app').directive("scroll", function ($window) {
+  return function(scope, element, attrs) {
+    
+      angular.element($window).bind("scroll", function() {
+          if (this.pageYOffset >= 250) {
+               scope.boolChangeClass = true;
+           } else {
+               scope.boolChangeClass = false;
+           }
+          scope.$apply();
+      });
+  };
+});
+
+angular.module('app').directive("dndScrollArea", dndScrollArea);
+
+dndScrollArea.$inject = ['$document', '$interval'];
+
+function dndScrollArea($document, $interval) {
+  return {
+    link: link
+  };
+
+  function link(scope, element, attributes) {
+    var inc = attributes.dndRegion === 'top' ? 10: ( attributes.dndRegion === 'bottom' ? -10 : 0);
+    var container = $document[0].getElementById(attributes.dndScrollContainer);
+    if(container) {
+      registerEvents(element,container,20,20);
+    }
+  }
+
+  function registerEvents(bar, container, inc, speed) {
+    if (!speed) {
+      speed = 20;
+    }
+    var timer;
+    angular.element(bar).on('dragenter', function() {
+      container.scrollTop += inc;
+      timer = $interval(function moveScroll() {
+        container.scrollTop += inc;
+        console.log("scrool ", container.scrollTop)
+      }, speed);
+    });
+    angular.element(bar).on('dragleave', function() {
+      $interval.cancel(timer);
+    });
+  }
+}
+
+
 angular.module('app')
   .filter('range', function () {
     return function (items, property, min, max) {
@@ -33,10 +97,23 @@ app.directive('focusMe', function ($timeout) {
   };
 });
 
+angular.module('app').run(function ($rootScope) {
+  var lastTimeout;
+  var off = $rootScope.$watch('$$phase', function (newPhase) {
+    if (newPhase) {
+      if (lastTimeout) {
+        clearTimeout(lastTimeout);
+      }
+      lastTimeout = setTimeout(function () {
+        $rootScope.$broadcast('masonry.reload'); 
+      }, 100);
+    }
+  });
+});
+
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService,
   AutoAllocationService,
-  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm) {
-
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm,$document,$rootScope,$interval) {
 
   // $scope.toggleView = false;
   $scope.disableBtn = false;
@@ -46,10 +123,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   var directionsRenderer 
   $scope.initMap = () => {
-
+    
     directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
+      mapTypeControl: false,
       center: { lat: 19.2578, lng: 72.8731 },
       mapTypeId: 'terrain'
     });
@@ -107,6 +185,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.coords = []
 
 
+  
 
   $scope.init = function () {
     $scope.toggleView = false;
@@ -175,7 +254,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     $scope.getStyleInPx =function(capacity){
       var multiplier =(capacity % 4) > 0 ? 1 : 0
       return {
-        'min-height': (Math.trunc(capacity/4)+ multiplier )*160+'px'
+        'min-height': (Math.trunc(capacity/4)+ multiplier )*110+'px'
       }
     }
 
@@ -400,6 +479,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       FinalizeService.query(postdata, (data) => {
         $scope.resetRoute();
         $scope.allRouteSelected=false;
+        $scope.toggleView = true;
+        ToasterService.showSuccess('Success', 'Routes are finalized')
       }, err => {
         $scope.toggleView = true;
         ToasterService.showError('Error', 'Something went wrong')
@@ -417,27 +498,32 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     RouteUpdateService.query(postData, function (res) {
       $scope.isDisabled = false;
+      $scope.routeChangedIds=[];
       if (res['success']) {
         $scope.resetRoute();
         $scope.toggleView = true;
         ToasterService.showSuccess('Success', res['message']);
       } else {
-        $ngConfirm({
-          title: 'Update Routes Failed!',
-          boxWidth: '40%',
-          useBootstrap: false,
-          content: res['message'],
-          scope: $scope,
-          buttons: {
-              OK: {
-                text: 'OK',
-                btnClass: 'btn-blue',
-                action: function (scope) {
-                  scope.resetRoute();
-                }
-              }
-          }
-        });
+        $scope.resetRoute();
+        $scope.toggleView = true;
+        ToasterService.showSuccess('Success', res['message']);
+
+        // $ngConfirm({
+        //   title: 'Update Routes Failed!',
+        //   boxWidth: '40%',
+        //   useBootstrap: false,
+        //   content: res['message'],
+        //   scope: $scope,
+        //   buttons: {
+        //       OK: {
+        //         text: 'OK',
+        //         btnClass: 'btn-blue',
+        //         action: function (scope) {
+        //           scope.resetRoute();
+        //         }
+        //       }
+        //   }
+        // });
       }
     })
   }
@@ -866,12 +952,26 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   };
 
 
+  function mousemove(event) {
+    console.log(event);
+    var prevY = $('body').attr('data-prevY');
+    if (event.pageY < prevY) {
+      $(window).scrollTop($(window).scrollTop()+5);
+    } else {
+      $(window).scrollTop($(window).scrollTop()-5);
+    } 
+    $('body').attr('data-prevY', event.pageY);
+  }
+
 
   $scope.dragoverCallback = function (container, index, external, type, callback) {
     if ($scope.routeChangedIds.indexOf(container.routeId) === -1) {
       $scope.routeChangedIds.push(container.routeId)
       $scope.isDisabled = false;
     }
+
+    // $document.on('mousemove',mousemove);
+
     $scope.newModel=angular.copy($scope.model2)
  
     return index < 100000000; 
@@ -879,12 +979,14 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.isShowMap =false;
   $scope.toggleMap =function() {
-    $scope.resetRoute();
+    // $scope.resetRoute();
+    
     if($scope.isShowMap){
       $scope.isShowMap=false;
     }else{
       $scope.isShowMap=true;
     }
+   
   }
 
   $scope.dropItemCallback = function (container, index, item, external, type) {
@@ -897,6 +999,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     return item;
   }
 
+  $interval(function reloadMesonary(){
+    $('#mesonaryContainer').masonry();
+  },20);
 
   $scope.dropCallback = function (container, index, item, external, type,element) {
       var postData=getRoutePostData();
@@ -920,7 +1025,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
                   btnClass: 'btn-blue',
                   action: function (scope) {
                     scope.model2=scope.newModel;
-                    $ngConfirm("Reverted successfully")
+                    // scope.routeChangedIds = [];
+                    scope.resetRoute();
+                    // $ngConfirm("Reverted successfully")
                     // return false;
                   }
                 },
@@ -945,10 +1052,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         angular.forEach($scope.resData, function (item) {
           if (route.routeId == item.routeId) {
             if(item.distance){
-              route.total_distance = item.distance.distance;
+              route.total_distance = item.distance.distance ? item.distance.distance : route.total_distance;
             }
             if(item.time){
-              route.total_time = item.time.duration;
+              route.total_time = item.time.duration ? item.time.duration : route.total_time;
             }
             
             if(item.guard){
@@ -1367,6 +1474,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.isSiteStatus = 1;
   $scope.site;
   function calculateAndDisplayRoute(directionsService, directionsRenderer, waypts) {
+    
+    
     for (let item of $scope.siteList) {
       if (item.id === $scope.siteId) {
         var site = item;
@@ -1374,15 +1483,20 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
 
     let shift = JSON.parse($scope.selectedShift);
+
+    console.log("shift_type")
+    console.log(shift.shift_type);
+    
     if ($scope.getShiftType(shift.shift_type) == 1) {
       $scope.isSiteStatus = 1;
-      makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true);
+      map_markers.push(makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true));
     }
 
     if ($scope.getShiftType(shift.shift_type) == 0) {
       $scope.isSiteStatus = 0;
-      makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true);
+      map_markers.push(makeMarker(new google.maps.LatLng(site.latitude, site.longitude), site.name, true));
     }
+
 
     if ($scope.isSiteStatus == 1) {
       directionsService.route({
@@ -1390,7 +1504,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         destination: new google.maps.LatLng(site.latitude, site.longitude),
         waypoints: waypts,
         optimizeWaypoints: true,
-        travelMode: google.maps.DirectionsTravelMode.DRIVING
+        travelMode: 'DRIVING'
+
+        // travelMode: google.maps.DirectionsTravelMode.DRIVING
       }, function (response, status) {
         if (status === 'OK') {
           directionsRenderer.setDirections(response);
@@ -1466,29 +1582,32 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
  
   $scope.selectRoute = (container) => {
+    console.log(container);
+    clearMarkers(map_markers);
+
+    
+    // map.setZoom(8);
+    // map.setCenter();
+
+
     if (!container.route_selected) {
+      directionsRenderer.setMap(null);
       return;
+    }else{
+      directionsRenderer.setMap($scope.map);
+        var waypts = [];
+        for (let item of container.employees) {
+          waypts.push({
+            location: new google.maps.LatLng(item.lat, item.lng),
+            stopover: true
+          });
+          map_markers.push(makeMarker(new google.maps.LatLng(item.lat, item.lng), item.empName));
+        }
+
+        var stepDisplay = new google.maps.InfoWindow;
+        calculateAndDisplayRoute(directionsService, directionsRenderer, waypts)
     }
-    
-    // $scope.finalizeArray.push({ routeId: container.routeId });
-
-    var waypts = [];
-    for (let item of container.employees) {
-      waypts.push({
-        location: new google.maps.LatLng(item.lat, item.lng),
-        stopover: true
-      });
-      makeMarker(new google.maps.LatLng(item.lat, item.lng), item.empName);
-    }
-
-    // var directionsService = new google.maps.DirectionsService();
-    
-
-    var stepDisplay = new google.maps.InfoWindow;
-
-    calculateAndDisplayRoute(directionsService, directionsRenderer, waypts)
   }
-
 
   function attachInstructionText(stepDisplay, marker, text, map) {
     google.maps.event.addListener(marker, 'click', function () {
@@ -1501,52 +1620,71 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   // Helping Functions End
 
   $scope.getShiftType = (shiftType) => {
-
-    return shiftType.toLowerCase() === 'check out' ? 1 : 0;
+    return shiftType.toLowerCase() === 'login' ? 1 : 0;
   }
 
-  $scope.getCurrentVehicleLocation = (vehicleNumber) => {
-    // call vehicle list api
-    // $http({
-    //   method: 'GET',
-    //   url: 'https://intouch.mapmyindia.com/Intouch/apis/getEntityList?token=z5fmo6ekwd6ucrp4k9ujf1x5jwnw25m2'
-    // })
-    //   .then(function (response) {
-    //   // console.log(JSON.stringify(response))
+  // $scope.getCurrentVehicleLocation = (vehicleNumber) => {
+    
+  //   var marker1 = new google.maps.Marker({
+  //     map: $scope.map,
+  //     position: new google.maps.LatLng(19.2578, 72.8731),
+  //     icon: "../assets/angular_images/car.png"
+  //   })
 
-    //     if (response.entity.length > 0 && response.message === 'success' && response.status === 200) {
-    //       const vehicleListData = response.entity.filter((e) => e.registrationNumber === vehicleNumber)
+  //   // call vehicle list api
+  //   // $http({
+  //   //   method: 'GET',
+  //   //   url: 'https://intouch.mapmyindia.com/Intouch/apis/getEntityList?token=z5fmo6ekwd6ucrp4k9ujf1x5jwnw25m2'
+  //   // })
+  //   //   .then(function (response) {
+  //   //   // console.log(JSON.stringify(response))
 
-    //       if (vehicleListData.length > 0) {
-    //         const entityId = vehicleListData[0].id
-    //         $http({
-    //           method: 'GET',
-    //           url: 'https://intouch.mapmyindia.com/Intouch/apis/getEntityLiveData?token=z5fmo6ekwd6ucrp4k9ujf1x5jwnw25m2&entityId=' + entityId
-    //         })
-    //           .then((vehicleData) => {
-    //           // map car icon in google map
-    //           })
-    //           .catch(() => {
-    //             ToasterService.showError('Error', 'Something went wrong, Try again later.')    
-    //           })
-    //       } else {
-    //         ToasterService.showError('Error', 'Something went wrong, Try again later.')
-    //       }
-    //     } else {
-    //       ToasterService.showError('Error', 'Something went wrong, Try again later.')
-    //     }
-    //   }).catch(err => {
-    //     console.log(err)
-    //     ToasterService.showError('Error', 'Something went wrong, Try again later.')
-    //   })
+  //   //     if (response.entity.length > 0 && response.message === 'success' && response.status === 200) {
+  //   //       const vehicleListData = response.entity.filter((e) => e.registrationNumber === vehicleNumber)
 
-    // hard coded vehicle location
-    console.log('$scope.map ', $scope.map)
-    var marker1 = new google.maps.Marker({
-      map: $scope.map,
-      position: new google.maps.LatLng(19.2578, 72.8731),
-      icon: "../assets/angular_images/car.png"
-    })
+  //   //       if (vehicleListData.length > 0) {
+  //   //         const entityId = vehicleListData[0].id
+  //   //         $http({
+  //   //           method: 'GET',
+  //   //           url: 'https://intouch.mapmyindia.com/Intouch/apis/getEntityLiveData?token=z5fmo6ekwd6ucrp4k9ujf1x5jwnw25m2&entityId=' + entityId
+  //   //         })
+  //   //           .then((vehicleData) => {
+  //   //           // map car icon in google map
+  //   //             var marker1 = new google.maps.Marker({
+  //   //                   map: $scope.map,
+  //   //                   position: new google.maps.LatLng(19.2578, 72.8731),
+  //   //                   icon: "../assets/angular_images/car.png"
+  //   //             })
+  //   //           })
+  //   //           .catch(() => {
+  //   //             // ToasterService.showError('Error', 'Something went wrong, Try again later.')    
+  //   //           })
+  //   //       } else {
+  //   //         // ToasterService.showError('Error', 'Something went wrong, Try again later.')
+  //   //       }
+  //   //     } else {
+  //   //       // ToasterService.showError('Error', 'Something went wrong, Try again later.')
+  //   //     }
+  //   //   }).catch(err => {
+  //   //     console.log(err)
+  //   //     // ToasterService.showError('Error', 'Something went wrong, Try again later.')
+  //   //   })
+
+    
+  //   // var marker1 = new google.maps.Marker({
+  //   //   map: $scope.map,
+  //   //   position: new google.maps.LatLng(19.2578, 72.8731),
+  //   //   icon: "../assets/angular_images/car.png"
+  //   // })
+  // }
+
+  var map_markers = [];
+
+  function clearMarkers (markers) {
+    for (var i = 0; i < markers.length; i++ ) {
+      markers[i].setMap(null);
+    }
+    markers = []
   }
 
   function makeMarker(position, title, isSite = false) {

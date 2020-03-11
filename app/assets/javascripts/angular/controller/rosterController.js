@@ -6,6 +6,9 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   $scope.baseUrl2 = BASE_URL_8002;
 
   $scope.toggleView = false;
+  $scope.isDownload = false;
+  $scope.isLoader =false;
+  $scope.isGenerateLoader = false;
   $scope.init = function () {
 
     $scope.toggleView = true;
@@ -193,15 +196,18 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
           $scope.isLoader =false;
           $scope.toggleView = true;
           ToasterService.showSuccess('Success', "File upload success");
+          $scope.tempfileName = ''
         } else {
           if(Array.isArray(resData.errors) && resData.errors.length != 0){
             $scope.isLoader =false;
             $scope.toggleView = true;
             ToasterService.showSuccess('Error', resData.errors.toString());
+            $scope.tempfileName = ''
           } else {
             $scope.isLoader =false;
             $scope.toggleView = true;
             ToasterService.showSuccess('Error', resData.message);
+            $scope.tempfileName = ''
           }
           
           // showErrorToast('Error', resData.message)
@@ -226,8 +232,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     ToasterService.showError(error, message);
   }
 
-  $scope.isDownload = false;
-  $scope.isLoader =false;
+  
 
   $scope.CheckIsDownloadeble = function () {
     
@@ -242,7 +247,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
           ToasterService.showError('Error', res.data.message)
         } else {
           $scope.toggleView = true;
-          ToasterService.showSuccess('Success', res.data.message)
+          ToasterService.showSuccess('Success', 'File Downloaded Successfully!')
           $scope.downloadSample();
         }
       }, function errorCallback(err) {
@@ -365,18 +370,17 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       "shift_type": roster.trip_type // 0 -checkin 1-checout
     }
     console.log('route generate req', postData)
-    $scope.isLoader = true;
-    RouteService.getRoutes(postData,
-      (res) => {
-        console.log('route generate res', res);
+      $scope.isGenerateLoader = true;
+      RouteService.getRoutes(postData,(res) => {
         if (res['success']) {
           $scope.toggleView = true;
-          $scope.isLoader =false;
+          $scope.isGenerateLoader =false;        
           ToasterService.showSuccess('Success', 'Route generated successfully.');
           $scope.updateFilters();
         } else {
           $scope.toggleView = true;
-          $scope.isLoader =false;
+          $scope.isGenerateLoader =false;  
+          // $scope.isLoader =false;
           ToasterService.showError('Error', res['message']);
 
           if (res['is_routes_generated'] === false) {
@@ -388,12 +392,29 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
         $scope.disable_roster_button = false;
         $scope.closeAll()
       }, (error) => {
+        $scope.isGenerateLoader =false;  
         $scope.disable_roster_button = false;
         $scope.toggleView = true;
         ToasterService.showError('Error', 'Something went wrong, Try again later.');
         console.error(error);
         $scope.closeAll();
       });
+
+
+      //  $http({
+      //       url: this.baseUrl2 + 'generateRoutes',
+      //       method: "POST",
+      //       data: postData,
+      //       headers: { 'Content-Type': 'application/json' }
+      //   }).then(function (data) {
+      //     console.log('datata', data);
+      //     $scope.isLoader = false 
+      // }, function(error) {
+      //   console.log(error)
+      // })
+
+
+
   }
 
 
@@ -657,6 +678,11 @@ $scope.onSubmit = () => {
       }, (error) => {
         ToasterService.showError('Error', 'Something went wrong, Try again later.');
       });
+  }
+  
+  $scope.closePopUp = () => {
+    $scope.showPopup = false;
+    $scope.employee_name_search = ''
   }
 
 });

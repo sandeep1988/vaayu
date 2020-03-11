@@ -11,8 +11,32 @@ default: &default
 
  
 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
 development:
   <<: *default
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
 
  
 
@@ -22,13 +46,43 @@ test:
 
  
 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
 production:
   <<: *default
 
  
 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
 staging:
   <<: *default
+
+ 
+
+ 
+
+ 
 
 
 # default: &default
@@ -43,8 +97,20 @@ staging:
 #   port: <%= ENV['DATABASE_PORT'] %>
  
 
+ 
+
+ 
+
+ 
+
 # development:
 #   <<: *default
+
+ 
+
+ 
+
+ 
 
 
 # test:
@@ -53,8 +119,32 @@ staging:
 
  
 
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
 # production:
 #   <<: *default
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
 
  
 

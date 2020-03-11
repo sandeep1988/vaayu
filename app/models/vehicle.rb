@@ -15,6 +15,7 @@ class Vehicle < ApplicationRecord
   has_many :cluster_vehicles
   has_many :checklists
   has_many :compliance_notifications
+  belongs_to :site
 
   has_attached_file :photo, styles: { medium: '300x300>', thumb: '100x100>' }, default_url: 'https://wsa1.pakwheels.com/assets/default-display-image-car-638815e7606c67291ff77fd17e1dbb16.png', s3_protocol: 'http'
   validates_attachment_content_type :photo, content_type: /\Aimage\/.*\z/
@@ -23,7 +24,7 @@ class Vehicle < ApplicationRecord
   # validates :plate_number, presence: true, uniqueness: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :plate_number, format: { with: /[a-zA-Z0-9]/, message: " only alphanumeric." }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates_length_of :plate_number, maximum: 12
-  validates :plate_number, presence: true, uniqueness: {message: "already taken"}, :if => Proc.new{|f| f.registration_steps == "Step_1"}
+  validates :plate_number, presence: true,  :uniqueness => {:case_sensitive => false}, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # validates :make, presence: true, :unless => Proc.new{|f| f.registration_steps.present? }
   validates :device_id, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :gps_provider_id, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}

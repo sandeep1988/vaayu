@@ -267,9 +267,11 @@ class Trip < ApplicationRecord
 
       if employee_trip.status == 'trip_created'
         data = { id: employee_trip.id, data: {id: employee_trip.id, push_type: :operator_deleted_trip} }
+        puts "==================operator_deleted_trip=========="
         PushNotificationWorker.perform_async(employee_trip.employee.user_id, :operator_deleted_trip, data, :user)
       end
       data = { id: employee_trip.id, data: {id: employee_trip.id, push_type: :trip_updated} }
+      puts "==================trip_updated=========="
       PushNotificationWorker.perform_async(employee_trip.id, :trip_updated, data, :employee_trip)
     end
 
@@ -283,6 +285,7 @@ class Trip < ApplicationRecord
           'The operator has booked OLA / Uber for your trip. Please contact operator for more info.')
       end    
       data = {driver_id: driver.user_id, data: {driver_id: driver.user_id, push_type: :driver_ola_uber} }
+      puts "==================driver_ola_uber=========="
       PushNotificationWorker.perform_async(
           driver.user_id,
           :driver_ola_uber,
@@ -836,6 +839,7 @@ class Trip < ApplicationRecord
         data = data.merge({data: data})
         data[:data].merge!(push_type: :driver_started_trip)
         data.merge!(notification: { title: I18n.t("push_notification.driver_started_trip.title"), body: I18n.t("push_notification.driver_started_trip.body", eta: eta) })
+        puts "==================driver_started_trip=========="
         PushNotificationWorker.perform_async(trip_route.employee_trip.employee.user_id, :driver_started_trip , data)
         # Send a silent push to all employees on trip start
         employee_trips.each do |employee_trip|
@@ -843,6 +847,7 @@ class Trip < ApplicationRecord
             #Do not send a notification in case of canceled or missed trip or to the first user to whom push is already sent
             next
           end
+          puts "==================driver_started_trip_silent=========="
           PushNotificationWorker.perform_async(employee_trip.employee.user_id, :driver_started_trip_silent, { id: employee_trip.id, data: {id: employee_trip.id, push_type: :driver_started_trip_silent} }, :user)
         end
       end      
@@ -883,6 +888,7 @@ class Trip < ApplicationRecord
           data = data.merge({data: data})
           data[:data].merge!(push_type: :driver_started_trip)
           data.merge!(notification: { title: I18n.t("push_notification.driver_started_trip.title"), body: I18n.t("push_notification.driver_started_trip.body", eta: eta) })
+          puts "==================driver_started_trip=========="
           PushNotificationWorker.perform_async(employee_trip.employee.user_id, :driver_started_trip , data)
         end
       end
@@ -1281,7 +1287,7 @@ class Trip < ApplicationRecord
             push_type: :driver_new_trip_assignment
         }
     }
-
+    puts "==================driver_new_trip_assignment=========="
     PushNotificationWorker.perform_async(
         driver.user_id,
         :driver_new_trip_assignment,
@@ -1319,7 +1325,7 @@ class Trip < ApplicationRecord
             push_type: :driver_new_trip_assignment
         }
     }
-
+    puts "==================driver_new_trip_assignment=========="
     PushNotificationWorker.perform_async(
         driver.user_id,
         :driver_new_trip_assignment,
@@ -1360,6 +1366,7 @@ class Trip < ApplicationRecord
         push_data.to_json)
 
       data = {driver_id: driver.user_id, data: {driver_id: driver.user_id, push_type: :driver_new_trip_unassignment} }
+      puts "==================driver_new_trip_unassignment=========="
       PushNotificationWorker.perform_async(
           driver.user_id,
           :driver_new_trip_unassignment,
@@ -1388,6 +1395,7 @@ class Trip < ApplicationRecord
         push_data.to_json)
 
       data = {driver_id: driver.user_id, data: {driver_id: driver.user_id, push_type: :driver_cancel_trip}}
+      puts "==================driver_cancel_trip=========="
       PushNotificationWorker.perform_async(
           driver.user_id,
           :driver_cancel_trip,
@@ -1404,6 +1412,7 @@ class Trip < ApplicationRecord
 
   # Send push notification to employees about new trip
   def notify_employees_about_upcoming_trip
+    p "================caling employee_upcoming_trip ============="
     notification_channel = Configurator.get_notifications_channel('send_notification_driver_assigned')
     employee_trips.each do |employee_trip|
       if notification_channel[:sms]
@@ -1411,9 +1420,9 @@ class Trip < ApplicationRecord
         if @user.present?
           @user_driver = User.driver.where(id: driver.user_id).first
           if self.check_in?
-            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Driver #{driver&.full_name} (#{vehicle&.plate_number}) will be picking you up for the #{self.employee_trips&.first&.date&.in_time_zone('Chennai').strftime("%H:%M")} Check In to office. You can track your ride from the Vaayu Traveller App.")
+            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Driver #{driver&.full_name} (#{vehicle&.plate_number}) will be picking you up for the #{self.employee_trips&.first&.date&.in_time_zone('Chennai').strftime("%H:%M")} Check In to office. You can track your ride from the Alyte Traveller App.")
           else
-            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Driver #{self.driver&.full_name} (#{self.vehicle&.plate_number}) will be picking you up for the #{self.employee_trips&.first&.date&.in_time_zone('Chennai').strftime("%H:%M")} Check Out from office. You can track your ride from the Vaayu Traveller App.")
+            SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Driver #{self.driver&.full_name} (#{self.vehicle&.plate_number}) will be picking you up for the #{self.employee_trips&.first&.date&.in_time_zone('Chennai').strftime("%H:%M")} Check Out from office. You can track your ride from the Alyte Traveller App.")
           end
         end
       end
@@ -1434,6 +1443,7 @@ class Trip < ApplicationRecord
       time = employee_trip.approximate_driver_arrive_date.in_time_zone('Chennai').strftime("%H:%M")
       data[:data].merge!(push_type: :employee_upcoming_trip)
       data.merge!(notification: { title: I18n.t("push_notification.employee_upcoming_trip.title"), body: I18n.t("push_notification.employee_upcoming_trip.body", day: day, time: time) })
+      puts "==================employee_upcoming_trip=========="
       PushNotificationWorker.perform_async(employee_trip.employee.user_id, :employee_upcoming_trip , data)
     end
   end
@@ -1552,6 +1562,7 @@ class Trip < ApplicationRecord
         next
       end
       employee_trip.added_to_trip!
+      puts "==================employer_planned_trip=========="
       PushNotificationWorker.perform_async(employee_trip.employee.user_id, :employer_planned_trip, { id: employee_trip.id, data: {id: employee_trip.id, push_type: :employer_planned_trip} }, :user)
     end unless ingested?
   end

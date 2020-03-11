@@ -541,6 +541,20 @@ $(document).on('click', 'a[id="active_customer"]', function (e) {
 
 });
 
+  $(document).on('click', '.btn-primary', function (e) {
+
+  //console.log("sfsdfsdg>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" );
+  //console.log( urlHash );
+    if( window.location.hash == "#!#employee-company" ){
+
+          if( $(this).text() == "Save changes" || $(this).text() == "Submit" ){
+
+            location.reload();
+          }
+      }
+    
+  });
+
 
 });
 

@@ -29,7 +29,8 @@
                                 <option>Disabled select</option>
                             </select>
                         </div> -->
-            <toaster-container ng-show="toggleView"></toaster-container>
+            <!-- <toaster-container ng-show="toggleView"></toaster-container> -->
+            <toaster-container></toaster-container>
             <div class="form-group pr-2" ng-init="showDropdown=false">
               <div class="form-group pr-2">
                 <p class="input-group custom-date date_style ">
@@ -238,8 +239,7 @@
                   </tr>
                 </thead>
                 <tbody class="pop-table-body">
-                  <tr class="" ng-repeat="item in modelData.employees_nodes_addresses track by $index"
-                    ng-class="{'panic':item.is_panic}">
+                  <tr class="" ng-repeat="item in modelData.employees_nodes_addresses track by $index" ng-class="{'panic':item.is_panic}">
                     <td> 
                         <!-- <input type="checkbox" ng-checked="item.empCheckInStatus=='checked'" ng-disabled="item.empCheckInStatus=='checked'"
                           name="route" class="tick" style="height: 15px; width: 15px;"> -->
@@ -251,7 +251,7 @@
                             <i class="fa fa-times" style="color: red;" aria-hidden="true" ng-if="item.empCheckInStatus=='missed'"></i>
                             <span class="tooltiptext">No Show</span>
                           </div>
-                  </td>
+                    </td>
                     <td>{{item.empName}}</td>
                     <td>{{item.eta}}</td>
                     <td><button ng-click="panicCallSesion(item.empId,'Employee')"
@@ -386,16 +386,17 @@
 
       </div>
       <div class="vaayu-modal-footer">
-        <!-- <button type="button" class="vaayu-pop-action-btn"> Change Allocation</button> -->
-        <div ng-dropdown-multiselect="" ng-if="isDisable1(modelData)" options="vehicleList"
+        
+        <div ng-dropdown-multiselect=""
+            on-change="test()"
+           ng-if="isDisable1(modelData)" options="vehicleList"
           style="display: inline-block;" selected-model="selectedVehicle " checkboxes="true"
-          extra-settings="example14settings" validation="required" search-placeholder="   Change Allocation    "
+          extra-settings="example14settings" validation="required" search-placeholder="   Change Allocation    " custom-change='changes'
           validation-result="selectedVehicle">
         </div>
         <button type="button" class="vaayu-pop-action-btn" ng-click="changeAllocation(modelData)" ng-if="isDisable()">
           Submit</button>
-        <button type="button" class="vaayu-pop-action-btn" ng-click="completeTrip()" ng-if="showCompleteButton">
-            Force Complete</button>
+        <button type="button" class="vaayu-pop-action-btn" ng-click="completeTrip()" ng-if="forceCompleteStatus(modelData)">Force Complete</button>
         <!-- <button type="button" class="vaayu-pop-action-btn" ng-if='selectedVehicle!=null'> Change Allocation</button> -->
         <!-- Split button -->
         <!-- <div class="btn-group" uib-dropdown>
@@ -416,6 +417,7 @@
 
       </div>
     </div>
-  </div>
+
+</div>
 
 </div>

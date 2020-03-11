@@ -1,4 +1,4 @@
-app.controller('constraintController', function ($scope, $http, $state, ConstraintService, SessionService, ToasterService, $timeout,constraintService,RosterService) {
+app.controller('constraintController', function ($scope, $http, $state, ConstraintService, SessionService, ToasterService, $timeout,constraintService,RosterService, $ngConfirm) {
 
   $scope.siteNames = [];
   $scope.siteID = null;
@@ -27,12 +27,12 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
   };
 
   $scope.isSet = function (tabId) {
-
     return $scope.tab === tabId;
   };
 
   $scope.fetchConstraintList = (id) => {
     $scope.selectedSiteId=id;
+    console.log('selectedSiteId',$scope.selectedSiteId);
     console.log(SessionService.uid);
     console.log(SessionService.access_token);
     console.log(SessionService.client);
@@ -66,6 +66,36 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
       console.log(er)
       // ToasterService.showError('Error', 'Something went wrong, Try again later.');
     });
+
+    ConstraintService.getConfigCutoff({id}, (response) => {
+      console.log('Response cutoff : ', response);
+      if(response.success)
+      {
+         $scope.CutoffListBySite = response.data;
+         console.log($scope.CutoffListBySite);
+       angular.forEach($scope.CutoffListBySite, function (value, key) {
+                console.log(key + ": " + value.request_type + ": " + value.value);
+                if(value.request_type === 'WE_cutoff_checkin'){$scope.we_checkin = parseInt(value.value)};
+                if(value.request_type === 'WE_cutoff_checkout'){$scope.we_checkout = parseInt(value.value)};
+                if(value.request_type === 'WD_cutoff_checkin'){$scope.wd_checkin = parseInt(value.value)};
+                if(value.request_type === 'WD_cutoff_checkout'){$scope.wd_checkout = parseInt(value.value)};
+                
+
+
+        });
+      }
+      else
+      {
+        $scope.we_checkin = '';
+        $scope.we_checkout = '';
+        $scope.wd_checkin ='';
+        $scope.wd_checkout ='';
+      }
+     
+
+    }), (error) => {
+      console.log('Error: ', error)
+    }
 
   }
 
@@ -135,12 +165,76 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
 
   $scope.deleteConstraint =function(item){
    
-    var params = {id:item.id};
-    
-    constraintService.delete_constraint(params, function(location) {
-      $scope.fetchConstraintList($scope.selectedSiteId);
-      // ToasterService.showError('Error', location['message']);
-    
-    });
+    $ngConfirm({
+          title: 'Confirm!',
+          boxWidth: '20%',
+          useBootstrap: false,
+          content: "Are you sure?",
+          scope: $scope,
+          buttons: {
+              cancel:{
+                text: 'Cancel',
+                btnClass: 'btn-danger'
+                
+              },
+              OK: {
+                text: 'Delete',
+                btnClass: 'btn-blue',
+                action: function (scope) {
+                  var params = {id:item.id};
+                  constraintService.delete_constraint(params, function(location) {
+                    scope.fetchConstraintList(scope.selectedSiteId);
+                  });
+                }
+              }
+          }
+        });
+
+   
+  }
+
+  $scope.onSubmit = () => {
+    let params = {}
+    if(!$scope.selectedSiteId){
+      ToasterService.showError('Error', 'Please select a site');
+      return false;
+    }
+    if($scope.we_checkin && $scope.we_checkout && $scope.wd_checkin && $scope.wd_checkout){
+      params['site_id'] = Number($scope.selectedSiteId);
+      params['WE_cutoff_checkin'] = {
+        value: $scope.we_checkin
+      }
+      params['WE_cutoff_checkout'] = {
+        value: $scope.we_checkout
+      }
+      params['WD_cutoff_checkin'] = {
+        value: $scope.wd_checkin
+      }
+      params['WD_cutoff_checkout'] = {
+        value: $scope.wd_checkout,
+        display_name: 'Cutoff time for weekday Checkout Shift'
+      }
+      console.log('params', params)
+      ConstraintService.postConfigCutoff(params, (response) => {
+        console.log(response)
+        if(!response['success']){
+          ToasterService.showError('Error', response['errors']['errorMessage'])
+          // $scope.we_checkin = ''
+          // $scope.we_checkout = ''
+          // $scope.wd_checkin = ''
+          // $scope.wd_checkout = ''
+        } else {
+          ToasterService.showSuccess('Success', 'Cut-off time submitted successfully!')
+          // $scope.we_checkin = ''
+          // $scope.we_checkout = ''
+          // $scope.wd_checkin = ''
+          // $scope.wd_checkout = ''
+          $scope.configForm.$setUntouched()
+          $scope.configForm.$setPristine()
+        }
+      }, (error) => {
+        console.log(error)
+      })
+    }
   }
 });

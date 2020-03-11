@@ -1,5 +1,6 @@
 angular.module('app').factory('RouteService', ['$resource', 'BASE_URL_8002','BASE_URL_API_8002', 'SessionService',
 function ($resource, BASE_URL_8002, BASE_URL_API_8002, SessionService) {
+
   return $resource(BASE_URL_8002 + 'generateRoutes', {}, {
     // query: { method: "GET", isArray: true },
     // create: { method: "POST" },
@@ -22,6 +23,11 @@ function ($resource, BASE_URL_8002, BASE_URL_API_8002, SessionService) {
     },
     changeAllocation: {
         url: BASE_URL_8002 + 'reallocationDriverToTrip',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+    },
+    empLandmarkZonesList: {
+        url: BASE_URL_8002 + 'empLandmarkZonesList',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
     }

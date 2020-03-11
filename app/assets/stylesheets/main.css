@@ -278,3 +278,59 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.selectWrapper select option{
+  padding: 12px 40px 12px 20px;
+  font-size: 18px;
+  line-height: 18px;
+  width: 100%;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  background-image: none;
+  -webkit-appearance: none;
+  outline: none;
+  cursor: pointer;
+  -moz-appearance: none;
+  text-indent: 0.01px;
+  text-overflow: ellipsis;
+}
+
+.filter-btn .btn.btn-default{
+  width: 100%;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.filter-btn .btn-group{
+  display: block;
+}
+
+.filter-btn .dropdown-menu.dropdown-menu-form{
+  width: 100% !important;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.vayau-routing .filter-btn .multiselect-parent.dropdown-multiselect .dropdown-toggle{
+  color: #394264 !important;
+}
+
+.vayau-routing .filter-btn .multiselect-parent.dropdown-multiselect .dropdown-toggle{
+  padding: 10px !important;
+}
+
+.config-form .ng-invalid.ng-touched{
+  border: 1px solid red;
+}
+
+.menu3 .mb-2{
+  margin-bottom: 20px;
+}
+
+.btn.clear-btn{
+  position: absolute;
+  left: 10px;
+  bottom: 20px;
+  cursor: pointer;
+}

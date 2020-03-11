@@ -31,6 +31,14 @@ angular.module('app').factory('ConstraintService', ['$resource', 'BASE_URL_8002'
         url: BASE_URL_8002 + 'delete_zone/:zoneId',
         method: 'GET',
       },
+      getConfigCutoff: {
+        url: BASE_URL_8002 + 'getConfigRatorCutoff/:id',
+        method: 'GET'
+      },
+      postConfigCutoff: {
+        url: BASE_URL_8002 + 'postConfigRatorCutoff',
+        method: 'POST'
+      }
      
     });
   }]);
