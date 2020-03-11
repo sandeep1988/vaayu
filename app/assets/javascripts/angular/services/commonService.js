@@ -45,7 +45,7 @@ if (document.domain === PROD_OPERATOR_URL) {
 
 } else if (document.domain === SECURITY_OPERATOR_URL) {
     // let NODE_API_URL = 'http://apiptsdemo.devmll.com';
-    let NODE_API_URL = 'http://apiptsdemo.devmll.com/';
+    let NODE_API_URL = 'http://apiptsdemo.devmll.com';
     angular.module('app').constant('BASE_URL', NODE_API_URL+':8001/api/v1/');
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');
     angular.module('app').constant('BASE_URL_API_8002', NODE_API_URL+':8002/api/v1/');
