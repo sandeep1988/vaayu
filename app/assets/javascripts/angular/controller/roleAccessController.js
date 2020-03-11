@@ -43,16 +43,14 @@ angular.module('app').controller('roleAccessCtrl', function ($scope, RosterServi
     $scope.onCheckboxChange = (roleId, moduleId, status) => {
                
         for(var i = 0; i < $scope.consolidatedObj['roleAccess'].length; i++){
-            if($scope.consolidatedObj['roleAccess'][i]['role_id'] === roleId && $scope.consolidatedObj['roleAccess'][i]['module_id'] === moduleId){
-            
             let newArray = ($scope.modifyObj(roleId, moduleId, status, $scope.roleObj))
-            // $scope.consolidatedObj['roleAccess'].push(newArray)
-
+            if($scope.consolidatedObj['roleAccess'][i]['role_id'] === roleId && $scope.consolidatedObj['roleAccess'][i]['module_id'] === moduleId){
+                // $scope.consolidatedObj['roleAccess'].push(newArray)
                 $scope.consolidatedObjCopy['roleAccess'].push(newArray)
             } else {
                 console.log('in else')
                 $scope.modifyObj(roleId, moduleId, status, $scope.roleObj)
-                $scope.consolidatedObjCopy['roleAccess'].push($scope.roleObj)
+                $scope.consolidatedObjCopy['roleAccess'].push(newArray)
             }
         }
         $scope.consolidatedObj['roleAccess'].push($scope.consolidatedObjCopy['roleAccess'])
