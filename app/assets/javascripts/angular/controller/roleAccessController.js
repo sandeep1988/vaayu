@@ -3,7 +3,7 @@ angular.module('app').controller('roleAccessCtrl', function ($scope, RosterServi
     $scope.init = function () {
         $scope.getTableData();
     }
-
+    $scope.toggleView = false;
     $scope.tableRow = [];
     $scope.moduleColumn = []
     $scope.roleModuleAccess = [];
@@ -42,18 +42,13 @@ angular.module('app').controller('roleAccessCtrl', function ($scope, RosterServi
 
 
     $scope.onCheckboxChange = (roleId, moduleId, status) => {
-               
-        
             var isPushValid = false;
             let newArray = ($scope.modifyObj(roleId, moduleId, status, $scope.roleObj))
             
-            
-            console.log('before if', $scope.consolidatedObjCopy['roleAccess'])
             for(var i = 0; i < $scope.consolidatedObjCopy['roleAccess'].length; i++){
                 if($scope.consolidatedObjCopy['roleAccess'][i]['role_id'] === roleId && $scope.consolidatedObjCopy['roleAccess'][i]['module_id'] === moduleId){
                     
                     $scope.consolidatedObjCopy['roleAccess'][i] = {...newArray}
-                    console.log('check obj if',$scope.consolidatedObjCopy['roleAccess']);
                     isPushValid = false
                     break;
                 }
@@ -63,7 +58,6 @@ angular.module('app').controller('roleAccessCtrl', function ($scope, RosterServi
             for(var j = 0; j < $scope.consolidatedObjCopy['roleAccess'].length; j++){
                 if($scope.consolidatedObjCopy['roleAccess'][j]['role_id'] != roleId || $scope.consolidatedObjCopy['roleAccess'][j]['module_id'] != moduleId){
                     counter += 1
-                    console.log('check obj if',$scope.consolidatedObjCopy['roleAccess']);
                     isPushValid = false
                 }
                 if(counter === $scope.consolidatedObjCopy['roleAccess'].length){
@@ -76,7 +70,6 @@ angular.module('app').controller('roleAccessCtrl', function ($scope, RosterServi
             if(!!isPushValid){
                 $scope.consolidatedObjCopy['roleAccess'].push(newArray)
             }
-            console.log('after if', $scope.consolidatedObjCopy['roleAccess'])
 
         
     }
@@ -135,7 +128,6 @@ angular.module('app').controller('roleAccessCtrl', function ($scope, RosterServi
             }
         }
 
-        console.log('modi',modifiedArray)
         return modifiedArray
     }
 
@@ -147,18 +139,14 @@ angular.module('app').controller('roleAccessCtrl', function ($scope, RosterServi
         $scope.postData['roleAccess'] = $scope.consolidatedObjCopy['roleAccess'].filter((ele) => {
             return ele['role_id'] == index
         })
+        console.log($scope.postData)
 
-        // $scope.consolidatedObjCopy['roleAccess'].forEach((ele) => {
-        //     if(ele['role_id'] == index){
-        //         $scope.postData['roleAccess'].push(ele)
-        //     }    
-        // })
-        console.log('check', $scope.postData['roleAccess'])
-    }
-
-    $scope.ObjPush = (index) => {
-       console.log(index) 
-
+        RosterService.assignRoles($scope.postData, (res) => {
+            $scope.toggleView = true;
+            ToasterService.showSuccess('Success', res.message)
+        }, (err) => {
+            console.log('err', err)
+        })
     }
 
 })

@@ -59,7 +59,6 @@ function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_800
       url: BASE_URL_8002 + 'permissions/assign-role-module' ,
       method: 'POST'
     }
-
   });
 
 }]);
