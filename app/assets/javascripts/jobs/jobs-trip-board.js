@@ -11,9 +11,59 @@ $(function () {
   var $loader = $('<div class="timeline-loading"><div class="loader-spinner"></div></div>');
   $timeline.append($loader);
 
+  var _data2 ={
+    uid:'deekshith.kgr95@gmail.com',
+    access_token:'a6tCfF5T7HVIdx8Czd6I7w',
+    client:'osUe4ObG0a1QvZ4R9-t6yg'
+}
+
   setTimeout(function () {
     $loader.remove();
   }, 1000);
+
+  window.sendLogin = function() {
+    var postData = {
+      userName:"deekshith.kgr95@gmail.com"
+    }
+    var url = dynamicAPI() + '/auth/check-module-access'
+    var http = new XMLHttpRequest();
+    http.open("POST", url, true);
+    http.setRequestHeader('Content-Type', 'application/json');
+    http.setRequestHeader('uid', 'deekshith.kgr95@gmail.com')
+    http.setRequestHeader('access_token', 'a6tCfF5T7HVIdx8Czd6I7w')
+    http.setRequestHeader('client', 'osUe4ObG0a1QvZ4R9-t6yg')
+
+  http.onreadystatechange = function() {
+    if(http.readyState == 4 && http.status == 200) {
+        console.log(http.responseText);
+    }
+  }
+    http.send(JSON.stringify({
+      "userName":"deekshith.kgr95@gmail.com"
+    }));
+
+  }
+
+  var dynamicAPI = () => {
+    const PROD_OPERATOR_URL = 'operator.mllvaayu.com';
+    const SANDBOX_OPERATOR_URL = 'sandboxoperator.mllvaayu.com';
+    const QA_OPERATOR_URL = 'qaoperator.mllvaayu.com';
+    const SECURITY_OPERATOR_URL = 'operatorptsdemo.devmll.com';
+
+    if (document.domain === PROD_OPERATOR_URL) {
+      let NODE_API_URL = 'http://api.mllvaayu.com';
+      return NODE_API_URL;
+    } else if (document.domain === SANDBOX_OPERATOR_URL) {
+        let NODE_API_URL = 'http://sandboxapi.mllvaayu.com';
+        return NODE_API_URL;
+    } else if (document.domain === QA_OPERATOR_URL || document.domain === 'localhost') {
+        let NODE_API_URL = 'http://qaapi.mllvaayu.com';
+        return NODE_API_URL;
+    } else {
+        let NODE_API_URL = 'http://qaapi.mllvaayu.com';
+        return NODE_API_URL;
+    } 
+  }
 
   window.updateTripBoard = function() {
     // check if element exist
@@ -118,7 +168,10 @@ $(function () {
       }      
     }      
     window.updateTripBoard();
+    window.sendLogin();
   })  
+
+
 
   // redraw datatables
   setInterval(function () {
