@@ -674,7 +674,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       return false;
     }
 
-    if(row.current_status === "completed" || "Cancelled"){
+    if(row.current_status === "completed" || row.current_status === "Cancelled"){
       return false
     }
     return true
