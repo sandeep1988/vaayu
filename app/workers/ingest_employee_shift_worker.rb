@@ -44,6 +44,9 @@ class IngestEmployeeShiftWorker < IngestWorker
       f_name = emp_name[0]
       m_name = emp_name[1]
       l_name = emp_name[2]
+    elsif emp_name.count == 1 
+      f_name = emp_name[0]
+      l_name = emp_name[0]
     else
       f_name = emp_name[0]
       l_name = emp_name[1]
