@@ -1,6 +1,6 @@
 angular.module('app').factory('ConstraintService', ['$resource', 'BASE_URL_8002', 'BASE_URL', 'BASE_URL_API_8002', 'BASE_URL_API_8003', 'BASE_URL_MAIN',
   function ($resource, BASE_URL_8002, BASE_URL, BASE_URL_API_8002, BASE_URL_API_8003, BASE_URL_MAIN) {
-    return $resource(BASE_URL + 'ConstraintService', {}, {
+    return $resource(BASE_URL_MAIN + 'ConstraintService', {}, {
 
       getSiteList: {
         url: BASE_URL_MAIN + 'getAllSiteList',

@@ -113,7 +113,7 @@ angular.module('app').run(function ($rootScope) {
 
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService,
   AutoAllocationService,
-  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm,$document,$rootScope,$interval) {
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, BASE_URL_MAIN, TripboardService,$q,$ngConfirm,$document,$rootScope,$interval) {
 
   // $scope.toggleView = false;
   $scope.disableBtn = false;
@@ -231,7 +231,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     $http({
       method: 'POST',
-      url: BASE_URL_API_8002 + 'categoryList',
+      url: BASE_URL_MAIN + 'categoryList',
       headers: {
         'Content-Type': 'application/json',
         'uid': SessionService.uid,

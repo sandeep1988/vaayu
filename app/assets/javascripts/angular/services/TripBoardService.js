@@ -4,7 +4,7 @@ angular.module('app').factory('TripboardService', ['$resource', 'BASE_URL_8002',
     return $resource(BASE_URL_8002 + 'tripBoardList', {}, {
       getAllTrips: { method: "POST" },
       getAllSiteList: {
-        url: BASE_URL + 'getAllSiteList',
+        url: BASE_URL_MAIN + 'getAllSiteList',
         method: "POST"
       },
       savePanicResponse: { url: BASE_URL_8002 + 'save-panic-response', method: 'POST' },
