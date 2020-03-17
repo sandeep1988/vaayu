@@ -15,6 +15,7 @@ const SECURITY_OPERATOR_URL = 'operatorptsdemo.devmll.com';
 
 if (document.domain === PROD_OPERATOR_URL) {
     let NODE_API_URL = 'http://api.mllvaayu.com';
+    angular.module('app').constant('BASE_URL_MAIN', NODE_API_URL+'/api/v1/');
     angular.module('app').constant('BASE_URL', NODE_API_URL+':8001/api/v1/');
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');
     angular.module('app').constant('BASE_URL_API_8002', NODE_API_URL+':8002/api/v1/');
@@ -25,6 +26,7 @@ if (document.domain === PROD_OPERATOR_URL) {
     
 } else if (document.domain === SANDBOX_OPERATOR_URL) {
     let NODE_API_URL = 'http://sandboxapi.mllvaayu.com';
+    angular.module('app').constant('BASE_URL_MAIN', NODE_API_URL+'/api/v1/');
     angular.module('app').constant('BASE_URL', NODE_API_URL+':8001/api/v1/');
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');
     angular.module('app').constant('BASE_URL_API_8002', NODE_API_URL+':8002/api/v1/');
@@ -35,6 +37,7 @@ if (document.domain === PROD_OPERATOR_URL) {
 
 } else if (document.domain === QA_OPERATOR_URL || document.domain === 'localhost') {
     let NODE_API_URL = 'http://qaapi.mllvaayu.com';
+    angular.module('app').constant('BASE_URL_MAIN', NODE_API_URL+'/api/v1/');
     angular.module('app').constant('BASE_URL', NODE_API_URL+':8001/api/v1/');
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');
     angular.module('app').constant('BASE_URL_API_8002', NODE_API_URL+':8002/api/v1/');
@@ -46,6 +49,7 @@ if (document.domain === PROD_OPERATOR_URL) {
 } else if (document.domain === SECURITY_OPERATOR_URL) {
     // let NODE_API_URL = 'http://apiptsdemo.devmll.com';
     let NODE_API_URL = 'http://apiptsdemo.devmll.com';
+    angular.module('app').constant('BASE_URL_MAIN', NODE_API_URL+'/api/v1/');
     angular.module('app').constant('BASE_URL', NODE_API_URL+':8001/api/v1/');
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');
     angular.module('app').constant('BASE_URL_API_8002', NODE_API_URL+':8002/api/v1/');
@@ -57,6 +61,7 @@ if (document.domain === PROD_OPERATOR_URL) {
 } else {//if (document.domain === SECURITY_OPERATOR_URL) 
     // let NODE_API_URL = 'http://apiptsdemo.devmll.com';
     let NODE_API_URL = 'http://qaapi.mllvaayu.com';
+    angular.module('app').constant('BASE_URL_MAIN', NODE_API_URL+'/api/v1/');
     angular.module('app').constant('BASE_URL', NODE_API_URL+':8001/api/v1/');
     angular.module('app').constant('BASE_URL_8002', NODE_API_URL + '/');
     angular.module('app').constant('BASE_URL_API_8002', NODE_API_URL+':8002/api/v1/');
