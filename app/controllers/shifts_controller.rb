@@ -28,7 +28,9 @@ class ShiftsController < ApplicationController
   # POST /shifts.json
   def create
     @shift = Shift.new(shift_params)
-    shift = Shift.where(start_time: params[:shift][:start_time], end_time:params[:shift][:end_time],site_id: params[:shift][:site_id], working_day: params[:shift][:working_day])
+    shift = Shift.where(site_id: params[:shift][:site_id])
+    shift = shift.where(:start_time => params[:shift][:start_time]).or(shift.where(:end_time => params[:shift][:end_time]))
+    shift = shift.where(:working_day => params[:shift][:working_day])
     if shift.present?
       @datatable_name = "shifts"
       render js: "alert('Shift is already present for this site with working days .')"
@@ -54,7 +56,10 @@ class ShiftsController < ApplicationController
   # PATCH/PUT /shifts/1
   # PATCH/PUT /shifts/1.json
   def update   
-    shift = Shift.where(start_time: params[:shift][:start_time], end_time:params[:shift][:end_time],site_id: params[:shift][:site_id], working_day: params[:shift][:working_day]).where.not(id: @shift.id)
+    # shift = Shift.where(start_time: params[:shift][:start_time], end_time:params[:shift][:end_time],site_id: params[:shift][:site_id], working_day: params[:shift][:working_day]).where.not(id: @shift.id)
+    shift = Shift.where(site_id: params[:shift][:site_id])
+    shift = shift.where(:start_time => params[:shift][:start_time]).or(shift.where(:end_time => params[:shift][:end_time]))
+    shift = shift.where(:working_day => params[:shift][:working_day])
     if shift.present?
       @datatable_name = "shifts"
       render js: "alert('Shift is already present for this site.')"
