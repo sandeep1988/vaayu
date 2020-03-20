@@ -1,3 +1,4 @@
+
 <div ng-controller='tripboardCtrl'>
 
   <div class="vayau-routing vayau-roster">
@@ -5,6 +6,9 @@
     <div class="container-fluid mt-4" ng-init="init()">
       <div class="row">
         <div class="col-md-8">
+          <audio id="myAudio">
+            <source src="../assets/angular_images/sos_alert.mp3" type="audio/mpeg">
+          </audio>
           <form class="form-inline">
             <div class="form-group pr-2">
               <select ng-change="getAllTrips()" ng-model="selectedSiteID" class="form-control"
