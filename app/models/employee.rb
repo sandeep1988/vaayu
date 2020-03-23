@@ -32,7 +32,7 @@ class Employee < ApplicationRecord
   validates :home_address, presence: true
   validates :home_address_latitude, presence: true
   validates :home_address_longitude, presence: true
-  # validates :nodal_address, presence: true
+  validates :landmark, presence: true
   # validates :nodal_address_latitude, presence: true
   # validates :nodal_address_longitude, presence: true
   validates :landmark, presence: true
