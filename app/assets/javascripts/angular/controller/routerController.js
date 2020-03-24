@@ -495,7 +495,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     return parseInt(val)
   }
 
-  const tConvert = (time) => {
+  $scope.tConvert = (time) => {
     // Check correct time format and split into components
     time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
   
@@ -505,6 +505,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       time[0] = +time[0] % 12 || 12; // Adjust hours
     }
     return time.join (''); // return adjusted time or original string
+  }
+
+  $scope.trimSeconds = (time) => {
+    var a = time.split(':')
+    a.pop()
+    return a.join(':')
   }
 
   $scope.saveRoutes = function () {
