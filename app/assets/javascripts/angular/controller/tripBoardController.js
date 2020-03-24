@@ -386,6 +386,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
   $scope.showPopup = false;
   $scope.callAPI = false;
+  $scope.sosAlert = 0
   $scope.getTripDetails = function () {
 
     if ($scope.selectedTripId && $scope.isOpen) {
@@ -397,6 +398,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
       TripboardService.getAllTrips(postData, (data) => {
         console.log('getTripDetail', data);
+        $scope.sosAlert = data.data.stats['sos_count']
         $scope.modelData = data.data.tripsdetails[0];
 
         $scope.selectedVehicle = {};
@@ -458,6 +460,13 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
   }
 
+  $scope.audioEle = document.getElementById("myAudio"); 
+  // var audio = new Audio('app/assets/audio/sos_alert.mp3')
+  $scope.playAudio = () => { 
+    $scope.audioEle.play();
+    console.log('audio play')
+  } 
+
   $scope.showModal = (row, checkStatus) => {
     console.log('row', row);
     $scope.sendCompleteParams = {
@@ -480,7 +489,12 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
     }
 
     $scope.getTripDetails();
+    if($scope.sosAlert > 0){
+      $scope.playAudio()
+    }
+    // $scope.playAudio()
 
+    
     $interval(function () {
       if($scope.isOpen) {
         if (checkStatus.toLowerCase() === 'on going') {
@@ -669,7 +683,6 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
   }
 
   $scope.forceCompleteStatus = (row) => {
-    console.log('force', row)
     if(!row){
       return false;
     }

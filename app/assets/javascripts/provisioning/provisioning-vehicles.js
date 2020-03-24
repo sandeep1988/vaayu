@@ -136,29 +136,8 @@ $(function () {
                     {data: "model"},
                     {data: "colour"},
                     {data: "seats"},
-                    {
-                        data: null,
-                        orderable: false,
-                        className: "center",
-                        render: function (data) {
-                            var checklistId = data.checklist_attributes.id == null ? "" : data.checklist_attributes.id;
-                            var className = "";
-                            if(checklistId == ''){
-                                return '<p class="text-primary" data-remote="true">'+ data.checklist_attributes.status +'</p>';
-                            }
-                            else{
-                                if (data.checklist_attributes.notification_type === "checklist") {
-                                    var className = "checklist-status" 
-                                    return '<a href="/vehicles/'+ checklistId +'/checklist" class="'+ className +'" data-remote="true">'+ data.checklist_attributes.status +'</a>';
-                                }
-                                if (data.checklist_attributes.notification_type === "provisioning") {
-                                    var className = "notification-status"
-                                    return '<a href="/vehicles/' + data.id + '/edit" class="'+ className +' edit vehicle_edit" data-remote="true">'+ data.checklist_attributes.status +'</a>';
-                                }
-                                return '<a href="/vehicles/'+ checklistId +'/checklist" class="'+ className +'" data-remote="true">'+ data.checklist_attributes.status +'</a>';
-                            }
-                        }
-                    },
+                    {data: "induction_status"},
+                    {data: "compliance_status"},
                     {
                         data: null,
                         render: function(data) {
