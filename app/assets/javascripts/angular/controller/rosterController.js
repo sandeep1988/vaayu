@@ -1,9 +1,12 @@
 
 
-angular.module('app').controller('rosterCtrl', function ($scope, RosterService, RouteService, ToasterService, RosterStaticResponse, $http, BASE_URL_API_8002, BASE_URL_8002,SessionService, $timeout) {
+angular.module('app').controller('rosterCtrl', function ($scope, RosterService, RouteService, ToasterService, RosterStaticResponse, $http, BASE_URL_API_8002, BASE_URL_8002, BASE_URL_MAIN, SessionService, $timeout) {
 
   $scope.baseUrl = BASE_URL_API_8002;
   $scope.baseUrl2 = BASE_URL_8002;
+  $scope.baseUrl3 = BASE_URL_MAIN
+
+
 
   $scope.toggleView = false;
   $scope.isDownload = false;
@@ -238,7 +241,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     
     $http({
       method: 'GET',
-      url: this.baseUrl2 + 'is-downloadable-employee-excel/' + $scope.selectedSite.id
+      url: this.baseUrl3 + 'is-downloadable-employee-excel/' + $scope.selectedSite.id
     }).then(function successCallback(res) {
         console.log('response: ', res)
         if (res['data'].success == false) {
@@ -257,7 +260,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.downloadSample = function () {
-      var url = this.baseUrl + 'employeeupload/downloadEmployeeExcel/' + $scope.selectedSite.id;
+      var url = this.baseUrl3 + 'employeeupload/downloadEmployeeExcel/' + $scope.selectedSite.id;
       $scope.isLoader =true;
     
       var link = document.createElement('a');
