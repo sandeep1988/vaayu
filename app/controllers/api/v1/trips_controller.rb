@@ -171,7 +171,7 @@ module API::V1
     }'
     def accept_trip_request
       # current_user = Driver.find (1347)
-      flag = get_status_of_last_trip(current_user,@trip)
+      flag = get_status_of_last_trip(current_user, @trip)
       if !flag
         begin
           if !is_from_sms?
@@ -539,8 +539,9 @@ module API::V1
     end
 
     def get_status_of_last_trip(user,trip)
-      if user.trips.present?
-        if (user.trips.pluck(:id).index(trip.id) - 1 ) > 0
+      latest_tips = user.trips.where('start_date >= ?', Time.new.in_time_zone('Chennai').beginning_of_day)
+      if latest_tips.present?
+        if ((user.trips.pluck(:id).index(trip.id) - 1 ) >= 0)
           last_trip = user.trips.pluck(:id).at((user.trips.pluck(:id).index(trip.id) -1 ))
           if user.trips.find(last_trip).status == "assign_requested"
             render json: { success: false , message: "Please accept first trip and then you can accept second trip", data: {}, errors: { "errors": ["Please accept first trip and then you can accept second trip"] }}, status: :ok
