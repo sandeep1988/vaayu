@@ -21,7 +21,7 @@
             "extendedTimeOut": "1000",}'></toaster-container>
             <div class="form-group pr-2">
               <select id="disabledSelect" class="form-control selectFilter" ng-model="selectedShift">
-                <option ng-repeat="shift in shifts" value="{{shift}}">{{shift.name + ' ('+shift.shift_type+')'}}
+                <option ng-repeat="shift in shifts" value="{{shift}}">{{shift.start_time}} {{' ('+shift.shift_type+')'}}
                 </option>
               </select>
             </div>
