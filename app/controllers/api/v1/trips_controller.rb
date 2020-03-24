@@ -92,35 +92,38 @@ module API::V1
       "success": true
     }'
     def start
-      begin
-        # Update the trip route by factoring in the driver current location
-        unless params[:lat].blank? || params[:lng].blank?
-          @trip.update_route(params[:lat], params[:lng])
-        end
-
-        if @trip.start_trip!
-          unless params[:request_date].blank?
-            @trip.save_actual_start_trip_date(params[:request_date])
-          end
+      # current_user = Driver.find 1347
+      flag = check_first_trip_completed(current_user,  @trip)
+      if !flag
+        begin
+          # Update the trip route by factoring in the driver current location
           unless params[:lat].blank? || params[:lng].blank?
-            @trip.set_trip_location({:lat => params[:lat].to_f, :lng => params[:lng].to_f}, 0, "0")
-            #if ENV["CALCULATE_ETA"] == "true"
-              #CalculateEtaWorker.perform_async(@trip.id)
-            #end
+            @trip.update_route(params[:lat], params[:lng])
           end
-          @config_values = TripValidationService.driver_config_params(@trip)
-          render 'show', status: 200
-        else
-          @trip.reload
-          @config_values = TripValidationService.driver_config_params(@trip)
-          render 'show', status: 422
-        end
-      rescue
-        @trip.update(:cancel_status => "Backend Issue")
-        @trip.cancel_complete_trip
-        render '_errors', status: 451
-      end
 
+          if @trip.start_trip!
+            unless params[:request_date].blank?
+              @trip.save_actual_start_trip_date(params[:request_date])
+            end
+            unless params[:lat].blank? || params[:lng].blank?
+              @trip.set_trip_location({:lat => params[:lat].to_f, :lng => params[:lng].to_f}, 0, "0")
+              #if ENV["CALCULATE_ETA"] == "true"
+                #CalculateEtaWorker.perform_async(@trip.id)
+              #end
+            end
+            @config_values = TripValidationService.driver_config_params(@trip)
+            render 'show', status: 200
+          else
+            @trip.reload
+            @config_values = TripValidationService.driver_config_params(@trip)
+            render 'show', status: 422
+          end
+        rescue
+          @trip.update(:cancel_status => "Backend Issue")
+          @trip.cancel_complete_trip
+          render '_errors', status: 451
+        end
+      end
     end
 
     api :GET, '/trips/:id/decline_trip_request'
@@ -532,6 +535,20 @@ module API::V1
     protected
     def set_trip
       @trip = Trip.find(params[:id])
+    end
+
+    def check_first_trip_completed(user,trip)
+      todays_trips = user.trips.where('start_date >= ?', Time.new.in_time_zone('Chennai').beginning_of_day)
+      if todays_trips.present?
+        if ((user.trips.pluck(:id).index(trip.id) - 1 ) >= 0)
+          last_trip = user.trips.pluck(:id).at(user.trips.pluck(:id).index(trip.id) -1 )
+          if user.trips.find(last_trip).status != "completed"
+            render json: { success: false , message: "Please start first trip then you can start second trip", data: {}, errors: { "errors": ["Please start first trip then you can start second trip"] }}, status: :ok
+          else
+            return false
+          end
+        end
+      end
     end
 
     def send_notification(params)
