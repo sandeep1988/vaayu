@@ -20,7 +20,7 @@ function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_800
       method: "GET"
     },
     getAllSiteList: {
-      url: BASE_URL_MAIN + 'getAllSiteList',
+      url: BASE_URL_8002 + 'getAllSiteList',
       method: "POST"
     },
     addCustomEmployee: {

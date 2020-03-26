@@ -549,8 +549,17 @@
                     <li ng-repeat="vehical in list.vehical" dnd-draggable="vehical" no-drop
                       dnd-effect-allowed="move" dnd-type="vehical.type" dnd-disable-if="vehical.type == 'unknown'"
                       dnd-moved="list.vehical.splice($index, 1)"
-                      class="background-{{vehical.type}} input-group employee-list-group-item">
-  
+                      class="background-{{vehical.type}} input-group employee-list-group-item hover-parent"
+                      ng-mouseenter="options=true" ng-mouseleave="options=false" 
+                      style="cursor: pointer;">
+                      <div class="hover-box" ng-show="options">
+                        <div class="inner-box" ng-repeat="trip in vehical.tripData">
+                          <p class="hover-p">Trip Id: {{trip.trip_id}}</p>
+                          <p class="hover-p">Status: {{trip.trip_status}}</p>
+                          <p class="hover-p">Type: {{trip.trip_type}}</p>
+                          <p class="hover-p">Trip end time: {{trip.estimated_trip_endtime}}</p>
+                        </div>
+                      </div>
                       <span class="input-group-addon addon-prepend">
                         <div class="inner-addon">
                           <i class="fa fa-car"></i>

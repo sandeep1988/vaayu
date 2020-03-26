@@ -3,7 +3,7 @@ angular.module('app').factory('ConstraintService', ['$resource', 'BASE_URL_8002'
     return $resource(BASE_URL_MAIN + 'ConstraintService', {}, {
 
       getSiteList: {
-        url: BASE_URL_MAIN + 'getAllSiteList',
+        url: BASE_URL_8002 + 'getAllSiteList',
         method: "POST"
       },
 
