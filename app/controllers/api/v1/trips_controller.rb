@@ -542,6 +542,7 @@ module API::V1
     end
 
     def get_status_of_last_trip(user,trip)
+      user = current_user.entity
       latest_tips = user.trips.where('start_date >= ?', Time.new.in_time_zone('Chennai').beginning_of_day)
       if latest_tips.present?
         if ((user.trips.pluck(:id).index(trip.id) - 1 ) >= 0)
@@ -556,6 +557,7 @@ module API::V1
     end
 
     def check_first_trip_completed(user,trip)
+      user = current_user.entity
       todays_trips = user.trips.where('start_date >= ?', Time.new.in_time_zone('Chennai').beginning_of_day)
       if todays_trips.present?
         if ((user.trips.pluck(:id).index(trip.id) - 1 ) >= 0)
