@@ -507,6 +507,40 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     return time.join (''); // return adjusted time or original string
   }
 
+  $scope.dummyVehicle = [
+    {
+      "id": 30,
+      "vehicleId": 30,
+      "vehicleName": null,
+      "model": "BENZ E CLASS",
+      "vehicleNumber": "EB0010010011",
+      "vehicleType": "SEDAN",
+      "seatingCapacity": 4,
+      "ownershipType": "BA",
+      "trip_type": 0,
+      "towardsHome": "false",
+      "fromHome": "true",
+      "driverName": "EB Driver",
+      "driverId": 41,
+      "last_trip_distance": 39,
+      "current_location": {},
+      "tripData": [
+          {
+              "trip_id": 648,
+              "trip_status": "assign_request_expired",
+              "trip_type": 1,
+              "estimated_trip_endtime": ""
+          },
+          {
+              "trip_id": 646,
+              "trip_status": "assigned",
+              "trip_type": 0,
+              "estimated_trip_endtime": ""
+          }
+      ]
+  }
+  ]
+
   $scope.trimSeconds = (time) => {
     var a = time.split(':')
     a.pop()
