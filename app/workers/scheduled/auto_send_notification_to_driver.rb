@@ -33,8 +33,8 @@ class Scheduled::AutoSendNotificationToDriver
 	 	user_id = Driver.find(trip.driver_id).user_id
 
 		#preparing JSON for Mobile
-		data = {driver_id: user_id, data: {driver_id: user_id, trip_id: trip.id, planned_date: trip.planned_date, push_type: :hourly_before_trip}}
-		
+		data = {driver_id: user_id, data: {driver_id: user_id, trip_id: trip.id, planned_date: trip.planned_date, push_type: :hourly_before_trip }}
+		data.merge!(notification: { title: "Next Trip in an hour", body: "Reminder for your next trip, which will start in an hour" })
 		#send notification
 		PushNotificationWorker.perform_async(user_id, :hourly_before_trip, data)
 		
