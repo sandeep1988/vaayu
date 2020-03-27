@@ -203,7 +203,7 @@
                                     dnd-dragstart="dragoverCallback(container,index, external, type)"
                                     dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
   
-                                    <div class="inner-text" title="{{item.empName}} -{{item.area}}">
+                                    <div class="inner-text" title="{{item.empName}} -{{item.emp_address}}">
                                       <span class="empId">{{item.displayEmpId}}</span> - <span>{{item.area}}</span>
                                     </div>
                                   </li>
@@ -343,7 +343,7 @@
                                     dnd-dragstart="dragoverCallback(container,index, external, type)"
                                     dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
   
-                                    <div class="inner-text" title="{{item.empName}} -{{item.area}}">
+                                    <div class="inner-text" title="{{item.empName}} -{{item.emp_address}}">
                                       <span class="empId">{{item.displayEmpId}}</span> - <span>{{item.area}}</span>
                                     </div>
                                   </li>
@@ -552,11 +552,20 @@
                       class="background-{{vehical.type}} input-group employee-list-group-item hover-parent"
                       ng-mouseenter="options=true" ng-mouseleave="options=false" 
                       style="cursor: pointer;">
-                      <div class="hover-box" ng-show="options">
-                        <div class="inner-box" ng-repeat="trip in vehical.tripData">
+                      <div class="inner-box" ng-show="options">
+                        <div class="warning-wrap"ng-show="vehical.tripData.length > 2">Cannot assign more trips to this vehicle</div>
+                        <div class="" ng-repeat="trip in vehical.tripData.slice(0,2)">
                           <p class="hover-p">Trip Id: {{trip.trip_id}}</p>
-                          <p class="hover-p">Status: {{trip.trip_status}}</p>
-                          <p class="hover-p">Type: {{trip.trip_type}}</p>
+                          <p class="hover-p">Status: <span ng-show="trip.trip_status === 'active'">Ongoing</span>
+                            <span ng-show="trip.trip_status === 'assigned'">Assigned</span>
+                            <span ng-show="trip.trip_status === 'assign_requested'">Assign requested</span>
+                            <span ng-show="trip.trip_status === 'assign_request_expired'">Assign request expired</span>
+                            <span ng-show="trip.trip_status === 'canceled'">Canceled</span>
+                            <span ng-show="trip.trip_status === 'completed'">Completed</span>
+                            <span ng-show="trip.trip_status === 'created'">Trip created</span>
+
+                          </p>
+                          <p class="hover-p">Type: <span ng-show="trip.trip_type == 0">Login</span><span ng-show="trip.trip_type == 1">Log Out</span></p>
                           <p class="hover-p">Trip end time: {{trip.estimated_trip_endtime}}</p>
                         </div>
                       </div>

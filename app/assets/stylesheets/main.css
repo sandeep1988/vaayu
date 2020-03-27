@@ -339,23 +339,26 @@
   position: relative;
 }
 
+.warning-wrap{
+  background: #ff3c2e;
+  color: #fff;
+  padding: 0 3px;
+  border-radius: 2px;
+  margin-bottom: 7px;
+}
+
 .inner-box{
   position: absolute;
-  width: 150px;
-  bottom: -110px;
+  top: 55px;
   padding: 7px;
-  border: 1px solid #000;
+  border: 0.5px solid #3597ec;
   border-radius: 3px;
   -webkit-box-shadow: 3px 3px 6px 2px rgba(0,0,0,0.3);
   -moz-box-shadow: 3px 3px 6px 2px rgba(0,0,0,0.3);
   box-shadow: 3px 3px 6px 2px rgba(0,0,0,0.3);
 }
-
-.inner-box:first-child{
-  left: 0;
-}
-.inner-box:nth-child(2){
-  left: 160px;
+.hover-box :nth-child(2){
+  margin-top: 8px;
 }
 
 .hover-p{
