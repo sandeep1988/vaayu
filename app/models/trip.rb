@@ -1305,32 +1305,70 @@ class Trip < ApplicationRecord
       push_data = {
           trip_id: self.id,
           action: 'driver_new_trip_assignment'
-      }
+      } 
 
       #Send SMS for new trip request along with push
       # SMSWorker.perform_async(driver.offline_phone, ENV['OPERATOR_NUMBER'], 
       #   push_data.to_json)
     end
 
-    data = {
-        data: {
-            trip_id: self.id,
-            status: self.status,
-            trip_type: self.trip_type,
-            passengers: self.passengers,
-            approximate_duration: self.scheduled_approximate_duration,
-            approximate_distance: self.scheduled_approximate_distance,
-            date: self.scheduled_date.to_i,
-            assign_request_expired_date: self.assign_request_expired_date.to_i,
-            push_type: :driver_new_trip_assignment
+      #Check for two trips assignment
+      trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assigned_requested', 'assign_request_declined', 'active',  driver.id).order(:planned_date)
+
+      if trips.count > 1
+        @flag = true
+        trips.each do |trip|
+          next if trip.status == 'assign_request_declined' 
+          @flag = false if trip.status == 'active'
+          return if (trip.id == self.id) && (trip.status != 'assign_request_declined' && trip.status != 'active')      
+        end
+      else
+        @flag = true if trip.status != 'assign_request_declined'
+      end
+
+     if @flag == true 
+        data = {
+            data: {
+                trip_id: self.id,
+                status: self.status,
+                trip_type: self.trip_type,
+                passengers: self.passengers,
+                approximate_duration: self.scheduled_approximate_duration,
+                approximate_distance: self.scheduled_approximate_distance,
+                date: self.scheduled_date.to_i,
+                assign_request_expired_date: self.assign_request_expired_date.to_i,
+                push_type: :driver_new_trip_assignment,
+                current_trip: true
+            }
         }
-    }
-    puts "==================driver_new_trip_assignment=========="
-    PushNotificationWorker.perform_async(
-        driver.user_id,
-        :driver_new_trip_assignment,
-        data
-    )
+        puts "==================driver_new_trip_assignment=========="
+        PushNotificationWorker.perform_async(
+            driver.user_id,
+            :driver_new_trip_assignment,
+            data
+        )
+      else
+        data = {
+            data: {
+                trip_id: self.id,
+                status: self.status,
+                trip_type: self.trip_type,
+                passengers: self.passengers,
+                approximate_duration: self.scheduled_approximate_duration,
+                approximate_distance: self.scheduled_approximate_distance,
+                date: self.scheduled_date.to_i,
+                assign_request_expired_date: self.assign_request_expired_date.to_i,
+                push_type: :driver_new_trip_assignment,
+                current_trip: false
+            }
+        }
+        puts "==================driver_new_trip_assignment=========="
+        PushNotificationWorker.perform_async(
+            driver.user_id,
+            :driver_new_trip_assignment,
+            data
+        ) 
+      end  
   end
 
   # Send push notification to driver about unassignment
