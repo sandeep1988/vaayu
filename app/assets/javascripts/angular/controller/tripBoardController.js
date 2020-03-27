@@ -35,7 +35,8 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       scrollable: true,
       enableSearch: true,
       width: '300px',
-      selectionLimit: 1
+      selectionLimit: 1,
+      dropdownPosition: 'auto'
     };
 
     $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];

@@ -203,7 +203,7 @@
                                     dnd-dragstart="dragoverCallback(container,index, external, type)"
                                     dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
   
-                                    <div class="inner-text" title="{{item.empName}} -{{item.area}}">
+                                    <div class="inner-text" title="{{item.empName}} -{{item.emp_address}}">
                                       <span class="empId">{{item.displayEmpId}}</span> - <span>{{item.area}}</span>
                                     </div>
                                   </li>
@@ -343,7 +343,7 @@
                                     dnd-dragstart="dragoverCallback(container,index, external, type)"
                                     dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
   
-                                    <div class="inner-text" title="{{item.empName}} -{{item.area}}">
+                                    <div class="inner-text" title="{{item.empName}} -{{item.emp_address}}">
                                       <span class="empId">{{item.displayEmpId}}</span> - <span>{{item.area}}</span>
                                     </div>
                                   </li>
@@ -556,7 +556,7 @@
                         <div class="inner-box" ng-repeat="trip in vehical.tripData">
                           <p class="hover-p">Trip Id: {{trip.trip_id}}</p>
                           <p class="hover-p">Status: {{trip.trip_status}}</p>
-                          <p class="hover-p">Type: {{trip.trip_type}}</p>
+                          <p class="hover-p">Type: <span ng-show="trip.trip_type == 0">Login</span><span ng-show="trip.trip_type == 1">Log Out</span></p>
                           <p class="hover-p">Trip end time: {{trip.estimated_trip_endtime}}</p>
                         </div>
                       </div>

@@ -395,9 +395,23 @@
             on-change="test()"
            ng-if="isDisable1(modelData)" options="vehicleList"
           style="display: inline-block;" selected-model="selectedVehicle " checkboxes="true"
-          extra-settings="example14settings" validation="required" search-placeholder="   Change Allocation    " custom-change='changes'
+          extra-settings="example14settings" validation="required" search-placeholder="Change Allocation" custom-change='changes'
           validation-result="selectedVehicle">
         </div>
+
+        <!-- <div class="change-allocation">
+          <div class="main-button">
+            Change Allocation
+            <div class="dropdown-wrapper">
+              <input type="text">
+              <div class="veh-list"></div>
+            </div>
+          </div>
+        </div> -->
+
+        
+
+
         <button type="button" class="vaayu-pop-action-btn" ng-click="changeAllocation(modelData)" ng-if="isDisable()">
           Submit</button>
         <button type="button" class="vaayu-pop-action-btn" ng-click="completeTrip()" ng-if="forceCompleteStatus(modelData)">Force Complete</button>
