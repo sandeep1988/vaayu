@@ -11,6 +11,7 @@ class Scheduled::AutoSendNotificationToDriver
 			 planned_date = trip.planned_date + 5.hours + 30.minutes 
 			 time_flag = Time.now >= (trip.planned_date + 4.hours + 30.minutes) && Time.now < (trip.planned_date + 5.hours + 30.minutes)
 			 if time_flag
+			 trip = Trip.find(154879)
 				check_notification_status(trip)
 			 else
 				puts "Not in an hour range for #{planned_date}, with respect to current time #{Time.now}"
@@ -31,10 +32,10 @@ class Scheduled::AutoSendNotificationToDriver
 
 	def notification_reminder(trip)
 	 	user_id = Driver.find(trip.driver_id).user_id
-
+	 	
 		#preparing JSON for Mobile
 		data = {driver_id: user_id, data: {driver_id: user_id, trip_id: trip.id, planned_date: trip.planned_date, push_type: :hourly_before_trip }}
-		data.merge!(notification: { title: "Next Trip in an hour", body: "Reminder for your next trip, which will start in an hour" })
+		data.merge!(notification: { title: "Next Trip Reminder", body: "Notification Text:Your next trip #{trip.id} is scheduled for #{trip.planned_date + 5.hours + 30.minutes}, please visit \"Upcoming Trips\" menu to take action on the same." })
 		#send notification
 		PushNotificationWorker.perform_async(user_id, :hourly_before_trip, data)
 		
