@@ -542,30 +542,32 @@ module API::V1
     end
 
     def get_status_of_last_trip(user,trip)
+      user = current_user.entity
       latest_tips = user.trips.where('start_date >= ?', Time.new.in_time_zone('Chennai').beginning_of_day)
-      if latest_tips.present?
-        if ((user.trips.pluck(:id).index(trip.id) - 1 ) >= 0)
-          last_trip = user.trips.pluck(:id).at((user.trips.pluck(:id).index(trip.id) -1 ))
-          if user.trips.find(last_trip).status == "assign_requested"
-            render json: { success: false , message: "Please accept first trip and then you can accept second trip", data: {}, errors: { "errors": ["Please accept first trip and then you can accept second trip"] }}, status: :ok
-          else
-            return false
-          end
+      if latest_tips.present?  && latest_tips.count > 1
+        next_trip = latest_tips.reject { |i| i.id == trip.id }
+        next_trip_time = Time.at(next_trip.first.scheduled_date.to_i)
+        select_trip_time = Time.at(trip.scheduled_date.to_i)
+        if select_trip_time > next_trip_time && next_trip.first.status == "assign_requested"
+          render json: { success: false , message: "Please accept first trip and then you can accept second trip", data: {}, errors: { "errors": ["Please accept first trip and then you can accept second trip"] }}, status: :ok
+        else
+          return false
         end
       end
     end
 
     def check_first_trip_completed(user,trip)
+      user = current_user.entity
       todays_trips = user.trips.where('start_date >= ?', Time.new.in_time_zone('Chennai').beginning_of_day)
-      if todays_trips.present?
-        if ((user.trips.pluck(:id).index(trip.id) - 1 ) >= 0)
-          last_trip = user.trips.pluck(:id).at(user.trips.pluck(:id).index(trip.id) -1 )
-          if user.trips.find(last_trip).status != "completed"
+      if todays_trips.present? && todays_trips.count > 1
+        other_trip = todays_trips.reject { |i| i.id == trip.id }
+        next_trip_time = Time.at(other_trip.first.scheduled_date.to_i)
+        select_trip_time = Time.at(trip.scheduled_date.to_i)
+          if select_trip_time > next_trip_time && other_trip.first.status != "completed"
             render json: { success: false , message: "Please start first trip then you can start second trip", data: {}, errors: { "errors": ["Please start first trip then you can start second trip"] }}, status: :ok
           else
             return false
           end
-        end
       end
     end
 
