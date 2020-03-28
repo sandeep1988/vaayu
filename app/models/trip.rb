@@ -1350,7 +1350,7 @@ class Trip < ApplicationRecord
           return if (trip.id == self.id) && (trip.status != 'assign_request_declined' && trip.status != 'active')      
         end
       else
-        @flag = true if trip.status != 'assign_request_declined'
+        @flag = true 
       end
 
      if @flag == true 
