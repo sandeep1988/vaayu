@@ -759,8 +759,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       $scope.site_distance =res.data.distance;
     });
 
-    $scope.toggleView = false;
-    ToasterService.clearToast();
+    // $scope.toggleView = false;
+    // ToasterService.clearToast();
     if (!$scope.siteId) {
       $scope.toggleView = true;
       ToasterService.showError('Error', 'Select Site.');
@@ -1339,11 +1339,24 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         isAssign = false;
         // ToasterService.clearToast();
         $scope.toggleView = true;
-        ToasterService.showSuccess('Success', data['msg']);
+        console.log('success message', data['message'])
+        document.getElementById('custom-message').innerText = 'Vehicle added successfully'
+        document.getElementById('custom-message').style.display = 'block'
+        setTimeout(() => {
+          document.getElementById('custom-message').innerText = ''
+          document.getElementById('custom-message').style.display = 'none'
+        }, 3000)
+        
       } else {
         // ToasterService.clearToast();
         $scope.toggleView = true;
-        ToasterService.showError('Error', data['msg']);
+        console.log('error message', data['message'])
+        document.getElementById('custom-message').innerText = data['message']
+        document.getElementById('custom-message').style.display = 'block'
+        setTimeout(() => {
+          document.getElementById('custom-message').innerText = ''
+          document.getElementById('custom-message').style.display = 'none'
+        }, 3000)
       }
       $scope.resetRoute();
     })
