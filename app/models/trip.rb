@@ -146,7 +146,7 @@ class Trip < ApplicationRecord
     end
 
     event :completed do
-      transitions from: :active, to: :completed, after: [ :save_completed_trip_data, :create_notify_completed, :notify_employee_trips_changed, :resolve_all_trip_notifications ]
+      transitions from: :active, to: :completed, after: [ :save_completed_trip_data, :create_notify_completed, :notify_employee_trips_changed, :resolve_all_trip_notifications, :notify_driver_about_next_assignment ]
     end
 
   end
@@ -291,6 +291,36 @@ class Trip < ApplicationRecord
           :driver_ola_uber,
           data)        
     end
+  end
+
+  def notify_driver_about_next_assignment
+    trips = Trip.where("(status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assigned_requested', driver.id).order(:planned_date)
+    trip = trips.first
+    if trip.present?
+      data = {
+            data: {
+                trip_id: trip.id,
+                status: trip.status,
+                trip_type: trip.trip_type,
+                passengers: trip.passengers,
+                approximate_duration: trip.scheduled_approximate_duration,
+                approximate_distance: trip.scheduled_approximate_distance,
+                date: trip.scheduled_date.to_i,
+                assign_request_expired_date: trip.assign_request_expired_date.to_i,
+                push_type: :driver_new_trip_assignment,
+                current_trip: true
+            }
+        }
+        puts "==================driver_new_trip_assignment after trip completion=========="
+        PushNotificationWorker.perform_async(
+            driver.user_id,
+            :driver_new_trip_assignment,
+            data
+        )
+    end 
+  end   
+
+
   end
 
   def notify_employees_about_ola_uber
