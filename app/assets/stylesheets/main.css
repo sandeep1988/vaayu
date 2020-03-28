@@ -364,3 +364,17 @@
 .hover-p{
   margin: 0;
 }
+
+.hoverELe{
+  color: red;
+  height: 0;
+  overflow: hidden;
+}
+
+.custom-message{
+  background-color: #49AFCD;
+  color: #fff;
+  padding: 8px;
+  display: none;
+  border-radius: 4px;
+}

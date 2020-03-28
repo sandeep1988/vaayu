@@ -646,6 +646,7 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       if (res['success']) {
         //vehicleList.push(res.data);
         // var array = VehicleListResponse.listResponse.data;
+        $scope.vehicleRes = res['data']
         var newarray = [];
         for (let item of vehicleList) {
           newarray.push({ id: item.id, name: item.vehicleNumber })
@@ -656,6 +657,27 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
         $scope.vehicleList = newarray;
         console.log('vehicleList', $scope.vehicleList)
+
+
+        $scope.dropdownParent = document.getElementById('dropdownParent')
+        dropdownParent.addEventListener('click', () => {
+          $scope.optionsEle = document.querySelectorAll('.option');
+            if($scope.optionsEle && $scope.vehicleRes){
+              console.log('option', $scope.vehicleRes, $scope.optionsEle, $scope.dropdownParent)
+              for(var i =0; i < $scope.optionsEle.length; i++){
+                var hoverELement = '<p id="'+i+'index" class="hoverELe">asdasd</p>'
+                $scope.optionsEle[i].insertAdjacentHTML('afterend', hoverELement)
+                $scope.optionsEle[i].addEventListener('mouseover', function(){
+                  // document.getElementById(i+'index').style.height = "auto"
+                })
+                $scope.optionsEle[i].addEventListener('mouseout', function(){
+                  // document.getElementById(i+'index').style.height = "0"
+                })              
+              }
+    
+            }
+          
+        })
       } else {
         console.log(res['message']);
       }
@@ -744,6 +766,10 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
     return '../assets/angular_images/img_avatar.png';
   }
+
+  
+
+
 
 
 });
