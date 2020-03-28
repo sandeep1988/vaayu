@@ -320,9 +320,6 @@ class Trip < ApplicationRecord
     end 
   end   
 
-
-  end
-
   def notify_employees_about_ola_uber
     employee_trips.each do |employee_trip|
       if employee_trip.canceled? || employee_trip.missed?
