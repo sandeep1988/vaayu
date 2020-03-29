@@ -553,7 +553,7 @@
                       class="background-{{vehical.type}} input-group employee-list-group-item hover-parent"
                       ng-mouseenter="options=true" ng-mouseleave="options=false" 
                       style="cursor: pointer;">
-                      <div class="inner-box" ng-show="options">
+                      <div class="inner-box" ng-if="options && vehical.tripData.length > 0">
                         <div class="warning-wrap"ng-show="vehical.tripData.length > 2">Cannot assign more trips to this vehicle</div>
                         <div class="" ng-repeat="trip in vehical.tripData.slice(0,2)">
                           <p class="hover-p">Trip Id: {{trip.trip_id}}</p>
