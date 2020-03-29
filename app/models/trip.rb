@@ -320,9 +320,6 @@ class Trip < ApplicationRecord
     end 
   end   
 
-
-  end
-
   def notify_employees_about_ola_uber
     employee_trips.each do |employee_trip|
       if employee_trip.canceled? || employee_trip.missed?
@@ -1353,7 +1350,7 @@ class Trip < ApplicationRecord
           return if (trip.id == self.id) && (trip.status != 'assign_request_declined' && trip.status != 'active')      
         end
       else
-        @flag = true if trip.status != 'assign_request_declined'
+        @flag = true 
       end
 
      if @flag == true 
