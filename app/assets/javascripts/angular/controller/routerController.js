@@ -97,6 +97,7 @@ app.directive('focusMe', function ($timeout) {
   };
 });
 
+
 angular.module('app').run(function ($rootScope) {
   var lastTimeout;
   var off = $rootScope.$watch('$$phase', function (newPhase) {
@@ -110,11 +111,173 @@ angular.module('app').run(function ($rootScope) {
     }
   });
 });
+angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService, AutoAllocationService,
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm) {
 
-angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService,
-  AutoAllocationService,
-  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, BASE_URL_MAIN, TripboardService,$q,$ngConfirm,$document,$rootScope,$interval) {
+    $scope.assignVehicleOnSelect=function(container,item){
+      var postData = {
+        "vehicleId": item.vehicleId,
+        "routeId": container.routeId
+      };
+  
+      RouteService.assignVehicle(postData, function (data) {
+        if (data['success']) {
+          $scope.resetRoute();
+          // isAssign = false;
+          // ToasterService.clearToast();
+          // $scope.toggleView = true;
+          ToasterService.showSuccess('Success', data['message']);
+        } else {
+          $ngConfirm({
+            title: 'Error!',
+            boxWidth: '40%',
+            useBootstrap: false,
+            content:  data['message'],
+            scope: $scope,
+            buttons: {
+                ok: {
+                  text: 'Ok',
+                  btnClass: 'btn-blue',
+                  action: function (scope) {
+                    scope.resetRoute();
+                  }
+                }
+            }
+          });
+        }
+        
+      })
+  
+    }
 
+    $scope.rut = {};
+
+    $scope.itemArray = [
+      {id: 1, name: 'first'},
+      {id: 2, name: 'second'},
+      {id: 3, name: 'third'},
+      {id: 4, name: 'fourth'},
+      {id: 5, name: 'fifth'},
+    ];
+
+    $scope.vehicleTypeArray = [
+      {id: 1, type: 'HATCHBACK'},
+      {id: 2, type: 'TT'},
+      {id: 3, type: 'SUV'},
+      {id: 4, type: 'SEDAN'},
+      {id: 5, type: 'MINI VAN'}
+    ];
+
+  $scope.showVehicleTypeDialog=false;
+
+  $scope.changeVehicleType =function(container){
+    $scope.selectedContainer=container;
+    $scope.showVehicleTypeDialog=true;
+  }
+
+   $scope.closeVehicleTypeDialog = () => {
+    $scope.showVehicleTypeDialog=false;
+  }
+
+  $scope.updateTypes =function(type) {
+    alert(type);
+    $scope.closeVehicleTypeDialog();
+  }
+
+  $scope.onSelectGuardCallback = function (item,model,container) {
+    var isAssign = true;
+    // $scope.saveRoutes();
+
+    $scope.routeChangedIds.push(container.routeId)
+    if (isAssign) {
+
+      var changedRoutes = [];
+
+      angular.forEach($scope.routes.data.routes, function (route) {
+        angular.forEach($scope.routeChangedIds, function (routeId) {
+          if (route.routeId === routeId) {
+            changedRoutes.push(route);
+          }
+        })
+      })
+
+
+      var finalChangedRoutes = [];
+      angular.forEach(changedRoutes, function (route) {
+
+        if (route.guard_required==true) {
+          route.guard_required = "Y";
+        } 
+        
+        if (originalRoute.guard_required==false) {
+          route.guard_required = "N";
+        }
+        var employee_nodes = [];
+        angular.forEach(route.employees, function (emp) {
+          if(emp.length){
+            employee_nodes.push(emp.empId);
+          }
+        })
+        var data = {
+          "route_id": route.routeId,
+          "vehicle_category": route.vehicle_type,
+          "employee_nodes": employee_nodes,
+          "guard_required": route.guard_required
+        }
+        finalChangedRoutes.push(data);
+      })
+
+      var postData = {
+        "guardId": item.guardId,
+        "updated_routes": finalChangedRoutes,
+        "routeId": container.routeId
+      };
+
+      RouteService.assignGuards(postData, function (data) {
+        $scope.resetRoute();
+      })
+    }
+  };
+  
+    $scope.onSelectCallback =function(item,model,container){
+     
+      if(item){
+        var postRouteData=getRoutePostData();
+        
+        RouteService.constraintCheck(postRouteData,function (response) {
+          if(response.success){
+            $scope.assignVehicleOnSelect(container,item);
+            return true;
+          }else{
+            var htmlBody=$scope.returnVehicleHTML(response);
+            
+            $ngConfirm({
+              title: 'Constraint Failed!',
+              boxWidth: '40%',
+              useBootstrap: false,
+              content: htmlBody,
+              scope: $scope,
+              buttons: {
+                  cancel: {
+                    text: 'Revert',
+                    btnClass: 'btn-blue',
+                    action: function (scope) {
+                    
+                    }
+                  },
+                  procced: {
+                      text: 'Proceed',
+                      btnClass: 'btn-orange',
+                      action: function(scope, button){
+                        scope.assignVehicleOnSelect(container,item);
+                        return true;
+                      }
+                  }
+              }
+            });
+          }
+        });
+      }
   // $scope.toggleView = false;
   $scope.disableBtn = false;
   // ToasterService.clearToast();
@@ -337,7 +500,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
       driverStatus: $scope.selected_vehicle_status
     }
-    console.log('postVehicleData', postVehicleData)
+    
     RouteService.postVehicleList(postVehicleData, function (res) {
       console.log('vehicle list', res)
       $scope.vehicleList = res.data;
@@ -1781,4 +1944,5 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   
+}
 });
