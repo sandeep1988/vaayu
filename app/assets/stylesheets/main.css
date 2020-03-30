@@ -366,15 +366,21 @@
 }
 
 .hoverELe{
-  color: red;
-  height: 0;
+  color: #394264;
+  display: none;
   overflow: hidden;
+  margin: 0 18px;
+  font-size: 13px;
+}
+
+.inside-hover{
+  border-bottom: 1px solid #394264;
+  padding-top: 5px;
 }
 
 .custom-message{
   background-color: #49AFCD;
   color: #fff;
   padding: 8px;
-  display: none;
   border-radius: 4px;
 }
