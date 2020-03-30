@@ -175,7 +175,7 @@ module API::V1
     def accept_trip_request
       # current_user = Driver.find (1347)
       flag = get_status_of_last_trip(current_user, @trip)
-      if !flag
+	  if !flag
         begin
           if !is_from_sms?
             unless @trip.driver && @trip.driver.user == current_user
@@ -543,16 +543,25 @@ module API::V1
 
     def get_status_of_last_trip(user,trip)
       user = current_user.entity
-      latest_tips = user.trips.where('start_date >= ?', Time.new.in_time_zone('Chennai').beginning_of_day)
+      #latest_tips = user.trips.where('start_date >= ?', Time.new.in_time_zone('Chennai').beginning_of_day)
+	  #latest_tips = user.trips.where('start_date >= ?', Time.new.in_time_zone('Chennai').beginning_of_day).where('status in  (?)', ['assign_requested', 'assign_request_expired'])
+	  latest_tips = user.trips.where('status in  (?)', ['assign_requested', 'assign_request_expired'])
       if latest_tips.present?  && latest_tips.count > 1
         next_trip = latest_tips.reject { |i| i.id == trip.id }
         next_trip_time = Time.at(next_trip.first.scheduled_date.to_i)
         select_trip_time = Time.at(trip.scheduled_date.to_i)
-        if select_trip_time > next_trip_time && next_trip.first.status == "assign_requested"
-          render json: { success: false , message: "Please accept first trip and then you can accept second trip", data: {}, errors: { "errors": ["Please accept first trip and then you can accept second trip"] }}, status: :ok
-        else
-          return false
-        end
+		
+        if select_trip_time > next_trip_time && (next_trip.first.status == "assign_requested" || next_trip.first.status == "assign_request_expired")
+			render json: { success: false , message: "Please accept first trip and then you can accept second trip", data: {}, errors: { "errors": ["Please accept first trip and then you can accept second trip"] }}, status: :ok		
+		else
+			return false
+		end
+		#if select_trip_time > next_trip_time && next_trip.first.status == "assign_requested"
+        #  render json: { success: false , message: "Please accept first trip and then you can accept second trip", data: {}, errors: { "errors": ["Please accept first trip and then you can accept second trip"] }}, status: :ok
+        #else
+        #  return false
+        #end
+		
       end
     end
 
