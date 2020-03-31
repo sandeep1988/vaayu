@@ -1297,7 +1297,7 @@ class Trip < ApplicationRecord
 
   # Send push notification to driver about new assignment
   def notify_driver_about_assignment
-    @user = User.driver.where(id: driver.user_id).first
+	@user = User.driver.where(id: driver.user_id).first
     if @user.present?
       SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Hello! New trip has been assigned to you, kindly sign into app to accept the trip.") 
         # 'A new trip has been assigned. Please ACCEPT it using the MOOVE App within 3 minutes. This trip is for ' + (self.scheduled_approximate_distance / 1000).to_s + ' kms and will take about ' + self.scheduled_approximate_duration.to_s + ' minutes to complete.')
@@ -1313,19 +1313,50 @@ class Trip < ApplicationRecord
     end
 
       #Check for two trips assignment
-      trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assigned_requested', 'assign_request_declined', 'active',  driver.id).order(:planned_date)
+      #trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assigned_requested', 'assign_request_declined', 'active',  driver.id).order(:planned_date)	  
+      #if trips.count > 1
+      #  @flag = true
+      #  trips.each do |trip|
+      #    next if trip.status == 'assign_request_declined' 
+      #    @flag = false if trip.status == 'active'
+      #    return if (trip.id == self.id) && (trip.status != 'assign_request_declined' && trip.status != 'active')      
+      #  end
+      #else
+      #  @flag = true 
+      #end
+		#writing notification flag logic here starts here
+		current_trip_id = self.id
+		
+		trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assigned_requested', 'assign_request_expired', 'active',  driver.id).order(:planned_date)
 
-      if trips.count > 1
-        @flag = true
-        trips.each do |trip|
-          next if trip.status == 'assign_request_declined' 
-          @flag = false if trip.status == 'active'
-          return if (trip.id == self.id) && (trip.status != 'assign_request_declined' && trip.status != 'active')      
-        end
-      else
-        @flag = true 
-      end
-
+		trip_first = trips.first
+		trip_first_time = Time.at(trip_first.scheduled_date.to_i)
+	
+		if trips.count > 1
+			@flag = false
+			#trip loop started
+			trips.each do |trip|
+				#checking if genrated notification trip is active and set the flag starts here
+				if trip.id.to_i == current_trip_id.to_i and trip.status == 'active'
+					@flag = true
+					break;			
+				end
+				#checking if genrated notification trip is active and set the flag end here
+				#checking for other trip if any with status of in assigned, assign_requested or assigned_requet_expired starts here
+				loop_trip = Time.at(trip.scheduled_date.to_i)
+				if trip_first_time < loop_trip
+					@flag = true
+				else
+					@flag = false
+				end
+			#checking for other trip if any with status of in assigned, assign_requested or assigned_requet_expired end here
+			end
+			#trip loop ended
+		else
+			@flag = true 
+		end
+		#writing notification flag logic here end here
+	
      if @flag == true 
         data = {
             data: {
