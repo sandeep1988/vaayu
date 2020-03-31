@@ -189,7 +189,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
       $scope.mainSiteId = $scope.selectedSite.id;
       var request = new XMLHttpRequest();
       var vm = $scope;
-      request.open("POST", this.baseUrl + "upload-employee-shedule");
+      request.open("POST", this.baseUrl3 + "upload-employee-shedule");
       request.onload = function () {
         var resData = JSON.parse(request.response)
         // alert(resData.success);
