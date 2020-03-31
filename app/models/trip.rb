@@ -1297,7 +1297,7 @@ class Trip < ApplicationRecord
 
   # Send push notification to driver about new assignment
   def notify_driver_about_assignment
-    @user = User.driver.where(id: driver.user_id).first
+	@user = User.driver.where(id: driver.user_id).first
     if @user.present?
       SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Hello! New trip has been assigned to you, kindly sign into app to accept the trip.") 
         # 'A new trip has been assigned. Please ACCEPT it using the MOOVE App within 3 minutes. This trip is for ' + (self.scheduled_approximate_distance / 1000).to_s + ' kms and will take about ' + self.scheduled_approximate_duration.to_s + ' minutes to complete.')
@@ -1305,32 +1305,115 @@ class Trip < ApplicationRecord
       push_data = {
           trip_id: self.id,
           action: 'driver_new_trip_assignment'
-      }
+      } 
 
       #Send SMS for new trip request along with push
       # SMSWorker.perform_async(driver.offline_phone, ENV['OPERATOR_NUMBER'], 
       #   push_data.to_json)
     end
 
-    data = {
-        data: {
-            trip_id: self.id,
-            status: self.status,
-            trip_type: self.trip_type,
-            passengers: self.passengers,
-            approximate_duration: self.scheduled_approximate_duration,
-            approximate_distance: self.scheduled_approximate_distance,
-            date: self.scheduled_date.to_i,
-            assign_request_expired_date: self.assign_request_expired_date.to_i,
-            push_type: :driver_new_trip_assignment
+      #Check for two trips assignment
+      #trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assigned_requested', 'assign_request_declined', 'active',  driver.id).order(:planned_date)	  
+      #if trips.count > 1
+      #  @flag = true
+      #  trips.each do |trip|
+      #    next if trip.status == 'assign_request_declined' 
+      #    @flag = false if trip.status == 'active'
+      #    return if (trip.id == self.id) && (trip.status != 'assign_request_declined' && trip.status != 'active')      
+      #  end
+      #else
+      #end
+      #  @flag = true 
+		#writing notification flag logic here starts here
+		current_trip_id = self.id
+		trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assign_requested', 'assign_request_expired', 'active', driver.id).order(:planned_date)
+
+	 p "========trip count============"
+   p trips.count
+		if trips.count > 1
+			@flag = false
+      ### start new code
+      if self.status =="active"
+        @flag = true
+      else
+        #notified_trip_plan_date = self.scheduled_date.in_time_zone("Kolkata")
+		notified_trip_plan_date = Time.at(self.scheduled_date.to_i).in_time_zone("Kolkata")
+		
+        notified_trip_id = self.id
+
+        p "====notified_trip_plan_date======="
+        p  "notified_trip_id : #{notified_trip_id}, notified_trip_plan_date: #{  notified_trip_plan_date}"
+
+
+        trips.each do |trip|
+          if notified_trip_id != trip.id
+            loop_trip_plan_date = Time.at(trip.scheduled_date.to_i).in_time_zone("Kolkata")
+
+            p "====loop_trip_plan_date======="
+            p  "loop_trip_id : #{trip.id}, loop_trip_plan_date: #{loop_trip_plan_date}"
+
+            if notified_trip_plan_date < loop_trip_plan_date
+              @flag = true
+              p "True value: #{@flag}"
+            else
+              @flag = false
+              p "false value: #{@flag}"
+            end
+          end
+        end
+      end
+      ### end new code
+		else
+			@flag = true 
+		end
+		#writing notification flag logic here end here
+	   puts @flag
+     puts "===========flag=============="
+     if @flag == true 
+        data = {
+            data: {
+                trip_id: self.id,
+                status: self.status,
+                trip_type: self.trip_type,
+                passengers: self.passengers,
+                approximate_duration: self.scheduled_approximate_duration,
+                approximate_distance: self.scheduled_approximate_distance,
+                date: self.scheduled_date.to_i,
+                assign_request_expired_date: self.assign_request_expired_date.to_i,
+                push_type: :driver_new_trip_assignment,
+                current_trip: true
+            }
         }
-    }
-    puts "==================driver_new_trip_assignment=========="
-    PushNotificationWorker.perform_async(
-        driver.user_id,
-        :driver_new_trip_assignment,
-        data
-    )
+        puts "==================driver_new_trip_assignment=========="
+        puts data
+        PushNotificationWorker.perform_async(
+            driver.user_id,
+            :driver_new_trip_assignment,
+            data
+        )
+      else
+        data = {
+            data: {
+                trip_id: self.id,
+                status: self.status,
+                trip_type: self.trip_type,
+                passengers: self.passengers,
+                approximate_duration: self.scheduled_approximate_duration,
+                approximate_distance: self.scheduled_approximate_distance,
+                date: self.scheduled_date.to_i,
+                assign_request_expired_date: self.assign_request_expired_date.to_i,
+                push_type: :driver_new_trip_assignment,
+                current_trip: false
+            }
+        }
+        puts "==================driver_new_trip_assignment=========="
+        puts data
+        PushNotificationWorker.perform_async(
+            driver.user_id,
+            :driver_new_trip_assignment,
+            data
+        ) 
+      end  
   end
 
   # Send push notification to driver about unassignment
