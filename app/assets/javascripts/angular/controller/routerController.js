@@ -112,44 +112,7 @@ angular.module('app').run(function ($rootScope) {
   });
 });
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService, AutoAllocationService,
-  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm) {
-
-    $scope.assignVehicleOnSelect=function(container,item){
-      var postData = {
-        "vehicleId": item.vehicleId,
-        "routeId": container.routeId
-      };
-  
-      RouteService.assignVehicle(postData, function (data) {
-        if (data['success']) {
-          $scope.resetRoute();
-          // isAssign = false;
-          // ToasterService.clearToast();
-          // $scope.toggleView = true;
-          ToasterService.showSuccess('Success', data['message']);
-        } else {
-          $ngConfirm({
-            title: 'Error!',
-            boxWidth: '40%',
-            useBootstrap: false,
-            content:  data['message'],
-            scope: $scope,
-            buttons: {
-                ok: {
-                  text: 'Ok',
-                  btnClass: 'btn-blue',
-                  action: function (scope) {
-                    scope.resetRoute();
-                  }
-                }
-            }
-          });
-        }
-        
-      })
-  
-    }
-
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$ngConfirm, BASE_URL_MAIN,$q,$document,$rootScope,$interval) {
     $scope.rut = {};
 
     $scope.itemArray = [
@@ -282,6 +245,44 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.disableBtn = false;
   // ToasterService.clearToast();
   $scope.place = {};
+
+    $scope.assignVehicleOnSelect=function(container,item){
+      var postData = {
+        "vehicleId": item.vehicleId,
+        "routeId": container.routeId
+      };
+  
+      RouteService.assignVehicle(postData, function (data) {
+        if (data['success']) {
+          $scope.resetRoute();
+          // isAssign = false;
+          // ToasterService.clearToast();
+          // $scope.toggleView = true;
+          ToasterService.showSuccess('Success', data['message']);
+        } else {
+          $ngConfirm({
+            title: 'Error!',
+            boxWidth: '40%',
+            useBootstrap: false,
+            content:  data['message'],
+            scope: $scope,
+            buttons: {
+                ok: {
+                  text: 'Ok',
+                  btnClass: 'btn-blue',
+                  action: function (scope) {
+                    scope.resetRoute();
+                  }
+                }
+            }
+          });
+        }
+        
+      })
+  
+    }
+
+    
   // Map.init();
 
   var directionsRenderer 
@@ -486,7 +487,30 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       console.log(er);
     });
   }
+  $scope.searchVehicleAsync = (plateNumber) => {
+    $scope.plateNumber = plateNumber;
 
+    if(plateNumber){
+      let shift = JSON.parse($scope.selectedShift);
+
+      let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber, to_date: moment($scope.filterDate).format('YYYY-MM-DD') };
+  
+      return RouteService.searchVechicle(params).$promise.then(function (result) {
+          return result.data;
+      });
+    }else{
+      let postVehicleData = {
+        siteId:$scope.siteId, shiftId:$scope.selectedShift.id, shiftType:$scope.selectedShift.trip_type,
+        selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
+        driverStatus: $scope.selected_vehicle_status
+      }
+      
+      return RouteService.postVehicleList(postVehicleData).$promise.then(function (result) {
+        return result.data;
+      });
+    }
+  
+  }
   $scope.getVehicleListForSite = function (siteId, shiftId, shiftType) {
 
     // $scope.toggleView = false;
