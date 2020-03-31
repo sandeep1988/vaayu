@@ -1363,8 +1363,9 @@ class Trip < ApplicationRecord
       if self.status =="active"
         @flag = true
       else
-        notified_trip_plan_date = self.scheduled_date.in_time_zone("Kolkata")
-
+        #notified_trip_plan_date = self.scheduled_date.in_time_zone("Kolkata")
+		notified_trip_plan_date = Time.at(self.scheduled_date.to_i).in_time_zone("Kolkata")
+		
         notified_trip_id = self.id
 
         p "====notified_trip_plan_date======="
