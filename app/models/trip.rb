@@ -1327,7 +1327,7 @@ class Trip < ApplicationRecord
 		#writing notification flag logic here starts here
 		current_trip_id = self.id
 		
-		trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assigned_requested', 'assign_request_expired', 'active',  driver.id).order(:planned_date)
+		trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assign_requested', 'assign_request_expired', 'active',  driver.id).order(:planned_date)
 
 		trip_first = trips.first
 		trip_first_time = Time.at(trip_first.scheduled_date.to_i)
