@@ -1322,41 +1322,52 @@ class Trip < ApplicationRecord
       #    return if (trip.id == self.id) && (trip.status != 'assign_request_declined' && trip.status != 'active')      
       #  end
       #else
-      #  @flag = true 
       #end
+      #  @flag = true 
 		#writing notification flag logic here starts here
 		current_trip_id = self.id
-		
-		trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assign_requested', 'assign_request_expired', 'active',  driver.id).order(:planned_date)
+		trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assign_requested', 'assign_request_expired', 'active','created',  driver.id).order(:planned_date)
 
-		trip_first = trips.first
-		trip_first_time = Time.at(trip_first.scheduled_date.to_i)
-	
+	 p "========trip count============"
+   p trips.count
 		if trips.count > 1
 			@flag = false
-			#trip loop started
-			trips.each do |trip|
-				#checking if genrated notification trip is active and set the flag starts here
-				if trip.id.to_i == current_trip_id.to_i and trip.status == 'active'
-					@flag = true
-					break;			
-				end
-				#checking if genrated notification trip is active and set the flag end here
-				#checking for other trip if any with status of in assigned, assign_requested or assigned_requet_expired starts here
-				loop_trip = Time.at(trip.scheduled_date.to_i)
-				if trip_first_time < loop_trip
-					@flag = true
-				else
-					@flag = false
-				end
-			#checking for other trip if any with status of in assigned, assign_requested or assigned_requet_expired end here
-			end
-			#trip loop ended
+      ### start new code
+      if self.status =="active"
+        @flag = true
+      else
+        notified_trip_plan_date = self.scheduled_date.in_time_zone("Kolkata")
+
+        notified_trip_id = self.id
+
+        p "====notified_trip_plan_date======="
+        p  "notified_trip_id : #{notified_trip_id}, notified_trip_plan_date: #{  notified_trip_plan_date}"
+
+
+        trips.each do |trip|
+          if notified_trip_id != trip.id
+            loop_trip_plan_date = Time.at(trip.scheduled_date.to_i).in_time_zone("Kolkata")
+
+            p "====loop_trip_plan_date======="
+            p  "loop_trip_id : #{trip.id}, loop_trip_plan_date: #{loop_trip_plan_date}"
+
+            if notified_trip_plan_date < loop_trip_plan_date
+              @flag = true
+              p "True value: #{@flag}"
+            else
+              @flag = false
+              p "false value: #{@flag}"
+            end
+          end
+        end
+      end
+      ### end new code
 		else
 			@flag = true 
 		end
 		#writing notification flag logic here end here
-	
+	   puts @flag
+     puts "===========flag=============="
      if @flag == true 
         data = {
             data: {
@@ -1373,6 +1384,7 @@ class Trip < ApplicationRecord
             }
         }
         puts "==================driver_new_trip_assignment=========="
+        puts data
         PushNotificationWorker.perform_async(
             driver.user_id,
             :driver_new_trip_assignment,
@@ -1394,6 +1406,7 @@ class Trip < ApplicationRecord
             }
         }
         puts "==================driver_new_trip_assignment=========="
+        puts data
         PushNotificationWorker.perform_async(
             driver.user_id,
             :driver_new_trip_assignment,
