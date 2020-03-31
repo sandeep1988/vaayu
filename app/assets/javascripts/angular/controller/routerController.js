@@ -487,30 +487,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       console.log(er);
     });
   }
-  $scope.searchVehicleAsync = (plateNumber) => {
-    $scope.plateNumber = plateNumber;
 
-    if(plateNumber){
-      let shift = JSON.parse($scope.selectedShift);
-
-      let params = { shiftId: shift.id, shift_type: shift.trip_type, searchBy: plateNumber, to_date: moment($scope.filterDate).format('YYYY-MM-DD') };
-  
-      return RouteService.searchVechicle(params).$promise.then(function (result) {
-          return result.data;
-      });
-    }else{
-      let postVehicleData = {
-        siteId:$scope.siteId, shiftId:$scope.selectedShift.id, shiftType:$scope.selectedShift.trip_type,
-        selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
-        driverStatus: $scope.selected_vehicle_status
-      }
-      
-      return RouteService.postVehicleList(postVehicleData).$promise.then(function (result) {
-        return result.data;
-      });
-    }
-  
-  }
   $scope.getVehicleListForSite = function (siteId, shiftId, shiftType) {
 
     // $scope.toggleView = false;
