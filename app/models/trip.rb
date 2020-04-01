@@ -1328,16 +1328,18 @@ class Trip < ApplicationRecord
 		current_trip_id = self.id
 		#trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assign_requested', 'assign_request_expired', 'active', driver.id).order(:planned_date)
 		##trips = Trip.where("driver_id = ?", driver.id).where("status in (?)", ['assigned', 'assign_requested', 'assign_request_expired', 'active']).order(:planned_date)
-		require 'json'
-		trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?)", "assigned", "assign_requested", "assign_request_expired", 'active').where(driver_id:driver.id)
+		# require 'json'
+    # trips_records = []
+		trips_records = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?)", "assigned", "assign_requested", "assign_request_expired", 'active').where(driver_id:driver.id).where(id != self.id)
+    # trips_records = Trip.find_by_sql("SELECT COUNT(*) FROM `trips` WHERE ((status = 'assigned' OR status = 'assign_requested' OR status = 'assign_request_expired' OR status = 'active')) AND `trips`.`driver_id` = 1347 limit 10 "  )
 		p "++++++++++++++++++++++"
-		p trips
-		p JSON.pretty_generate(trips)
+		p trips_records
+		# p JSON.pretty_generate(trips)
 		p "++++++++++++++++++++++"		
 		p "========1 trip count============"
-		p trips.count
+		p trips_records.size
 		#p trips.length
-		if trips.count > 1
+		if trips_records.count > 0
 			@flag = false
       ### start new code
       if self.status =="active"
@@ -1352,7 +1354,7 @@ class Trip < ApplicationRecord
         p  "notified_trip_id : #{notified_trip_id}, notified_trip_plan_date: #{  notified_trip_plan_date}"
 
 
-        trips.each do |trip|
+        trips_records.each do |trip|
           if notified_trip_id != trip.id
             loop_trip_plan_date = Time.at(trip.scheduled_date.to_i).in_time_zone("Kolkata")
 
