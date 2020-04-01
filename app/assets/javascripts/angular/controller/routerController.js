@@ -113,6 +113,307 @@ angular.module('app').run(function ($rootScope) {
 });
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService, AutoAllocationService,
   FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$ngConfirm, BASE_URL_MAIN,$q,$document,$rootScope,$interval) {
+
+
+    $scope.clear = function () {
+      $scope.filterDate = null;
+    };
+  
+    // Disable weekend selection
+    $scope.disabled = function (date, mode) {
+      // return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+      return false;
+    };
+    
+  
+   
+  
+    $scope.open = function ($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+  
+      $scope.opened = true;
+    };
+
+
+    $scope.today = function () {
+      $scope.filterDate = new Date();
+    };
+
+    $scope.toggleMin = function () {
+      $scope.minDate = $scope.minDate ? null : new Date();
+    };
+
+    $scope.init = function () {
+      $scope.toggleView = false;
+  
+      // ToasterService.clearToast();
+      $scope.stats = {
+        "no_of_routes": 0,
+        "male_count": 0,
+        "female_count": 0,
+        "special": 0,
+        "on_duty_vehicle": 0,
+        "kilometres": 0
+      }
+  
+      // $scope.initMap();
+  
+      // SiteService.get().$promise.then(function (res) {
+      //   $scope.sites = res.data.list;
+      //   console.log($scope.sites);
+      // }).catch(er => {
+      //   console.log(error);
+      // });
+  
+      $scope.today();
+      // date picket
+      $scope.toggleMin();
+  
+  
+      $scope.dateOptions = {
+        formatYear: 'yy',
+        startingDay: 1
+      };
+  
+      $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+      $scope.format = $scope.formats[0];
+  
+      // date function
+  
+      $scope.vehicle_status_list = [
+        { name: 'On Duty', value: 'on_duty' },
+        { name: 'Off Duty', value: 'off_duty' }
+      ]
+  
+      $http({
+        method: 'POST',
+        url: BASE_URL_API_8002 + 'categoryList',
+        headers: {
+          'Content-Type': 'application/json',
+          'uid': SessionService.uid,
+          'access_token': SessionService.access_token,
+          'client': SessionService.client
+        },
+        data: { test: 'test' }
+      }).then(function (res) {
+        console.log('Vehicle', res);
+        $scope.vehicleCategoryList = res.data.data;
+      }).catch(err => {
+        console.log(err)
+      });
+  
+      // RouteService.getVehicleCategoryList(function (data) {
+      //   $scope.vehicleCategoryList = data;
+      // });
+  
+  
+      $scope.getStyleInPx =function(capacity){
+        var multiplier =(capacity % 4) > 0 ? 1 : 0
+        return {
+          'min-height': (Math.trunc(capacity/4)+ multiplier )*110+'px'
+        }
+      }
+  
+      RosterService.getAllSiteList(function (data) {
+        $scope.siteList = data.data.list;
+        console.log('sitelist check', $scope.siteList)
+        if ($scope.siteList.length) {
+          $scope.siteId = $scope.siteList[0].id;
+        }
+  
+        let postData = {
+          "site_id": $scope.siteList[0].id,
+          "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
+        }
+  
+        RosterService.get(postData, function (data) {
+          if (data.data) {
+            $scope.shifts = data.data.shiftdetails;
+            if ($scope.shifts && $scope.shifts.length) {
+              $scope.selectedShift = JSON.stringify($scope.shifts[0]);
+              $scope.resetRoute();
+              // $scope.generateRoute($scope.siteId,$scope.shifts[0].id,moment().format('YYYY-MM-DD'),1);
+            } else {
+              $scope.selectedShift = null;
+              // $scope.resetRoute();
+            }
+          }
+        }, function (error) {
+          console.log(error);
+        });
+      }, function (error) {
+        console.log(error);
+      });
+  
+    }
+
+    $scope.updateFilters = function () {
+      // $scope.toggleView = false;
+      let postData = {
+        "site_id": $scope.siteId,
+        "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
+      }
+  
+      RosterService.get(postData, function (data) {
+        $scope.shifts = data.data.shiftdetails;
+        if ($scope.shifts && $scope.shifts.length) {
+          $scope.selectedShift = JSON.stringify($scope.shifts[0]);
+          $scope.resetRoute();
+          // $scope.generateRoute($scope.siteId,$scope.shifts[0].id,moment().format('YYYY-MM-DD'),1);
+        } else {
+          $scope.selectedShift = null;
+          // $scope.resetRoute();
+        }
+      }, function (error) {
+        console.log(error);
+      });
+  
+    }
+  
+    $scope.submitFilters = function () {
+      let postData = {
+        "site_id": $scope.siteId,
+        "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
+      }
+      $scope.disableBtn = true;
+      RosterService.get(postData, function (data) {
+        $scope.disableBtn = false;
+        $scope.shifts = data.data.shiftdetails;
+        if ($scope.shifts && $scope.shifts.length) {
+          $scope.selectedShift = JSON.stringify($scope.shifts[0]);
+          $scope.resetRoute();
+          $scope.toggleView = true;
+          console.log('data: ', data);
+          ToasterService.showSuccess('Success', 'Routes listed successfully');
+          // $scope.generateRoute($scope.siteId,$scope.shifts[0].id,moment().format('YYYY-MM-DD'),1);
+        } else {
+          $scope.selectedShift = null;
+          // $scope.resetRoute();
+        }
+      }, function (error) {
+        console.log(error);
+      });
+    }
+
+    $scope.resetRoute = function () {
+
+      $scope.isLoader = true;
+      $scope.finalizeArray = [];
+      $scope.routeChangedIds = [];
+  
+      $scope.generateRoute($scope.siteId, $scope.selectedShift.id, $scope.filterDate, $scope.selectedShift.trip_type);
+    }
+
+    $scope.generateRoute = function (siteId, shiftId, filterDate, shiftType) {
+
+      RouteService.getConstraintsForSite({site_id:siteId},function (res) {
+        $scope.site_time =res.data.time;
+        $scope.site_distance =res.data.distance;
+      });
+  
+      // $scope.toggleView = false;
+      // ToasterService.clearToast();
+      if (!$scope.siteId) {
+        $scope.toggleView = true;
+        ToasterService.showError('Error', 'Select Site.');
+        return;
+      } else if (!$scope.selectedShift) {
+        $scope.toggleView = true;
+        ToasterService.showError('Error', 'Select Shift.');
+        return;
+      }
+      let shift = JSON.parse($scope.selectedShift);
+      // Static data display
+      // $scope.showStaticData(RouteStaticResponse.route_response);
+      // return;
+  
+      $scope.getVehicleListForSite(siteId, shift.id, shift.trip_type);
+      $scope.getGuardListForSite(siteId, shift.id, shift.trip_type);
+  
+      let postData = {
+        "site_id": parseInt($scope.siteId),
+        "shift_id": parseInt(shift.id),
+        "to_date": moment(filterDate).format('YYYY-MM-DD'),
+        "search": "1",
+        "shift_type": shift.trip_type + '' // 0 -checkin 1-checout
+      }
+    
+      RouteService.getRoutes(postData, (data) => {
+  
+        // $scope.toggleView = false;
+        // ToasterService.clearToast();
+        console.log(data);
+        if (!data['success']) {
+          // ToasterService.clearToast();
+          $scope.toggleView = true;
+          ToasterService.showError('Error', data['message']);
+          return;
+        }
+        $scope.routes = data;
+        // $scope.routes =RouteStaticResponse.route_response;
+  
+        if ($scope.routes.data) {
+          try {
+            // ToasterService.showToast('info', 'Response Received', $scope.routes.data.routes.length+' Routes found for this shift')
+            $scope.originalRoutes = angular.copy($scope.routes.data.routes);
+            $scope.stats = $scope.routes.data.tats[0];
+          } catch (err) {
+            $scope.stats = { no_of_routes: 0, kilometres: 0, male_count: 0, female_count: 0, special: 0, on_duty_vehicle: 0 };
+            $scope.routes = RouteStaticResponse.emptyResponse;
+            $scope.routes.data.routes = [];
+            $scope.toggleView = true;
+            // ToasterService.showSuccess('info', 'Response Received', 'No Routes found for this shift')
+            console.log('error', err)
+          }
+          $scope.showRouteData()
+        }
+      }, (error) => {
+        console.log(error);
+      });
+    }
+
+    $scope.getVehicleListForSite = function (siteId, shiftId, shiftType) {
+
+      // $scope.toggleView = false;
+  
+      if (siteId == null || shiftId == null || shiftType == null) {
+        return;
+      }
+  
+      let postVehicleData = {
+        siteId, shiftId, shiftType,
+        selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
+        driverStatus: $scope.selected_vehicle_status
+      }
+      
+      RouteService.postVehicleList(postVehicleData, function (res) {
+        console.log('vehicle list', res)
+        $scope.vehicleList = res.data;
+  
+        var allowtypes = [];
+        angular.forEach($scope.vehicleList, function (item) {
+          // item.type = "vehical";
+          item.type = item.vehicleType;
+          if (!allowtypes.includes(item.type)) {
+            allowtypes.push(item.type)
+          }
+        })
+        console.log('allowtypes', allowtypes);
+  
+        $scope.vehicals = [
+          {
+            label: "Vehical",
+            allowedTypes: allowtypes,
+            max: allowtypes.length + 1,
+            vehical: $scope.vehicleList
+          }
+        ];
+      }, function (error) {
+        console.log(error);
+      });
+    }
+
     $scope.rut = {};
 
     $scope.itemArray = [
@@ -143,7 +444,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.updateTypes =function(type) {
-    alert(type);
+    // alert(type);
     $scope.closeVehicleTypeDialog();
   }
 
@@ -241,6 +542,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
           }
         });
       }
+    };
+      
   // $scope.toggleView = false;
   $scope.disableBtn = false;
   // ToasterService.clearToast();
@@ -349,110 +652,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   $scope.coords = []
 
 
-  
-
-  $scope.init = function () {
-    $scope.toggleView = false;
-
-    // ToasterService.clearToast();
-    $scope.stats = {
-      "no_of_routes": 0,
-      "male_count": 0,
-      "female_count": 0,
-      "special": 0,
-      "on_duty_vehicle": 0,
-      "kilometres": 0
-    }
-
-    // $scope.initMap();
-
-    // SiteService.get().$promise.then(function (res) {
-    //   $scope.sites = res.data.list;
-    //   console.log($scope.sites);
-    // }).catch(er => {
-    //   console.log(error);
-    // });
-
-    $scope.today();
-    // date picket
-    $scope.toggleMin();
-
-
-    $scope.dateOptions = {
-      formatYear: 'yy',
-      startingDay: 1
-    };
-
-    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-    $scope.format = $scope.formats[0];
-
-    // date function
-
-    $scope.vehicle_status_list = [
-      { name: 'On Duty', value: 'on_duty' },
-      { name: 'Off Duty', value: 'off_duty' }
-    ]
-
-    $http({
-      method: 'POST',
-      url: BASE_URL_API_8002 + 'categoryList',
-      headers: {
-        'Content-Type': 'application/json',
-        'uid': SessionService.uid,
-        'access_token': SessionService.access_token,
-        'client': SessionService.client
-      },
-      data: { test: 'test' }
-    }).then(function (res) {
-      console.log('Vehicle', res);
-      $scope.vehicleCategoryList = res.data.data;
-    }).catch(err => {
-      console.log(err)
-    });
-
-    // RouteService.getVehicleCategoryList(function (data) {
-    //   $scope.vehicleCategoryList = data;
-    // });
-
-
-    $scope.getStyleInPx =function(capacity){
-      var multiplier =(capacity % 4) > 0 ? 1 : 0
-      return {
-        'min-height': (Math.trunc(capacity/4)+ multiplier )*110+'px'
-      }
-    }
-
-    RosterService.getAllSiteList(function (data) {
-      $scope.siteList = data.data.list;
-      if ($scope.siteList.length) {
-        $scope.siteId = $scope.siteList[0].id;
-      }
-
-      let postData = {
-        "site_id": $scope.siteList[0].id,
-        "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
-      }
-
-      RosterService.get(postData, function (data) {
-        if (data.data) {
-          $scope.shifts = data.data.shiftdetails;
-          if ($scope.shifts && $scope.shifts.length) {
-            $scope.selectedShift = JSON.stringify($scope.shifts[0]);
-            $scope.resetRoute();
-            // $scope.generateRoute($scope.siteId,$scope.shifts[0].id,moment().format('YYYY-MM-DD'),1);
-          } else {
-            $scope.selectedShift = null;
-            // $scope.resetRoute();
-          }
-        }
-      }, function (error) {
-        console.log(error);
-      });
-    }, function (error) {
-      console.log(error);
-    });
-
-  }
+   
 
   $scope.removeVehicle = (vehicle, route) => {
 
@@ -556,55 +756,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     });
   }
 
-  $scope.updateFilters = function () {
-    // $scope.toggleView = false;
-    let postData = {
-      "site_id": $scope.siteId,
-      "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
-    }
-
-    RosterService.get(postData, function (data) {
-      $scope.shifts = data.data.shiftdetails;
-      console.log('shifts', $scope.shifts)
-      if ($scope.shifts && $scope.shifts.length) {
-        $scope.selectedShift = JSON.stringify($scope.shifts[0]);
-        $scope.resetRoute();
-        // $scope.generateRoute($scope.siteId,$scope.shifts[0].id,moment().format('YYYY-MM-DD'),1);
-      } else {
-        $scope.selectedShift = null;
-        // $scope.resetRoute();
-      }
-    }, function (error) {
-      console.log(error);
-    });
-
-  }
-
-  $scope.submitFilters = function () {
-    let postData = {
-      "site_id": $scope.siteId,
-      "to_date": moment($scope.filterDate).format('YYYY-MM-DD')
-    }
-    $scope.disableBtn = true;
-    RosterService.get(postData, function (data) {
-      $scope.disableBtn = false;
-      $scope.shifts = data.data.shiftdetails;
-      if ($scope.shifts && $scope.shifts.length) {
-        $scope.selectedShift = JSON.stringify($scope.shifts[0]);
-        $scope.resetRoute();
-        $scope.toggleView = true;
-        console.log('data: ', data);
-        ToasterService.showSuccess('Success', 'Routes listed successfully');
-        // $scope.generateRoute($scope.siteId,$scope.shifts[0].id,moment().format('YYYY-MM-DD'),1);
-      } else {
-        $scope.selectedShift = null;
-        // $scope.resetRoute();
-      }
-    }, function (error) {
-      console.log(error);
-    });
-  }
-
+    
   $scope.shuffleEvent = function (item) {
     console.log(message);
   };
@@ -745,15 +897,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         // });
       }
     })
-  }
-
-  $scope.resetRoute = function () {
-
-    $scope.isLoader = true;
-    $scope.finalizeArray = [];
-    $scope.routeChangedIds = [];
-
-    $scope.generateRoute($scope.siteId, $scope.selectedShift.id, $scope.filterDate, $scope.selectedShift.trip_type);
   }
 
   $scope.plateNumber = '';
@@ -916,73 +1059,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
    return distance > $scope.site_distance;
   }
 
-  $scope.generateRoute = function (siteId, shiftId, filterDate, shiftType) {
-
-    RouteService.getConstraintsForSite({site_id:siteId},function (res) {
-      $scope.site_time =res.data.time;
-      $scope.site_distance =res.data.distance;
-    });
-
-    // $scope.toggleView = false;
-    // ToasterService.clearToast();
-    if (!$scope.siteId) {
-      $scope.toggleView = true;
-      ToasterService.showError('Error', 'Select Site.');
-      return;
-    } else if (!$scope.selectedShift) {
-      $scope.toggleView = true;
-      ToasterService.showError('Error', 'Select Shift.');
-      return;
-    }
-    let shift = JSON.parse($scope.selectedShift);
-    // Static data display
-    // $scope.showStaticData(RouteStaticResponse.route_response);
-    // return;
-
-    $scope.getVehicleListForSite(siteId, shift.id, shift.trip_type);
-    $scope.getGuardListForSite(siteId, shift.id, shift.trip_type);
-
-    let postData = {
-      "site_id": parseInt($scope.siteId),
-      "shift_id": parseInt(shift.id),
-      "to_date": moment(filterDate).format('YYYY-MM-DD'),
-      "search": "1",
-      "shift_type": shift.trip_type + '' // 0 -checkin 1-checout
-    }
   
-    RouteService.getRoutes(postData, (data) => {
-
-      // $scope.toggleView = false;
-      // ToasterService.clearToast();
-      console.log(data);
-      if (!data['success']) {
-        // ToasterService.clearToast();
-        $scope.toggleView = true;
-        ToasterService.showError('Error', data['message']);
-        return;
-      }
-      $scope.routes = data;
-      // $scope.routes =RouteStaticResponse.route_response;
-
-      if ($scope.routes.data) {
-        try {
-          // ToasterService.showToast('info', 'Response Received', $scope.routes.data.routes.length+' Routes found for this shift')
-          $scope.originalRoutes = angular.copy($scope.routes.data.routes);
-          $scope.stats = $scope.routes.data.tats[0];
-        } catch (err) {
-          $scope.stats = { no_of_routes: 0, kilometres: 0, male_count: 0, female_count: 0, special: 0, on_duty_vehicle: 0 };
-          $scope.routes = RouteStaticResponse.emptyResponse;
-          $scope.routes.data.routes = [];
-          $scope.toggleView = true;
-          // ToasterService.showSuccess('info', 'Response Received', 'No Routes found for this shift')
-          console.log('error', err)
-        }
-        $scope.showRouteData()
-      }
-    }, (error) => {
-      console.log(error);
-    });
-  }
 
   $scope.showRouteData = () => {
     // $scope.toggleView = false;
@@ -1052,30 +1129,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   // datepicker function
-  $scope.today = function () {
-    $scope.filterDate = new Date();
-  };
+ 
 
-  $scope.clear = function () {
-    $scope.filterDate = null;
-  };
 
-  // Disable weekend selection
-  $scope.disabled = function (date, mode) {
-    // return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-    return false;
-  };
-
-  $scope.toggleMin = function () {
-    $scope.minDate = $scope.minDate ? null : new Date();
-  };
-
-  $scope.open = function ($event) {
-    $event.preventDefault();
-    $event.stopPropagation();
-
-    $scope.opened = true;
-  };
 
   $scope.slider_occupied = {
     minValue: 1,
@@ -1945,5 +2001,5 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   
-}
 });
+
