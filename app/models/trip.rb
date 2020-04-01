@@ -1326,10 +1326,17 @@ class Trip < ApplicationRecord
       #  @flag = true 
 		#writing notification flag logic here starts here
 		current_trip_id = self.id
-		trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assign_requested', 'assign_request_expired', 'active', driver.id).order(:planned_date)
-
-	 p "========trip count============"
-   p trips.count
+		#trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assign_requested', 'assign_request_expired', 'active', driver.id).order(:planned_date)
+		##trips = Trip.where("driver_id = ?", driver.id).where("status in (?)", ['assigned', 'assign_requested', 'assign_request_expired', 'active']).order(:planned_date)
+		require 'json'
+		trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?)", "assigned", "assign_requested", "assign_request_expired", 'active').where(driver_id:driver.id)
+		p "++++++++++++++++++++++"
+		p trips
+		p JSON.pretty_generate(trips)
+		p "++++++++++++++++++++++"		
+		p "========1 trip count============"
+		p trips.count
+		#p trips.length
 		if trips.count > 1
 			@flag = false
       ### start new code
@@ -1370,8 +1377,7 @@ class Trip < ApplicationRecord
 	   puts @flag
      # abort(@flag)
      puts "===========flag=============="
-     if @flag == true 
-        data = {
+     data = {
             data: {
                 trip_id: self.id,
                 status: self.status,
@@ -1382,39 +1388,16 @@ class Trip < ApplicationRecord
                 date: self.scheduled_date.to_i,
                 assign_request_expired_date: self.assign_request_expired_date.to_i,
                 push_type: :driver_new_trip_assignment,
-                current_trip: true
+                current_trip: @flag
             }
         }
-        puts "==================driver_new_trip_assignment=========="
+        puts "==================Data driver_new_trip_assignment=========="
         puts data
         PushNotificationWorker.perform_async(
             driver.user_id,
             :driver_new_trip_assignment,
             data
-        )
-      else
-        data = {
-            data: {
-                trip_id: self.id,
-                status: self.status,
-                trip_type: self.trip_type,
-                passengers: self.passengers,
-                approximate_duration: self.scheduled_approximate_duration,
-                approximate_distance: self.scheduled_approximate_distance,
-                date: self.scheduled_date.to_i,
-                assign_request_expired_date: self.assign_request_expired_date.to_i,
-                push_type: :driver_new_trip_assignment,
-                current_trip: false
-            }
-        }
-        puts "==================driver_new_trip_assignment=========="
-        puts data
-        PushNotificationWorker.perform_async(
-            driver.user_id,
-            :driver_new_trip_assignment,
-            data
-        ) 
-      end  
+        )        
   end
 
   # Send push notification to driver about unassignment
