@@ -1378,7 +1378,7 @@ class Trip < ApplicationRecord
 		#writing notification flag logic here end here
 	   puts @flag
      # abort(@flag)
-     puts "===========flag=============="
+     puts "===========flag1=============="
      data = {
             data: {
                 trip_id: self.id,
