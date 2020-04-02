@@ -80,6 +80,37 @@ angular.module('app')
     };
   });
 
+  angular.module('app').filter('propsFilter', function() {
+    return function(items, props) {
+      var out = [];
+  
+      if (angular.isArray(items)) {
+        items.forEach(function(item) {
+          var itemMatches = false;
+  
+          var keys = Object.keys(props);
+          for (var i = 0; i < keys.length; i++) {
+            var prop = keys[i];
+            var text = props[prop].toLowerCase();
+            if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+              itemMatches = true;
+              break;
+            }
+          }
+  
+          if (itemMatches) {
+            out.push(item);
+          }
+        });
+      } else {
+        // Let the output be the input untouched
+        out = items;
+      }
+  
+      return out;
+    }
+  });
+
 app.directive('focusMe', function ($timeout) {
   return {
     link: function (scope, ele, attrs) {
@@ -111,8 +142,8 @@ angular.module('app').run(function ($rootScope) {
     }
   });
 });
-angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService, AutoAllocationService,
-  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$ngConfirm, BASE_URL_MAIN,$q,$document,$rootScope,$interval) {
+angular.module('app').controller('routeCtrl', function ($scope, $http, $state, RosterService, RouteService, RouteUpdateService, AutoAllocationService,
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002,$ngConfirm, BASE_URL_MAIN,$q,$document,$rootScope,$interval) {
 
 
     $scope.clear = function () {
@@ -638,6 +669,104 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
   }
 
   $scope.isLoader = false;
+  $scope.selectedCapacity = {};
+  $scope.selectedType = {};
+  $scope.selectedLandmark = {};
+  $scope.selectedZone = {}
+  $scope.clickEvents = {
+    onInitDone: function(item) {console.log(item);},
+    onItemSelect: function(item) {console.log('check', $scope.selectedLandmark)},
+    onItemDeselect: function(item) {console.log(item);}
+  };
+  $scope.example14settings = {
+    enableSearch: true,
+    displayProp: 'name',
+    scrollableHeight: '200px',
+    scrollable: true,
+  };
+
+  $scope.updateRouteFilter =function(search){
+    $scope.criteria=search;
+  }
+  $scope.mergedValues = [{id: '', label: ''}];
+  
+  $scope.obj = {
+    zone: '',
+    landmark: '',
+    type: '',
+    capacity: ''
+  }
+
+  $scope.applyFilter = () => {  
+    $scope.obj = {
+      zone: $scope.selectedZone.label,
+      landmark: $scope.selectedLandmark.label,
+      type: $scope.selectedType.label,
+      capacity: $scope.selectedCapacity.label
+    }
+    $scope.mergedValues = $scope.selectedCapacity.concat($scope.selectedType, $scope.selectedLandmark)
+    console.log($scope.mergedValues)
+
+  }
+
+
+  $scope.clearSelection = () => {
+    $scope.selectedCapacity = {};
+    $scope.selectedType = {};
+    $scope.selectedLandmark = {};
+    $scope.selectedZone = {};
+  }
+  $scope.capacityObj = [
+    {
+      name: '< 50%',
+      id: 50
+    },
+    {
+      name: '50% - 75%',
+      id: 75
+    },
+    {
+      name: '75% - 100%',
+      id: 100
+    }
+  ];
+
+  $scope.typeObj = [
+    {
+      name: 'SEDAN',
+      id: 1
+    },
+    {
+      name: 'Hatchback',
+      id: 2
+    },
+    {
+      name: 'SUV',
+      id: 3
+    },
+    {
+      name: 'TT',
+      id: 4
+    },
+    {
+      name: 'BUS',
+      id: 5
+    },
+    {
+      name: 'MINI VAN',
+      id: 6
+    },
+    {
+      name: 'TRUCK',
+      id: 7
+    }
+  ];
+  $scope.landmarkObj = [];
+
+  $scope.zoneObj = [];
+  
+
+  $scope.selected_vehicle_status = 'on_duty';
 
   $scope.selected_vehicle_status = 'on_duty';
 
@@ -1725,12 +1854,14 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     $scope.isVehicalSidebarView = false;
     $scope.isGuardSidebarView = false;
     $scope.isFilterSidebarView = false;
+    $scope.filterToggle = false;
   }
 
   $scope.resetSidebar();
 
   $scope.hideVehicalSidebar = function () {
     $scope.isVehicalSidebarView = false;
+    $scope.filterToggle = false;
   }
 
   $scope.showVehicalSidebar = function () {
@@ -1739,6 +1870,50 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     $scope.plateNumber = '';
     $scope.resetSidebar();
     $scope.isVehicalSidebarView = true;
+  }
+
+  $scope.onFilter = () => {
+    let shift = JSON.parse($scope.selectedShift);
+    if(shift != null && $scope.siteId && shift.id && $scope.filterDate && shift.trip_type){
+      $scope.filterToggle = true;
+      let param = {
+        site_id: parseInt($scope.siteId),
+        shift_id: parseInt(shift.id),
+        to_date: moment($scope.filterDate).format('YYYY-MM-DD'),
+        shift_type: String(shift.trip_type)
+        
+      }
+      // console.log('param', param)
+      RouteService.empLandmarkZonesList(param, (res) => {
+        // console.log('empLandmark', res, $scope.zoneObj)
+        res['data'].forEach((ele, i) => {
+          if(ele['landmark']){
+            $scope.landmarkObj.push({
+              name: ele['landmark'],
+              id: i + 1
+            })
+          }
+        })
+
+        res['data'].forEach((ele, i) => {
+          if(ele['zone']){
+            $scope.zoneObj.push({
+              name: ele['zone'],
+              id: i + 1
+            })
+          }
+        })
+
+        console.log('empLandmark', $scope.landmarkObj)
+      }, (err) => {
+        console.log('empLand err' , err)
+      })
+    } else {
+      $scope.toggleView = true;
+      ToasterService.showError('Error', 'Unexpected Error!')
+    }
+    
+    
   }
 
   $scope.hideGuardSidebar = function () {
