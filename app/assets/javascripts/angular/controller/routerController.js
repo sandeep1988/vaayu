@@ -686,7 +686,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
   };
 
   $scope.updateRouteFilter =function(search){
-    $scope.criteria=search;
+    $scope.criteria = search;
   }
   $scope.mergedValues = [{id: '', label: ''}];
   
@@ -1874,7 +1874,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
 
   $scope.onFilter = () => {
     let shift = JSON.parse($scope.selectedShift);
-    if(shift != null && $scope.siteId && shift.id && $scope.filterDate && shift.trip_type){
+    if(shift != null && $scope.siteId && shift.id && $scope.filterDate){
+      alert('filter')
       $scope.filterToggle = true;
       let param = {
         site_id: parseInt($scope.siteId),
