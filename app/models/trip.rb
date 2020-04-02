@@ -1300,7 +1300,51 @@ class Trip < ApplicationRecord
       SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Hello! New trip has been assigned to you, kindly sign into app to accept the trip.")
         # 'A new trip has been assigned. Please ACCEPT it using the MOOVE App within 3 minutes. This trip is for ' + (self.scheduled_approximate_distance / 1000).to_s + ' kms and will take about ' + self.scheduled_approximate_duration.to_s + ' minutes to complete.')
     end
-
+	
+	#writing notification flag logic here starts here
+	current_trip_id = self.id
+	trips_records = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?)", "assigned", "assign_requested", "assign_request_expired", 'active').where(driver_id:driver.id).where(id != self.id)
+	p "++++++++++++++++++++++"
+	#p trips_records
+	p "++++++++++++++++++++++"		
+	p "========1 trip count============"
+	p trips_records.size
+	#p trips.length
+	if trips_records.count > 0
+		@flag = false
+		### start new code
+		if self.status =="active"
+			@flag = true
+		else
+			#notified_trip_plan_date = self.scheduled_date.in_time_zone("Kolkata")
+			notified_trip_plan_date = Time.at(self.scheduled_date.to_i).in_time_zone("Kolkata")		
+			notified_trip_id = self.id
+			p "====notified_trip_plan_date======="
+			p  "notified_trip_id : #{notified_trip_id}, notified_trip_plan_date: #{  notified_trip_plan_date}"
+			trips_records.each do |trip|
+				if notified_trip_id != trip.id
+					loop_trip_plan_date = Time.at(trip.scheduled_date.to_i).in_time_zone("Kolkata")
+					p "====loop_trip_plan_date======="
+					p  "loop_trip_id : #{trip.id}, loop_trip_plan_date: #{loop_trip_plan_date}"
+					if notified_trip_plan_date < loop_trip_plan_date
+						@flag = true
+						p "True value: #{@flag}"
+					else
+						@flag = false
+						p "false value: #{@flag}"
+					end
+				end
+			end
+		end
+		### end new code
+	else
+		@flag = true 
+	end
+	#writing notification flag logic here end here
+	puts @flag
+	# abort(@flag)
+	puts "===========flag=============="
+	
     data = { 
         data: {
             trip_id: self.id,
@@ -1311,10 +1355,13 @@ class Trip < ApplicationRecord
             approximate_distance: self.scheduled_approximate_distance,
             date: self.scheduled_date.to_i,
             assign_request_expired_date: self.assign_request_expired_date.to_i,
-            push_type: :driver_new_trip_assignment
+            push_type: :driver_new_trip_assignment,
+			current_trip: @flag,
+			recurring_notification:"yes"
         }
     }
     puts "==================driver_new_trip_assignment=========="
+	p data
     PushNotificationWorker.perform_async(
         driver.user_id,
         :driver_new_trip_assignment,
@@ -1322,8 +1369,8 @@ class Trip < ApplicationRecord
     )
   end
 
-  # Send push notification to driver about new assignment
-  def notify_driver_about_assignment
+# Send push notification to driver about new assignment
+def notify_driver_about_assignment
 	@user = User.driver.where(id: driver.user_id).first
     if @user.present?
       SMSWorker.perform_async(@user.phone, ENV['OPERATOR_NUMBER'], "Hello! New trip has been assigned to you, kindly sign into app to accept the trip.") 
@@ -1338,96 +1385,73 @@ class Trip < ApplicationRecord
       # SMSWorker.perform_async(driver.offline_phone, ENV['OPERATOR_NUMBER'], 
       #   push_data.to_json)
     end
-
-      #Check for two trips assignment
-      #trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assigned_requested', 'assign_request_declined', 'active',  driver.id).order(:planned_date)	  
-      #if trips.count > 1
-      #  @flag = true
-      #  trips.each do |trip|
-      #    next if trip.status == 'assign_request_declined' 
-      #    @flag = false if trip.status == 'active'
-      #    return if (trip.id == self.id) && (trip.status != 'assign_request_declined' && trip.status != 'active')      
-      #  end
-      #else
-      #end
-      #  @flag = true 
-		#writing notification flag logic here starts here
-		current_trip_id = self.id
-		#trips = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?) AND driver_id = ?", 'assinged', 'assign_requested', 'assign_request_expired', 'active', driver.id).order(:planned_date)
-		##trips = Trip.where("driver_id = ?", driver.id).where("status in (?)", ['assigned', 'assign_requested', 'assign_request_expired', 'active']).order(:planned_date)
-		# require 'json'
-    # trips_records = []
-		trips_records = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?)", "assigned", "assign_requested", "assign_request_expired", 'active').where(driver_id:driver.id).where(id != self.id)
-    # trips_records = Trip.find_by_sql("SELECT COUNT(*) FROM `trips` WHERE ((status = 'assigned' OR status = 'assign_requested' OR status = 'assign_request_expired' OR status = 'active')) AND `trips`.`driver_id` = 1347 limit 10 "  )
-		p "++++++++++++++++++++++"
-		p trips_records
-		# p JSON.pretty_generate(trips)
-		p "++++++++++++++++++++++"		
-		p "========1 trip count============"
-		p trips_records.size
-		#p trips.length
-		if trips_records.count > 0
-			@flag = false
-      ### start new code
-      if self.status =="active"
-        @flag = true
-      else
-        #notified_trip_plan_date = self.scheduled_date.in_time_zone("Kolkata")
-		notified_trip_plan_date = Time.at(self.scheduled_date.to_i).in_time_zone("Kolkata")
-		
-        notified_trip_id = self.id
-
-        p "====notified_trip_plan_date======="
-        p  "notified_trip_id : #{notified_trip_id}, notified_trip_plan_date: #{  notified_trip_plan_date}"
-
-
-        trips_records.each do |trip|
-          if notified_trip_id != trip.id
-            loop_trip_plan_date = Time.at(trip.scheduled_date.to_i).in_time_zone("Kolkata")
-
-            p "====loop_trip_plan_date======="
-            p  "loop_trip_id : #{trip.id}, loop_trip_plan_date: #{loop_trip_plan_date}"
-
-            if notified_trip_plan_date < loop_trip_plan_date
-              @flag = true
-              p "True value: #{@flag}"
-            else
-              @flag = false
-              p "false value: #{@flag}"
-            end
-          end
-        end
-      end
-      ### end new code
+	#Check for two trips assignment
+	#writing notification flag logic here starts here
+	current_trip_id = self.id
+	trips_records = Trip.where("(status = ? OR status = ? OR status = ? OR status = ?)", "assigned", "assign_requested", "assign_request_expired", 'active').where(driver_id:driver.id).where(id != self.id)
+	p "++++++++++++++++++++++"
+	#p trips_records
+	p "++++++++++++++++++++++"		
+	p "========1 trip count============"
+	p trips_records.size
+	#p trips.length
+	if trips_records.count > 0
+		@flag = false
+		### start new code
+		if self.status =="active"
+			@flag = true
 		else
-			@flag = true 
+			#notified_trip_plan_date = self.scheduled_date.in_time_zone("Kolkata")
+			notified_trip_plan_date = Time.at(self.scheduled_date.to_i).in_time_zone("Kolkata")		
+			notified_trip_id = self.id
+			p "====notified_trip_plan_date======="
+			p  "notified_trip_id : #{notified_trip_id}, notified_trip_plan_date: #{  notified_trip_plan_date}"
+			trips_records.each do |trip|
+				if notified_trip_id != trip.id
+					loop_trip_plan_date = Time.at(trip.scheduled_date.to_i).in_time_zone("Kolkata")
+					p "====loop_trip_plan_date======="
+					p  "loop_trip_id : #{trip.id}, loop_trip_plan_date: #{loop_trip_plan_date}"
+					if notified_trip_plan_date < loop_trip_plan_date
+						@flag = true
+						p "True value: #{@flag}"
+					else
+						@flag = false
+						p "false value: #{@flag}"
+					end
+				end
+			end
 		end
-		#writing notification flag logic here end here
-	   puts @flag
-     # abort(@flag)
-     puts "===========flag1=============="
-     data = {
-            data: {
-                trip_id: self.id,
-                status: self.status,
-                trip_type: self.trip_type,
-                passengers: self.passengers,
-                approximate_duration: self.scheduled_approximate_duration,
-                approximate_distance: self.scheduled_approximate_distance,
-                date: self.scheduled_date.to_i,
-                assign_request_expired_date: self.assign_request_expired_date.to_i,
-                push_type: :driver_new_trip_assignment,
-                current_trip: @flag
-            }
-        }
-        puts "==================Data driver_new_trip_assignment=========="
-        puts data
-        PushNotificationWorker.perform_async(
-            driver.user_id,
-            :driver_new_trip_assignment,
-            data
-        )        
-  end
+		### end new code
+	else
+		@flag = true 
+	end
+	#writing notification flag logic here end here
+	puts @flag
+	# abort(@flag)
+	puts "===========flag=============="
+	data = {
+		data: {
+			trip_id: self.id,
+			status: self.status,
+			trip_type: self.trip_type,
+			passengers: self.passengers,
+			approximate_duration: self.scheduled_approximate_duration,
+			approximate_distance: self.scheduled_approximate_distance,
+			date: self.scheduled_date.to_i,
+			assign_request_expired_date: self.assign_request_expired_date.to_i,
+			push_type: :driver_new_trip_assignment,
+			current_trip: @flag,
+			recurring_notification:"no"
+		}
+	}
+	puts "==================Data driver_new_trip_assignment=========="
+	puts data
+	PushNotificationWorker.perform_async(
+		driver.user_id,
+		:driver_new_trip_assignment,
+		data
+	)        
+end
 
   # Send push notification to driver about unassignment
   def notify_driver_about_unassignment
