@@ -21,7 +21,10 @@ angular.module('app').factory('ConstraintService', ['$resource', 'BASE_URL_8002'
         url: BASE_URL_MAIN + 'zones/:siteId',
         method: 'GET',
       },
-
+      getZone: {
+        url: BASE_URL_API_8003 + 'zones/:siteId',
+        method: 'GET',
+      },
       createZones: {
         url: BASE_URL_8002 + 'createZones',
         method: 'POST',

@@ -50,7 +50,7 @@ angular.
 
 
     $scope.fetchZones = () => {
-      ConstraintService.getZones({ siteId: $scope.siteID }, res => {
+      ConstraintService.getZone({ siteId: $scope.siteID }, res => {
         if (res['success']) {
           $scope.zoneList = res.data.zoneList;
           
