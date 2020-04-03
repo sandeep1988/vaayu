@@ -10,7 +10,7 @@ angular.module('app').factory('TripboardService', ['$resource', 'BASE_URL_8002',
       savePanicResponse: { url: BASE_URL_8002 + 'save-panic-response', method: 'POST' },
       callOperator: { url: BASE_URL_8002 + 'call-generate-operator', method: 'POST' },
       addRemarkInTripForDriverPanic: { url: BASE_URL_8002 + 'addRemarkInTripForDriverPanic', method: 'POST' },
-      forceCompleteTrip: {url: BASE_URL_MAIN+ 'completeThePendingTrip', method: 'POST'}
+      forceCompleteTrip: {url: BASE_URL_API_8004+ 'completeThePendingTrip', method: 'POST'}
     });
   }]);
 
