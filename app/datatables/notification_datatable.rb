@@ -13,13 +13,14 @@ class NotificationDatatable
 
   def data
     @notifications_data = notifications_data
+
     {
        "DT_RowId" => "#{Notification::DATATABLE_PREFIX}-#{@notifications_data[:first_notification].trip_id}",
        :roster_name => @notifications_data[:roster_name],
        :date => @notifications_data[:first_notification].created_at.strftime("%d/%m/%Y"),
        :id => @notifications_data[:first_notification].id,
        :created_at => @notifications_data[:first_notification].created_at.strftime("%d/%m/%Y  %I:%M%p"),
-       :display_message => I18n.t('notification.message.' + (@notifications_data[:first_notification].message.present? ? @notifications_data[:first_notification].message : ' ')) ,
+       :display_message => I18n.t('notification.message.' + (@notifications_data[:first_notification].message.present? ? @notifications_data[:first_notification].message : ' ')),
         employee_name: @notifications_data[:first_notification].employee_name, 
         site_name: @notifications_data[:first_notification]&.trip&.site&.name, 
         driver_name: @notifications_data[:first_notification].driver_name,
@@ -46,9 +47,8 @@ class NotificationDatatable
        :role => @user.role,
        :badge_count => @badge_count,
        :reporter => @notifications_data[:first_notification]&.reporter
-       #:trip_route => @notifications_data[:trip_route],
-       #:trip => @notifications_data[:trip]
     }
+
   end
   
   private
