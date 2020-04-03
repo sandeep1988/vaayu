@@ -32,6 +32,7 @@ json.trip_routes @trip.trip_routes.order(:scheduled_route_order) do |trip_route|
     json.id trip_route.employee.user_id
     json.extract! trip_route.employee, :username, :f_name, :m_name, :l_name, :email, :phone, :home_address, :gender
     json.profile_picture trip_route.employee.full_avatar_url
+    json.area trip_route.employee.landmark
     json.home_address_location do
       json.latitude trip_route.employee.home_address_latitude
       json.longitude trip_route.employee.home_address_longitude
