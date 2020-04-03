@@ -13,6 +13,7 @@ class NotificationDatatable
 
   def data
     @notifications_data = notifications_data
+    
     {
        "DT_RowId" => "#{Notification::DATATABLE_PREFIX}-#{@notifications_data[:first_notification].trip_id}",
        :roster_name => @notifications_data[:roster_name],
