@@ -1340,12 +1340,17 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         // ToasterService.clearToast();
         $scope.toggleView = true;
         console.log('success message', data['message'])
-        document.getElementById('custom-message').innerText = 'Vehicle added successfully'
-        document.getElementById('custom-message').style.display = 'block'
-        setTimeout(() => {
-          document.getElementById('custom-message').innerText = ''
+        if(data['message']){
+          document.getElementById('custom-message').innerText = 'Vehicle added successfully'
+          document.getElementById('custom-message').style.display = 'block'
+          setTimeout(() => {
+            document.getElementById('custom-message').innerText = ''
+            document.getElementById('custom-message').style.display = 'none'
+          }, 3000)
+        } else {
           document.getElementById('custom-message').style.display = 'none'
-        }, 3000)
+        }
+        
         
       } else {
         // ToasterService.clearToast();
