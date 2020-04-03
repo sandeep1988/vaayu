@@ -25,7 +25,7 @@ if (document.domain === PROD_OPERATOR_URL) {
     angular.module('app').constant('BASE_URL_API_8005', NODE_API_URL+':8005/api/v1/');
     angular.module('app').constant('BASE_URL_RUBY', 'http://'+PROD_OPERATOR_URL+'/api/v2/');    
     
-} else if (document.domain === SANDBOX_OPERATOR_URL) {
+} else if (document.domain === SANDBOX_OPERATOR_URL ) {
     let NODE_API_URL = 'http://sandboxapi.mllvaayu.com';
     angular.module('app').constant('BASE_URL_MAIN', NODE_API_URL+'/api/v1/');
     angular.module('app').constant('BASE_URL', NODE_API_URL+':8001/api/v1/');

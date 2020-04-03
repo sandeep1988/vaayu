@@ -362,6 +362,11 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         return;
       }
 
+      $scope.sosAlert = data.data.stats['sos_count']
+      if($scope.sosAlert > 0){
+        $scope.playAudio()
+      }
+
       // $scope.fullRoster = TripboardResponse.tempResponse.data.tripsdetails;
       $scope.fullRoster = data.data.tripsdetails;
       $scope.rosters = $scope.fullRoster;
