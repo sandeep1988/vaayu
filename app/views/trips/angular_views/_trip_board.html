@@ -212,7 +212,7 @@
   <!-- <button id="myBtn">Open Modal</button> -->
 
   <!-- The Modal -->
-  <div id="myModal" class="vaayu-modal" style="display: block;" ng-if="showPopup">
+  <div id="myModal" class="vaayu-modal" style="display: block; padding-top: 65px;" ng-if="showPopup">
 
     <!-- Modal content -->
     <div class="vaayu-modal-content" style="width: 90%;margin-left: 95px;">
@@ -391,13 +391,27 @@
       </div>
       <div class="vaayu-modal-footer">
         
-        <div ng-dropdown-multiselect=""
+        <div ng-dropdown-multiselect="" id="dropdownParent"
             on-change="test()"
            ng-if="isDisable1(modelData)" options="vehicleList"
           style="display: inline-block;" selected-model="selectedVehicle " checkboxes="true"
-          extra-settings="example14settings" validation="required" search-placeholder="   Change Allocation    " custom-change='changes'
+          extra-settings="example14settings" validation="required" search-placeholder="Change Allocation" custom-change='changes'
           validation-result="selectedVehicle">
         </div>
+
+        <!-- <div class="change-allocation">
+          <div class="main-button">
+            Change Allocation
+            <div class="dropdown-wrapper">
+              <input type="text">
+              <div class="veh-list"></div>
+            </div>
+          </div>
+        </div> -->
+
+        
+
+
         <button type="button" class="vaayu-pop-action-btn" ng-click="changeAllocation(modelData)" ng-if="isDisable()">
           Submit</button>
         <button type="button" class="vaayu-pop-action-btn" ng-click="completeTrip()" ng-if="forceCompleteStatus(modelData)">Force Complete</button>

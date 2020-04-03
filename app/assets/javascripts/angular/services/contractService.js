@@ -1,8 +1,8 @@
-angular.module('app').factory('ContractService', ['$resource', 'BASE_URL_8002', 'BASE_URL', 'BASE_URL_API_8002',
-  function ($resource, BASE_URL_8002, BASE_URL, BASE_URL_API_8002) {
-    return $resource(BASE_URL + 'contract', {}, {
+angular.module('app').factory('ContractService', ['$resource', 'BASE_URL_8002', 'BASE_URL', 'BASE_URL_API_8002','BASE_URL_MAIN',
+  function ($resource, BASE_URL_8002, BASE_URL, BASE_URL_API_8002,BASE_URL_MAIN) {
+    return $resource(BASE_URL_MAIN + 'contract', {}, {
       getSiteList: {
-        url: BASE_URL + 'getAllSiteList',
+        url: BASE_URL_8002 + 'getAllSiteList',
         method: "POST"
       },
 

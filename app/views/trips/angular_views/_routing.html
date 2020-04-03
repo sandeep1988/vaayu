@@ -21,7 +21,7 @@
             "extendedTimeOut": "1000",}'></toaster-container>
             <div class="form-group pr-2">
               <select id="disabledSelect" class="form-control selectFilter" ng-model="selectedShift">
-                <option ng-repeat="shift in shifts" value="{{shift}}">{{shift.name + ' ('+shift.shift_type+')'}}
+                <option ng-repeat="shift in shifts" value="{{shift}}">{{trimSeconds(shift.start_time)}} {{' ('+shift.shift_type+')'}}
                 </option>
               </select>
             </div>
@@ -203,7 +203,7 @@
                                     dnd-dragstart="dragoverCallback(container,index, external, type)"
                                     dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
   
-                                    <div class="inner-text" title="{{item.empName}} -{{item.area}}">
+                                    <div class="inner-text" title="{{item.empName}} -{{item.emp_address}}">
                                       <span class="empId">{{item.displayEmpId}}</span> - <span>{{item.area}}</span>
                                     </div>
                                   </li>
@@ -343,7 +343,7 @@
                                     dnd-dragstart="dragoverCallback(container,index, external, type)"
                                     dnd-moved="container.employees.splice($index, 1)" dnd-dragend="dropCallback(container,index, item, external, type)">
   
-                                    <div class="inner-text" title="{{item.empName}} -{{item.area}}">
+                                    <div class="inner-text" title="{{item.empName}} -{{item.emp_address}}">
                                       <span class="empId">{{item.displayEmpId}}</span> - <span>{{item.area}}</span>
                                     </div>
                                   </li>
@@ -489,6 +489,7 @@
                 <div class="col-md-10">
                   <h3 class="float-left"><span class="vaayu-sidebar-title">Add Vehicle </span> <span
                       class="title-caption"></span></h3>
+                  <h6 class="float-left custom-message" id="custom-message"></h6>
                 </div>
                 <div class="col-md-2 text-right">
                   <button type="button" ng-click="hideVehicalSidebar()" class="btn btn-close float-right">&#x2715;</button>
@@ -549,8 +550,26 @@
                     <li ng-repeat="vehical in list.vehical" dnd-draggable="vehical" no-drop
                       dnd-effect-allowed="move" dnd-type="vehical.type" dnd-disable-if="vehical.type == 'unknown'"
                       dnd-moved="list.vehical.splice($index, 1)"
-                      class="background-{{vehical.type}} input-group employee-list-group-item">
-  
+                      class="background-{{vehical.type}} input-group employee-list-group-item hover-parent"
+                      ng-mouseenter="options=true" ng-mouseleave="options=false" 
+                      style="cursor: pointer;">
+                      <div class="inner-box" ng-if="options && vehical.tripData.length > 0">
+                        <div class="warning-wrap"ng-show="vehical.tripData.length > 2">Cannot assign more trips to this vehicle</div>
+                        <div class="" ng-repeat="trip in vehical.tripData.slice(0,2)">
+                          <p class="hover-p">Trip Id: {{trip.trip_id}}</p>
+                          <p class="hover-p">Status: <span ng-show="trip.trip_status === 'active'">Ongoing</span>
+                            <span ng-show="trip.trip_status === 'assigned'">Assigned</span>
+                            <span ng-show="trip.trip_status === 'assign_requested'">Assign requested</span>
+                            <span ng-show="trip.trip_status === 'assign_request_expired'">Assign request expired</span>
+                            <span ng-show="trip.trip_status === 'canceled'">Canceled</span>
+                            <span ng-show="trip.trip_status === 'completed'">Completed</span>
+                            <span ng-show="trip.trip_status === 'created'">Trip created</span>
+
+                          </p>
+                          <p class="hover-p">Type: <span ng-show="trip.trip_type == 0">Login</span><span ng-show="trip.trip_type == 1">Log Out</span></p>
+                          <p class="hover-p">Trip end time: {{trip.tripdate}} | {{trip.estimated_trip_endtime}}</p>
+                        </div>
+                      </div>
                       <span class="input-group-addon addon-prepend">
                         <div class="inner-addon">
                           <i class="fa fa-car"></i>

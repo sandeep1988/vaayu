@@ -2,7 +2,7 @@
 
 
 angular.module('app').controller('reportCtrl', function ($scope,RosterService, RouteService, RouteUpdateService,$http,  
-    AutoAllocationService,BASE_URL_API_8005, BASE_URL_8002,
+    AutoAllocationService,BASE_URL_API_8005, BASE_URL_8002, BASE_URL_MAIN, 
     FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService) {
         // $scope.baseUrl3 = BASE_URL_API_8005;
 
@@ -202,7 +202,7 @@ angular.module('app').controller('reportCtrl', function ($scope,RosterService, R
 
         $scope.downloadReport = function(){
             // var url = 'http://qaapi.mllvaayu.com:8005/api/v1/' + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
-            url = BASE_URL_API_8005 + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
+            url = BASE_URL_MAIN + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
             if($scope.reportId && $scope.siteId && $scope.fromDate && $scope.toDate ){
                 $scope.downloadSample(url);
             }

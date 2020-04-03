@@ -113,7 +113,7 @@ angular.module('app').run(function ($rootScope) {
 
 angular.module('app').controller('routeCtrl', function ($scope, $http, $state, Map, SiteService, RosterService, RouteService, RouteUpdateService,
   AutoAllocationService,
-  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, TripboardService,$q,$ngConfirm,$document,$rootScope,$interval) {
+  FinalizeService, RouteStaticResponse, ToasterService, SessionService, BASE_URL_API_8002, BASE_URL_MAIN, TripboardService,$q,$ngConfirm,$document,$rootScope,$interval) {
 
   // $scope.toggleView = false;
   $scope.disableBtn = false;
@@ -401,6 +401,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
     RosterService.get(postData, function (data) {
       $scope.shifts = data.data.shiftdetails;
+      console.log('shifts', $scope.shifts)
       if ($scope.shifts && $scope.shifts.length) {
         $scope.selectedShift = JSON.stringify($scope.shifts[0]);
         $scope.resetRoute();
@@ -458,6 +459,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     return newArray;
   }
 
+ 
+
   $scope.finalizeRoutes = () => {
 
     angular.forEach($scope.model2, function (containers) {
@@ -490,6 +493,58 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
 
   $scope.roundValue = (val) => {
     return parseInt(val)
+  }
+
+  $scope.tConvert = (time) => {
+    // Check correct time format and split into components
+    time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+  
+    if (time.length > 1) { // If time format correct
+      time = time.slice (1);  // Remove full string match value
+      time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join (''); // return adjusted time or original string
+  }
+
+  $scope.dummyVehicle = [
+    {
+      "id": 30,
+      "vehicleId": 30,
+      "vehicleName": null,
+      "model": "BENZ E CLASS",
+      "vehicleNumber": "EB0010010011",
+      "vehicleType": "SEDAN",
+      "seatingCapacity": 4,
+      "ownershipType": "BA",
+      "trip_type": 0,
+      "towardsHome": "false",
+      "fromHome": "true",
+      "driverName": "EB Driver",
+      "driverId": 41,
+      "last_trip_distance": 39,
+      "current_location": {},
+      "tripData": [
+          {
+              "trip_id": 648,
+              "trip_status": "assign_request_expired",
+              "trip_type": 1,
+              "estimated_trip_endtime": ""
+          },
+          {
+              "trip_id": 646,
+              "trip_status": "assigned",
+              "trip_type": 0,
+              "estimated_trip_endtime": ""
+          }
+      ]
+  }
+  ]
+
+  $scope.trimSeconds = (time) => {
+    var a = time.split(':')
+    a.pop()
+    return a.join(':')
   }
 
   $scope.saveRoutes = function () {
@@ -704,8 +759,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       $scope.site_distance =res.data.distance;
     });
 
-    $scope.toggleView = false;
-    ToasterService.clearToast();
+    // $scope.toggleView = false;
+    // ToasterService.clearToast();
     if (!$scope.siteId) {
       $scope.toggleView = true;
       ToasterService.showError('Error', 'Select Site.');
@@ -1284,11 +1339,29 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         isAssign = false;
         // ToasterService.clearToast();
         $scope.toggleView = true;
-        ToasterService.showSuccess('Success', data['msg']);
+        console.log('success message', data['message'])
+        if(data['message']){
+          document.getElementById('custom-message').innerText = 'Vehicle added successfully'
+          document.getElementById('custom-message').style.display = 'block'
+          setTimeout(() => {
+            document.getElementById('custom-message').innerText = ''
+            document.getElementById('custom-message').style.display = 'none'
+          }, 3000)
+        } else {
+          document.getElementById('custom-message').style.display = 'none'
+        }
+        
+        
       } else {
         // ToasterService.clearToast();
         $scope.toggleView = true;
-        ToasterService.showError('Error', data['msg']);
+        console.log('error message', data['message'])
+        document.getElementById('custom-message').innerText = data['message']
+        document.getElementById('custom-message').style.display = 'block'
+        setTimeout(() => {
+          document.getElementById('custom-message').innerText = ''
+          document.getElementById('custom-message').style.display = 'none'
+        }, 3000)
       }
       $scope.resetRoute();
     })

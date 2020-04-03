@@ -1,5 +1,5 @@
-angular.module('app').factory('RouteService', ['$resource', 'BASE_URL_8002','BASE_URL_API_8002', 'SessionService',
-function ($resource, BASE_URL_8002, BASE_URL_API_8002, SessionService) {
+angular.module('app').factory('RouteService', ['$resource', 'BASE_URL_8002','BASE_URL_API_8002','BASE_URL_MAIN', 'SessionService',
+function ($resource, BASE_URL_8002, BASE_URL_API_8002,BASE_URL_MAIN, SessionService) {
 
   return $resource(BASE_URL_8002 + 'generateRoutes', {}, {
     // query: { method: "GET", isArray: true },

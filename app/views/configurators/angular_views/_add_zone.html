@@ -3,7 +3,10 @@
     <div class="tab-content-area ">
         <div class="tab-content">
             <div class="row ">
-                <toaster-container></toaster-container>
+                <toaster-container ng-show="toggleView" toaster-options='{"showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2000",
+                "extendedTimeOut": "1000",}'></toaster-container>
                 <div class="col-md-4 ">
                     <div class="form-group">
                         <label for="usr" class="leb_color">Site Name *</label>

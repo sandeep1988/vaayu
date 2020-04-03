@@ -1,6 +1,6 @@
 
-angular.module('app').factory('RosterService', ['$resource', 'BASE_URL_8002','BASE_URL','BASE_URL_API_8002', 'BASE_URL_API_8005',
-function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_8005) {
+angular.module('app').factory('RosterService', ['$resource', 'BASE_URL_8002','BASE_URL','BASE_URL_API_8002', 'BASE_URL_API_8005','BASE_URL_MAIN',
+function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_8005,BASE_URL_MAIN) {
   return $resource(BASE_URL_8002 + 'roasterlist', {}, {
     // query: { method: "GET", isArray: true },
     // create: { method: "POST"},
@@ -12,7 +12,7 @@ function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_800
       method: "POST"
     },
     downloadSample: {
-      url: BASE_URL_API_8002 + 'employeeupload/downloadEmployeeExcel/:siteId',
+      url: BASE_URL_MAIN + 'employeeupload/downloadEmployeeExcel/:siteId',
       method: "GET"
     },
     isDownloadable: {
@@ -20,7 +20,7 @@ function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_800
       method: "GET"
     },
     getAllSiteList: {
-      url: BASE_URL + 'getAllSiteList',
+      url: BASE_URL_8002 + 'getAllSiteList',
       method: "POST"
     },
     addCustomEmployee: {
@@ -40,7 +40,7 @@ function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_800
       method: "POST"
     },
     exportReport: {
-      url: BASE_URL_API_8005 + 'tripReport/ksjdfhsi5735936',
+      url: BASE_URL_8002 + 'tripReport/ksjdfhsi5735936',
       method: "POST"
     },
     isExcelDownloadable: {
