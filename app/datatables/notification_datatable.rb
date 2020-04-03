@@ -19,7 +19,7 @@ class NotificationDatatable
        :date => @notifications_data[:first_notification].created_at.strftime("%d/%m/%Y"),
        :id => @notifications_data[:first_notification].id,
        :created_at => @notifications_data[:first_notification].created_at.strftime("%d/%m/%Y  %I:%M%p"),
-       :display_message => I18n.t('notification.message.' + (@notifications_data[:first_notification].message.present? ? @notifications_data[:first_notification].message : ' ')) ,
+       :display_message => I18n.t('notification.message.' + (@notifications_data[:first_notification].message.present? ? @notifications_data[:first_notification].message : ' ')),
         employee_name: @notifications_data[:first_notification].employee_name, 
         site_name: @notifications_data[:first_notification]&.trip&.site&.name, 
         driver_name: @notifications_data[:first_notification].driver_name,
@@ -30,14 +30,11 @@ class NotificationDatatable
        :trip_url => @notifications_data[:first_notification].trip_url,
        :trip_id => @notifications_data[:first_notification].trip_id,
        :driver_id => @notifications_data[:first_notification].driver_id,
-
        :driver_request_id => @notifications_data[:first_notification].driver_request_id,
-
        :driver_name => @notifications_data[:first_notification].driver_name,
        :driver_phone => @notifications_data[:first_notification].driver_phone,
        :driver_licence => @notifications_data[:first_notification].driver_licence,
        :driver_plate => @notifications_data[:first_notification].driver_plate,
-
        :employee_name => @notifications_data[:first_notification].employee_name,
        :employee_phone => @notifications_data[:first_notification].employee_phone,
        :move_driver_to_next_step => "",
@@ -46,9 +43,8 @@ class NotificationDatatable
        :role => @user.role,
        :badge_count => @badge_count,
        :reporter => @notifications_data[:first_notification]&.reporter
-       #:trip_route => @notifications_data[:trip_route],
-       #:trip => @notifications_data[:trip]
     }
+    
   end
   
   private
