@@ -12,7 +12,7 @@ function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_800
       method: "POST"
     },
     downloadSample: {
-      url: BASE_URL_MAIN + 'employeeupload/downloadEmployeeExcel/:siteId',
+      url: BASE_URL_API_8002 + 'employeeupload/downloadEmployeeExcel/:siteId',
       method: "GET"
     },
     isDownloadable: {
