@@ -314,7 +314,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state,BASE_URL_M
         }
         var request = new XMLHttpRequest();
         var vm = $scope;
-        request.open("POST", BASE_URL_MAIN + contractType + "/upload");
+        request.open("POST", BASE_URL_API_8003 + contractType + "/upload");
         // request.open("POST", "https://a7c05928.ngrok.io/api/v1/" + contractType + "/upload");
         request.onload = function () {
             console.log(request.response);
@@ -502,7 +502,7 @@ app.controller('contractListAddCtrl', function ($scope, $http, $state,BASE_URL_M
         }
 
         var a = document.createElement("a");
-        let url = BASE_URL_MAIN+'contract/download-samplefile/' + id + '/' + type + '/' + $scope.ctype
+        let url = BASE_URL_API_8003+'contract/download-samplefile/' + id + '/' + type + '/' + $scope.ctype
         a.href = url;
         a.download = 'contract_sample.xlsx';
         a.click();

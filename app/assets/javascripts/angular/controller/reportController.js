@@ -202,7 +202,7 @@ angular.module('app').controller('reportCtrl', function ($scope,RosterService, R
 
         $scope.downloadReport = function(){
             // var url = 'http://qaapi.mllvaayu.com:8005/api/v1/' + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
-            url = BASE_URL_MAIN + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
+            url = BASE_URL_API_8005 + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
             if($scope.reportId && $scope.siteId && $scope.fromDate && $scope.toDate ){
                 $scope.downloadSample(url);
             }
