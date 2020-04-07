@@ -30,7 +30,20 @@ $(function () {
                 columns: [
                     {data: "date"},
                     {data: "shift_time"},
-                    {data: "direction"},
+                    {
+                      data: "direction",
+                      orderable: false,
+                      render: function (data) {
+                        
+                            if( data.toLowerCase() == "check in" ){
+                            return "Login";
+                            }else if( data.toLowerCase() == "check out" ){
+                                return "Log out";
+                            }else{
+                               return data; 
+                            }
+                        }
+                    },
                     {data: "vehicle_deployed", orderable: false},
                     {data: "total_capacity", orderable: false},
                     {data: "planned_capacity", orderable: false},

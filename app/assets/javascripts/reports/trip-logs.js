@@ -35,7 +35,21 @@ $(function () {
                     {data: "operator"},
                     {data: "plate_number"},
                     {data: "shift_time", orderable: false},
-                    {data: "direction", orderable: false},
+                    //{data: "direction", orderable: false},
+                    {
+                      data: "direction",
+                      orderable: false,
+                      render: function (data) {
+                        
+                            if( data.toLowerCase() == "check in" ){
+                            return "Login";
+                            }else if( data.toLowerCase() == "check out" ){
+                                return "Log out";
+                            }else{
+                               return data; 
+                            }
+                        }
+                    },
                     {data: "actual_time", orderable: false},
                     {data: "trip_created", orderable: false},
                     {data: "trip_assigned", orderable: false},
