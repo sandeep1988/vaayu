@@ -57,7 +57,9 @@
           <div class="btn-toolbar float-right pad-8 mt-5" role="toolbar">
             
             <div  style="float: right;">
-              <button type="button" ng-click="onFilter()" class="btn btn-terniary-blue margin-right">Filter</button>
+              <button type="button" ng-click="onFilter()" class="btn btn-terniary-blue margin-right" style="min-width: 40px;">
+                <span style="width: 16px; height: 16px; display: inline-block; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAAXNSR0IB2cksfwAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAHJQTFRF////////////////////AAAA////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////H+5shgAAACZ0Uk5Tq/+uXGAApq0P4OQTPPz9QoaJBMjOBiPy9yxtcScrJSniEumsSwN3i8FSAAAAW0lEQVR4nKXIRRaAQBBDwUaCu7tz/ytCA/MY1mSVX0TKZyppX9AJhtwmCJb9tuOeAM8XHYRgQCQgxg1JeneWP4Ci5K5qCEDD0OKFjqGXYGAY/8M0S+Au67ZfDwdvtgYi1IJYgAAAAABJRU5ErkJggg==') top left no-repeat"></span>
+              </button>
               <button type="button" ng-click="autoAllocate()" class="btn btn-terniary-blue margin-right">Auto Allocate</button>
               <button type="button" ng-click="toggleMap()" class="btn btn-terniary-blue margin-right"><span ng-if="isShowMap">Hide Map</span><span ng-if="!isShowMap">Show Map</span></button>
               <button type="button" ng-click="finalizeRoutes()" class="btn btn-terniary-blue">Finalize Route</button>
@@ -430,7 +432,57 @@
 </div>
 </div>
 
-
+<div class="row vayau-sidebar filter-sidebar" ng-if="filterToggle">
+  <div class="col-md-12 ng-scope">
+    <div class="vaayu-sidebar-panel" style="position: relative; padding-bottom: 100px;">
+      <div class="vaayu-sidebar-heading">
+        <div class="row">
+          <div class="col-md-10">
+            <h3 class="float-left"><span class="vaayu-sidebar-title">Filter</span> <span class="title-caption"></span></h3>
+          </div>
+          <div class="col-md-2">
+            <button type="button" ng-click="hideFilterSidebar()" class="btn btn-close float-right">✕</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <form>
+              <div class="form-group pr-2 selectWrapper">
+                <!-- <select ng-model="zone" class="form-control" placeholder="Select Site" ng-change="zoneFilter()" style="width: 100%;" multiple="multiple">
+                  <option ng-value="1" class="form-control">Option 1</option>
+                  <option ng-value="2" class="form-control">Option 2</option>
+                  <option ng-value="3" class="form-control">Option 3</option>
+                  <option ng-value="4" class="form-control">Option 4</option>
+                </select> -->
+                <!-- <input type="text" ng-model="search" ng-change="updateRouteFilter(search)"> -->
+                <div ng-dropdown-multiselect="" events="clickEvents" options="capacityObj"
+                selected-model="selectedCapacity" checkboxes="true" class="filter-btn capacity"
+                extra-settings="example14settings" search-placeholder="Capacity"
+                ></div>
+                
+                <div ng-dropdown-multiselect="" events="clickEvents" options="typeObj"
+                selected-model="selectedType" checkboxes="true" class="filter-btn type"
+                extra-settings="example14settings" search-placeholder="Type"
+                ></div>
+                
+                <div ng-dropdown-multiselect="" events="clickEvents" options="landmarkObj"
+                selected-model="selectedLandmark" checkboxes="true" class="filter-btn type"
+                extra-settings="example14settings" search-placeholder="Landmark"
+                ></div>
+                
+                <div ng-dropdown-multiselect="" events="clickEvents" options="zoneObj"
+                selected-model="selectedZone" checkboxes="true" class="filter-btn type"
+                extra-settings="example14settings" search-placeholder="Zone"
+                ></div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-primary clear-btn" ng-if="filterToggle" ng-click="clearSelection()">CLEAR FILTER</button>
+  <button class="btn btn-primary clear-btn" style="left: auto; right: 10px;;" ng-if="filterToggle" ng-click="applyFilter()">APPLY</button>
+</div>  
 </section>
 <div class="dnd-scroll-area" dnd-scroll-area dnd-region="bottom" dnd-scroll-container="collectionList"></div>
 <div class="row vayau-sidebar  guard-sidebar" ng-if="isGuardSidebarView">
@@ -613,7 +665,6 @@
 </li>
 </ul>
 </div>
-</div>
 <div class="row vaayu-sidebar-footer">
   <div class="col-md-6 pr-2">
     <button type="button" class="btn btn-cancel btn-block"
@@ -631,61 +682,8 @@
     </div>
   </div>
 </div>
-</div>
-</div>
 
-<div class="row vayau-sidebar filter-sidebar" ng-if="filterToggle">
-  <div class="col-md-12 ng-scope">
-    <div class="vaayu-sidebar-panel" style="position: relative;">
-      <div class="vaayu-sidebar-heading">
-        <div class="row">
-          <div class="col-md-10">
-            <h3 class="float-left"><span class="vaayu-sidebar-title">Filter</span> <span class="title-caption"></span></h3>
-          </div>
-          <div class="col-md-2">
-            <button type="button" ng-click="hideFilterSidebar()" class="btn btn-close float-right">✕</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <form>
-              <div class="form-group pr-2 selectWrapper">
-                <!-- <select ng-model="zone" class="form-control" placeholder="Select Site" ng-change="zoneFilter()" style="width: 100%;" multiple="multiple">
-                  <option ng-value="1" class="form-control">Option 1</option>
-                  <option ng-value="2" class="form-control">Option 2</option>
-                  <option ng-value="3" class="form-control">Option 3</option>
-                  <option ng-value="4" class="form-control">Option 4</option>
-                </select> -->
-                <input type="text" ng-model="search" ng-change="updateRouteFilter(search)">
-                <div ng-dropdown-multiselect="" events="clickEvents" options="capacityObj"
-                selected-model="selectedCapacity" checkboxes="true" class="filter-btn capacity"
-                extra-settings="example14settings" search-placeholder="Capacity"
-                ></div>
-                
-                <div ng-dropdown-multiselect="" events="clickEvents" options="typeObj"
-                selected-model="selectedType" checkboxes="true" class="filter-btn type"
-                extra-settings="example14settings" search-placeholder="Type"
-                ></div>
-                
-                <div ng-dropdown-multiselect="" events="clickEvents" options="landmarkObj"
-                selected-model="selectedLandmark" checkboxes="true" class="filter-btn type"
-                extra-settings="example14settings" search-placeholder="Landmark"
-                ></div>
-                
-                <div ng-dropdown-multiselect="" events="clickEvents" options="zoneObj"
-                selected-model="selectedZone" checkboxes="true" class="filter-btn type"
-                extra-settings="example14settings" search-placeholder="Zone"
-                ></div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <button class="btn btn-primary clear-btn" ng-if="filterToggle" ng-click="clearSelection()">CLEAR FILTER</button>
-  <button class="btn btn-primary clear-btn" style="left: auto; right: 10px;;" ng-if="filterToggle" ng-click="applyFilter()">APPLY</button>
-</div>
+
 <div class="row vayau-sidebar vehical-sidebar" ng-if="isVehicalSidebarView">
   <div  class="col-md-12">
     <div class="vaayu-sidebar-panel">

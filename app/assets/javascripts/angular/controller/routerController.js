@@ -952,6 +952,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
     return time.join (''); // return adjusted time or original string
   }
 
+
   $scope.dummyVehicle = [
     {
       "id": 30,
@@ -1875,8 +1876,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
   $scope.onFilter = () => {
     let shift = JSON.parse($scope.selectedShift);
     if(shift != null && $scope.siteId && shift.id && $scope.filterDate){
-      alert('filter')
       $scope.filterToggle = true;
+      console.log('filter', $scope.filterToggle)
       let param = {
         site_id: parseInt($scope.siteId),
         shift_id: parseInt(shift.id),
