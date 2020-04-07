@@ -255,11 +255,12 @@ class EmployeeTripsController < TripValidationController
   end
 
   def schedule_trip_update
+	
     return_data = {}
     @employee = Employee.find(params[:id])
     return_data[:status] = 400 and raise RuntimeError unless params[:employee].present?
     return_data[:status] = 400 and raise RuntimeError if params[:employee][:check_in_attributes].blank? || params[:employee][:check_out_attributes].blank?
-    EmployeeTrip.create_or_update(@employee, employee_trip_params)
+	EmployeeTrip.create_or_update(@employee, employee_trip_params)
     (0..params[:employee][:check_in_attributes].count - 1).to_a.each do  |check_in|
       if params[:employee][:check_in_attributes][check_in.to_s]["id"].present?
         EmployeeTrip.find(params[:employee][:check_in_attributes][check_in.to_s]["id"]).update(shift_id: params[:employee][:check_in_attributes][check_in.to_s]["shift_id"])

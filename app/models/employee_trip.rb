@@ -317,7 +317,8 @@ class EmployeeTrip < ApplicationRecord
         check_in_time, check_out_time =
           zone.parse("#{Time.now.to_date} #{shift.start_time}"),
           zone.parse("#{Time.now.to_date} #{shift.end_time}")
-        check_out_date = check_out_date + 1.day if check_in_time >= check_out_time
+        #check_out_date = check_out_date + 1.day if check_in_time >= check_out_time
+		check_out_date = check_out_date if check_in_time >= check_out_time
       end
       [check_out_date]
     end
@@ -349,6 +350,7 @@ class EmployeeTrip < ApplicationRecord
   end
 
   def self.create_or_update(employee, attributes)
+	
     attributes[:check_in_attributes].values.sort_by { |x| x["schedule_date"] }.each_with_index do |check_in_attr, i|
       attribute = attributes[:check_out_attributes].values.sort_by { |x| x["schedule_date"] }[i]
       if attribute.nil?
@@ -414,19 +416,30 @@ class EmployeeTrip < ApplicationRecord
   end
 
   def self.create_employee_trip(attributes, dates, trip_type="")
-    attrs = []
+	
+	p "=== Create ====="
+	p dates
+	p "======"
+	attrs = []
     attributes.first.merge({site_id: attributes.last[:site_id]}) if attributes.last[:id].present?
     attributes.select { |et| et[:id].blank? }.each_with_index { |et_attr, i| attrs << et_attr.slice("site_id", "employee_id", "bus_rider", "shift_id").merge({date: dates[i], trip_type: trip_type.blank? ? i : trip_type, state: 0, schedule_date: Time.zone.parse("#{et_attr['schedule_date']} 10:00:00")}) if et_attr.present? }
-    EmployeeTrip.create(attrs)
+	p "=== Update ====="
+	p attrs
+	EmployeeTrip.create(attrs)
     update_employee_trip([{}, attributes.last], [{}, dates.last]) if attributes.last[:id].present?
   end
 
   def self.update_employee_trip(attributes, dates, trip_type="")
-    attributes.each_with_index do |et_attr, i|
+	p "=== Update ====="
+	p dates
+	p "======"
+	attributes.each_with_index do |et_attr, i|
       next if et_attr.blank?
       if et_attr["id"].present?
         et = EmployeeTrip.where(id: et_attr["id"], status: ['upcoming', 'unassigned', 'reassigned']).first
-        et.update_attributes(et_attr.slice("site_id", "bus_rider", "shift_id").merge({date: dates[i], trip_type: trip_type.blank? ? i : trip_type, schedule_date: Time.zone.parse("#{et_attr['schedule_date']} 10:00:00")})) if et.present?
+        p "=== Update ====="
+		p et_attr
+		et.update_attributes(et_attr.slice("site_id", "bus_rider", "shift_id").merge({date: dates[i], trip_type: trip_type.blank? ? i : trip_type, schedule_date: Time.zone.parse("#{et_attr['schedule_date']} 10:00:00")})) if et.present?
       else
         create_employee_trip([{}, et_attr], ["", dates[i]])
       end
