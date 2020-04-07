@@ -30,7 +30,20 @@ $(function () {
                 columns: [
                     {data: "date"},
                     {data: "shift"},
-                    {data: "direction"},
+                    {
+                      data: "direction",
+                      orderable: false,
+                      render: function (data) {
+                        
+                            if( data.toLowerCase() == "check in" ){
+                            return "Login";
+                            }else if( data.toLowerCase() == "check out" ){
+                                return "Log out";
+                            }else{
+                               return data; 
+                            }
+                        }
+                    },
                     {data: "vendor"},
                     {data: "no_of_trips", orderable: false},
                     {data: "planned_mileage", orderable: false},
