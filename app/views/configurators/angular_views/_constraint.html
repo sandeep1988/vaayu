@@ -333,16 +333,19 @@
                     <div class="row mb-2 ">
                         <div class="col-md-3">
                             <label class="text-label">WE Cutoff Checkin (hrs): </label>
-                            <input type="number" required class="form-control" ng-model="we_checkin" /><br />
+                            <input type="number" pattern="[0-9]" required class="form-control" ng-model="we_checkin" /><br />
                         </div>
                         <div class="col-md-3">
-                            <label class="text-label">WE Cutoff Checkout (hrs): </label><input type="number" required class="form-control" ng-model="we_checkout" /><br />
+                            <label class="text-label">WE Cutoff Checkout (hrs): </label>
+                            <input type="number" pattern="[0-9]" required class="form-control" ng-model="we_checkout" /><br />
                         </div>
                         <div class="col-md-3">
-                            <label class="text-label">WD Cutoff Checkin (hrs): </label><input type="number" required class="form-control" ng-model="wd_checkin" /><br />
+                            <label class="text-label">WD Cutoff Checkin (hrs): </label>
+                            <input type="number" pattern="[0-9]" required class="form-control" ng-model="wd_checkin"  /><br />
                         </div>
                         <div class="col-md-3">
-                            <label class="text-label">WD Cutoff Checkout (hrs): </label><input type="number" required class="form-control" ng-model="wd_checkout" /><br />
+                            <label class="text-label">WD Cutoff Checkout (hrs): </label>
+                            <input type="number" pattern="[0-9]" required class="form-control" ng-model="wd_checkout" /><br />
                         </div>
                     </div>
                     <input class="btn main-submit-btn" style="float: left !important;" type="submit" ng-click="onSubmit()" value="Save" />
