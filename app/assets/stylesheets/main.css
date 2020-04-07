@@ -356,6 +356,8 @@
   -webkit-box-shadow: 3px 3px 6px 2px rgba(0,0,0,0.3);
   -moz-box-shadow: 3px 3px 6px 2px rgba(0,0,0,0.3);
   box-shadow: 3px 3px 6px 2px rgba(0,0,0,0.3);
+  z-index: 1;
+  background: #fff;
 }
 .hover-box :nth-child(2){
   margin-top: 8px;

@@ -31,7 +31,20 @@ $(function () {
                     {data: "date"},
                     {data: "trip_id"},
                     {data: "status"},
-                    {data: "direction"},
+                    {
+                      data: "direction",
+                      orderable: false,
+                      render: function (data) {
+                        
+                            if( data.toLowerCase() == "check in" ){
+                            return "Login";
+                            }else if( data.toLowerCase() == "check out" ){
+                                return "Log out";
+                            }else{
+                               return data; 
+                            }
+                        }
+                    },
                     {data: "shift_time"},
                     {data: "driver_name"},
                     {data: "vehicle"},

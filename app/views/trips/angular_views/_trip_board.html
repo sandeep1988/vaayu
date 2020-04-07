@@ -229,16 +229,16 @@
       </div>
       <div class="vaayu-modal-body">
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-6">
             <div class="pop-img-card">
               <table class="table table-scroll table-bordered  table-condensed">
                 <thead class="pop-table-head">
                   <tr>
-                    <td>Check In</td>
+                    <th>Check In</th>
                     <th>Employee</th>
                     <th>ETA</th>
                     <th>Call</th>
-                    <th>Emergency</th>
+                    <th style="min-width: 140x;">Emergency</th>
                     <th>Panic Type</th>
                   </tr>
                 </thead>
@@ -260,7 +260,7 @@
                     <td>{{item.eta}}</td>
                     <td><button ng-click="panicCallSesion(item.empId,'Employee')"
                         class="btn btn-sm vaayu-pop-action-btn"><i class="fa fa-phone callIcon"></i></button></td>
-                    <td>
+                    <td style="min-width: 140px;">
                       <div class="input-group" >
                         <form class="form-inline">
                           <div class="form-group">
@@ -303,11 +303,16 @@
                   <span class="pop-name">Guard Assigned</span>
                   <span class="pop-status">{{modelData.guard_assigned}}</span>
                 </div>
+                <div>
+                  <span class="pop-name">Forcefully Completed</span>
+                  <span class="pop-status" ng-if="modelData.is_before_start_completed === 1">YES</span>
+                  <span class="pop-status" ng-if="modelData.is_before_start_completed === 0">NO</span>
+                </div>
               </div>
             </div>
 
           </div>
-          <div class="col-md-4" ng-init="initMap()">
+          <div class="col-md-3" ng-init="initMap()">
             <div class="pop-img-card">
               <div id="map" style="width:100%;height:250px;"></div>
               <div class="container" style="width:100%;">

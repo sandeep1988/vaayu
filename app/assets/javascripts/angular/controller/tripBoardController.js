@@ -654,13 +654,23 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         $scope.vehicleRes = res['data']
         var newarray = [];
         for (let item of vehicleList) {
-          newarray.push({ id: item.id, name: item.vehicleNumber })
+          newarray.push({ id: item.id, name: item.vehicleNumber, tripData: item.tripData })
         }
         for (let item of res.data) {
-          newarray.push({ id: item.id, name: item.vehicleNumber  })
+          newarray.push({ id: item.id, name: item.vehicleNumber, tripData: item.tripData  })
         }
 
-        $scope.vehicleList = newarray;
+        var distinctArray = Array.from(new Set(newarray.map(s => s.id)))
+          .map(id  => {
+            return {
+              id: id,
+              name: newarray.find(s => s.id === id).name,
+              tripData: newarray.find(e => e.id === id).tripData
+            }
+          })
+        
+        $scope.vehicleList = distinctArray;
+        console.log('tempArray', distinctArray)
         console.log('vehicleList', $scope.vehicleList)
         console.log('vehicle Res', $scope.vehicleRes)
 
