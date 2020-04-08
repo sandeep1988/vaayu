@@ -1324,15 +1324,20 @@ class Trip < ApplicationRecord
 			trips_records.each do |trip|
 				if notified_trip_id != trip.id
 					loop_trip_plan_date = Time.at(trip.scheduled_date.to_i).in_time_zone("Kolkata")
-					p "====loop_trip_plan_date======="
-					p  "loop_trip_id : #{trip.id}, loop_trip_plan_date: #{loop_trip_plan_date}"
-					if notified_trip_plan_date < loop_trip_plan_date
-						@flag = true
-						p "True value: #{@flag}"
-					else
+					loop_trip_plan_status = trip.status
+					if loop_trip_plan_status=="active"
 						@flag = false
+					else
+						p "====loop_trip_plan_date======="
+						p  "loop_trip_id : #{trip.id}, loop_trip_plan_date: #{loop_trip_plan_date}"
+						if notified_trip_plan_date < loop_trip_plan_date
+							@flag = true
+							p "True value: #{@flag}"
+						else
+							@flag = false
 						p "false value: #{@flag}"
-					end
+						end
+					end					
 				end
 			end
 		end
@@ -1409,15 +1414,20 @@ def notify_driver_about_assignment
 			trips_records.each do |trip|
 				if notified_trip_id != trip.id
 					loop_trip_plan_date = Time.at(trip.scheduled_date.to_i).in_time_zone("Kolkata")
-					p "====loop_trip_plan_date======="
-					p  "loop_trip_id : #{trip.id}, loop_trip_plan_date: #{loop_trip_plan_date}"
-					if notified_trip_plan_date < loop_trip_plan_date
-						@flag = true
-						p "True value: #{@flag}"
-					else
+					loop_trip_plan_status = trip.status
+					if loop_trip_plan_status=="active"
 						@flag = false
-						p "false value: #{@flag}"
-					end
+					else
+						p "====loop_trip_plan_date======="
+						p  "loop_trip_id : #{trip.id}, loop_trip_plan_date: #{loop_trip_plan_date}"
+						if notified_trip_plan_date < loop_trip_plan_date
+							@flag = true
+							p "True value: #{@flag}"
+						else
+							@flag = false
+							p "false value: #{@flag}"
+						end
+					end					
 				end
 			end
 		end
