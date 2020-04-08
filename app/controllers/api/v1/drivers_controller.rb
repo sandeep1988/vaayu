@@ -140,9 +140,9 @@ module API::V1
       if !is_from_sms?
         authorize! :edit, @driver
       end
-
       #@vehicle = Vehicle.find_by_plate_number(params[:plate_number])
-      @vehicle = Vehicle.where("replace(lower(plate_number), ' ', '') = replace(?, ' ', '')", params[:plate_number].downcase).first
+      @vehicle = Vehicle.where(compliance_status: "Ready For Allocation",induction_status: "Inducted").where("replace(lower(plate_number), ' ', '') = replace(?, ' ', '')", params[:plate_number].downcase).first
+      # Vehicle.where(compliance_status: "Ready For Allocation",induction_status: "Inducted").where("replace(l\rlower(plate_number), ' ', '') = replace(?, ' ', '')", params[:plate_number].downcase).first
 
       if @vehicle.nil?
         render 'api/v1/vehicles/_not_found', status: 404
