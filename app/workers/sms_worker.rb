@@ -17,9 +17,9 @@ class SMSWorker
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       request = Net::HTTP::Post.new(url)
       request["content-type"] = 'application/json'
-      request["authkey"] = '196066Awcqn3vREs5a72b829'
+      request["authkey"] = '325259AMqENB9K5e85863cP1'
       request.body = {
-          "sender": "SOCKET",
+          "sender": "ALYTEN",
           "route": "4",
           "country": "91",
           "sms": [
