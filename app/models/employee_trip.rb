@@ -317,9 +317,42 @@ class EmployeeTrip < ApplicationRecord
         check_in_time, check_out_time =
           zone.parse("#{Time.now.to_date} #{shift.start_time}"),
           zone.parse("#{Time.now.to_date} #{shift.end_time}")
-        check_out_date = check_out_date + 1.day if check_in_time >= check_out_time
+        check_out_date = check_out_date + 1.day if check_in_time >= check_out_time		
       end
       [check_out_date]
+    end
+  end
+  
+  def self.employee_fetch_date(check_in_attr, check_out_attr, zone = Time.zone)
+    if check_in_attr.present?
+      check_in_date = zone.parse("#{check_in_attr[:schedule_date]} #{check_in_attr[:check_in]}")
+      [check_in_date]
+    elsif check_out_attr.present?	
+		check_out_date = zone.parse("#{check_out_attr[:schedule_date]} #{check_out_attr[:check_out]}")
+		employee_id=check_out_attr[:employee_id]	
+		employee_same_date_login_shift= EmployeeTrip.where("employee_id = ?", employee_id).where("trip_type=0").where('CAST(date AS DATE) = ?', check_out_attr[:schedule_date])
+		p "=== employee_same_date_login_shift ====="
+		p employee_same_date_login_shift
+		
+		#checking if check IN trip exist for the same day starts here
+		if employee_same_date_login_shift.present?  && employee_same_date_login_shift.count > 0
+			#comparing checking and checkout date time starts here			
+			check_in_time = zone.parse("#{employee_same_date_login_shift.first.date}")
+			p "check_in_time : #{check_in_time}"
+			#check_out_time = zone.parse(check_out_date)
+			p "check_out_time : #{check_out_date}"
+			if(check_in_time > check_out_date)
+				p "condition ture changing time "
+				check_out_date = check_out_date + 1.day
+				p "New checkout Time #{check_out_date}"
+			end
+			#comparing checking and checkout date time end here
+		end
+		#checking if check IN trip exist for the same day end here
+		
+	  #check_out_date = zone.parse("#{check_out_attr[:schedule_date]} #{check_out_attr[:check_out]}")
+      #EmployeeTrip.where("employee_id = ?", employee_id).where("trip_type=0").where(date)
+	  [check_out_date]
     end
   end
 
@@ -349,6 +382,7 @@ class EmployeeTrip < ApplicationRecord
   end
 
   def self.create_or_update(employee, attributes)
+	
     attributes[:check_in_attributes].values.sort_by { |x| x["schedule_date"] }.each_with_index do |check_in_attr, i|
       attribute = attributes[:check_out_attributes].values.sort_by { |x| x["schedule_date"] }[i]
       if attribute.nil?
@@ -368,14 +402,16 @@ class EmployeeTrip < ApplicationRecord
             EmployeeTrip.upcoming.where(id: check_in_attr[:id]).no_trip_created.destroy_all if check_in_attr[:check_in].blank?
           else
             if check_in_attr[:site_id].present? && check_if_date_is_valid(check_in_attr, nil)
-              dates = fetch_date(check_in_attr, nil)
-              update_employee_trip([check_in_attr], dates, 'check_in')
+              #dates = fetch_date(check_in_attr, nil)
+              dates = employee_fetch_date(check_in_attr, nil)
+			  update_employee_trip([check_in_attr], dates, 'check_in')
             end
           end
         else
           if check_in_attr[:site_id].present? && check_if_date_is_valid(check_in_attr, nil)
-            dates = fetch_date(check_in_attr, nil)
-            create_employee_trip([check_in_attr], dates, 'check_in')
+            #dates = fetch_date(check_in_attr, nil)
+            dates = employee_fetch_date(check_in_attr, nil)
+			create_employee_trip([check_in_attr], dates, 'check_in')
           end
         end
       end
@@ -386,13 +422,15 @@ class EmployeeTrip < ApplicationRecord
             EmployeeTrip.upcoming.where(id: check_out_attr[:id]).no_trip_created.destroy_all if check_out_attr[:check_out].blank?
           else
             if check_out_attr[:site_id].present? && check_if_date_is_valid(nil, check_out_attr)
-              dates = fetch_date(nil, check_out_attr)
+              #dates = fetch_date(nil, check_out_attr)
+			  dates = employee_fetch_date(nil, check_out_attr)
               update_employee_trip([check_out_attr], dates, 'check_out')
             end
           end
         else
           if check_out_attr[:site_id].present? && check_if_date_is_valid(nil, check_out_attr)
-            dates = fetch_date(nil, check_out_attr)
+            #dates = fetch_date(nil, check_out_attr)
+			dates = employee_fetch_date(nil, check_out_attr)
             create_employee_trip([check_out_attr], dates, 'check_out')
           end
         end
@@ -414,19 +452,30 @@ class EmployeeTrip < ApplicationRecord
   end
 
   def self.create_employee_trip(attributes, dates, trip_type="")
-    attrs = []
+	
+	p "=== Create ====="
+	p dates
+	p "======"
+	attrs = []
     attributes.first.merge({site_id: attributes.last[:site_id]}) if attributes.last[:id].present?
     attributes.select { |et| et[:id].blank? }.each_with_index { |et_attr, i| attrs << et_attr.slice("site_id", "employee_id", "bus_rider", "shift_id").merge({date: dates[i], trip_type: trip_type.blank? ? i : trip_type, state: 0, schedule_date: Time.zone.parse("#{et_attr['schedule_date']} 10:00:00")}) if et_attr.present? }
-    EmployeeTrip.create(attrs)
+	p "=== Update ====="
+	p attrs
+	EmployeeTrip.create(attrs)
     update_employee_trip([{}, attributes.last], [{}, dates.last]) if attributes.last[:id].present?
   end
 
   def self.update_employee_trip(attributes, dates, trip_type="")
-    attributes.each_with_index do |et_attr, i|
+	p "=== Update ====="
+	p dates
+	p "======"
+	attributes.each_with_index do |et_attr, i|
       next if et_attr.blank?
       if et_attr["id"].present?
         et = EmployeeTrip.where(id: et_attr["id"], status: ['upcoming', 'unassigned', 'reassigned']).first
-        et.update_attributes(et_attr.slice("site_id", "bus_rider", "shift_id").merge({date: dates[i], trip_type: trip_type.blank? ? i : trip_type, schedule_date: Time.zone.parse("#{et_attr['schedule_date']} 10:00:00")})) if et.present?
+        p "=== Update ====="
+		p et_attr
+		et.update_attributes(et_attr.slice("site_id", "bus_rider", "shift_id").merge({date: dates[i], trip_type: trip_type.blank? ? i : trip_type, schedule_date: Time.zone.parse("#{et_attr['schedule_date']} 10:00:00")})) if et.present?
       else
         create_employee_trip([{}, et_attr], ["", dates[i]])
       end
