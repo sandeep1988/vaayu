@@ -30,16 +30,18 @@ class ShiftsController < ApplicationController
     @shift = Shift.new(shift_params)
     shift = Shift.where(site_id: params[:shift][:site_id])
     shift = shift.where(:working_day => params[:shift][:working_day])
-    shift = shift.where(:start_time => params[:shift][:start_time])
-    if shift.present?
-      messge =  "Start Time already exist for a different Shift."
+    start_time_shift = shift.where(:start_time => params[:shift][:start_time])
+    end_shift_time = shift.where(:end_time => params[:shift][:end_time])
+    if start_time_shift.present? &&  end_shift_time.present?
+      messge =  "Start and End Time already exist for a different Shift"
+    elsif start_time_shift.present?
+      messge =  "Start Time already exist for a different Shift"
     else
       shift = Shift.where(site_id: params[:shift][:site_id])
       shift = shift.where(:working_day => params[:shift][:working_day])
-      shift = shift.where(:end_time => params[:shift][:end_time])
-      messge =  "End Time already exist for a different Shift" if shift.present?
+      messge =  "End Time already exist for a different Shift" if end_shift_time.present?
     end
-    if shift.present?
+    if start_time_shift.present? or end_shift_time.present?
       @datatable_name = "shifts"
       render js: "alert('#{messge}')"
       # "alert('Shift is already present for this site with working days .')"
@@ -68,18 +70,20 @@ class ShiftsController < ApplicationController
     # shift = Shift.where(start_time: params[:shift][:start_time], end_time:params[:shift][:end_time],site_id: params[:shift][:site_id], working_day: params[:shift][:working_day]).where.not(id: @shift.id)
     shift = Shift.where(site_id: params[:shift][:site_id]).where.not(id: @shift.id)
     shift = shift.where(:working_day => params[:shift][:working_day])
-    shift = shift.where(:start_time => params[:shift][:start_time])
-    if shift.present?
-      messge =  "Start Time already exist for a different Shift."
+    start_time_shift = shift.where(:start_time => params[:shift][:start_time])
+    end_shift_time = shift.where(:end_time => params[:shift][:end_time])
+    if start_time_shift.present? &&  end_shift_time.present?
+      messge =  "Start and End Time already exist for a different Shift"
+    elsif start_time_shift.present?
+      messge =  "Start Time already exist for a different Shift"
     else
       shift = Shift.where(site_id: params[:shift][:site_id]).where.not(id: @shift.id)
       shift = shift.where(:working_day => params[:shift][:working_day])
-      shift = shift.where(:end_time => params[:shift][:end_time])
-      messge =  "End Time already exist for a different Shift" if shift.present?
+      messge =  "End Time already exist for a different Shift" if end_shift_time.present?
     end
     # shift = shift.where(:start_time => params[:shift][:start_time]).or(shift.where(:end_time => params[:shift][:end_time]))
     # shift = shift.where(:working_day => params[:shift][:working_day])
-    if shift.present?
+    if start_time_shift.present? or end_shift_time.present?
       @datatable_name = "shifts"
       render js: "alert('#{messge}')"
       # render js: "alert('Shift is already present for this site.')"
