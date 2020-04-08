@@ -555,7 +555,7 @@
                       style="cursor: pointer;">
                       <div class="inner-box" ng-if="options && vehical.tripData.length > 0">
                         <div class="warning-wrap"ng-show="vehical.tripData.length > 2">Cannot assign more trips to this vehicle</div>
-                        <div class="" ng-repeat="trip in vehical.tripData.slice(0,2)">
+                        <div class="hover-ele" ng-repeat="trip in vehical.tripData.slice(0,2)">
                           <p class="hover-p">Trip Id: {{trip.trip_id}}</p>
                           <p class="hover-p">Status: <span ng-show="trip.trip_status === 'active'">Ongoing</span>
                             <span ng-show="trip.trip_status === 'assigned'">Assigned</span>
