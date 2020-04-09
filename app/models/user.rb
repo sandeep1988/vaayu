@@ -109,7 +109,8 @@ class User < ApplicationRecord
     result = self.update_attribute("f_name",self.f_name)
     if result
       ## Comment mailer for employee upload
-      #UserNotifierMailer.user_create(self, raw).deliver_now! unless self.driver? || (self.employee? && self.entity.is_guard?)
+      UserNotifierMailer.user_create(self, raw).deliver_now! if self.employee?
+      # UserNotifierMailer.user_create(self, raw).deliver_now! unless self.driver? || (self.employee? && self.entity.is_guard?)
       self.update_invite_count
       send_sms if self.driver? or self.employee?
     end

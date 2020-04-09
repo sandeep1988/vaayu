@@ -7,7 +7,7 @@ class UserNotifierMailer < ApplicationMailer
     attachments.inline['logo-dark.png'] = File.read('app/assets/images/logo-dark.png')
     mail(
         to: user.email,
-        subject: " Welcome to Vaayu"
+        subject: " Welcome to Alyte"
     )
   end
 
