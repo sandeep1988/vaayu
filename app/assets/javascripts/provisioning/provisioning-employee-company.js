@@ -19,7 +19,7 @@ $(function () {
     /**
      * Init table
      */
-
+    var isErrorInCompany = false;
     $.ajax({ 
       type: "GET",
       url: '/employee_companies/get_all'
@@ -320,9 +320,23 @@ $(function () {
               //   }
               // }
 
-  
+              console.log(this.inError());
+
+              isErrorInCompany = false;
               if (this.inError()) {
+                isErrorInCompany=true;
                   return false;
+              }else{
+
+                //if( window.location.hash == "#!#employee-company" ){
+
+                    //if( $(this).text() == "Save changes" || $(this).text() == "Submit" ){
+                      //if( isErrorInCompany == false ){
+                        location.reload();
+                      //}
+                      
+                    //}
+                //}
               }
           }
       });
@@ -545,13 +559,7 @@ $(document).on('click', 'a[id="active_customer"]', function (e) {
 
   //console.log("sfsdfsdg>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" );
   //console.log( urlHash );
-    if( window.location.hash == "#!#employee-company" ){
-
-          if( $(this).text() == "Save changes" || $(this).text() == "Submit" ){
-
-            location.reload();
-          }
-      }
+    
     
   });
 
