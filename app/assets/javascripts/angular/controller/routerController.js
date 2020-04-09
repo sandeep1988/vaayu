@@ -337,7 +337,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
     }
 
     $scope.generateRoute = function (siteId, shiftId, filterDate, shiftType) {
-
+      
       RouteService.getConstraintsForSite({site_id:siteId},function (res) {
         $scope.site_time =res.data.time;
         $scope.site_distance =res.data.distance;
@@ -358,6 +358,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
       // Static data display
       // $scope.showStaticData(RouteStaticResponse.route_response);
       // return;
+
+      $scope.filterPostData['site_id'] = siteId;
+      $scope.filterPostData['shift_id'] = shift.id;
+      $scope.filterPostData['to_date'] = filterDate;
+      $scope.filterPostData['shift_type'] = shift.trip_type;
+      console.log('filterPostData', $scope.filterPostData)
   
       $scope.getVehicleListForSite(siteId, shift.id, shift.trip_type);
       $scope.getGuardListForSite(siteId, shift.id, shift.trip_type);
@@ -673,9 +679,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
   $scope.selectedType = {};
   $scope.selectedLandmark = {};
   $scope.selectedZone = {}
+  $scope.filterPostData = {}
   $scope.clickEvents = {
     onInitDone: function(item) {console.log(item);},
-    onItemSelect: function(item) {console.log('check', $scope.selectedLandmark)},
+    onItemSelect: function(item) {
+      console.log('check', item)
+    },
     onItemDeselect: function(item) {console.log(item);}
   };
   $scope.example14settings = {
@@ -1876,7 +1885,6 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
   $scope.onFilter = () => {
     let shift = JSON.parse($scope.selectedShift);
     if(shift != null && $scope.siteId && shift.id && $scope.filterDate){
-      $scope.filterToggle = true;
       console.log('filter', $scope.filterToggle)
       let param = {
         site_id: parseInt($scope.siteId),
@@ -1888,8 +1896,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
       // console.log('param', param)
       RouteService.empLandmarkZonesList(param, (res) => {
         // console.log('empLandmark', res, $scope.zoneObj)
+        $scope.landmarkObj = []
         res['data'].forEach((ele, i) => {
           if(ele['landmark']){
+            $scope.filterToggle = true;
             $scope.landmarkObj.push({
               name: ele['landmark'],
               id: i + 1

@@ -30,6 +30,11 @@ function ($resource, BASE_URL_8002, BASE_URL_API_8002,BASE_URL_MAIN, SessionServ
         url: BASE_URL_8002 + 'empLandmarkZonesList',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
+    },
+    routeFilter: {
+        url: BASE_URL_8002 + 'routeFilter',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
     }
   });
 }]);
