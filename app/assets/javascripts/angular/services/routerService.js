@@ -11,7 +11,7 @@ function ($resource, BASE_URL_8002, BASE_URL_API_8002,BASE_URL_MAIN, SessionServ
     constraintCheck: {url: BASE_URL_8002+ 'checkConstraintsForAction', method: "POST"},
     postVehicleList: {url: BASE_URL_8002 + 'getVehicleData', method: "POST"},
     getGuardList: {url: BASE_URL_8002 + 'getAllGuards', method: "GET"},
-    createRoute: {url: BASE_URL_API_8002 + 'customTrip', method: "POST"},
+    createRoute: {url: BASE_URL_8002 + 'customTrip', method: "POST"},
     assignVehicle: {url: BASE_URL_8002 + 'assignVehicleToTrip', method: "PATCH"},
     assignGuards: {url: BASE_URL_8002 + 'addGuardInTrip', method: "PATCH"},
     removeVehicle: {url: BASE_URL_8002 + 'remove-trip-vehicle', method: "POST"},

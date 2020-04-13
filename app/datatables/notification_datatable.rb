@@ -31,14 +31,11 @@ class NotificationDatatable
        :trip_url => @notifications_data[:first_notification].trip_url,
        :trip_id => @notifications_data[:first_notification].trip_id,
        :driver_id => @notifications_data[:first_notification].driver_id,
-
        :driver_request_id => @notifications_data[:first_notification].driver_request_id,
-
        :driver_name => @notifications_data[:first_notification].driver_name,
        :driver_phone => @notifications_data[:first_notification].driver_phone,
        :driver_licence => @notifications_data[:first_notification].driver_licence,
        :driver_plate => @notifications_data[:first_notification].driver_plate,
-
        :employee_name => @notifications_data[:first_notification].employee_name,
        :employee_phone => @notifications_data[:first_notification].employee_phone,
        :move_driver_to_next_step => "",
