@@ -462,11 +462,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
     ];
 
     $scope.vehicleTypeArray = [
-      {id: 1, type: 'HATCHBACK'},
+      {id: 2, type: 'HATCHBACK'},
       {id: 2, type: 'TT'},
-      {id: 3, type: 'SUV'},
-      {id: 4, type: 'SEDAN'},
-      {id: 5, type: 'MINI VAN'}
+      {id: 2, type: 'SUV'},
+      {id: 2, type: 'SEDAN'},
+      {id: 2, type: 'MINI VAN'}
     ];
 
   $scope.showVehicleTypeDialog=false;
@@ -683,7 +683,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
   $scope.clickEvents = {
     onInitDone: function(item) {console.log(item);},
     onItemSelect: function(item) {
-      console.log('check', item)
+      console.log('check', item, $scope.selectedCapacity)
+      
     },
     onItemDeselect: function(item) {console.log(item);}
   };
@@ -727,16 +728,19 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
   }
   $scope.capacityObj = [
     {
-      name: '< 50%',
-      id: 50
+      name:"< 50%",
+      value: "10,20,30,40",
+      id: 1
     },
     {
-      name: '50% - 75%',
-      id: 75
+      name:"50% - 75%",
+      value: "50,60,70",
+      id: 2
     },
     {
-      name: '75% - 100%',
-      id: 100
+      name:"75% - 100%",
+      value: "80,90,100",
+      id: 3
     }
   ];
 
