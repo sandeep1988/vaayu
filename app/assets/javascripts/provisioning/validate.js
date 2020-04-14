@@ -67,9 +67,14 @@ $(function(){
             var fieldSelector = formElement.find(fieldClass);
             fieldSelector.length > 0 ? $.addErrorMessage(fieldSelector, data[err][0]) : $.removeErrorMessage(fieldSelector);
           });
-          if(submit && $(".has-error").length == 0 ) {
-            formElement.submit();
-          }
+          
+          setTimeout(function(){
+            
+            if(submit && $(".has-error").length == 0 ) {
+              formElement.submit();
+            }
+          },1000);
+          
         }
         $.hideLoader();
         document.onkeydown = function (e) {return true }
