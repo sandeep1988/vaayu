@@ -118,20 +118,21 @@ class TripChangeRequest < ApplicationRecord
       end
     end
 
-    if request_type == 'change'
-      if employee_trip.check_in?
-        time = Configurator.get('change_time_check_in').to_i * 60
-        if self.new_date.in_time_zone("Kolkata") < Time.now + time        
-          errors.add(:new_date, "can't change check in trip in next #{formatted_duration(time)}")
-        end      
-      else
-        time = Configurator.get('change_time_check_out').to_i * 60
-        if self.new_date.in_time_zone("Kolkata") < Time.now + time
-          errors.add(:new_date, "can't change check out trip in next #{formatted_duration(time)}")
-        end        
-      end
-    end
-
+   ## AS Start Rushikesh said for comment on 14 april 2020 
+    # if request_type == 'change'
+    #   if employee_trip.check_in?
+    #     time = Configurator.get('change_time_check_in').to_i * 60
+    #     if self.new_date.in_time_zone("Kolkata") < Time.now + time        
+    #       errors.add(:new_date, "can't change check in trip in next #{formatted_duration(time)}")
+    #     end      
+    #   else
+    #     time = Configurator.get('change_time_check_out').to_i * 60
+    #     if self.new_date.in_time_zone("Kolkata") < Time.now + time
+    #       errors.add(:new_date, "can't change check out trip in next #{formatted_duration(time)}")
+    #     end        
+    #   end
+    # end
+    ## AS END Rushikesh said for comment on 14 april 2020 
     # if new_date.present? && new_date < Time.now + MIN_AVAILABLE_TIME_TO_CHANGE
     #   errors.add(:new_date, "can't be earlier than in two hours")
     # end
