@@ -60,7 +60,7 @@ class User < ApplicationRecord
   validates :phone, presence: true
   validates :phone, uniqueness: true
   # validates :f_name, presence: true
-  # validates :l_name, presence: true
+  validates :l_name, presence: true
   validate :login_credentials_cannot_duplicate
   validates_length_of :phone, minimum: 10, maximum: 10
 
