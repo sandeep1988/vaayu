@@ -48,6 +48,8 @@ $(function(){
     var editObj = formElement.serializeArray().reduce(function(prev, current) { return (current.name === "_method") ? current : prev; }, null);
     if (editObj !== null) { data.push({name: "id", value: formElement.attr("action").split("/").slice(-1)}) }
 
+    var isErrorField = false;
+
     $.ajax({
       type: "POST",
       url: url,
@@ -59,17 +61,37 @@ $(function(){
       success: function(data) {
         if (_this !== "" && fieldName !== "") {
           var formAttribute = fieldName.slice(1).length > 1 ? ["entity", fieldName.slice(-1)[0]].join(".") : fieldName.slice(-1)[0]
-          data[formAttribute] === undefined ? $.removeErrorMessage(_this) : $.addErrorMessage(_this, data[formAttribute][0]);
+          
+          if( data[formAttribute] === undefined ){
+            $.removeErrorMessage(_this)
+          }else{
+            isErrorField = true;
+            $.addErrorMessage(_this, data[formAttribute][0]);
+          }
+        
+
         } else {
           // $.each($(".has-error"), function(i, errClass){ $(errClass).removeClass("has-error"); $(errClass).find("span").remove(); });
           $.each(Object.keys(data), function(i, err) {
             var fieldClass = "input[name$='[" + err.split(".").slice(-1) + "]']";
             var fieldSelector = formElement.find(fieldClass);
-            fieldSelector.length > 0 ? $.addErrorMessage(fieldSelector, data[err][0]) : $.removeErrorMessage(fieldSelector);
+            
+             if( fieldSelector.length > 0 ){
+                $.addErrorMessage(fieldSelector, data[err][0])
+                isErrorField=true;
+              }else{
+                $.removeErrorMessage(fieldSelector);
+              }
+
           });
-          if(submit && $(".has-error").length == 0 ) {
-            formElement.submit();
-          }
+          
+          //setTimeout(function(){
+            console.log("error_found =>>>", isErrorField );
+            if(submit && $(".has-error").length == 0 && false == isErrorField  ) {
+              formElement.submit();
+            }
+          //},1000);
+          
         }
         $.hideLoader();
         document.onkeydown = function (e) {return true }
