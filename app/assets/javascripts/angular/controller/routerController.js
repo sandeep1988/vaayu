@@ -675,25 +675,62 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
   }
 
   $scope.isLoader = false;
-  $scope.selectedCapacity = {};
-  $scope.selectedType = {};
-  $scope.selectedLandmark = {};
-  $scope.selectedZone = {}
+  $scope.selectedCapacity = [];
+  $scope.selectedType = [];
+  $scope.selectedLandmark = [];
+  $scope.selectedZone = []
   $scope.filterPostData = {}
-  $scope.clickEvents = {
-    onInitDone: function(item) {console.log(item);},
+  $scope.capacityClick = {
     onItemSelect: function(item) {
-      console.log('check', item, $scope.selectedCapacity)
-      
+      console.log('capacity', item, $scope.selectedCapacity)
     },
     onItemDeselect: function(item) {console.log(item);}
   };
-  $scope.example14settings = {
+  $scope.typeClick = {
+    onItemSelect: function(item) {
+      console.log('type', item, $scope.selectedType)
+    },
+    onItemDeselect: function(item) {console.log(item);}
+  }
+  $scope.landmarkClick = {
+    onItemSelect: function(item) {
+      console.log('landmark', item, $scope.selectedLandmark)
+    },
+    onItemDeselect: function(item) {console.log(item);}
+  }
+  $scope.zoneClick = {
+    onItemSelect: function(item) {
+      console.log('zone', item, $scope.selectedZone)
+    },
+    onItemDeselect: function(item) {console.log(item);}
+  }
+  $scope.capacitySettings = {
     enableSearch: true,
     displayProp: 'name',
     scrollableHeight: '200px',
     scrollable: true,
   };
+  $scope.typeSettings = {
+    enableSearch: true,
+    displayProp: 'name',
+    scrollableHeight: '200px',
+    scrollable: true,
+  };
+
+  $scope.landmarkSettings = {
+    enableSearch: true,
+    displayProp: 'name',
+    scrollableHeight: '200px',
+    scrollable: true,
+  };
+
+  $scope.zoneSettings = {
+    enableSearch: true,
+    displayProp: 'name',
+    scrollableHeight: '200px',
+    scrollable: true,
+  };
+
 
   $scope.updateRouteFilter =function(search){
     $scope.criteria = search;
@@ -707,16 +744,77 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
     capacity: ''
   }
 
-  $scope.applyFilter = () => {  
-    $scope.obj = {
-      zone: $scope.selectedZone.label,
-      landmark: $scope.selectedLandmark.label,
-      type: $scope.selectedType.label,
-      capacity: $scope.selectedCapacity.label
-    }
-    $scope.mergedValues = $scope.selectedCapacity.concat($scope.selectedType, $scope.selectedLandmark)
-    console.log($scope.mergedValues)
+  $scope.applyFilter = () => { 
+    console.log('list', $scope.selectedType)
+    var filterByCategory = "";
+    var filterByCapacity = "";
+    var filterByLandmark = "";
+    var filterByZone = "";
 
+    for(var i = 0; i < $scope.selectedType.length; i++){
+      if(i == 0){
+        filterByCategory += $scope.selectedType[i]['label']
+      } else {
+        filterByCategory += "," + $scope.selectedType[i]['label']
+      }
+    }
+
+    for(var i = 0; i < $scope.selectedCapacity.length; i++){
+      if($scope.selectedCapacity[i]['id'] == 1){
+        $scope.selectedCapacity[i]['value'] = "10,20,30,40"
+      } else if($scope.selectedCapacity[i]['id'] == 2){
+        $scope.selectedCapacity[i]['value'] = "50,60,70"
+      } else {
+        $scope.selectedCapacity[i]['value'] = "80,90,100"
+      }
+    }
+
+
+    for(var i = 0; i < $scope.selectedCapacity.length; i++){
+      if(i == 0){
+        filterByCapacity += $scope.selectedCapacity[i]['value']
+      } else {
+        filterByCapacity += "," + $scope.selectedCapacity[i]['value']
+      }
+    }
+
+    for(var i = 0; i < $scope.selectedLandmark.length; i++){
+      if(i == 0){
+        filterByLandmark += $scope.selectedLandmark[i]['label']
+      } else {
+        filterByLandmark += "," + $scope.selectedLandmark[i]['label']
+      }
+    }
+
+    for(var i = 0; i < $scope.selectedZone.length; i++){
+      if(i == 0){
+        filterByZone += $scope.selectedZone[i]['label']
+      } else {
+        filterByZone += "," + $scope.selectedZone[i]['label']
+      }
+    }
+
+
+
+
+    let postData = {
+      site_id: $scope.siteId,
+      shift_id: $scope.selectedShift.id,
+      to_date: $scope.filterDate,
+      shift_type: $scope.selectedShift.trip_type,
+      search: "1",
+      filterByCategory: filterByCategory,
+      filterByCapacity: filterByCapacity,
+      filterByLandmark: filterByLandmark,
+      filterByZone: filterByZone
+    }
+
+    RosterService.routerFilters(postData, function(res){
+      console.log('filter res', res)
+    }, function(err){
+      console.log('filter err', err)
+    })
+    
   }
 
 

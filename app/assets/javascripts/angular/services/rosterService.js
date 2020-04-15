@@ -50,6 +50,10 @@ function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_800
     copyRoutes: {
       url: BASE_URL_8002 + 'copyexistingroutes',
       method: 'POST'
+    },
+    routerFilters: {
+      url: BASE_URL_API_8002 + 'routeFilter',
+      method: 'POST'
     }
   });
 

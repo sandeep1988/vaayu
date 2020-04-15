@@ -455,24 +455,24 @@
                   <option ng-value="4" class="form-control">Option 4</option>
                 </select> -->
                 <!-- <input type="text" ng-model="search" ng-change="updateRouteFilter(search)"> -->
-                <div ng-dropdown-multiselect="" events="clickEvents" options="capacityObj"
+                <div ng-dropdown-multiselect="" events="capacityClick" options="capacityObj"
                 selected-model="selectedCapacity" checkboxes="true" class="filter-btn capacity"
-                extra-settings="example14settings" search-placeholder="Capacity"
+                extra-settings="capacitySettings" search-placeholder="Capacity"
                 ></div>
                 
-                <div ng-dropdown-multiselect="" events="clickEvents" options="typeObj"
+                <div ng-dropdown-multiselect="" events="typeClick" options="typeObj"
                 selected-model="selectedType" checkboxes="true" class="filter-btn type"
-                extra-settings="example14settings" search-placeholder="Type"
+                extra-settings="typeSettings" search-placeholder="Type"
                 ></div>
                 
-                <div ng-dropdown-multiselect="" events="clickEvents" options="landmarkObj"
+                <div ng-dropdown-multiselect="" events="landmarkClick" options="landmarkObj"
                 selected-model="selectedLandmark" checkboxes="true" class="filter-btn type"
-                extra-settings="example14settings" search-placeholder="Landmark"
+                extra-settings="landmarkSettings" search-placeholder="Landmark"
                 ></div>
                 
-                <div ng-dropdown-multiselect="" events="clickEvents" options="zoneObj"
+                <div ng-dropdown-multiselect="" events="zoneClick" options="zoneObj"
                 selected-model="selectedZone" checkboxes="true" class="filter-btn type"
-                extra-settings="example14settings" search-placeholder="Zone"
+                extra-settings="zoneSettings" search-placeholder="Zone"
                 ></div>
               </form>
           </div>
