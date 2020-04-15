@@ -115,7 +115,8 @@ $(function () {
               className: "col-md-4",
               name: "home_address_business_area",
               type:"select",
-              options:cities
+              options:cities,
+              attr: { maxlength: 10, id:'home_address_business_area' }
             },
              { 
               label: 'PAN *',
@@ -220,11 +221,11 @@ $(function () {
                var sap_control_number = employeeCompaniesTableEditor.field('sap_control_number');
               var reference_no1 = employeeCompaniesTableEditor.field('reference_no1');
 
-              // var home_address_pan_no = employeeCompaniesTableEditor.field('home_address_pan_no');
+              var home_address_business_area = employeeCompaniesTableEditor.field('home_address_business_area');
               
-              // if (home_address_contact_name.val().trim().length == 0) {
-              //   home_address_contact_name.error('Home Contact Name must be given.');
-              // }
+              if (!home_address_business_area.val()) {
+                home_address_business_area.error('MLL Business Area must be given.');
+              }
               if (home_address_address_1.val().trim().length == 0) {
                 home_address_address_1.error('Home Address 1 must be given.');
               }
