@@ -37,7 +37,7 @@ class TripChangeRequest < ApplicationRecord
   protected
 
   def approve_request
-    case request_type.to_sym
+	case request_type.to_sym
       when :change        
         if employee_trip.trip.present?
           employee_trip.trip_canceled!
