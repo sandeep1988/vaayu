@@ -37,10 +37,14 @@ class TripChangeRequest < ApplicationRecord
   protected
 
   def approve_request
+		p "approve_request"
 	case request_type.to_sym
       when :change        
+		p "approve_request 1"
         if employee_trip.trip.present?
+			p "approve_request 2"
           employee_trip.trip_canceled!
+		  p "approve_request 3"
           #Create a new employee trip
           self.create_employee_trip!( date: new_date, trip_type: employee_trip.trip_type, employee: employee, bus_rider: employee.bus_travel)
           if Configurator.get('change_request_require_approval') == '1'
@@ -49,6 +53,7 @@ class TripChangeRequest < ApplicationRecord
             Notification.create!(:trip => employee_trip.trip, :employee => employee_trip.employee, :message => 'change_request_approved', :new_notification => true, :resolved_status => true, :reporter => "Vaayu System").send_notifications    
           end          
         else
+			p "approve_request 4"
           time_to_change = (self.new_date + 5.hours + 30.minutes).strftime("%H:%M")
           if employee_trip.trip_type == "check_out"
             employee.shifts.each do |shift|
@@ -58,9 +63,11 @@ class TripChangeRequest < ApplicationRecord
             employee.shifts.each do |shift|
               @shift_to_change = shift.id if shift.start_time == time_to_change
             end
-          end    
+          end
+			p "approve_request 5"
           employee_trip.update(:date => self.new_date, shift_id: @shift_to_change)
-        end
+			p "approve_request 6"
+		end
       when :cancel
         # if employee_trip.trip.present? && employee_trip.trip.passengers == 1
         #   employee_trip.trip.cancel!
