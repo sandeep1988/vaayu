@@ -105,7 +105,7 @@ module API::V1
           employee: @employee,
           bus_rider: @employee.bus_travel
       )
-      @trip_change_request.new_date = Time.at(params[:new_date].to_i) if params[:new_date].present?
+	  @trip_change_request.new_date = Time.at(params[:new_date].to_i).in_time_zone("UTC") if params[:new_date].present?
 
       if @trip_change_request.save
 
