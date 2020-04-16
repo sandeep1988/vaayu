@@ -23,13 +23,14 @@ module API::V1
     # @TODO: test
     def show
       authorize! :read, @employee_trip
-
-      @trip = @employee_trip.trip
-      @site = @trip.try(:site)
-
-      @vehicle = @trip.try(:vehicle)
-      if @trip.present?
-        @config_values = TripValidationService.employee_config_params(@trip)
+      check_start_date = @employee_trip.trip.start_date.in_time_zone("Kolkata")
+      if (@employee_trip.trip.status == "active" && check_start_date >= Time.now.in_time_zone("Kolkata"))
+        @trip = @employee_trip.trip
+        @site = @trip.try(:site)
+        @vehicle = @trip.try(:vehicle)
+        if @trip.present?
+          @config_values = TripValidationService.employee_config_params(@trip)
+        end
       end
     end
 
