@@ -47,6 +47,7 @@ class API::V2::DriversController < ApplicationController
       user.entity.update(profile_picture_url: user.entity.profile_picture_url)
       login_user = User.where(:uid => request.headers["uid"]).first
       user.entity.update(created_by: login_user.id) if login_user.present?
+      user.entity.update(created_by: current_user.id.to_i) if !login_user.present?
     elsif params[:registration_steps] == "Step_2"
       @driver = Driver.find(params[:driver_id]) if params[:driver_id].present?
       if validate_first_step(@driver) == true
