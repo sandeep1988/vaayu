@@ -274,7 +274,7 @@ module API::V1
     def upcoming_trips
       authorize! :read, @employee
       if params[:shift] == "true"
-        @employee_trips = @employee.employee_trips.upcoming.not_completed.scheduled.order(date: :asc)
+        @employee_trips = @employee.employee_trips.upcoming.not_completed.or(@employee.employee_trips.upcoming.where(status:"completed")).scheduled.order(date: :asc)
         @employee_trip_change_requests = @employee.trip_change_requests.new_trip.where(:shift => true).where(:request_state => 'created')
       else
         @employee_trips = @employee.employee_trips.upcoming.not_completed.order(date: :asc)
