@@ -179,6 +179,15 @@ angular.module('app').controller('reportCtrl', function ($scope,RosterService, R
             //       console.log('error: ', err)
             //     });
 
+            let from_date = new Date($scope.fromDate);
+            let to_date = new Date($scope.toDate)
+
+            if(from_date > to_date){
+                $scope.toggleView = true
+                ToasterService.showError('Error', 'From date is greater than toDate')
+                return
+            }
+
 
             RosterService.isExcelDownloadable({siteId:$scope.siteId, fromDate: $scope.fromDate, toDate: $scope.toDate},(res, err) => {
                 if(res){
