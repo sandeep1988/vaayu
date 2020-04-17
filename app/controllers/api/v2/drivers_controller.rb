@@ -311,7 +311,19 @@ class API::V2::DriversController < ApplicationController
       @errors = user.errors.full_messages.to_sentence
       @datatable_name = "drivers"
       if @errors.present?
-        render json: {success: false , message: "Fail First step", data: {}, errors: { errors: @errors.split(",") } },status: :ok
+        @errors = @errors.split(",").reject {|i| i == "Password is too short (minimum is 6 characters)"}
+        @errors = @errors.reject {|i| i == "Password can't be blank"}
+        @errors = @errors.reject {|i| i == " Email has already been taken"}
+        @errors = @errors.reject {|i| i == "Email has already been taken"}
+        @errors = @errors.reject {|i| i == " Email can't be blank"}
+        @errors = @errors.reject {|i| i == " Email is not an email"}
+        @errors = @errors.reject {|i| i == " and Phone has already been taken"}
+        @errors = @errors.reject {|i| i == " and Phone has already been taken"}
+        @errors = @errors.reject {|i| i == " Phone can't be blank"}
+        @errors = @errors.reject {|i| i == " Phone has already been taken"}
+        @errors = @errors.reject {|i| i == " and Phone is too short (minimum is 10 characters)"}
+
+        render json: {success: false , message: "Fail First step", data: {}, errors: { errors: @errors } },status: :ok
       else
         render json: { success: true , message: "Success First step", data: { driver_id: user.entity.id } , errors: {} }, status: :ok
       end
