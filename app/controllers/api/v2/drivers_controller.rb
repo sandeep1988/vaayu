@@ -101,6 +101,19 @@ class API::V2::DriversController < ApplicationController
   # PATCH/PUT /api/v2/drivers/1.json
   def update
     @driver = Driver.find(params[:id]) if params[:id].present?
+    ## Set driver name on update
+    if driver_params[:f_name].present? && driver_params[:l_name].present?
+      f_name = driver_params[:f_name]
+      l_name = driver_params[:l_name]
+      @driver.driver_name = "#{f_name} #{l_name}"
+      elsif driver_params[:f_name].present?
+        f_name = driver_params[:f_name]
+        @driver.driver_name = "#{driver_params[:f_name]} #{@driver.l_name}"
+      elsif driver_params[:l_name].present?
+        l_name = driver_params[:l_name]
+        @driver.driver_name = "#{@driver.f_name} #{l_name}"
+    end
+    ## End Set driver name on update
     if @driver.update(driver_params)
       render json: {success: true , message: "UPDATE SUCCESS", data: { driver: @driver} },status: :ok
     else
