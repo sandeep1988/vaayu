@@ -182,7 +182,6 @@ module API::V1
       if params[:shift] == true
         shift = true
       end
-
       if params[:trip_type] == "check_out"
         e_t= Time.at(params[:new_date].to_i) if params[:new_date].present?
         end_time = e_t.strftime("%H:%M")
@@ -200,7 +199,7 @@ module API::V1
           shift_selected_id = nil
         end  
       end
-
+		p "===shift_selected_id : #{shift_selected_id}"
       @trip_change_request = TripChangeRequest.new(
           trip_type: params[:trip_type],
           request_type: :new_trip,

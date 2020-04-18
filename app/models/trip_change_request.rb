@@ -92,6 +92,7 @@ class TripChangeRequest < ApplicationRecord
           end         
         end
       when :new_trip
+		p "new_trip 1"
         if self.shift
           trip_request_new_date = self.new_date.strftime("%H:%M")
           shift_id = employee.shifts.where(:start_time => trip_request_new_date).first.id if trip_request_new_date.present? && trip_type == "check_in"
@@ -104,7 +105,8 @@ class TripChangeRequest < ApplicationRecord
     end
   end
 
-  def new_date_cannot_be_in_the_past    
+  def new_date_cannot_be_in_the_past
+	p "new_date_cannot_be_in_the_past"
     if request_type == 'cancel'
       if employee_trip.check_in?
         if employee_trip.trip.present?
