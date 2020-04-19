@@ -41,11 +41,13 @@ class API::V2::DriversController < ApplicationController
       user =  User.new
       user.role = 3
       set_driver_user_field(user,params)
+      user.entity.driving_licence_issue_date = params[:driving_licence_issue_date]
       user.entity.profile_picture  = params[:profile_picture] if params[:profile_picture].present?
       user.entity.profile_picture_url = "#{user.entity.profile_picture.url.gsub("//",'')}" if user.entity.profile_picture.present?
       user.entity.update(profile_picture_url: user.entity.profile_picture_url)
       login_user = User.where(:uid => request.headers["uid"]).first
       user.entity.update(created_by: login_user.id) if login_user.present?
+      user.entity.update(created_by: current_user.id.to_i) if !login_user.present?
     elsif params[:registration_steps] == "Step_2"
       @driver = Driver.find(params[:driver_id]) if params[:driver_id].present?
       if validate_first_step(@driver) == true
@@ -101,6 +103,19 @@ class API::V2::DriversController < ApplicationController
   # PATCH/PUT /api/v2/drivers/1.json
   def update
     @driver = Driver.find(params[:id]) if params[:id].present?
+    ## Set driver name on update
+    if driver_params[:f_name].present? && driver_params[:l_name].present?
+      f_name = driver_params[:f_name]
+      l_name = driver_params[:l_name]
+      @driver.driver_name = "#{f_name} #{l_name}"
+      elsif driver_params[:f_name].present?
+        f_name = driver_params[:f_name]
+        @driver.driver_name = "#{driver_params[:f_name]} #{@driver.l_name}"
+      elsif driver_params[:l_name].present?
+        l_name = driver_params[:l_name]
+        @driver.driver_name = "#{@driver.f_name} #{l_name}"
+    end
+    ## End Set driver name on update
     if @driver.update(driver_params)
       render json: {success: true , message: "UPDATE SUCCESS", data: { driver: @driver} },status: :ok
     else
@@ -296,7 +311,19 @@ class API::V2::DriversController < ApplicationController
       @errors = user.errors.full_messages.to_sentence
       @datatable_name = "drivers"
       if @errors.present?
-        render json: {success: false , message: "Fail First step", data: {}, errors: { errors: @errors.split(",") } },status: :ok
+        @errors = @errors.split(",").reject {|i| i == "Password is too short (minimum is 6 characters)"}
+        @errors = @errors.reject {|i| i == "Password can't be blank"}
+        @errors = @errors.reject {|i| i == " Email has already been taken"}
+        @errors = @errors.reject {|i| i == "Email has already been taken"}
+        @errors = @errors.reject {|i| i == " Email can't be blank"}
+        @errors = @errors.reject {|i| i == " Email is not an email"}
+        @errors = @errors.reject {|i| i == " and Phone has already been taken"}
+        @errors = @errors.reject {|i| i == " and Phone has already been taken"}
+        @errors = @errors.reject {|i| i == " Phone can't be blank"}
+        @errors = @errors.reject {|i| i == " Phone has already been taken"}
+        @errors = @errors.reject {|i| i == " and Phone is too short (minimum is 10 characters)"}
+
+        render json: {success: false , message: "Fail First step", data: {}, errors: { errors: @errors } },status: :ok
       else
         render json: { success: true , message: "Success First step", data: { driver_id: user.entity.id } , errors: {} }, status: :ok
       end
@@ -461,6 +488,6 @@ class API::V2::DriversController < ApplicationController
     def driver_params
       # params.permit(:business_associate_id, :licence_number, :aadhaar_mobiformat: { with: /\A[a-z]*\z/i, message:  "Name must only contain letters." },le_number,:date_of_birth,:marital_status,:gender,:blood_group, :driver_name, :father_spouse_name, :alternate_number, :licence_type, :licence_validity, :local_address, :permanent_address, :total_experience,:business_state, :business_city, :qualification, :date_of_registration, :badge_number, :badge_issue_date,:badge_expiry_date, :verified_by_police, :police_verification_vailidty,:date_of_police_verification, :criminal_offence, :bgc_date, :bgc_agency_id, :medically_certified_date, :sexual_policy, :bank_name, :bank_no, :ifsc_code, :status, :blacklisted, :driving_license_doc_url, :driver_badge_doc_url, :id_proof_doc_url, :sexual_policy_doc_url,:police_verification_vailidty_doc_url,:medically_certified_doc_url, :bgc_doc_url,:profile_picture_url,:other_docs_url,:driving_registration_form_doc_url, :created_by, :updated_by,
       #   :site_id )
-      params.permit(:business_associate_id, :licence_number, :driver_name, :alternate_number,:date_of_birth,:father_spouse_name, :gender, :blood_group, :licence_type, :licence_validity, :badge_number, :badge_expire_date, :ifsc_code,:bank_name, :bank_no,:profile_picture_url,:driver_badge_doc_url,:driving_license_doc_url,:id_proof_doc_url,:driving_registration_form_doc_url,:business_city,:business_state,:registration_steps, :aadhaar_mobile_number,:driving_license_doc, :driver_badge_doc, :id_proof_doc, :driving_registration_form_doc,  :profile_picture, :police_verification_vailidty_doc, :police_verification_vailidty_doc_url, :sexual_policy_doc, :sexual_policy_doc_url, :medically_certified_doc, :medically_certified_doc_url, :bgc_doc, :bgc_doc_url, :f_name, :l_name, :blacklisted,:site_id, :other_doc, :other_docs_url, :created_by, :updated_by, :police_verification_vailidty, :date_of_police_verification, :bgc_date, :medically_certified_date, :sexual_policy_date  )
+      params.permit(:business_associate_id, :licence_number, :driver_name, :alternate_number,:date_of_birth,:father_spouse_name, :gender, :blood_group, :licence_type, :licence_validity, :badge_number, :badge_expire_date, :ifsc_code,:bank_name, :bank_no,:profile_picture_url,:driver_badge_doc_url,:driving_license_doc_url,:id_proof_doc_url,:driving_registration_form_doc_url,:business_city,:business_state,:registration_steps, :aadhaar_mobile_number,:driving_license_doc, :driver_badge_doc, :id_proof_doc, :driving_registration_form_doc,  :profile_picture, :police_verification_vailidty_doc, :police_verification_vailidty_doc_url, :sexual_policy_doc, :sexual_policy_doc_url, :medically_certified_doc, :medically_certified_doc_url, :bgc_doc, :bgc_doc_url, :f_name, :l_name, :blacklisted,:site_id, :other_doc, :other_docs_url, :created_by, :updated_by, :police_verification_vailidty, :date_of_police_verification, :bgc_date, :medically_certified_date, :sexual_policy_date, :training_date, :driving_licence_issue_date)
     end
 end

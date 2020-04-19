@@ -382,7 +382,7 @@ class EmployeeTrip < ApplicationRecord
   end
 
   def self.create_or_update(employee, attributes)
-	
+	p "create_or_update 1"
     attributes[:check_in_attributes].values.sort_by { |x| x["schedule_date"] }.each_with_index do |check_in_attr, i|
       attribute = attributes[:check_out_attributes].values.sort_by { |x| x["schedule_date"] }[i]
       if attribute.nil?

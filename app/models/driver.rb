@@ -42,7 +42,7 @@ class Driver < ApplicationRecord
   validates :licence_number, presence: true, uniqueness: {message: "already taken"}, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   #validates :ifsc_code, length: { is: 11 }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :ifsc_code, format: { with: /[a-zA-Z0-9]/, message: "only allows alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
-  validates :licence_number, format: { with: /[a-zA-Z0-9]/, message: "licence number only allows alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
+  validates :licence_number, format: { with: /[a-zA-Z0-9]/, message: "only allows alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   ###validation for upload docs
   validates :father_spouse_name, presence: true, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   # validates :driver_badge_doc_url, attachment_presence: true
