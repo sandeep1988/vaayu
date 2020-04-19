@@ -300,7 +300,7 @@ class EmployeeTrip < ApplicationRecord
   end
 
   def self.fetch_checkin_and_checkout(check_in_attr, check_out_attr, zone=Time.zone)
-    check_in_date = zone.parse("#{check_in_attr[:schedule_date]} #{check_in_attr[:check_in]}")
+	check_in_date = zone.parse("#{check_in_attr[:schedule_date]} #{check_in_attr[:check_in]}")
     check_out_date = zone.parse("#{check_out_attr[:schedule_date]} #{check_out_attr[:check_out]}")
     check_out_date += 1.day unless check_in_date < check_out_date
     [check_in_date, check_out_date]
