@@ -65,13 +65,23 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: ENV['SERVER_URL'] }
+  # config.action_mailer.smtp_settings = {
+  #     address:              'smtp.gmail.com',
+  #     port:                 587,
+  #     domain:               'qaoperator.mllvaayu.com',
+  #     user_name:            ENV['GMAIL_USENAME'],
+  #     password:             ENV['GMAIL_PASSWORD'],
+  #     authentication:       'plain',
+  #     enable_starttls_auto: true
+  # }
+
   config.action_mailer.smtp_settings = {
-      address:              'smtp.gmail.com',
+      address:              "smtp.office365.com",
       port:                 587,
-      domain:               'qaoperator.mllvaayu.com',
+      domain:               "mllvaayu.com",
       user_name:            ENV['GMAIL_USENAME'],
       password:             ENV['GMAIL_PASSWORD'],
-      authentication:       'plain',
+      authentication:       :login,
       enable_starttls_auto: true
   }
 
