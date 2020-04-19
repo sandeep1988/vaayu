@@ -567,15 +567,24 @@ module API::V1
     def check_first_trip_completed(user,trip)
 		user = current_user.entity
 		#todays_trips = user.trips.where('start_date >= ?', Time.new.in_time_zone('Chennai').beginning_of_day)
-		todays_trips = user.trips.where('status in  (?)', ['assigned', 'active', 'completed', 'canceled']).where('id != ?',trip.id).order('scheduled_date DESC').limit(1)
+		todays_trips = user.trips.where('status in  (?)', ['assigned', 'active', 'completed', 'canceled']).where('id != ?',trip.id).order('id DESC').order('scheduled_date DESC').limit(1)
 		if todays_trips.present? && todays_trips.count > 0
 			other_trip = todays_trips.reject { |i| i.id == trip.id }
 			next_trip_time = Time.at(other_trip.first.scheduled_date.to_i).in_time_zone("Kolkata")
 			select_trip_time = Time.at(trip.scheduled_date.to_i).in_time_zone("Kolkata")
+			
 			if select_trip_time > next_trip_time && (other_trip.first.status != "completed" || other_trip.first.status != "canceled")
-				render json: { success: false , message: "Please start first trip then you can start second trip", data: {}, errors: { "errors": ["Please start first trip then you can start second trip"] }}, status: :ok
+				if other_trip.first.status.eql?("completed") || other_trip.first.status.eql?("canceled")
+					return false
+				else
+					if other_trip.first.status.eql?("active")
+						render json: { success: false , message: "Please complete first trip then you can start second trip", data: {}, errors: { "errors": ["Please complete first trip then you can start second trip"] }}, status: :ok
+					else	
+						render json: { success: false , message: "Please start first trip then you can start second trip", data: {}, errors: { "errors": ["Please start first trip then you can start second trip"] }}, status: :ok	
+					end														
+				end				
 			else
-				if other_trip.first.status == "active"
+				if other_trip.first.status.eql?("active")
 					render json: { success: false , message: "Please complete first trip then you can start second trip", data: {}, errors: { "errors": ["Please complete first trip then you can start second trip"] }}, status: :ok
 				else
 					return false
