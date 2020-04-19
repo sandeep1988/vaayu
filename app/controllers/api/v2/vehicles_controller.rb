@@ -143,7 +143,7 @@ class API::V2::VehiclesController < ApplicationController
         @vehicle.shift_end_time = params[:shift_end_time] if params[:shift_end_time].present?
         login_user = User.where(:uid => request.headers["uid"]).first
         @vehicle.update(created_by: login_user.id) if login_user.present?
-        @vehicle.update(created_by: current_user.id.to_i) if !login_user.present?
+        #@vehicle.update(created_by: current_user.id.to_i) if !login_user.present?
         if @vehicle.save
           @vehicle.update_attribute('registration_steps', 'Step_1')
            render json: { success: true , message: "Success First step", data: { vehicle_id: @vehicle.id }, errors: {} }, status: :ok
