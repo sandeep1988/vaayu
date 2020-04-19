@@ -158,9 +158,9 @@ services:
         restart: on-failure
   location_service:
         env_file:
-            - /home/ubuntu/moove-location-service/.env
+            - /home/ubuntu/alyte_location_service/.env
         build:
-            context: "/home/ubuntu/moove-location-service"
+            context: "/home/ubuntu/alyte_location_service"
             dockerfile: "Dockerfile"
         ports:
             - '4343'
