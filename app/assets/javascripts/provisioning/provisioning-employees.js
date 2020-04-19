@@ -526,7 +526,16 @@ $(document).on("click",".employer_edit",function(){
     }
 
 });
+var $loader = $('<div class="timeline-loading"><div class="loader-spinner"></div></div>');
+$(document).on('click','.form-employees', function(){
+$(".form-employees").append($loader);
+  setTimeout(function () {
+    $loader.remove();
+  }, 5000);
 
+ 
+
+ });
 
 
 
