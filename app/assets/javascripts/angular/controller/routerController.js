@@ -927,6 +927,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
   };
 
+  $scope.options = false;
+
   $scope.slider_empty = {
     minValue: 1,
     maxValue: 8,
@@ -1427,9 +1429,18 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
   };
 
-  $scope.logEvent = function (message) {
-    // console.log(message);
+  $scope.logEvent = function () {
+
+    $scope.options = false;
   };
+
+  $scope.drag = function(ev) {
+    ev.srcElement.firstElementChild.style.display = "none"
+  }
+
+  $scope.dragStop = function(ev){
+    ev.srcElement.firstElementChild.style.display = "block"
+  }
 
   $scope.logListEvent = function (action, index, external, type) {
     var message = external ? 'External ' : '';
