@@ -40,6 +40,10 @@ class Driver < ApplicationRecord
   # validates :aadhaar_mobile_number, uniqueness: true, length: { is: 10 }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :aadhaar_mobile_number, presence: true, uniqueness: {message: "already taken"}, :if => Proc.new{|f| f.registration_steps == "Step_1"}
   validates :licence_number, presence: true, uniqueness: {message: "already taken"}, :if => Proc.new{|f| f.registration_steps == "Step_1"}
+  validates :licence_number, length: { minimum: 6 }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
+
+  validate :licence_number, :if => Proc.new{|f| f.registration_steps == "Step_1"} , :if => :licence_number_must_be_six_digit
+
   #validates :ifsc_code, length: { is: 11 }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   # validates :ifsc_code, format: { with: /[a-zA-Z0-9]/, message: "only allows alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_2"}
   validates :licence_number, format: { with: /[a-zA-Z0-9]/, message: "only allows alphanumeric" }, :if => Proc.new{|f| f.registration_steps == "Step_1"}
@@ -477,4 +481,14 @@ class Driver < ApplicationRecord
     eta = (route_data[0][:duration_in_traffic][:value] / 60).ceil    
   end
 
+private
+def licence_number_must_be_six_digit
+  if self.licence_number.present?
+    if self.licence_number.last(6).present?
+      if !(/^\d{6}$/ === self.licence_number.last(6))
+        errors.add(:base, 'Licence number last 6 digit should be integer')
+      end
+    end
+  end
+  end
 end
