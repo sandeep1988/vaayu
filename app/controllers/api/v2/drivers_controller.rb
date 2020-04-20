@@ -47,12 +47,15 @@ class API::V2::DriversController < ApplicationController
       user.entity.update(profile_picture_url: user.entity.profile_picture_url)
       login_user = User.where(:uid => request.headers["uid"]).first
       user.entity.update(created_by: login_user.id) if login_user.present?
-      #user.entity.update(created_by: current_user.id.to_i) if !login_user.present?
+      user.entity.update(created_by: current_user.id.to_i) if !login_user.present? && current_user.present?
     elsif params[:registration_steps] == "Step_2"
       @driver = Driver.find(params[:driver_id]) if params[:driver_id].present?
       if validate_first_step(@driver) == true
         if @driver.update(driver_params.except!(:registration_steps))
           @driver.update_attribute('registration_steps', 'Step_2')
+          login_user = User.where(:uid => request.headers["uid"]).first
+          @driver.update(created_by: login_user.id) if login_user.present?
+          @driver.update(created_by: current_user.id.to_i) if !login_user.present? && current_user.present?
           render json: {success: true , message: "Success Second step", data: { driver_id: @driver.id }, errors: {} }, status: :ok if @driver.id.present?
         else
           render json: {success: false , message: "Fail Second step", data: {}, errors: { errors: @driver.errors.full_messages } },status: :ok
@@ -86,6 +89,9 @@ class API::V2::DriversController < ApplicationController
             @driver.update(induction_status: "Registered")
             @driver.update(compliance_status: "Ready For Allocation")
             @driver.update(date_of_registration: Time.now )
+            login_user = User.where(:uid => request.headers["uid"]).first
+            @driver.update(created_by: login_user.id) if login_user.present?
+            @driver.update(created_by: current_user.id.to_i) if !login_user.present? && current_user.present?
             render json: {success: true , message: "Success Final step", data: { driver_id: @driver.id } , errors: {} }, status: :ok if @driver.id.present?
           else
             render json: {success: false , message: "Fail Final step", data: {}, errors: { errors: @driver.errors.full_messages.split(",") } },status: :ok
@@ -322,6 +328,7 @@ class API::V2::DriversController < ApplicationController
         @errors = @errors.reject {|i| i == " Phone can't be blank"}
         @errors = @errors.reject {|i| i == " Phone has already been taken"}
         @errors = @errors.reject {|i| i == " and Phone is too short (minimum is 10 characters)"}
+        @errors = @errors.each {|i|  i.include?("Password is too short (minimum is 6 characters) and ") ? i.slice!("Password is too short (minimum is 6 characters) and ") : i }
 
         render json: {success: false , message: "Fail First step", data: {}, errors: { errors: @errors } },status: :ok
       else
