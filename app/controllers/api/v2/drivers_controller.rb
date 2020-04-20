@@ -55,7 +55,7 @@ class API::V2::DriversController < ApplicationController
           @driver.update_attribute('registration_steps', 'Step_2')
           login_user = User.where(:uid => request.headers["uid"]).first
           @driver.update(created_by: login_user.id) if login_user.present?
-          @driver.update(created_by: current_user.id.to_i) if !login_user.present?
+          @driver.update(created_by: current_user.id.to_i) if !login_user.present? && current_user.present?
           render json: {success: true , message: "Success Second step", data: { driver_id: @driver.id }, errors: {} }, status: :ok if @driver.id.present?
         else
           render json: {success: false , message: "Fail Second step", data: {}, errors: { errors: @driver.errors.full_messages } },status: :ok
@@ -91,7 +91,7 @@ class API::V2::DriversController < ApplicationController
             @driver.update(date_of_registration: Time.now )
             login_user = User.where(:uid => request.headers["uid"]).first
             @driver.update(created_by: login_user.id) if login_user.present?
-            @driver.update(created_by: current_user.id.to_i) if !login_user.present?
+            @driver.update(created_by: current_user.id.to_i) if !login_user.present? && current_user.present?
             render json: {success: true , message: "Success Final step", data: { driver_id: @driver.id } , errors: {} }, status: :ok if @driver.id.present?
           else
             render json: {success: false , message: "Fail Final step", data: {}, errors: { errors: @driver.errors.full_messages.split(",") } },status: :ok
@@ -328,7 +328,8 @@ class API::V2::DriversController < ApplicationController
         @errors = @errors.reject {|i| i == " Phone can't be blank"}
         @errors = @errors.reject {|i| i == " Phone has already been taken"}
         @errors = @errors.reject {|i| i == " and Phone is too short (minimum is 10 characters)"}
-        # @errors = @errors.map {|i| i.include? "Password is too short (minimum is 6 characters) and " ? i.remove("Password is too short (minimum is 6 characters) and ") : @errors }
+        @errors = @errors.each {|i|  i.include?("Password is too short (minimum is 6 characters) and ") ? i.slice!("Password is too short (minimum is 6 characters) and ") : i }
+
         render json: {success: false , message: "Fail First step", data: {}, errors: { errors: @errors } },status: :ok
       else
         render json: { success: true , message: "Success First step", data: { driver_id: user.entity.id } , errors: {} }, status: :ok
