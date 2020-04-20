@@ -273,10 +273,13 @@ module API::V1
     }'
     def upcoming_trips
       authorize! :read, @employee
-      if params[:shift] == "true"
-        @employee_trips = @employee.employee_trips.upcoming.not_completed.or(@employee.employee_trips.upcoming.where(status:"completed")).or(@employee.employee_trips.upcoming.where(status:"canceled")).scheduled.order(date: :asc)
+      if params[:shift] == "true"	  
+		#@employee_trips = @employee.employee_trips.upcoming.not_completed.or(@employee.employee_trips.upcoming.where(status:"completed")).or(@employee.employee_trips.upcoming.where(status:"canceled")).scheduled.order(date: :asc)
+		current_date = Time.now.in_time_zone("UTC").strftime("%Y-%m-%d")
+		current_date = current_date+" 00:00:00" 
+		@employee_trips = @employee.employee_trips.scheduled.where("date >= ?", current_date).order(date: :asc)		
         @employee_trip_change_requests = @employee.trip_change_requests.new_trip.where(:shift => true).where(:request_state => 'created')
-      else
+	  else
         @employee_trips = @employee.employee_trips.upcoming.not_completed.order(date: :asc)
         @employee_trip_change_requests = @employee.trip_change_requests.new_trip.where(:request_state => 'created')
       end

@@ -256,7 +256,7 @@ module API::V1
     # @TODO: test
     def exception
       authorize! :edit, @employee_trip
-
+		p "exception"
       if @trip_route
         @trip_route_exception = @trip_route.trip_route_exceptions.new( exception_type: params[:exception_type], date: Time.now )
 
