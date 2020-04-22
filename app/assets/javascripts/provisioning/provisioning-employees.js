@@ -234,7 +234,7 @@ $(function () {
                         data: null,
                         orderable: false,
                         render: function (data) {
-                            var txt = data.status === "Invited" ? '<a href="#" data-url="/employees/'+ data.id +'/invite" class="invite-count"><span>Re-Invite</span></a> <a href="#" class="editor_remove text-danger">Delete</a>/ <a href="/employees/' + data.id + '/edit" data-remote="true" class="edit employer_view" id="viewEmployee" >View</a>' : '<a href="#" class="editor_remove text-danger">Delete</a> <a href="/employees/' + data.id + '/edit" data-remote="true" class="edit employer_view" id="viewEmployee">View</a>'
+                            var txt = data.status === "Invited" ? '<a href="#" data-url="/employees/'+ data.id +'/invite" class="invite-count"><span>Re-Invite</span></a> <a href="#" class="editor_remove text-danger">Delete</a>/ <a href="/employees/' + data.id + '/edit" data-remote="true" class="edit employer_view" id="viewEmployee" >Edit</a>' : '<a href="#" class="editor_remove text-danger">Delete</a> <a href="/employees/' + data.id + '/edit" data-remote="true" class="edit employer_view" id="viewEmployee">Edit</a>'
                             return txt;
                         }
                     }
@@ -290,7 +290,70 @@ $(function () {
         }, 200)
     });
 
-    $(".nav-actions").on("click", ".edit-buttons .submit-btn.form-employees", function(e) {        
+    var came_in_error = "no";
+    $(".nav-actions").on("click", ".edit-buttons .submit-btn.form-employees", function(e) {
+        //adding code of validation starts here
+        /*
+        var employee_form_required_element = ['user_f_name','user_l_name', 'user_email', 'user_phone','user_entity_attributes_employee_company_id','user_entity_attributes_employee_id', 'user_entity_attributes_gender', 'user_entity_attributes_site_id','user_entity_attributes_home_address', 'user_entity_attributes_home_address_latitude', 'user_entity_attributes_home_address_longitude', 'user_entity_attributes_landmark'];
+        var got_fomr_error = "no";
+        $('#form-employees .form-control').each(
+            function(index){  
+                var input = $(this);
+                //alert('Type: ' + input.attr('type') + 'Name: ' + input.attr('name') + 'Value: ' + input.val());
+                
+                if(employee_form_required_element.indexOf(input.attr('id'))>0)
+                {  
+                    console.log("Testing from "+input.attr('id'))
+                    if($(this).attr('aria-required')=="true")
+                    {
+                        if($(this).val() === '')
+                        {
+                            came_in_error = "yes";
+                            got_fomr_error = "yes";
+                            console.log("ya it came here");
+                            $(this).blur(); 
+                            return false;   
+                        }
+                               
+                    }
+                }
+            }
+        );
+        console.log("came_in_error : "+came_in_error)
+        console.log("got_fomr_error : "+got_fomr_error)
+        if(came_in_error=="yes")
+        {
+            if(got_fomr_error=="no")
+            {
+                $("#form-employees").submit();
+            }    
+        }*/
+        /*var got_fomr_error = "no";
+        $("#form-employees .form-control").each(function(){
+
+            if($(this).attr('aria-required')=="true")
+            {
+                if($(this).val() === '')
+                {
+                    came_in_error = "yes";
+                    got_fomr_error = "yes";
+                    console.log("ya it came here");
+                    $(this).blur(); 
+                    return false;   
+                }
+                       
+            }
+        });
+
+        if(came_in_error=="yes")
+        {
+            if(got_fomr_error=="no")
+            {
+                $("#form-employees").submit();
+            }    
+        }   */    
+        //adding code of validation end
+        
         console.log($(".bus_travel").attr("value"))
         if($(".bus_travel").attr("checked") == "checked" || checked){
             var selectedStop = $("#user_entity_attributes_bus_trip_route_id option:selected").val();
@@ -316,7 +379,7 @@ $(function () {
 
 
 
-    $(".nav-actions").on("click", ".edit-buttons .submit-btn.form-guards", function(e) {        
+    $(".nav-actions").on("click", ".edit-buttons .submit-btn.form-guards", function(e) { 
         console.log($(".bus_travel").attr("value"))
         if($(".bus_travel").attr("checked") == "checked" || checked){
             var selectedStop = $("#user_entity_attributes_bus_trip_route_id option:selected").val();
@@ -463,10 +526,10 @@ $(function () {
   });
 
     $("#employees").on("change","#user_entity_attributes_site_id",function(){
-
         updateBillingZone($(this).val());
     });
 
+     
 
     // $("#guards").on("change","#user_entity_attributes_site_id",function(){
 
