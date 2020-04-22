@@ -494,23 +494,7 @@ $(function () {
   });
 
     $("#employees").on("change","#user_entity_attributes_site_id",function(){
-
-        $("#user_entity_attributes_site_id").find('option').get(0).remove();
         updateBillingZone($(this).val());
-
-        //added at new place
-       /* $("#user_entity_attributes_site_id option").each(function(){
-            var select_box_value = $(this).val();
-            console.log("select_box_value : "+select_box_value);
-            var select_box_text = $(this).html();
-            console.log("select_box_text : "+select_box_text);
-            if(select_box_text=="Choose Site")
-            {
-                $(this).remove();
-            }
-        });*/
-        //added at new place 
-
     });
 
      
