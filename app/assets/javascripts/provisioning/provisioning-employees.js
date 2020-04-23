@@ -308,18 +308,34 @@ $(function () {
 
         var checking_form_errror = "no";
         $.each($('input, select ,textarea', '#form-employees'),function(k){
-            console.log(k+' '+$(this).attr('name'));
+            //console.log(k+' '+$(this).attr('name'));
             if(employee_form_required_element.indexOf($(this).attr('name'))>-1)
             {
-                console.log(k+' Coming here : '+$(this).attr('name'));
-                if($(this).attr('name')==="")
+                //console.log(k+' Coming here : '+$(this).attr('name'));
+                if($(this).val()==="")
                 {
-                    e.preventDefault();
+                    console.log(k+' Coming here : '+$(this).attr('name'));
+                    //e.preventDefault();
                     checking_form_errror = "yes";
-                    return false;
+                    $(this).blur();
+                    //return false;
+                    //adding the error message to blank details
+                    //$(this).closest("div").parent().addClass("has-error");
+                    //$(this).closest("div").find("p").remove();
+                    //$(this).closest("div").find("span").remove();
+                    //spanTxt = "<p class='help-block'>can't be blank</p>";
+                    //$(this).closest("div").append(spanTxt);
+                    //adding the error message to blank details
+                }
+                else
+                {
+                    //$(this).closest("div").removeClass("has-error");                    
+                    //$(this).closest("div").find("p").remove();
+                    //$(this).closest("div").find("span").remove();
                 }
             }
         });  
+        console.log("Checking form error : "+checking_form_errror);
         //adding code of validation end
         
         console.log($(".bus_travel").attr("value"))
@@ -338,7 +354,12 @@ $(function () {
 
         }
         clearTimeout(focusOutTimer);
-        $.call("/employees/validate", $("#form-employees"), "", "", true);
+        if(checking_form_errror=="no")
+        {
+            $.call("/employees/validate", $("#form-employees"), "", "", true);
+        }
+        //$.call("/employees/validate", $("#form-employees"), "", "", true);
+        
         $("select.required").focusout();
         var table = $('#dataTables_wrapper').DataTable();
         table.ajax.reload();

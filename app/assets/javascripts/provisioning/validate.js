@@ -16,11 +16,13 @@ $(function(){
     if( selector.closest("div").hasClass("user_shift_ids") ){
       selector.closest("div").parent().addClass("has-error");
       selector.closest("div").find("p").remove();
+      selector.closest("div").find("span").remove();
       spanTxt = '<p class="help-block">'+ msg +'</p>';
       selector.closest("div").append(spanTxt);
     }else{
 
       selector.closest("div").addClass("has-error");
+      selector.closest("div").find("p").remove();
       selector.closest("div").find("span").remove();
 
       spanTxt = '<span class="help-block">'+ msg +'</span>';
