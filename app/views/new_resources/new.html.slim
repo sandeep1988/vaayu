@@ -1,0 +1,63 @@
+= content_for :body_class, 'provisioning'
+.content-header
+  h2.content-title
+    | Configurator
+.content-body
+  /script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+  #error-placement
+  .row.margin-top
+    .col-md-12.margin-bottom.nav-actions-block
+      ul.nav.nav-tabs
+       
+        li.general_settings
+          a[href="#system_customers" data-toggle="tab"]
+            | Customers
+        li.system_settings
+          a[href="#system_settings" data-toggle="tab"]
+            | System Settings
+        li.compliance
+          a[href="#compliances" data-toggle="tab" data-source="/compliances/new"]
+            | Compliances
+        li.system_constraints
+          a[href="#system_constraints" data-toggle="tab"]
+            | Constraints
+        li.system_zones
+          a[href="#system_zones" data-toggle="tab"]
+            | Zones        
+        li.system_contracts
+          a[href="#system_contracts" data-toggle="tab"]
+            | Contracts        
+      .nav-actions
+        .edit-buttons
+          a.btn.btn-sm.btn-default.cancel.btn-fixed-width[type="button" data-action="cancel"]
+            | Cancel
+          button.btn.btn-sm.btn-primary.submit-btn[type="submit" data-action="submit" form=""]
+            | Save changes
+        .action-buttons
+          a.editor_create.add-new-item.btn.btn-sm.btn-primary.btn-fixed-width[href="" data-toggle="modal" data-remote="" data-target=""]
+            | Add
+        .save-button[style="display:none"]
+          button.btn.btn-sm.btn-primary.submit-btn[type="submit" data-action="submit" form=""]
+            | Save changes
+        .action-buttons
+
+    .tab-content
+      = render partial: 'new_resources/customers'
+      /! = render partial: 'configurators/compliances'
+      /!= render partial: 'configurators/system_settings'
+      /!= render 'configurators/constraint'
+      /!= render 'configurators/addzone'
+      /!= render 'configurators/contracts'
+
+      #configurators.tab-pane.fade
+        .col-md-12.table-content-edit
+        .col-md-12.table-responsive.table-responsive-datatables.table-wrap
+          table#configurators-table.table.table-hover.table-bordered.table-no-modal[style="width: 100%;"]
+            thead
+              th
+                | S.No#
+              th
+                | Site Name
+              th
+                | Action
+            tbody

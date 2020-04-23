@@ -32,6 +32,14 @@ aside.side-left
             = inline_svg 'reports-icon.svg', class: 'sidebar-icon'
             span.sidebar-text
               | Reports
+              
+      - if can? :view, :new_resources
+        li[class="#{active_class(new_resources_new_path)}"]
+          =link_to new_resources_new_path do
+            = inline_svg 'reports-icon.svg', class: 'sidebar-icon'
+            span.sidebar-text
+              | New Resources
+
       - if can? :view, :configurators_tab
         li[class="#{active_class(configurators_path)}"]
           =link_to configurators_path do

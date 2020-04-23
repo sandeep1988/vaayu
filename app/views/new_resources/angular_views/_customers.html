@@ -1,0 +1,174 @@
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" > 
+-->
+
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
+
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+<!-- <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+-->
+
+<div class="vayau-routing" ng-controller="customerController" ng-init="init()">
+   <toaster-container ng-show="toggleView"></toaster-container>
+   <div class="container mt-4 mt-3">
+      <table datatable="ng" dt-options="dtOptions" class="table table-bordered mytable" style="width: 100%;">
+         <!-- dt-options="vm.dtOptions" dt-instance="vm.dtInstance"  width="100%" dt-column-defs="vm.dtColumnDefs" -->
+         <thead>
+            <tr>
+               <th>ID#</th>
+               <th>Name</th>
+               <th>HQ Address</th>
+               <th>Business Type</th>
+               <th>PAN</th>
+               <th>GSTIN</th>
+               <th>Actions</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr ng-repeat="c in customers">
+               <td>{{c.id}}</td>
+               <td><a href class="modal_view">{{c.name}}</a></td>
+               <td>{{c.home_address_address_1 +', '+c.home_address_address_2 }}</td>
+               <td>{{c.business_type}}</td>
+               <td>{{c.pan}}</td>
+               <td>{{c.home_address_gstin_no}}</td>
+               <td width="40px">
+                  <!-- <a class="btn btn-primary" href="#" role="button">ADD</a> | <a class="btn btn-primary" href="#" role="button">EDit</a> | <a class="btn btn-primary" href="#" role="button">Active</a>  -->
+                  <div class="btn-group mr-2" role="group" aria-label="First group">
+                     <button type="button" class="btn btn-secondary" ng-click="viewCustomer(c, false)">View</button>
+                     <!-- <button type="button" class="btn btn-secondary" ng-click="addCustomer()">Add</button> -->
+                     <button type="button" class="btn btn-secondary" ng-click="editCustomer(c)">Edit</button>
+                     <button type="button" class="btn btn-secondary" ng-click="activateCustomer(c)">Active</button>
+                  </div>
+               </td>
+            </tr>
+         </tbody>
+         <tfoot>
+            <tr>
+               <th>ID#</th>
+               <th>Name</th>
+               <th>HQ Address</th>
+               <th>Business Type</th>
+               <th>PAN</th>
+               <th>GSTIN</th>
+               <th>Actions</th>
+            </tr>
+         </tfoot>
+      </table>
+   </div>
+
+   <!-- Modal -->
+   <!-- <div
+      class="modal fade"
+      id="exampleModalScrollable"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalScrollableTitle"
+      ng-if="showPopup"
+   >
+      <div id="myModal" class="vaayu-modal" style="display: block; padding-top: 65px;" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               ...
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+         </div>
+      </div>
+   </div> -->
+
+   <!-- The Modal -->
+   <div id="myModal" class="vaayu-modal modal fade in" style="display: block; padding-top: 65px;" ng-if="showPopup">
+      <!-- Modal content -->
+      <div class="modal-dialog modal-lg">
+         <div class="modal-content">
+            <div class="DTE DTE_Action_Edit">
+               <div data-dte-e="head" class="DTE_Header modal-header">
+                  <button class="close" ng-click="closePopup()">×</button>
+                  <div class="DTE_Header_Content">Customer</div>
+               </div>
+
+               <div data-dte-e="body" class="DTE_Body modal-body" style="padding-left: 30px; padding-right: 30px;">
+                  <div class="DTE_Body_Content" data-dte-e="body_content">
+                     <form data-dte-e="form" class="form-horizontal" style="display: block;">
+                        <div
+                           data-dte-e="form_content"
+                           class="row DTE_Form_Content"
+                           ng-repeat="row_num in getWholeNum() track by $index"
+                        >
+                           <div
+                              class="DTE_Field DTE_Field_Type_text col-md-4"
+                              ng-repeat="field in getRowFields($index) track by $index"
+                           >
+                              <label class="col-lg-4 control-label" data-dte-e="label"
+                                 >{{field.label}}
+                                 <div class="DTE_Label_Info" data-dte-e="msg-label">{{field.validation_msg}}</div>
+                              </label>
+                              <div data-dte-e="input" class="col-lg-8 controls">
+                                 <div data-dte-e="input-control" class="DTE_Field_InputControl" style="display: block;">
+                                    <input
+                                       ng-if="field.type !== 'dropdown'"
+                                       ng-model="field.value"
+                                       type="{{field.type}}"
+                                       placeholder="{{field.label}}"
+                                       class="form-control"
+                                       ng-disabled="field.disabled"
+                                    />
+                                    <!-- <select class="form-control select">
+                                       ng-class="{'disabled' : field.disabled }"
+                                    </select> -->
+                                    <select
+                                       ng-if="field.type === 'dropdown'"
+                                       ng-model="field.value"
+                                       ng-options="{{field.options}}"
+                                       class="form-control"
+                                       ng-disabled="{{field.disabled}}"
+                                       placeholder="Select "
+                                    >
+                                    </select>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+
+               <div data-dte-e="foot" class="DTE_Footer modal-footer">
+                  <div class="DTE_Footer_Content"></div>
+                  <div data-dte-e="form_error" class="DTE_Form_Error"></div>
+                  <div data-dte-e="form_buttons" class="DTE_Form_Buttons">
+                     <button class="btn btn-default btn btn-sm btn-default" tabindex="0" ng-click="closePopup()">
+                        Close</button
+                     ><button
+                        class="btn btn-default btn btn-sm btn-primary btn-fixed-width"
+                        tabindex="0"
+                        ng-click="submit(action_type)"
+                     >
+                        Submit
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <script>
+      $(document).ready(function () {
+         $(".mytable").DataTable({
+            order: [[0, "desc"]],
+         });
+      });
+   </script>
+</div>

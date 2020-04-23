@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'new_resources/new'
+
+  get 'new_resources/create'
+
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
 
