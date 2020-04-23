@@ -214,7 +214,9 @@ class SitesController < ApplicationController
           end
         end
       else
-        flash[:error] = @site.errors.full_messages.to_sentence
+        respond_to do |format|
+          format.json { render json: { success: false , errors:  @site.errors.full_messages }, status: '200' }
+      end
       end 
       
     else
@@ -337,7 +339,8 @@ class SitesController < ApplicationController
         end   
       else
         respond_to do |format|
-          format.json { render json: @site.errors.messages, status: '404' }
+          format.json { render json: { success: false , errors:  @site.errors.full_messages }, status: '200' }
+          # render json: { success: false , errors:  @site.errors.full_messages }, status: 200
       end
       end   
     else
