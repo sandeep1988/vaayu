@@ -624,13 +624,37 @@ $(function () {
                             },
                             url: '/sites/' + site_id + '/update_site'
                         }).done(function (e) {
-                            $('.submit-btn').prop('disabled', false)
-                            site_id = ''
-                            edit_site = false;
-                            resetBillingParameters();
-                            restoreDefaultTabState();
-                            siteTable.draw()
-                            $(".add-new-item").show()
+
+                            //console.log( e ,"asfdsfsf");
+                            if( !e ){
+
+                                $('.submit-btn').prop('disabled', false)
+                                site_id = ''
+                                edit_site = false;
+                                resetBillingParameters();
+                                restoreDefaultTabState();
+                                siteTable.draw()
+                                $(".add-new-item").show()
+                               
+                            }else if( e.errors ){
+                               let text = "";
+                                for(let data of e.errors ){
+                                    text += data;
+                                }
+                                $('.submit-btn').prop('disabled', false)
+                                alert( text );
+                                return false;  
+                            }else{
+
+                                $('.submit-btn').prop('disabled', false)
+                                site_id = ''
+                                edit_site = false;
+                                resetBillingParameters();
+                                restoreDefaultTabState();
+                                siteTable.draw()
+                                $(".add-new-item").show()
+
+                            }
                         });
                     }
                     else {
@@ -644,13 +668,42 @@ $(function () {
                             },
                             url: '/sites'
                         }).done(function (e) {
-                            $('.submit-btn').prop('disabled', false)
-                            site_id = ''
-                            edit_site = false
-                            resetBillingParameters();
-                            restoreDefaultTabState();
-                            siteTable.draw()
-                            $(".add-new-item").show()
+                            if( !e ){
+
+                                $('.submit-btn').prop('disabled', false)
+                                site_id = ''
+                                edit_site = false;
+                                resetBillingParameters();
+                                restoreDefaultTabState();
+                                siteTable.draw()
+                                $(".add-new-item").show()
+                               
+                            }else if( e.errors ){
+                               let text = "";
+                                for(let data of e.errors ){
+                                    text += data;
+                                }
+                                $('.submit-btn').prop('disabled', false)
+                                alert( text );
+                                return false;  
+                            }else{
+                                
+                                $('.submit-btn').prop('disabled', false)
+                                site_id = ''
+                                edit_site = false;
+                                resetBillingParameters();
+                                restoreDefaultTabState();
+                                siteTable.draw()
+                                $(".add-new-item").show()
+
+                            }
+                            // $('.submit-btn').prop('disabled', false)
+                            // site_id = ''
+                            // edit_site = false
+                            // resetBillingParameters();
+                            // restoreDefaultTabState();
+                            // siteTable.draw()
+                            // $(".add-new-item").show()
                         });
                     }
                     // $('.submit-btn').prop('disabled', false)    
