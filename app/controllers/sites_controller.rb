@@ -232,7 +232,7 @@ class SitesController < ApplicationController
       #   longitude = coordinates[:lng]
       # end
       @site = Site.where(:id => params[:id]).first
-      @site.update!(:name => params[:site]['name'], 
+      @site.update(:name => params[:site]['name'], 
           :employee_company_id => params[:site]['employee_company_id'],
           :address  => params[:site]['address'],
           :phone  => params[:site]['phone'],
@@ -284,57 +284,62 @@ class SitesController < ApplicationController
           :address_2 => params[:site]['address_2'],
           :contact_phone => params[:site]['contact_phone'],
           :contact_email => params[:site][:contact_email]
+      )
+      if @site.valid?
+        @site.updated_by = current_user.full_name if current_user.full_name.present?
+        if !params[:site]['logistics_company_id'].blank?
+          @services = Service.where(:site_id => @site.id).where(:logistics_company_id => params[:site]['logistics_company_id'])
+          @services.each do |service|
+            service.destroy
+          end
+          params[:services].each do |service|
+            @service = Service.create(:site_id => @site.id,
+                                   :service_type => params[:services][service]['service_type'],
+                                   :billing_model => params[:services][service]['billing_model'],
+                                   :vary_with_vehicle => params[:services][service]['vary_with_vehicle'] == "false" ? false : true,
+                                   :logistics_company_id => params[:site]['logistics_company_id']
+                                  )
 
-  )
-      @site.updated_by = current_user.full_name if current_user.full_name.present?
-      if !params[:site]['logistics_company_id'].blank?
-        @services = Service.where(:site_id => @site.id).where(:logistics_company_id => params[:site]['logistics_company_id'])
-        @services.each do |service|
-          service.destroy
-        end
-        params[:services].each do |service|
-          @service = Service.create(:site_id => @site.id,
-                                 :service_type => params[:services][service]['service_type'],
-                                 :billing_model => params[:services][service]['billing_model'],
-                                 :vary_with_vehicle => params[:services][service]['vary_with_vehicle'] == "false" ? false : true,
-                                 :logistics_company_id => params[:site]['logistics_company_id']
-                                )
-
-          params[:services][service][:vehicles].each do |vehicle|
-            @vehicle_rate = VehicleRate.create(:service_id => @service.id,
-                                               :vehicle_capacity => params[:services][service][:vehicles][vehicle]['vehicle_capacity'],
-                                               :ac => params[:services][service][:vehicles][vehicle]['ac'],
-                                               :cgst => params[:services][service][:vehicles][vehicle]['cgst'],
-                                               :sgst => params[:services][service][:vehicles][vehicle]['sgst']
-                                               # :overage => params[:services][service][:vehicles][vehicle]['overage'],
-                                               # :time_on_duty => params[:services][service][:vehicles][vehicle]['time_on_duty'],
-                                               # :overage_per_hour => params[:services][service][:vehicles][vehicle]['overage_per_hour']
+            params[:services][service][:vehicles].each do |vehicle|
+              @vehicle_rate = VehicleRate.create(:service_id => @service.id,
+                                                 :vehicle_capacity => params[:services][service][:vehicles][vehicle]['vehicle_capacity'],
+                                                 :ac => params[:services][service][:vehicles][vehicle]['ac'],
+                                                 :cgst => params[:services][service][:vehicles][vehicle]['cgst'],
+                                                 :sgst => params[:services][service][:vehicles][vehicle]['sgst']
+                                                 # :overage => params[:services][service][:vehicles][vehicle]['overage'],
+                                                 # :time_on_duty => params[:services][service][:vehicles][vehicle]['time_on_duty'],
+                                                 # :overage_per_hour => params[:services][service][:vehicles][vehicle]['overage_per_hour']
+                                                )
+              if !params[:services][service][:vehicles][vehicle][:zones].blank?
+                params[:services][service][:vehicles][vehicle][:zones].each do |zone|                
+                  @zone_rate = ZoneRate.create(:vehicle_rate_id => @vehicle_rate.id,
+                                               :name => params[:services][service][:vehicles][vehicle][:zones][zone]['name'],
+                                               :rate => params[:services][service][:vehicles][vehicle][:zones][zone]['rate'],
+                                               :guard_rate => params[:services][service][:vehicles][vehicle][:zones][zone]['guard_rate']
                                               )
-            if !params[:services][service][:vehicles][vehicle][:zones].blank?
-              params[:services][service][:vehicles][vehicle][:zones].each do |zone|                
-                @zone_rate = ZoneRate.create(:vehicle_rate_id => @vehicle_rate.id,
-                                             :name => params[:services][service][:vehicles][vehicle][:zones][zone]['name'],
-                                             :rate => params[:services][service][:vehicles][vehicle][:zones][zone]['rate'],
-                                             :guard_rate => params[:services][service][:vehicles][vehicle][:zones][zone]['guard_rate']
-                                            )
-              end  
-            end
+                end  
+              end
 
-            if !params[:services][service][:vehicles][vehicle][:package_rate].blank?              
-              @package_rate = PackageRate.create(:vehicle_rate_id => @vehicle_rate.id,
-                                           :duration => params[:services][service][:vehicles][vehicle][:package_rate]['duration'],
-                                           :package_duty_hours => params[:services][service][:vehicles][vehicle][:package_rate]['package_duty_hours'],
-                                           :package_km => params[:services][service][:vehicles][vehicle][:package_rate]['package_km'],
-                                           :package_overage_per_km => params[:services][service][:vehicles][vehicle][:package_rate]['package_overage_per_km'],
-                                           :package_overage_per_time => params[:services][service][:vehicles][vehicle][:package_rate]['package_overage_per_time'],
-                                           :package_mileage_calculation => params[:services][service][:vehicles][vehicle][:package_rate]['package_mileage_calculation'],                                         
-                                           :package_overage_time => params[:services][service][:vehicles][vehicle][:package_rate]['package_overage_time'],
-                                           :package_rate => params[:services][service][:vehicles][vehicle][:package_rate]['package_rate']
-                                          )
+              if !params[:services][service][:vehicles][vehicle][:package_rate].blank?              
+                @package_rate = PackageRate.create(:vehicle_rate_id => @vehicle_rate.id,
+                                             :duration => params[:services][service][:vehicles][vehicle][:package_rate]['duration'],
+                                             :package_duty_hours => params[:services][service][:vehicles][vehicle][:package_rate]['package_duty_hours'],
+                                             :package_km => params[:services][service][:vehicles][vehicle][:package_rate]['package_km'],
+                                             :package_overage_per_km => params[:services][service][:vehicles][vehicle][:package_rate]['package_overage_per_km'],
+                                             :package_overage_per_time => params[:services][service][:vehicles][vehicle][:package_rate]['package_overage_per_time'],
+                                             :package_mileage_calculation => params[:services][service][:vehicles][vehicle][:package_rate]['package_mileage_calculation'],                                         
+                                             :package_overage_time => params[:services][service][:vehicles][vehicle][:package_rate]['package_overage_time'],
+                                             :package_rate => params[:services][service][:vehicles][vehicle][:package_rate]['package_rate']
+                                            )
+              end
             end
           end
-        end
-      end      
+        end   
+      else
+        respond_to do |format|
+          format.json { render json: @site.errors.messages, status: '404' }
+      end
+      end   
     else
       flash[:error] = "You have not permissions for edit this site"
     end

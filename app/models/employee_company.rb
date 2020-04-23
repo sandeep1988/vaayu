@@ -13,7 +13,7 @@ class EmployeeCompany < ApplicationRecord
   has_many :employers, :dependent => :destroy
 
   #validates :logistics_company, presence: true
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 
   def self.invoice_frequency_type
     [['Day', 'day'], ['Week', 'week'], ['Month', 'month']]

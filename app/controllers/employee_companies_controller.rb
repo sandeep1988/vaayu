@@ -51,7 +51,7 @@ class EmployeeCompaniesController < ApplicationController
           @employee_company.update(active: company_params[:active] == "Inactive" ? false : true)
           format.json { render json: EmployeeCompanyDatatable.new(@employee_company), status: :created, location: @employee_companies}
         else
-          format.json { render json: @employee_company.errors, status: '404' }
+          format.json { render json: @employee_company.errors.messages, status: '404' }
         end
       end
     else
