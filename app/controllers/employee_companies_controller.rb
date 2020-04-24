@@ -27,6 +27,11 @@ class EmployeeCompaniesController < ApplicationController
     }
   end
 
+  def get_customers_name
+    @customers = EmployeeCompany.pluck(:id,:name)
+    render :json => { :customers =>  @customers }
+  end
+
   def get_all_sites
     @employee_companies = EmployeeCompany.where(active: "1")
     @logistics_companies = LogisticsCompany.all
