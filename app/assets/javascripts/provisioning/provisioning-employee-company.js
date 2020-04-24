@@ -20,6 +20,8 @@ $(function () {
      * Init table
      */
     var isErrorInCompany = false;
+    var arrCompaniesList = [];
+
     $.ajax({ 
       type: "GET",
       url: '/employee_companies/get_all'
@@ -321,6 +323,7 @@ $(function () {
               //   }
               // }
 
+              console.log( arrCompaniesList ,"nnnnnn");
               console.log(this.inError());
 
               isErrorInCompany = false;
@@ -565,7 +568,14 @@ $(document).on('click', 'a[id="active_customer"]', function (e) {
   });
 
 
+  $.get("/employee_companies/get_customers_name", function( data ){
+    arrCompaniesList = data;
+  });
+
 });
+
+
+
 
 
 // $(document).on("#active_customer", 'click', function (e) {
