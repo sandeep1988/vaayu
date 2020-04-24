@@ -333,7 +333,7 @@ $(function () {
 
                     //if( $(this).text() == "Save changes" || $(this).text() == "Submit" ){
                       //if( isErrorInCompany == false ){
-                        location.reload();
+                        //location.reload();
                       //}
                       
                     //}
