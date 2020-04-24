@@ -1,0 +1,988 @@
+{
+    "ipcMode": null,
+    "executionRoleArn": "arn:aws:iam::482532497705:role/ecsTaskExecutionRole",
+    "containerDefinitions": [
+        {
+            "dnsSearchDomains": null,
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "secretOptions": null,
+                "options": {
+                    "awslogs-group": "/ecs/alyte-ror-backend",
+                    "awslogs-region": "ap-south-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "entryPoint": null,
+            "portMappings": [
+                {
+                    "hostPort": 3000,
+                    "protocol": "tcp",
+                    "containerPort": 3000
+                }
+            ],
+            "command": null,
+            "linuxParameters": null,
+            "cpu": 0,
+            "environment": [
+                {
+                    "name": "S3_HOST_NAME",
+                    "value": "s3.ap-south-1.amazonaws.com"
+                },
+                {
+                    "name": "BASIC_AUTH_PASSWORD",
+                    "value": "harman"
+                },
+                {
+                    "name": "RAILS_MAX_THREADS",
+                    "value": "10"
+                },
+                {
+                    "name": "S3_REGION",
+                    "value": "ap-south-1"
+                },
+                {
+                    "name": "SITE_NAME",
+                    "value": "preProd"
+                },
+                {
+                    "name": "FCM_TOPIC_PREFIX",
+                    "value": "techmblrprod"
+                },
+                {
+                    "name": "SOLUTIONS_INFINI_API_KEY",
+                    "value": "A4fbafbca93401e6c43f7c067b58a507e"
+                },
+                {
+                    "name": "EXOTEL_TOKEN",
+                    "value": "31fbdf8f0a6734bd4bd1cdf1fd5e2f7f70ff3229"
+                },
+                {
+                    "name": "NEW_RELIC_license_key",
+                    "value": "e1433c8ba8fd758baf4d92a82a6fb9229d95e7ac"
+                },
+                {
+                    "name": "PLIVO_AUTH_TOKEN",
+                    "value": "YWU5YjQ5YjY2N2IxNzY2NzAyZDY2ZGY1MjkwMjc"
+                },
+                {
+                    "name": "GOOGLE_MAPS_API_KEY",
+                    "value": "AIzaSyCKmOycgAQLZGOsJBSFkhOp2LWakMC6vn0"
+                },
+                {
+                    "name": "DATABASE_USERNAME",
+                    "value": "MOOVE_DEV"
+                },
+                {
+                    "name": "PLIVO_AUTH_ID",
+                    "value": "MANMU4YWVJMZLIZDYWY"
+                },
+                {
+                    "name": "ANONYMOUS_APPLICATION_SID",
+                    "value": "APc068e4e88b11ef16b3fe94b9ca9fb779"
+                },
+                {
+                    "name": "GMAIL_PASSWORD",
+                    "value": "test@2020"
+                },
+                {
+                    "name": "GMAIL_USENAME",
+                    "value": "testvaayumll@gmail.com"
+                },
+                {
+                    "name": "EXOTEL_SID",
+                    "value": "08039591060"
+                },
+                {
+                    "name": "BASIC_AUTH_USER",
+                    "value": "harman"
+                },
+                {
+                    "name": "S3_BUCKET",
+                    "value": "moove-assets-uat10"
+                },
+                {
+                    "name": "RAILS_ENV",
+                    "value": "production"
+                },
+                {
+                    "name": "CALCULATE_ETA",
+                    "value": "true"
+                },
+                {
+                    "name": "CANCEL_TIME_CHECK_IN",
+                    "value": "4.hours"
+                },
+                {
+                    "name": "CLUSTERING_SERVICE_URL",
+                    "value": "cluster.uat10.moove.network/"
+                },
+                {
+                    "name": "NEW_RELIC_log_level",
+                    "value": "info"
+                },
+                {
+                    "name": "NEW_RELIC_app_name",
+                    "value": "preprodoperator.mllvaayu.com"
+                },
+                {
+                    "name": "S3_SECRET_KEY",
+                    "value": "P6qxtudTzk8fKZNUlO0O6Tnsb3QJyTNnr6Ky9Yng"
+                },
+                {
+                    "name": "JOB_WORKER_URL",
+                    "value": "redis://redis-alyte-preprod.2i6os5.ng.0001.aps1.cache.amazonaws.com:6379"
+                },
+                {
+                    "name": "TWILIO_AUTH_TOKEN",
+                    "value": "f9bf5de0a0553275a6aa377a8b56f7ce"
+                },
+                {
+                    "name": "ENABLE_LINE_MANAGER_APPROVE",
+                    "value": "true"
+                },
+                {
+                    "name": "DATABASE_PASSWORD",
+                    "value": "NG$Pir7ySMJ9m&p9"
+                },
+                {
+                    "name": "TWILIO_ACCOUNT_SID",
+                    "value": "ACf47d0b64c1d8637b1dc7f4f91d33fba0"
+                },
+                {
+                    "name": "DRIVER_APP_LINK",
+                    "value": "https://goo.gl/BWyW9c"
+                },
+                {
+                    "name": "OPERATOR_NUMBER",
+                    "value": "8792656946"
+                },
+                {
+                    "name": "DATABASE_HOST",
+                    "value": "vaayu-prod.cjny84emnsh9.ap-south-1.rds.amazonaws.com"
+                },
+                {
+                    "name": "EXOTEL_CALLER_ID",
+                    "value": "08039591060"
+                },
+                {
+                    "name": "ROLLBAR_ACCESS_TOKEN",
+                    "value": "0025d0c26f5d4e41850ed00693cc79b8"
+                },
+                {
+                    "name": "AUTO_APPROVE_TRIP_CANCEL_REQUEST",
+                    "value": "false"
+                },
+                {
+                    "name": "CHANGE_TIME_CHECK_OUT",
+                    "value": "4.hours"
+                },
+                {
+                    "name": "SOLUTIONS_INFINI_SENDER",
+                    "value": "iMOOVE"
+                },
+                {
+                    "name": "CANCEL_TIME_CHECK_OUT",
+                    "value": "30.minutes"
+                },
+                {
+                    "name": "CLUSTER_ALGORITHM",
+                    "value": "clustering_service"
+                },
+                {
+                    "name": "S3_ACCESS_KEY_ID",
+                    "value": "AKIAXAWJNTEUSEDN4A57"
+                },
+                {
+                    "name": "AUTO_APPROVE_TRIP_CHANGE_REQUEST",
+                    "value": "true"
+                },
+                {
+                    "name": "AUTO_CLUSTER",
+                    "value": "false"
+                },
+                {
+                    "name": "DATABASE_NAME",
+                    "value": "moove_db_sandbox"
+                },
+                {
+                    "name": "ENALBE_GUARD_PROVISIONGING",
+                    "value": "true"
+                },
+                {
+                    "name": "CHANGE_TIME_CHECK_IN",
+                    "value": "8.hours"
+                },
+                {
+                    "name": "DATABASE_PORT",
+                    "value": "3306"
+                },
+                {
+                    "name": "EMPLOYEE_IOS_APP_LINK",
+                    "value": "https://goo.gl/etK6Zo"
+                },
+                {
+                    "name": "ENABLE_TRANSPORT_DESK_MANAGER_APPROVE",
+                    "value": "true"
+                },
+                {
+                    "name": "NEW_RELIC_monitor_mode",
+                    "value": "true"
+                },
+                {
+                    "name": "NO_SHOW_APPROVAL_REQUIRED",
+                    "value": "false"
+                },
+                {
+                    "name": "GEOHASH_AUTO_CLUSTERING",
+                    "value": "false"
+                },
+                {
+                    "name": "FCM_API_KEY",
+                    "value": "AAAA1KydgOQ:APA91bElMyrV1hV7aOBRNFriq3LMPe0Rkw0wN3XVCb-8H83kpcEH0jE1Gt4N0gtv3waYl3XDkjsXJGnfTqwxYETuOlKuiUeeuhcAwrpBusZl2CVETdmErjJI94O-JsgwLllhHVN7Xc2-"
+                },
+                {
+                    "name": "SERVER_URL",
+                    "value": "preprodoperator.mllvaayu.com"
+                },
+                {
+                    "name": "EMPLOYEE_ANDROID_APP_LINK",
+                    "value": "https://goo.gl/DZ131Z"
+                },
+                {
+                    "name": "ONBOARD_PASSENGER_TIME",
+                    "value": "3.minutes"
+                },
+                {
+                    "name": "SECRET_KEY_BASE",
+                    "value": "daef0f128e8c899673cbcc71b3d4854112006de625db4bab0116818c7a7dc5cae52fc531dfb5f153d1b7fb3021331de744683b0346317751115c1837cbc69672"
+                },
+                {
+                    "name": "REDIS_URL",
+                    "value": "redis://redis-alyte-preprod.2i6os5.ng.0001.aps1.cache.amazonaws.com:6379"
+                },
+                {
+                    "name": "SEND_ANALYTICS_REPORT",
+                    "value": "true"
+                }
+            ],
+            "resourceRequirements": null,
+            "ulimits": null,
+            "dnsServers": null,
+            "mountPoints": [],
+            "workingDirectory": null,
+            "secrets": null,
+            "dockerSecurityOptions": null,
+            "memory": null,
+            "memoryReservation": 1000,
+            "volumesFrom": [],
+            "stopTimeout": null,
+            "image": "482532497705.dkr.ecr.ap-south-1.amazonaws.com/alyte_backend:latest",
+            "startTimeout": null,
+            "firelensConfiguration": null,
+            "dependsOn": null,
+            "disableNetworking": null,
+            "interactive": null,
+            "healthCheck": null,
+            "essential": true,
+            "links": [],
+            "hostname": null,
+            "extraHosts": null,
+            "pseudoTerminal": null,
+            "user": null,
+            "readonlyRootFilesystem": null,
+            "dockerLabels": null,
+            "systemControls": null,
+            "privileged": null,
+            "name": "web"
+        },
+        {
+            "dnsSearchDomains": null,
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "secretOptions": null,
+                "options": {
+                    "awslogs-group": "/ecs/alyte-ror-backend",
+                    "awslogs-region": "ap-south-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "entryPoint": null,
+            "portMappings": [],
+            "command": [
+                "bundle",
+                "exec",
+                "sidekiq",
+                "-C",
+                "/home/app/webapp/config/sidekiq.yml"
+            ],
+            "linuxParameters": null,
+            "cpu": 0,
+            "environment": [
+                {
+                    "name": "S3_HOST_NAME",
+                    "value": "s3.ap-south-1.amazonaws.com"
+                },
+                {
+                    "name": "BASIC_AUTH_PASSWORD",
+                    "value": "harman"
+                },
+                {
+                    "name": "RAILS_MAX_THREADS",
+                    "value": "10"
+                },
+                {
+                    "name": "S3_REGION",
+                    "value": "ap-south-1"
+                },
+                {
+                    "name": "SITE_NAME",
+                    "value": "preProd"
+                },
+                {
+                    "name": "FCM_TOPIC_PREFIX",
+                    "value": "techmblrprod"
+                },
+                {
+                    "name": "SOLUTIONS_INFINI_API_KEY",
+                    "value": "A4fbafbca93401e6c43f7c067b58a507e"
+                },
+                {
+                    "name": "EXOTEL_TOKEN",
+                    "value": "31fbdf8f0a6734bd4bd1cdf1fd5e2f7f70ff3229"
+                },
+                {
+                    "name": "NEW_RELIC_license_key",
+                    "value": "e1433c8ba8fd758baf4d92a82a6fb9229d95e7ac"
+                },
+                {
+                    "name": "PLIVO_AUTH_TOKEN",
+                    "value": "YWU5YjQ5YjY2N2IxNzY2NzAyZDY2ZGY1MjkwMjc"
+                },
+                {
+                    "name": "GOOGLE_MAPS_API_KEY",
+                    "value": "AIzaSyCKmOycgAQLZGOsJBSFkhOp2LWakMC6vn0"
+                },
+                {
+                    "name": "DATABASE_USERNAME",
+                    "value": "MOOVE_DEV"
+                },
+                {
+                    "name": "PLIVO_AUTH_ID",
+                    "value": "MANMU4YWVJMZLIZDYWY"
+                },
+                {
+                    "name": "ANONYMOUS_APPLICATION_SID",
+                    "value": "APc068e4e88b11ef16b3fe94b9ca9fb779"
+                },
+                {
+                    "name": "GMAIL_PASSWORD",
+                    "value": "test@2020"
+                },
+                {
+                    "name": "GMAIL_USENAME",
+                    "value": "testvaayumll@gmail.com"
+                },
+                {
+                    "name": "EXOTEL_SID",
+                    "value": "08039591060"
+                },
+                {
+                    "name": "BASIC_AUTH_USER",
+                    "value": "harman"
+                },
+                {
+                    "name": "S3_BUCKET",
+                    "value": "moove-assets-uat10"
+                },
+                {
+                    "name": "RAILS_ENV",
+                    "value": "production"
+                },
+                {
+                    "name": "CALCULATE_ETA",
+                    "value": "true"
+                },
+                {
+                    "name": "CANCEL_TIME_CHECK_IN",
+                    "value": "4.hours"
+                },
+                {
+                    "name": "CLUSTERING_SERVICE_URL",
+                    "value": "cluster.uat10.moove.network/"
+                },
+                {
+                    "name": "NEW_RELIC_log_level",
+                    "value": "info"
+                },
+                {
+                    "name": "NEW_RELIC_app_name",
+                    "value": "preprodoperator.mllvaayu.com"
+                },
+                {
+                    "name": "S3_SECRET_KEY",
+                    "value": "P6qxtudTzk8fKZNUlO0O6Tnsb3QJyTNnr6Ky9Yng"
+                },
+                {
+                    "name": "JOB_WORKER_URL",
+                    "value": "redis://redis-alyte-preprod.2i6os5.ng.0001.aps1.cache.amazonaws.com:6379"
+                },
+                {
+                    "name": "TWILIO_AUTH_TOKEN",
+                    "value": "f9bf5de0a0553275a6aa377a8b56f7ce"
+                },
+                {
+                    "name": "ENABLE_LINE_MANAGER_APPROVE",
+                    "value": "true"
+                },
+                {
+                    "name": "DATABASE_PASSWORD",
+                    "value": "NG$Pir7ySMJ9m&p9"
+                },
+                {
+                    "name": "TWILIO_ACCOUNT_SID",
+                    "value": "ACf47d0b64c1d8637b1dc7f4f91d33fba0"
+                },
+                {
+                    "name": "DRIVER_APP_LINK",
+                    "value": "https://goo.gl/BWyW9c"
+                },
+                {
+                    "name": "OPERATOR_NUMBER",
+                    "value": "8792656946"
+                },
+                {
+                    "name": "DATABASE_HOST",
+                    "value": "vaayu-prod.cjny84emnsh9.ap-south-1.rds.amazonaws.com"
+                },
+                {
+                    "name": "EXOTEL_CALLER_ID",
+                    "value": "08039591060"
+                },
+                {
+                    "name": "ROLLBAR_ACCESS_TOKEN",
+                    "value": "0025d0c26f5d4e41850ed00693cc79b8"
+                },
+                {
+                    "name": "AUTO_APPROVE_TRIP_CANCEL_REQUEST",
+                    "value": "false"
+                },
+                {
+                    "name": "CHANGE_TIME_CHECK_OUT",
+                    "value": "4.hours"
+                },
+                {
+                    "name": "SOLUTIONS_INFINI_SENDER",
+                    "value": "iMOOVE"
+                },
+                {
+                    "name": "CANCEL_TIME_CHECK_OUT",
+                    "value": "30.minutes"
+                },
+                {
+                    "name": "CLUSTER_ALGORITHM",
+                    "value": "clustering_service"
+                },
+                {
+                    "name": "S3_ACCESS_KEY_ID",
+                    "value": "AKIAXAWJNTEUSEDN4A57"
+                },
+                {
+                    "name": "AUTO_APPROVE_TRIP_CHANGE_REQUEST",
+                    "value": "true"
+                },
+                {
+                    "name": "AUTO_CLUSTER",
+                    "value": "false"
+                },
+                {
+                    "name": "DATABASE_NAME",
+                    "value": "moove_db_sandbox"
+                },
+                {
+                    "name": "ENALBE_GUARD_PROVISIONGING",
+                    "value": "true"
+                },
+                {
+                    "name": "CHANGE_TIME_CHECK_IN",
+                    "value": "8.hours"
+                },
+                {
+                    "name": "DATABASE_PORT",
+                    "value": "3306"
+                },
+                {
+                    "name": "EMPLOYEE_IOS_APP_LINK",
+                    "value": "https://goo.gl/etK6Zo"
+                },
+                {
+                    "name": "ENABLE_TRANSPORT_DESK_MANAGER_APPROVE",
+                    "value": "true"
+                },
+                {
+                    "name": "NEW_RELIC_monitor_mode",
+                    "value": "true"
+                },
+                {
+                    "name": "NO_SHOW_APPROVAL_REQUIRED",
+                    "value": "false"
+                },
+                {
+                    "name": "GEOHASH_AUTO_CLUSTERING",
+                    "value": "false"
+                },
+                {
+                    "name": "FCM_API_KEY",
+                    "value": "AAAA1KydgOQ:APA91bElMyrV1hV7aOBRNFriq3LMPe0Rkw0wN3XVCb-8H83kpcEH0jE1Gt4N0gtv3waYl3XDkjsXJGnfTqwxYETuOlKuiUeeuhcAwrpBusZl2CVETdmErjJI94O-JsgwLllhHVN7Xc2-"
+                },
+                {
+                    "name": "SERVER_URL",
+                    "value": "preprodoperator.mllvaayu.com"
+                },
+                {
+                    "name": "EMPLOYEE_ANDROID_APP_LINK",
+                    "value": "https://goo.gl/DZ131Z"
+                },
+                {
+                    "name": "ONBOARD_PASSENGER_TIME",
+                    "value": "3.minutes"
+                },
+                {
+                    "name": "SECRET_KEY_BASE",
+                    "value": "daef0f128e8c899673cbcc71b3d4854112006de625db4bab0116818c7a7dc5cae52fc531dfb5f153d1b7fb3021331de744683b0346317751115c1837cbc69672"
+                },
+                {
+                    "name": "REDIS_URL",
+                    "value": "redis://redis-alyte-preprod.2i6os5.ng.0001.aps1.cache.amazonaws.com:6379"
+                },
+                {
+                    "name": "SEND_ANALYTICS_REPORT",
+                    "value": "true"
+                }
+            ],
+            "resourceRequirements": null,
+            "ulimits": null,
+            "dnsServers": null,
+            "mountPoints": [],
+            "workingDirectory": null,
+            "secrets": null,
+            "dockerSecurityOptions": null,
+            "memory": null,
+            "memoryReservation": 1000,
+            "volumesFrom": [],
+            "stopTimeout": null,
+            "image": "482532497705.dkr.ecr.ap-south-1.amazonaws.com/alyte_backend:latest",
+            "startTimeout": null,
+            "firelensConfiguration": null,
+            "dependsOn": null,
+            "disableNetworking": null,
+            "interactive": null,
+            "healthCheck": null,
+            "essential": false,
+            "links": null,
+            "hostname": null,
+            "extraHosts": null,
+            "pseudoTerminal": null,
+            "user": null,
+            "readonlyRootFilesystem": null,
+            "dockerLabels": null,
+            "systemControls": null,
+            "privileged": null,
+            "name": "sidekiq"
+        },
+        {
+            "dnsSearchDomains": null,
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "secretOptions": null,
+                "options": {
+                    "awslogs-group": "/ecs/alyte-ror-backend",
+                    "awslogs-region": "ap-south-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "entryPoint": null,
+            "portMappings": [
+                {
+                    "hostPort": 4343,
+                    "protocol": "tcp",
+                    "containerPort": 4343
+                }
+            ],
+            "command": null,
+            "linuxParameters": null,
+            "cpu": 0,
+            "environment": [
+                {
+                    "name": "LOCATION_DATABASE_URL",
+                    "value": "MOOVE_DEV:NG$Pir7ySMJ9m&p9@tcp(vaayu-prod.cjny84emnsh9.ap-south-1.rds.amazonaws.com:3306)/moove_db_sandbox?parseTime=true"
+                },
+                {
+                    "name": "LOCATION_PG_DATABASE_URL",
+                    "value": "postgres://MOOVE_DEV:NG$Pir7ySMJ9m&p9@vaayu-pg-development.cjny84emnsh9.ap-south-1.rds.amazonaws.com/location_service_sandbox?sslmode=disable"
+                },
+                {
+                    "name": "LOCATION_REDIS_URL",
+                    "value": "redis-alyte-preprod.2i6os5.ng.0001.aps1.cache.amazonaws.com:6379"
+                },
+                {
+                    "name": "LOCATION_MAPS_API_KEY",
+                    "value": "AIzaSyCKmOycgAQLZGOsJBSFkhOp2LWakMC6vn0"
+                },
+                {
+                    "name": "FCM_API_KEY",
+                    "value": "AAAA1KydgOQ:APA91bElMyrV1hV7aOBRNFriq3LMPe0Rkw0wN3XVCb-8H83kpcEH0jE1Gt4N0gtv3waYl3XDkjsXJGnfTqwxYETuOlKuiUeeuhcAwrpBusZl2CVETdmErjJI94O-JsgwLllhHVN7Xc2-"
+                },
+                {
+                    "name": "FCM_TOPIC_PREFIX",
+                    "value": "techmblrprod"
+                },
+                {
+                    "name": "RAILS_KEY_BASE",
+                    "value": "daef0f128e8c899673cbcc71b3d4854112006de625db4bab0116818c7a7dc5cae52fc531dfb5f153d1b7fb3021331de744683b0346317751115c1837cbc69672"
+                }
+            ],
+            "resourceRequirements": null,
+            "ulimits": null,
+            "dnsServers": null,
+            "mountPoints": [],
+            "workingDirectory": null,
+            "secrets": null,
+            "dockerSecurityOptions": null,
+            "memory": null,
+            "memoryReservation": 500,
+            "volumesFrom": [],
+            "stopTimeout": null,
+            "image": "482532497705.dkr.ecr.ap-south-1.amazonaws.com/alyte_location_service:latest",
+            "startTimeout": null,
+            "firelensConfiguration": null,
+            "dependsOn": null,
+            "disableNetworking": null,
+            "interactive": null,
+            "healthCheck": null,
+            "essential": false,
+            "links": null,
+            "hostname": null,
+            "extraHosts": null,
+            "pseudoTerminal": null,
+            "user": null,
+            "readonlyRootFilesystem": null,
+            "dockerLabels": null,
+            "systemControls": null,
+            "privileged": null,
+            "name": "location_service"
+        },
+        {
+            "dnsSearchDomains": null,
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "secretOptions": null,
+                "options": {
+                    "awslogs-group": "/ecs/alyte-ror-backend",
+                    "awslogs-region": "ap-south-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "entryPoint": null,
+            "portMappings": [],
+            "command": null,
+            "linuxParameters": null,
+            "cpu": 0,
+            "environment": [
+                {
+                    "name": "S3_HOST_NAME",
+                    "value": "s3.ap-south-1.amazonaws.com"
+                },
+                {
+                    "name": "BASIC_AUTH_PASSWORD",
+                    "value": "harman"
+                },
+                {
+                    "name": "RAILS_MAX_THREADS",
+                    "value": "10"
+                },
+                {
+                    "name": "S3_REGION",
+                    "value": "ap-south-1"
+                },
+                {
+                    "name": "SITE_NAME",
+                    "value": "preProd"
+                },
+                {
+                    "name": "FCM_TOPIC_PREFIX",
+                    "value": "techmblrprod"
+                },
+                {
+                    "name": "SOLUTIONS_INFINI_API_KEY",
+                    "value": "A4fbafbca93401e6c43f7c067b58a507e"
+                },
+                {
+                    "name": "EXOTEL_TOKEN",
+                    "value": "31fbdf8f0a6734bd4bd1cdf1fd5e2f7f70ff3229"
+                },
+                {
+                    "name": "NEW_RELIC_license_key",
+                    "value": "e1433c8ba8fd758baf4d92a82a6fb9229d95e7ac"
+                },
+                {
+                    "name": "PLIVO_AUTH_TOKEN",
+                    "value": "YWU5YjQ5YjY2N2IxNzY2NzAyZDY2ZGY1MjkwMjc"
+                },
+                {
+                    "name": "GOOGLE_MAPS_API_KEY",
+                    "value": "AIzaSyCKmOycgAQLZGOsJBSFkhOp2LWakMC6vn0"
+                },
+                {
+                    "name": "DATABASE_USERNAME",
+                    "value": "MOOVE_DEV"
+                },
+                {
+                    "name": "PLIVO_AUTH_ID",
+                    "value": "MANMU4YWVJMZLIZDYWY"
+                },
+                {
+                    "name": "ANONYMOUS_APPLICATION_SID",
+                    "value": "APc068e4e88b11ef16b3fe94b9ca9fb779"
+                },
+                {
+                    "name": "GMAIL_PASSWORD",
+                    "value": "Test@123"
+                },
+                {
+                    "name": "GMAIL_USENAME",
+                    "value": "testnodecode@gmail.com"
+                },
+                {
+                    "name": "EXOTEL_SID",
+                    "value": "08039591060"
+                },
+                {
+                    "name": "BASIC_AUTH_USER",
+                    "value": "harman"
+                },
+                {
+                    "name": "S3_BUCKET",
+                    "value": "moove-assets-uat10"
+                },
+                {
+                    "name": "RAILS_ENV",
+                    "value": "production"
+                },
+                {
+                    "name": "CALCULATE_ETA",
+                    "value": "true"
+                },
+                {
+                    "name": "CANCEL_TIME_CHECK_IN",
+                    "value": "4.hours"
+                },
+                {
+                    "name": "CLUSTERING_SERVICE_URL",
+                    "value": "cluster.uat10.moove.network/"
+                },
+                {
+                    "name": "NEW_RELIC_log_level",
+                    "value": "info"
+                },
+                {
+                    "name": "NEW_RELIC_app_name",
+                    "value": "preprodoperator.mllvaayu.com"
+                },
+                {
+                    "name": "S3_SECRET_KEY",
+                    "value": "P6qxtudTzk8fKZNUlO0O6Tnsb3QJyTNnr6Ky9Yng"
+                },
+                {
+                    "name": "JOB_WORKER_URL",
+                    "value": "redis://redis-alyte-preprod.2i6os5.ng.0001.aps1.cache.amazonaws.com:6379"
+                },
+                {
+                    "name": "TWILIO_AUTH_TOKEN",
+                    "value": "f9bf5de0a0553275a6aa377a8b56f7ce"
+                },
+                {
+                    "name": "ENABLE_LINE_MANAGER_APPROVE",
+                    "value": "true"
+                },
+                {
+                    "name": "DATABASE_PASSWORD",
+                    "value": "NG$Pir7ySMJ9m&p9"
+                },
+                {
+                    "name": "TWILIO_ACCOUNT_SID",
+                    "value": "ACf47d0b64c1d8637b1dc7f4f91d33fba0"
+                },
+                {
+                    "name": "DRIVER_APP_LINK",
+                    "value": "https://goo.gl/BWyW9c"
+                },
+                {
+                    "name": "OPERATOR_NUMBER",
+                    "value": "8792656946"
+                },
+                {
+                    "name": "DATABASE_HOST",
+                    "value": "vaayu-prod.cjny84emnsh9.ap-south-1.rds.amazonaws.com"
+                },
+                {
+                    "name": "EXOTEL_CALLER_ID",
+                    "value": "08039591060"
+                },
+                {
+                    "name": "ROLLBAR_ACCESS_TOKEN",
+                    "value": "0025d0c26f5d4e41850ed00693cc79b8"
+                },
+                {
+                    "name": "AUTO_APPROVE_TRIP_CANCEL_REQUEST",
+                    "value": "false"
+                },
+                {
+                    "name": "CHANGE_TIME_CHECK_OUT",
+                    "value": "4.hours"
+                },
+                {
+                    "name": "SOLUTIONS_INFINI_SENDER",
+                    "value": "iMOOVE"
+                },
+                {
+                    "name": "CANCEL_TIME_CHECK_OUT",
+                    "value": "30.minutes"
+                },
+                {
+                    "name": "CLUSTER_ALGORITHM",
+                    "value": "clustering_service"
+                },
+                {
+                    "name": "S3_ACCESS_KEY_ID",
+                    "value": "AKIAXAWJNTEUSEDN4A57"
+                },
+                {
+                    "name": "AUTO_APPROVE_TRIP_CHANGE_REQUEST",
+                    "value": "true"
+                },
+                {
+                    "name": "AUTO_CLUSTER",
+                    "value": "false"
+                },
+                {
+                    "name": "DATABASE_NAME",
+                    "value": "moove_db_sandbox"
+                },
+                {
+                    "name": "ENALBE_GUARD_PROVISIONGING",
+                    "value": "true"
+                },
+                {
+                    "name": "CHANGE_TIME_CHECK_IN",
+                    "value": "8.hours"
+                },
+                {
+                    "name": "DATABASE_PORT",
+                    "value": "3306"
+                },
+                {
+                    "name": "EMPLOYEE_IOS_APP_LINK",
+                    "value": "https://goo.gl/etK6Zo"
+                },
+                {
+                    "name": "ENABLE_TRANSPORT_DESK_MANAGER_APPROVE",
+                    "value": "true"
+                },
+                {
+                    "name": "NEW_RELIC_monitor_mode",
+                    "value": "true"
+                },
+                {
+                    "name": "NO_SHOW_APPROVAL_REQUIRED",
+                    "value": "false"
+                },
+                {
+                    "name": "GEOHASH_AUTO_CLUSTERING",
+                    "value": "false"
+                },
+                {
+                    "name": "FCM_API_KEY",
+                    "value": "AAAA1KydgOQ:APA91bElMyrV1hV7aOBRNFriq3LMPe0Rkw0wN3XVCb-8H83kpcEH0jE1Gt4N0gtv3waYl3XDkjsXJGnfTqwxYETuOlKuiUeeuhcAwrpBusZl2CVETdmErjJI94O-JsgwLllhHVN7Xc2-"
+                },
+                {
+                    "name": "SERVER_URL",
+                    "value": "preprodoperator.mllvaayu.com"
+                },
+                {
+                    "name": "EMPLOYEE_ANDROID_APP_LINK",
+                    "value": "https://goo.gl/DZ131Z"
+                },
+                {
+                    "name": "ONBOARD_PASSENGER_TIME",
+                    "value": "3.minutes"
+                },
+                {
+                    "name": "SECRET_KEY_BASE",
+                    "value": "daef0f128e8c899673cbcc71b3d4854112006de625db4bab0116818c7a7dc5cae52fc531dfb5f153d1b7fb3021331de744683b0346317751115c1837cbc69672"
+                },
+                {
+                    "name": "REDIS_URL",
+                    "value": "redis://redis-alyte-preprod.2i6os5.ng.0001.aps1.cache.amazonaws.com:6379"
+                },
+                {
+                    "name": "SEND_ANALYTICS_REPORT",
+                    "value": "true"
+                }
+            ],
+            "resourceRequirements": null,
+            "ulimits": null,
+            "dnsServers": null,
+            "mountPoints": [],
+            "workingDirectory": null,
+            "secrets": null,
+            "dockerSecurityOptions": null,
+            "memory": null,
+            "memoryReservation": 500,
+            "volumesFrom": [],
+            "stopTimeout": null,
+            "image": "482532497705.dkr.ecr.ap-south-1.amazonaws.com/alyte_backend:latest",
+            "startTimeout": null,
+            "firelensConfiguration": null,
+            "dependsOn": null,
+            "disableNetworking": null,
+            "interactive": null,
+            "healthCheck": {
+                "retries": 3,
+                "command": [
+                    "bundle",
+                    "exec",
+                    "rake",
+                    "db:migrate"
+                ],
+                "timeout": 5,
+                "interval": 30,
+                "startPeriod": null
+            },
+            "essential": false,
+            "links": null,
+            "hostname": null,
+            "extraHosts": null,
+            "pseudoTerminal": null,
+            "user": null,
+            "readonlyRootFilesystem": null,
+            "dockerLabels": null,
+            "systemControls": null,
+            "privileged": null,
+            "name": "db-migrate"
+        }
+    ],
+    "memory": "3072",
+    "taskRoleArn": "arn:aws:iam::482532497705:role/ecsTaskExecutionRole",
+    "family": "alyte-ror-backend",
+    "pidMode": null,
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "networkMode": "awsvpc",
+    "cpu": "1024",
+    "inferenceAccelerators": null,
+    "proxyConfiguration": null,
+    "volumes": [],
+    "tags": []
+}
