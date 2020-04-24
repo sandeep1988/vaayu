@@ -28,7 +28,7 @@ class EmployeeCompaniesController < ApplicationController
   end
 
   def get_customers_name
-    @customers = EmployeeCompany.pluck(:id,:name)
+    @customers = EmployeeCompany.pluck(:name)
     render :json => { :customers =>  @customers }
   end
 
