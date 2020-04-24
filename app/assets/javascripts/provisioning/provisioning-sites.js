@@ -87,19 +87,30 @@ $(function () {
         function validateSite(site, validationError) {
             if ($("#siteName").val() == '' || $("#siteName").val() == undefined || $("#siteName").val() == null) {
                 document.getElementById("siteName").classList.add("border-danger")
+                //$().append("").append()
+                $("#siteName").parent().addClass('has-error');
+                $('#siteName').next('span').remove();
+                $("<span class='help-block'>*Site-Name Required.</span>").insertAfter("#siteName")
                 validationError = true
             }
             else {
                 document.getElementById("siteName").classList.remove("border-danger")
+                $("#siteName").parent().removeClass('has-error');
+                $('#siteName').next('span').remove();
                 validationError = validationError || false
             }
             if ($("#company").val() == 0 || $("#company").val() == undefined || $("#company").val() == null) {
                 document.getElementById("company").classList.add("border-danger")
                 validationError = true
+                $("#company").parent().addClass('has-error');
+                $('#company').next('span').remove();
+                $("<span class='help-block'>*Company Required.</span>").insertAfter("#company")
             }
             else {
                 document.getElementById("company").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#company").parent().removeClass('has-error');
+                $('#company').next('span').remove();
             }
             // if ($("#contact_name").val() == '' || $("#contact_name").val() == undefined || $("#contact_name").val() == null) {
             //     document.getElementById("contact_name").classList.add("border-danger")
@@ -112,18 +123,28 @@ $(function () {
             if ($("#address").val() == '' || $("#address").val() == undefined || $("#address").val() == null) {
                 document.getElementById("address").classList.add("border-danger")
                 validationError = true
+                $("#address").parent().addClass('has-error');
+                $('#address').next('span').remove();
+                $("<span class='help-block'>*Address Required.</span>").insertAfter("#address")
             }
             else {
                 document.getElementById("address").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#address").parent().removeClass('has-error');
+                $('#address').next('span').remove();
             }
             if ($("#party_name").val() == '' || $("#party_name").val() == undefined || $("#party_name").val() == null) {
                 document.getElementById("party_name").classList.add("border-danger")
                 validationError = true
+                $("#party_name").parent().addClass('has-error');
+                $('#party_name').next('span').remove();
+                $("<span class='help-block'>*Address Required.</span>").insertAfter("#party_name")
             }
             else {
                 document.getElementById("party_name").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#party_name").parent().removeClass('has-error');
+                $('#party_name').next('span').remove();
             }
 
             // if ($("#party_code").val() == '' || $("#party_code").val() == undefined || $("#party_code").val() == null) {
@@ -147,108 +168,168 @@ $(function () {
             if ($("#party_contact_name").val() == '' || $("#party_contact_name").val() == undefined || $("#party_contact_name").val() == null) {
                 document.getElementById("party_contact_name").classList.add("border-danger")
                 validationError = true
+                $("#party_contact_name").parent().addClass('has-error');
+                $('#party_contact_name').next('span').remove();
+                $("<span class='help-block'>*Party contact name Required.</span>").insertAfter("#party_contact_name")
             }
             else {
                 document.getElementById("party_contact_name").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#party_contact_name").parent().removeClass('has-error');
+                $('#party_contact_name').next('span').remove();
             }
 
             if ($("#party_pin").val() == '' || $("#party_pin").val() == undefined || $("#party_pin").val() == null) {
                 document.getElementById("party_pin").classList.add("border-danger")
                 validationError = true
+                $("#party_pin").parent().addClass('has-error');
+                $('#party_pin').next('span').remove();
+                $("<span class='help-block'>*Party pin Required.</span>").insertAfter("#party_pin")
             }
             else {
                 document.getElementById("party_pin").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#party_pin").parent().removeClass('has-error');
+                $('#party_pin').next('span').remove();
             }
 
             if ($("#party_pan_no").val() == '' || $("#party_pan_no").val() == undefined || $("#party_pan_no").val() == null) {
                 document.getElementById("party_pan_no").classList.add("border-danger")
                 validationError = true
+                $("#party_pan_no").parent().addClass('has-error');
+                $('#party_pan_no').next('span').remove();
+                $("<span class='help-block'>*Party Pan No Required.</span>").insertAfter("#party_pan_no")
             }
             else {
                 document.getElementById("party_pan_no").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#party_pan_no").parent().removeClass('has-error');
+                $('#party_pan_no').next('span').remove();
             }
 
             if ($("#party_phone_1").val() == '' || $("#party_phone_1").val() == undefined || $("#party_phone_1").val() == null) {
                 document.getElementById("party_phone_1").classList.add("border-danger")
                 validationError = true
+                $("#party_phone_1").parent().addClass('has-error');
+                $('#party_phone_1').next('span').remove();
+                $("<span class='help-block'>*Party phone 1 Required.</span>").insertAfter("#party_phone_1")
             }
             else {
                 document.getElementById("party_phone_1").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#party_phone_1").parent().removeClass('has-error');
+                $('#party_phone_1').next('span').remove();
             }
 
             if ($("#party_pan_no").val() == '' || $("#party_pan_no").val() == undefined || $("#party_pan_no").val() == null) {
                 document.getElementById("party_pan_no").classList.add("border-danger")
                 validationError = true
+                $("#party_pan_no").parent().addClass('has-error');
+                $('#party_pan_no').next('span').remove();
+                $("<span class='help-block'>*Party Pan No Required.</span>").insertAfter("#party_pan_no")
             }
             else {
                 document.getElementById("party_pan_no").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#party_pan_no").parent().removeClass('has-error');
+                $('#party_pan_no').next('span').remove();
             }
 
             if ($("#party_gstin_no").val() == '' || $("#party_gstin_no").val() == undefined || $("#party_gstin_no").val() == null) {
                 document.getElementById("party_gstin_no").classList.add("border-danger")
                 validationError = true
+                $("#party_gstin_no").parent().addClass('has-error');
+                $('#party_gstin_no').next('span').remove();
+                $("<span class='help-block'>*Party Pan No Required.</span>").insertAfter("#party_gstin_no")
             }
             else {
                 document.getElementById("party_gstin_no").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#party_gstin_no").parent().removeClass('has-error');
+                $('#party_gstin_no').next('span').remove();
             }
 
             if ($("#party_phone_1").val() == '' || $("#party_phone_1").val() == undefined || $("#party_phone_1").val() == null) {
                 document.getElementById("party_phone_1").classList.add("border-danger")
                 validationError = true
+                $("#party_phone_1").parent().addClass('has-error');
+                $('#party_phone_1').next('span').remove();
+                $("<span class='help-block'>*Party phone 1 Required.</span>").insertAfter("#party_phone_1")
             }
             else {
                 document.getElementById("party_phone_1").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#party_phone_1").parent().removeClass('has-error');
+                $('#party_phone_1').next('span').remove();
             }
 
             var pincode = $("#pin").val().trim();
             if (pincode == '' || pincode.length < 6) {
                 document.getElementById("pin").classList.add("border-danger")
                 validationError = true
+                $("#pin").parent().addClass('has-error');
+                $('#pin').next('span').remove();
+                $("<span class='help-block'>*pin number required & should be < 6 digit.</span>").insertAfter("#pin")
             }
             else {
                 document.getElementById("pin").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#pin").parent().removeClass('has-error');
+                $('#pin').next('span').remove();
             }
             if ($("#state").val() == 0 || $("#state").val() == undefined || $("#state").val() == null) {
                 document.getElementById("state").classList.add("border-danger")
                 validationError = true
+                $("#state").parent().addClass('has-error');
+                $('#state').next('span').remove();
+                $("<span class='help-block'>*State Required.</span>").insertAfter("#state")
             }
             else {
                 document.getElementById("state").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#state").parent().removeClass('has-error');
+                $('#state').next('span').remove();
             }
             if ($("#city").val() == 0 || $("#city").val() == undefined || $("#city").val() == null) {
                 document.getElementById("city").classList.add("border-danger")
                 validationError = true
+                $("#city").parent().addClass('has-error');
+                $('#city').next('span').remove();
+                $("<span class='help-block'>*City Required.</span>").insertAfter("#city")
             }
             else {
                 document.getElementById("city").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#city").parent().removeClass('has-error');
+                $('#city').next('span').remove();
             }
             var phone_1 = $("#phone_1").val().trim();
             if (phone_1 == '' || phone_1.length < 10) {
                 document.getElementById("phone_1").classList.add("border-danger")
+                $("#phone_1").parent().addClass('has-error');
+                $('#phone_1').next('span').remove();
+                $("<span class='help-block'>*Phone Required & Allow Only 10 digit.</span>").insertAfter("#phone_1")
                 validationError = true
             } else {
                 document.getElementById("phone_1").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#phone_1").parent().removeClass('has-error');
+                $('#phone_1').next('span').remove();
             }
             
             var pan_number = $("#pan_no").val();
             if (pan_number == '' || !(/^([a-zA-Z]){0,5}([0-9]){0,4}([a-zA-Z]){1}?$/.test(pan_number))) {
                 document.getElementById("pan_no").classList.add("border-danger")
                 validationError = true
+                $("#pan_no").parent().addClass('has-error');
+                $('#pan_no').next('span').remove();
+                $("<span class='help-block'>*Pan No Required & allow only Pan format.</span>").insertAfter("#pan_no")
             }
             else {
                 document.getElementById("pan_no").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#pan_no").parent().removeClass('has-error');
+                $('#pan_no').next('span').remove();
             }
             // if(current_user != 'Operator' && ($("#operator").val() == 0 || $("#operator").val() == undefined || $("#operator").val() == null)){
             //     document.getElementById("operator").classList.add("border-danger")
@@ -262,18 +343,28 @@ $(function () {
             if ($("#sezNonSez").val() == 0 || $("#sezNonSez").val() == undefined || $("#sezNonSez").val() == null) {
                 document.getElementById("sezNonSez").classList.add("border-danger")
                 validationError = true
+                $("#sezNonSez").parent().addClass('has-error');
+                $('#sezNonSez').next('span').remove();
+                $("<span class='help-block'>*SezNonSez Required.</span>").insertAfter("#sezNonSez")
             }
             else {
                 document.getElementById("sezNonSez").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#sezNonSez").parent().removeClass('has-error');
+                $('#sezNonSez').next('span').remove();
             }
             if ($("#party_address_1").val() == '' || $("#party_address_1").val() == undefined || $("#party_address_1").val() == null) {
                 document.getElementById("party_address_1").classList.add("border-danger")
                 validationError = true
+                $("#party_address_1").parent().addClass('has-error');
+                $('#party_address_1').next('span').remove();
+                $("<span class='help-block'>*Party address 1 Required.</span>").insertAfter("#party_address_1")
             }
             else {
                 document.getElementById("party_address_1").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#party_address_1").parent().removeClass('has-error');
+                $('#party_address_1').next('span').remove();
             }
 
             if( $("#sezNonSez").val() == 'non sez'){
@@ -298,28 +389,42 @@ $(function () {
                    
                     document.getElementById("lut_date").classList.add("border-danger")
                     validationError = true;
+                $("#lut_date").parent().addClass('has-error');
+                $('#lut_date').next('span').remove();
+                $("<span class='help-block'>*LUT date Required.</span>").insertAfter("#lut_date")
 
                 }else if( false == formt.test( $("#lut_date").val() ) ) {
 
                     // console.log( )
                     validationError = true;
-                    alert( "LUT Date should be date.Format Ex. DD-MM-YYYY." );
+                $("#lut_date").parent().addClass('has-error');
+                $('#lut_date').next('span').remove();
+                $("<span class='help-block'>*LUT date should be date.Format Ex. DD-MM-YYYY..</span>").insertAfter("#lut_date")
+
+                    //alert( "LUT Date should be date.Format Ex. DD-MM-YYYY." );
 
                 }else {
 
                     document.getElementById("lut_date").classList.remove("border-danger")
                     validationError = validationError || false
+                    $("#lut_date").parent().removeClass('has-error');
+                    $('#lut_date').next('span').remove();
                 }
 
                 if ($("#lut_no").val() == '' || $("#lut_no").val() == undefined || $("#lut_no").val() == null) {
                    
                     document.getElementById("lut_no").classList.add("border-danger")
                     validationError = true;
+                    $("#lut_no").parent().addClass('has-error');
+                    $('#lut_no').next('span').remove();
+                    $("<span class='help-block'>*LUT No Required.</span>").insertAfter("#lut_no")
 
                 }else {
 
                     document.getElementById("lut_no").classList.remove("border-danger")
                     validationError = validationError || false
+                    $("#lut_no").parent().removeClass('has-error');
+                    $('#lut_no').next('span').remove();
                 }
 
             }
@@ -327,29 +432,44 @@ $(function () {
             if ($("#party_state").val() == 0 || $("#party_state").val() == undefined || $("#party_state").val() == null) {
                 document.getElementById("party_state").classList.add("border-danger")
                 validationError = true
+                $("#party_state").parent().addClass('has-error');
+                $('#party_state').next('span').remove();
+                $("<span class='help-block'>*Party state Required.</span>").insertAfter("#party_state")
             }
             else {
                 document.getElementById("party_state").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#party_state").parent().removeClass('has-error');
+                $('#party_state').next('span').remove();
             }
 
 
             if ($("#party_business_area").val() == 0 || $("#party_business_area").val() == undefined || $("#party_business_area").val() == null) {
                 document.getElementById("party_business_area").classList.add("border-danger")
                 validationError = true
+                $("#party_business_area").parent().addClass('has-error');
+                $('#party_business_area').next('span').remove();
+                $("<span class='help-block'>*party business area Required.</span>").insertAfter("#party_business_area")
             }
             else {
                 document.getElementById("party_business_area").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#party_business_area").parent().removeClass('has-error');
+                $('#party_business_area').next('span').remove();
             }
 
             if ($("#party_city").val() == 0 || $("#party_city").val() == undefined || $("#party_city").val() == null) {
                 document.getElementById("party_city").classList.add("border-danger")
                 validationError = true
+                $("#party_city").parent().addClass('has-error');
+                $('#party_city').next('span').remove();
+                $("<span class='help-block'>*Party city Required.</span>").insertAfter("#party_city")
             }
             else {
                 document.getElementById("party_city").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#party_city").parent().removeClass('has-error');
+                $('#party_city').next('span').remove();
             }
 
             if( $("#gstin_no").length > 0 ){
@@ -357,10 +477,15 @@ $(function () {
                 if ($("#gstin_no").val() == '' || $("#gstin_no").val() == undefined || $("#gstin_no").val() == null) {
                     document.getElementById("gstin_no").classList.add("border-danger")
                     validationError = true
+                  $("#gstin_no").parent().addClass('has-error');
+                  $('#gstin_no').next('span').remove();
+                  $("<span class='help-block'>*GSTIN No Required.</span>").insertAfter("#gstin_no")
                 }
                 else {
                     document.getElementById("gstin_no").classList.remove("border-danger")
                     validationError = validationError || false
+                    $("#gstin_no").parent().removeClass('has-error');
+                    $('#gstin_no').next('span').remove();
                 }
 
             }
@@ -372,9 +497,11 @@ $(function () {
 
             if ($("#latitude").val() == '' || $("#latitude").val() == undefined || $("#latitude").val() == null) {
                    
-                    document.getElementById("latitude").classList.add("border-danger")
-                    validationError = true;
-
+                document.getElementById("latitude").classList.add("border-danger")
+                validationError = true;
+                $("#latitude").parent().addClass('has-error');
+                $('#latitude').next('span').remove();
+                $("<span class='help-block'>*Latitude Required.</span>").insertAfter("#latitude")
             }
             // else if( !reg.exec( $("#latitude").val() ) ) {
             //     document.getElementById("latitude").classList.add("border-danger")
@@ -387,17 +514,24 @@ $(function () {
 
                 document.getElementById("latitude").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#latitude").parent().removeClass('has-error');
+                $('#latitude').next('span').remove();
             }
 
             if ($("#longitude").val() == '' || $("#longitude").val() == undefined || $("#longitude").val() == null) {
                    
                     document.getElementById("longitude").classList.add("border-danger")
                     validationError = true;
+                    $("#longitude").parent().addClass('has-error');
+                    $('#longitude').next('span').remove();
+                    $("<span class='help-block'>*Longitude Required.</span>").insertAfter("#longitude")
 
             }else {
 
                 document.getElementById("longitude").classList.remove("border-danger")
                 validationError = validationError || false
+                $("#longitude").parent().removeClass('has-error');
+                $('#longitude').next('span').remove();
             }
 
             

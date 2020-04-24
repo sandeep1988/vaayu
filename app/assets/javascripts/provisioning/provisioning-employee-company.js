@@ -21,6 +21,7 @@ $(function () {
      */
     var isErrorInCompany = false;
     var arrCompaniesList = [];
+    var editCustomerName;
 
     $.ajax({ 
       type: "GET",
@@ -186,9 +187,12 @@ $(function () {
               if (!name.isMultiValue()) {
                   if (!name.val()) {
                       name.error('A company name must be given');
-                  }
-                  if (name.val().length <= 3) {
+                  }else if (name.val().length <= 3) {
                       name.error('The company name length must be more than 3 characters');
+                  }else if(action=="create" && arrCompaniesList.includes( name.val() ) ){
+                    name.error('The company name is duplicate, Please try another.');
+                  }else if(action=="edit" && editCustomerName != name.val() && arrCompaniesList.includes( name.val() ) ){
+                    name.error('The company name is duplicate, Please try another.');
                   }
               }
               var panValue = $("#pan").val().trim();
@@ -323,7 +327,7 @@ $(function () {
               //   }
               // }
 
-              console.log( arrCompaniesList ,"nnnnnn");
+              //console.log(  ,"nnnnnn");
               console.log(this.inError());
 
               isErrorInCompany = false;
@@ -336,7 +340,7 @@ $(function () {
 
                     //if( $(this).text() == "Save changes" || $(this).text() == "Submit" ){
                       //if( isErrorInCompany == false ){
-                        //location.reload();
+                        location.reload();
                       //}
                       
                     //}
@@ -367,7 +371,7 @@ $(function () {
                     {
                         data: "name",
                         render: function (data) {
-                          console.log(data)
+                          //console.log(data)
                             return '<a href="" class="modal_view">' + data + '</a>'
                         }
                     },
@@ -428,6 +432,7 @@ $(function () {
                     }
                 }])
             .edit($(this).closest('tr'));
+            editCustomerName = $("#DTE_Field_name").val();
             $('input').removeAttr('disabled'); 
             $('select').removeAttr('disabled');//Rushikesh added code here
             $('.btn-primary').removeAttr('disabled'); //Rushikesh added code here
@@ -553,7 +558,7 @@ $(function () {
 
 $(document).on('click', 'a[id="active_customer"]', function (e) {
 
-//console.log("sfsdfsdg>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" );
+console.log("sfsdfsdg>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" );
 
   location.reload();
 
@@ -569,7 +574,7 @@ $(document).on('click', 'a[id="active_customer"]', function (e) {
 
 
   $.get("/employee_companies/get_customers_name", function( data ){
-    arrCompaniesList = data;
+    arrCompaniesList = data.customers;
   });
 
 });
