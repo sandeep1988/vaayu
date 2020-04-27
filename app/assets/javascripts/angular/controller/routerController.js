@@ -815,12 +815,55 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
 
     RosterService.routerFilters(postData, function(res){
       if(res['data']['routes']){
-        $scope.model2 = [res['data']['routes']]
-        console.log($scope.model2)
+        angular.forEach(res['data']['routes'], function (route, index, routeArray) {
+          route.allowed = "all";
+    
+          if (route.guard_required == "Y") {
+            route.guard_required = true;
+          } 
+    
+          if (route.guard_required == "N") {
+            route.guard_required = false;
+          }
+    
+          if (route.guard) {
+            let guard = route.guard;
+            guard.type = 'guard';
+            route.guard = [guard]
+          } else {
+            route.guard = [];
+          }
+          if (route.vehicle) {
+            let vehical = route.vehicle;
+            // vehical.type = "vehical";
+            vehical.type = route.vehicle_type;
+            // vehical.type = vehical.vehicleType;
+            route.vehicle = [vehical]
+          } else {
+            route.vehicle = [];
+          }
+    
+          if(route.subtype=="unallocated"){
+             route.vehicle_allocated='';
+           }
+    
+          angular.forEach(route.employees_nodes_addresses, function (employee, idx, emmplyeeArray) {
+            
+            employee.type = "employee";
+            employee.effectAllowed = "all";
+          })
+    
+          route.employees = route.employees_nodes_addresses;
+        })
+        $scope.fullModel = [res.data.routes];
+        $scope.model2 = $scope.fullModel;
+        console.log('full model', $scope.model2);
       }
     }, function(err){
       console.log('filter err', err)
     })
+
+    
     
   }
 
@@ -831,6 +874,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
     $scope.selectedLandmark = {};
     $scope.selectedZone = {};
     $scope.model2 = $scope.fullModel
+    console.log('full model', $scope.fullModel)
   }
   $scope.capacityObj = [
     {
@@ -1296,8 +1340,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
 
     $scope.fullModel = [$scope.routes.data.routes];
     $scope.model2 = $scope.fullModel;
-    console.log('scope routes', $scope.model2);
-    $scope.model2Copy = $scope.model2.slice();
+    
 
 
   }
@@ -1369,6 +1412,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
 
     $scope.fullModel = [$scope.routes.data.routes];
     $scope.model2 = $scope.fullModel;
+    console.log('full model', $scope.model2);
+    $scope.model2Copy = $scope.model2.slice();
   }
 
   $scope.collapsiblePanel = function (item) {
