@@ -265,8 +265,23 @@ $(function () {
                 home_address_city.error('Home City must be given.');
               }
               if (home_address_phone_1.val().trim().length == 0) {
-                home_address_phone_1.error('Home Phone 1 must be given.');
+                home_address_phone_1.error('Phone 1 must be given.');
               }
+              else
+              {
+                if(home_address_phone_1.val().trim().length!=10)
+                {
+                  home_address_phone_1.error('Phone cannot be greater or less then 10 digits');
+                }
+                else
+                {
+                  if (/\D/g.test(home_address_phone_1.val().trim()))
+                  {
+                      home_address_phone_1.error('Only digits are allowed.');
+                  }
+                }
+              }
+
 
               // var panValue2 = home_address_pan_no.val().trim();
               // if (panValue2.length == 0) {

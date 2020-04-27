@@ -207,7 +207,22 @@ $(function () {
                 $('#party_pan_no').next('span').remove();
             }
 
-            if ($("#party_phone_1").val() == '' || $("#party_phone_1").val() == undefined || $("#party_phone_1").val() == null) {
+            var party_phone_1 = $("#party_phone_1").val().trim();
+            if (party_phone_1 == '' || party_phone_1.length != 10 || (/\D/g.test(party_phone_1))) {
+                document.getElementById("party_phone_1").classList.add("border-danger")
+                validationError = true
+                $("#party_phone_1").parent().addClass('has-error');
+                $('#party_phone_1').next('span').remove();
+                $("<span class='help-block'>*Party phone 1 Required and only 10 digit allowed.</span>").insertAfter("#party_phone_1")
+            }
+            else {
+                document.getElementById("party_phone_1").classList.remove("border-danger")
+                validationError = validationError || false
+                $("#party_phone_1").parent().removeClass('has-error');
+                $('#party_phone_1').next('span').remove();
+            }
+
+            /*if ($("#party_phone_1").val() == '' || $("#party_phone_1").val() == undefined || $("#party_phone_1").val() == null) {
                 document.getElementById("party_phone_1").classList.add("border-danger")
                 validationError = true
                 $("#party_phone_1").parent().addClass('has-error');
@@ -219,7 +234,7 @@ $(function () {
                 validationError = validationError || false
                 $("#party_phone_1").parent().removeClass('has-error');
                 $('#party_phone_1').next('span').remove();
-            }
+            }*/
 
             if ($("#party_pan_no").val() == '' || $("#party_pan_no").val() == undefined || $("#party_pan_no").val() == null) {
                 document.getElementById("party_pan_no").classList.add("border-danger")
@@ -249,7 +264,7 @@ $(function () {
                 $('#party_gstin_no').next('span').remove();
             }
 
-            if ($("#party_phone_1").val() == '' || $("#party_phone_1").val() == undefined || $("#party_phone_1").val() == null) {
+            /*if ($("#party_phone_1").val() == '' || $("#party_phone_1").val() == undefined || $("#party_phone_1").val() == null) {
                 document.getElementById("party_phone_1").classList.add("border-danger")
                 validationError = true
                 $("#party_phone_1").parent().addClass('has-error');
@@ -261,7 +276,7 @@ $(function () {
                 validationError = validationError || false
                 $("#party_phone_1").parent().removeClass('has-error');
                 $('#party_phone_1').next('span').remove();
-            }
+            }*/
 
             var pincode = $("#pin").val().trim();
             if (pincode == '' || pincode.length < 6) {
@@ -304,7 +319,7 @@ $(function () {
                 $('#city').next('span').remove();
             }
             var phone_1 = $("#phone_1").val().trim();
-            if (phone_1 == '' || phone_1.length < 10) {
+            if (phone_1 == '' || phone_1.length != 10 || (/\D/g.test(phone_1))) {
                 document.getElementById("phone_1").classList.add("border-danger")
                 $("#phone_1").parent().addClass('has-error');
                 $('#phone_1').next('span').remove();
