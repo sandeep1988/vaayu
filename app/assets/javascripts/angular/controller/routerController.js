@@ -744,8 +744,9 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
     capacity: ''
   }
 
+
   $scope.applyFilter = () => { 
-    console.log('list', $scope.selectedType)
+    console.log('list', $scope.model2)
     var filterByCategory = "";
     var filterByCapacity = "";
     var filterByLandmark = "";
@@ -796,12 +797,13 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
 
 
 
-
+    let shift = JSON.parse($scope.selectedShift)
+    let shift_type = shift.shift_type === 'Login' ? 0 : 1
     let postData = {
       site_id: $scope.siteId,
-      shift_id: $scope.selectedShift.id,
-      to_date: $scope.filterDate,
-      shift_type: $scope.selectedShift.trip_type,
+      shift_id: shift.id,
+      to_date: moment($scope.filterDate).format('YYYY-MM-DD'),
+      shift_type: String(shift_type),
       search: "1",
       filterByCategory: filterByCategory,
       filterByCapacity: filterByCapacity,
@@ -809,8 +811,13 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
       filterByZone: filterByZone
     }
 
+    // console.log('postData', postData, shift)
+
     RosterService.routerFilters(postData, function(res){
-      console.log('filter res', res)
+      if(res['data']['routes']){
+        $scope.model2 = [res['data']['routes']]
+        console.log($scope.model2)
+      }
     }, function(err){
       console.log('filter err', err)
     })
@@ -823,6 +830,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
     $scope.selectedType = {};
     $scope.selectedLandmark = {};
     $scope.selectedZone = {};
+    $scope.model2 = $scope.fullModel
   }
   $scope.capacityObj = [
     {
@@ -848,7 +856,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
       id: 1
     },
     {
-      name: 'Hatchback',
+      name: 'HATCHBACK',
       id: 2
     },
     {
@@ -1289,6 +1297,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
     $scope.fullModel = [$scope.routes.data.routes];
     $scope.model2 = $scope.fullModel;
     console.log('scope routes', $scope.model2);
+    $scope.model2Copy = $scope.model2.slice();
+
 
   }
 
