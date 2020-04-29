@@ -678,8 +678,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
   $scope.selectedCapacity = [];
   $scope.selectedType = [];
   $scope.selectedLandmark = [];
-  $scope.selectedZone = []
-  $scope.filterPostData = {}
+  $scope.selectedZone = [];
+  $scope.selectedDriver = [];
+  $scope.driverObj = [];
+  $scope.filterPostData = {};
   $scope.capacityClick = {
     onItemSelect: function(item) {
       console.log('capacity', item, $scope.selectedCapacity)
@@ -704,31 +706,46 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
     },
     onItemDeselect: function(item) {console.log(item);}
   }
+  $scope.driverClick = {
+    onItemSelect: function(item) {
+      console.log('driver', item, $scope.selectedDriver)
+    },
+    onItemDeselect: function(item) {console.log(item);}
+  }
+
   $scope.capacitySettings = {
     enableSearch: true,
     displayProp: 'name',
     scrollableHeight: '200px',
-    scrollable: true,
+    scrollable: true
   };
+
+  $scope.driverSettings = {
+    enableSearch: true,
+    displayProp: 'name',
+    scrollableHeight: '200px',
+    scrollable: true
+  }
+
   $scope.typeSettings = {
     enableSearch: true,
     displayProp: 'name',
     scrollableHeight: '200px',
-    scrollable: true,
+    scrollable: true
   };
 
   $scope.landmarkSettings = {
     enableSearch: true,
     displayProp: 'name',
     scrollableHeight: '200px',
-    scrollable: true,
+    scrollable: true
   };
 
   $scope.zoneSettings = {
     enableSearch: true,
     displayProp: 'name',
     scrollableHeight: '200px',
-    scrollable: true,
+    scrollable: true
   };
 
 
@@ -742,6 +759,43 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
     landmark: '',
     type: '',
     capacity: ''
+  }
+
+  $scope.sendNotification = () => {
+    var postData = {
+      notifydriverlist: []
+    }
+    if($scope.selectedDriver && $scope.driverObj){
+      for(var i = 0; i < $scope.selectedDriver.length; i++){
+        for(var j = 0; j < $scope.driverObj.length; j++){
+          if($scope.selectedDriver[i]['label'] === $scope.driverObj[j]['name']){
+            postData['notifydriverlist'].push({
+              driver_id: $scope.driverObj[j]['driverId'],
+              site_id: $scope.siteId,
+              phone: $scope.driverObj[j]['driverPhoneNo']
+            })
+          }
+        }
+      }
+    }
+
+    if(postData['notifydriverlist']){
+      RouteService.driverSMSNotification(postData, (res) => {
+        console.log(res)
+        $scope.toggleView = true;
+        ToasterService.showSuccess('Success', res['message'])
+      }, (err) => {
+        $scope.toggleView = true;
+        ToasterService.showError('Error', res['message'])
+      })
+
+      RouteService.driverAppNotificaton(postData, (res) => {
+        console.log(res)
+      }, (err) => {
+        console.log(err)
+      })
+    }
+    console.log('notify person', postData)
   }
 
 
@@ -869,12 +923,12 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
 
 
   $scope.clearSelection = () => {
-    $scope.selectedCapacity = {};
-    $scope.selectedType = {};
-    $scope.selectedLandmark = {};
-    $scope.selectedZone = {};
+    $scope.selectedCapacity = [];
+    $scope.selectedType = [];
+    $scope.selectedLandmark = [];
+    $scope.selectedZone = [];
+    $scope.selectedDriver = [];
     $scope.model2 = $scope.fullModel
-    console.log('full model', $scope.fullModel)
   }
   $scope.capacityObj = [
     {
@@ -893,6 +947,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
       id: 3
     }
   ];
+
 
   $scope.typeObj = [
     {
@@ -2022,6 +2077,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
     $scope.isGuardSidebarView = false;
     $scope.isFilterSidebarView = false;
     $scope.filterToggle = false;
+    $scope.notificationToggle = false
   }
 
   $scope.resetSidebar();
@@ -2029,6 +2085,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
   $scope.hideVehicalSidebar = function () {
     $scope.isVehicalSidebarView = false;
     $scope.filterToggle = false;
+    $scope.notificationToggle = false;
   }
 
   $scope.showVehicalSidebar = function () {
@@ -2039,6 +2096,37 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
     $scope.isVehicalSidebarView = true;
   }
 
+  $scope.onNotify = () => {
+    let shift = JSON.parse($scope.selectedShift);
+    if(shift != null && $scope.siteId && shift.id && $scope.filterDate){
+      let param = {
+        siteId: parseInt($scope.siteId),
+        shiftId: parseInt(shift.id),
+        selectedDate: moment($scope.filterDate).format('YYYY-MM-DD'),
+        shiftType: parseInt(shift.trip_type)        
+      }
+
+      RouteService.notifyList(param, (res) => {
+        $scope.driverObj = []
+        if(res['success']){
+          res['data'].forEach((ele, i) => {
+            $scope.driverObj.push({
+              name: ele['driverName'],
+              id: i + 1,
+              driverId: ele['driverId'],
+              driverPhoneNo: ele['driverPhoneNo']
+            })
+            
+          })
+        }
+      })
+    } else {
+      $scope.toggleView = true;
+      ToasterService.showError('Error', 'Unexpected Error!')
+    }
+    $scope.notificationToggle = true
+  }
+ 
   $scope.onFilter = () => {
     let shift = JSON.parse($scope.selectedShift);
     if(shift != null && $scope.siteId && shift.id && $scope.filterDate){
@@ -2095,6 +2183,10 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
   }
 
   $scope.hideFilterSidebar = function () {
+    $scope.resetSidebar();
+  }
+
+  $scope.hideNotificationSidebar = function () {
     $scope.resetSidebar();
   }
 

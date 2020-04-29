@@ -35,7 +35,23 @@ function ($resource, BASE_URL_8002, BASE_URL_API_8002,BASE_URL_MAIN, SessionServ
         url: BASE_URL_8002 + 'routeFilter',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
+    },
+    notifyList: {
+        url: BASE_URL_API_8002 + 'notify-driver-list',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+    },
+    driverSMSNotification: {
+        url: BASE_URL_API_8002 + 'driver-sms-notification',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+    },
+    driverAppNotificaton: {
+        url: BASE_URL_API_8002 + 'driver-app-notification',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
     }
+
   });
 }]);
 

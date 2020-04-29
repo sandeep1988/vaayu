@@ -384,3 +384,11 @@
   padding: 8px;
   border-radius: 4px;
 }
+
+.margin-right-small{
+  margin-right: 5px;
+}
+
+.btn-small{
+  padding: 7px 5px !important;
+}

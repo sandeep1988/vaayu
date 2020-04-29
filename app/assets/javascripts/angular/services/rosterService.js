@@ -47,6 +47,10 @@ function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_800
       url: BASE_URL_8002 + 'isReportsDownloadable/ksjdfhsi5735936/:siteId/:fromDate/:toDate',
       method: 'GET'
     },
+    notificationReport: {
+      url: BASE_URL_API_8005 + 'driverOffDutyNotificationReport/ksjdfhsi5735936/:siteId/:fromDate/:toDate',
+      method: 'GET'
+    },
     copyRoutes: {
       url: BASE_URL_8002 + 'copyexistingroutes',
       method: 'POST'
