@@ -143,6 +143,7 @@ class API::V2::VehiclesController < ApplicationController
         @vehicle.shift_end_time = params[:shift_end_time] if params[:shift_end_time].present?
         login_user = User.where(:uid => request.headers["uid"]).first
         @vehicle.update(created_by: login_user.id) if login_user.present?
+        #@vehicle.update(created_by: current_user.id.to_i) if !login_user.present?
         if @vehicle.save
           @vehicle.update_attribute('registration_steps', 'Step_1')
            render json: { success: true , message: "Success First step", data: { vehicle_id: @vehicle.id }, errors: {} }, status: :ok
@@ -182,7 +183,7 @@ class API::V2::VehiclesController < ApplicationController
                 @vehicle.update(induction_status: "Registered") if @vehicle.present?
                 @vehicle.update(compliance_status: "Ready For Allocation") if @vehicle.present?
                 @vehicle.update(date_of_registration: Time.now )
-                @vehicle.update(created_by: current_user.id) if current_user.present?
+                # @vehicle.update(created_by: current_user.id) if current_user.present?
                 render json: {success: true , message: "Success Final step", data:{vehicle_id: @vehicle.id } , errors: {} }, status: :ok if @vehicle.id.present?
               else
                 render json: {success: false , message: "Fail Final step", data: {}, errors: { errors: @vehicle.errors.full_messages.split(",")  } },status: :ok 

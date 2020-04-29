@@ -674,64 +674,67 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         console.log('vehicleList', $scope.vehicleList)
         console.log('vehicle Res', $scope.vehicleRes)
 
-
+        
         $scope.dropdownParent = document.getElementById('dropdownParent')
-        $scope.hoverELement = ''        
-        dropdownParent.addEventListener('click', (event) => {
-          event.stopPropagation()
-          $scope.optionsEle = document.querySelectorAll('.option');
-            if($scope.optionsEle && $scope.vehicleRes){
-              for(var i =0; i < $scope.vehicleRes.length; i++){
-                $scope.hoverELement = '<div id="'+i+'index" class="hoverELe"></div>'
-                $scope.optionsEle[i].insertAdjacentHTML('afterend', $scope.hoverELement)
-                $scope.insideHoverElement = ''
-                for(var j = 0; j < $scope.vehicleRes[i]['tripData'].length; j++){
-                  function returnValues(text){
-                    if(text === 0){
-                      return 'Login'
-                    } else if(text === 1){
-                      return 'Logout'
-                    } else if(text === 'active'){
-                      return 'Ongoing'
-                    } else if(text === 'assigned'){
-                      return 'Assigned'
-                    } else if('assign_requested'){
-                      return 'Assign requested'
-                    } else if('assign_request_expired'){
-                      return 'Assign request expired'
-                    } else if('canceled') {
-                      return 'Cancelled'
-                    } else if('completed'){
-                      return 'Completed'
-                    } else if('created'){
-                      return 'Trip created'
-                    } else {
-                      return 'NA'
+        $scope.hoverELement = ''  
+        if(dropdownParent){
+          dropdownParent.addEventListener('click', (event) => {
+            event.stopPropagation()
+            $scope.optionsEle = document.querySelectorAll('.option');
+              if($scope.optionsEle && $scope.vehicleRes){
+                for(var i =0; i < $scope.vehicleRes.length; i++){
+                  $scope.hoverELement = '<div id="'+i+'index" class="hoverELe"></div>'
+                  $scope.optionsEle[i].insertAdjacentHTML('afterend', $scope.hoverELement)
+                  $scope.insideHoverElement = ''
+                  for(var j = 0; j < $scope.vehicleRes[i]['tripData'].length; j++){
+                    function returnValues(text){
+                      if(text === 0){
+                        return 'Login'
+                      } else if(text === 1){
+                        return 'Logout'
+                      } else if(text === 'active'){
+                        return 'Ongoing'
+                      } else if(text === 'assigned'){
+                        return 'Assigned'
+                      } else if('assign_requested'){
+                        return 'Assign requested'
+                      } else if('assign_request_expired'){
+                        return 'Assign request expired'
+                      } else if('canceled') {
+                        return 'Cancelled'
+                      } else if('completed'){
+                        return 'Completed'
+                      } else if('created'){
+                        return 'Trip created'
+                      } else {
+                        return 'NA'
+                      }
+                  
                     }
-                
+                    $scope.insideHoverElement += '<div class="inside-hover"><p>Trip Id: '+ $scope.vehicleRes[i]['tripData'][j]['trip_id'] +'</p><p>Status: '+ returnValues($scope.vehicleRes[i]['tripData'][j]['trip_status']) +'</p><p>Type: '+ returnValues($scope.vehicleRes[i]['tripData'][j]['trip_type'])  +'</p><p>Trip end time:'+$scope.vehicleRes[i]['tripData'][j]['tripdate']+' | '+$scope.vehicleRes[i]['tripData'][j]['estimated_trip_endtime']+'</p></div>'
+                    document.getElementById(i+'index').innerHTML = $scope.insideHoverElement
+                    console.log('check here', document.getElementById(i+'index').innerHTML, $scope.insideHoverElement)
                   }
-                  $scope.insideHoverElement += '<div class="inside-hover"><p>Trip Id: '+ $scope.vehicleRes[i]['tripData'][j]['trip_id'] +'</p><p>Status: '+ returnValues($scope.vehicleRes[i]['tripData'][j]['trip_status']) +'</p><p>Type: '+ returnValues($scope.vehicleRes[i]['tripData'][j]['trip_type'])  +'</p><p>Trip end time:'+$scope.vehicleRes[i]['tripData'][j]['tripdate']+' | '+$scope.vehicleRes[i]['tripData'][j]['estimated_trip_endtime']+'</p></div>'
-                  document.getElementById(i+'index').innerHTML = $scope.insideHoverElement
-                  console.log('check here', document.getElementById(i+'index').innerHTML, $scope.insideHoverElement)
+                  $scope.optionsEle[i].addEventListener('mouseover', function(event){
+                    console.log('mouseenter', event)
+                    event.toElement.nextElementSibling.style.display = 'block'
+                    // document.getElementById(i+'index').style.height = "auto"
+                  })
+                  $scope.optionsEle[i].addEventListener('mouseleave', function(event){
+                    console.log('mouseleave', event)
+                    event.fromElement.nextElementSibling.style.display = "none"
+                    // if(event.toElement.nextElementSibling){
+                    //   event.toElement.nextElementSibling.style.display = 'none'
+                    // }
+                    // document.getElementById(i+'index').style.height = "0"
+                  })              
                 }
-                $scope.optionsEle[i].addEventListener('mouseover', function(event){
-                  console.log('mouseenter', event)
-                  event.toElement.nextElementSibling.style.display = 'block'
-                  // document.getElementById(i+'index').style.height = "auto"
-                })
-                $scope.optionsEle[i].addEventListener('mouseleave', function(event){
-                  console.log('mouseleave', event)
-                  event.fromElement.nextElementSibling.style.display = "none"
-                  // if(event.toElement.nextElementSibling){
-                  //   event.toElement.nextElementSibling.style.display = 'none'
-                  // }
-                  // document.getElementById(i+'index').style.height = "0"
-                })              
+      
               }
-    
-            }
-          
-        })
+            
+          })
+        }      
+        
       } else {
         console.log(res['message']);
       }

@@ -545,15 +545,15 @@
               <div ng-repeat="list in vehicals">
                   <ul class="employee-list-group" dnd-list="list.vehical" dnd-effect-allowed="copy"
                     dnd-allowed-types="list.allowedTypes" dnd-disable-if="list.vehical.length >= 1"
-                    dnd-dragover="dragoverVehicleCallback(list,index, external, type)"
+                    dnd-dragover="dragoverVehicleCallback(list,index, external, type);options = false"
                     dnd-drop="dropVehicleCallback(list,index, item, external, type)">
                     <li ng-repeat="vehical in list.vehical" dnd-draggable="vehical" no-drop
-                      dnd-effect-allowed="move" dnd-type="vehical.type" dnd-disable-if="vehical.type == 'unknown'"
-                      dnd-moved="list.vehical.splice($index, 1)"
+                      dnd-effect-allowed="move" dnd-type="vehical.type" dnd-disable-if="vehical.type == 'unknown'" dnd-moved="list.vehical.splice($index, 1)" id="{{$index}}"
                       class="background-{{vehical.type}} input-group employee-list-group-item hover-parent"
-                      ng-mouseenter="options=true" ng-mouseleave="options=false" 
-                      style="cursor: pointer;">
-                      <div class="inner-box" ng-if="options && vehical.tripData.length > 0">
+                      style="cursor: pointer;" onmouseenter="angular.element(this).scope().dragStop(event)"
+                      onmouseleave="angular.element(this).scope().drag(event)" ondragstart="angular.element(this).scope().drag(event)"
+                      ondragend="angular.element(this).scope().dragStop(event)">
+                      <div class="inner-box" ng-show="vehical.tripData.length > 0" >
                         <div class="warning-wrap"ng-show="vehical.tripData.length > 2">Cannot assign more trips to this vehicle</div>
                         <div class="hover-ele" ng-repeat="trip in vehical.tripData.slice(0,2)">
                           <p class="hover-p">Trip Id: {{trip.trip_id}}</p>

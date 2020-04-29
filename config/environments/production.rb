@@ -75,6 +75,16 @@ Rails.application.configure do
       enable_starttls_auto: true
   }
 
+  # config.action_mailer.smtp_settings = {
+  #     address:              "smtp.office365.com",
+  #     port:                 587,
+  #     domain:               "mllvaayu.com",
+  #     user_name:            ENV['GMAIL_USENAME'],
+  #     password:             ENV['GMAIL_PASSWORD'],
+  #     authentication:       :login,
+  #     enable_starttls_auto: true
+  # }
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   config.action_mailer.raise_delivery_errors = true

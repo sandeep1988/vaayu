@@ -300,7 +300,7 @@ class EmployeeTrip < ApplicationRecord
   end
 
   def self.fetch_checkin_and_checkout(check_in_attr, check_out_attr, zone=Time.zone)
-    check_in_date = zone.parse("#{check_in_attr[:schedule_date]} #{check_in_attr[:check_in]}")
+	check_in_date = zone.parse("#{check_in_attr[:schedule_date]} #{check_in_attr[:check_in]}")
     check_out_date = zone.parse("#{check_out_attr[:schedule_date]} #{check_out_attr[:check_out]}")
     check_out_date += 1.day unless check_in_date < check_out_date
     [check_in_date, check_out_date]
@@ -382,7 +382,7 @@ class EmployeeTrip < ApplicationRecord
   end
 
   def self.create_or_update(employee, attributes)
-	
+	p "create_or_update 1"
     attributes[:check_in_attributes].values.sort_by { |x| x["schedule_date"] }.each_with_index do |check_in_attr, i|
       attribute = attributes[:check_out_attributes].values.sort_by { |x| x["schedule_date"] }[i]
       if attribute.nil?

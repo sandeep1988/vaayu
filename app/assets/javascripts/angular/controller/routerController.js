@@ -483,7 +483,11 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
         $scope.resetRoute();
         $scope.allRouteSelected=false;
         $scope.toggleView = true;
-        ToasterService.showSuccess('Success', 'Routes are finalized')
+        if(!data['success']){
+          ToasterService.showSuccess('Error', data['message'])
+        } else{
+          ToasterService.showSuccess('Success', data['message'])
+        }
       }, err => {
         $scope.toggleView = true;
         ToasterService.showError('Error', 'Something went wrong')
@@ -922,6 +926,8 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
       showTicksValues: true
     }
   };
+
+  $scope.options = false;
 
   $scope.slider_empty = {
     minValue: 1,
@@ -1423,9 +1429,18 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, M
     }
   };
 
-  $scope.logEvent = function (message) {
-    // console.log(message);
+  $scope.logEvent = function () {
+
+    $scope.options = false;
   };
+
+  $scope.drag = function(ev) {
+    ev.srcElement.firstElementChild.style.display = "none"
+  }
+
+  $scope.dragStop = function(ev){
+    ev.srcElement.firstElementChild.style.display = "block"
+  }
 
   $scope.logListEvent = function (action, index, external, type) {
     var message = external ? 'External ' : '';

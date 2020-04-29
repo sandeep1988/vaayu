@@ -21,16 +21,34 @@ module API::V1
       "status": "created"
     }'
     # @TODO: test
-    def show
-      authorize! :read, @employee_trip
-
-      @trip = @employee_trip.trip
-      @site = @trip.try(:site)
-
-      @vehicle = @trip.try(:vehicle)
-      if @trip.present?
-        @config_values = TripValidationService.employee_config_params(@trip)
-      end
+	def show
+		authorize! :read, @employee_trip
+		#tetsing trip id
+		p "=====employee_trip trip===="
+		p @employee_trip.trip
+		###updatinging code starts here
+		if @employee_trip.trip.present?
+			p "===== is coming here "
+			p @employee_trip.trip.start_date
+			#check_start_date = @employee_trip.trip.start_date.in_time_zone("Kolkata")
+			p "=== check start date "
+			#p check_start_date
+			p "===current time "
+			p Time.now.in_time_zone("Kolkata")
+			p "=====employee trip status "
+			p @employee_trip.trip.status
+			#"completed"
+			#if (@employee_trip.trip.status == "active" && check_start_date >= Time.now.in_time_zone("Kolkata"))
+				p "===== 123 is coming here "
+				@trip = @employee_trip.trip
+				@site = @trip.try(:site)
+				@vehicle = @trip.try(:vehicle)
+				if @trip.present?
+					@config_values = TripValidationService.employee_config_params(@trip)
+				end
+			#end
+		end
+		###updatinging code end here     
     end
 
     api :POST, '/employee_trips/:id/cancel'
@@ -91,6 +109,7 @@ module API::V1
      "success": true
     }'
     def update
+		
       authorize! :edit, @employee_trip
 
       @trip_change_request = @employee_trip.trip_change_requests.new(
@@ -99,8 +118,14 @@ module API::V1
           employee: @employee,
           bus_rider: @employee.bus_travel
       )
-
-      @trip_change_request.new_date = Time.at(params[:new_date].to_i) if params[:new_date].present?
+	  p "=== checking"
+	  p @trip_change_request
+	  p "=== new date time"
+	  p Time.at(params[:new_date].to_i)
+	  p "=== new date time UTC"
+	  p Time.at(params[:new_date].to_i).in_time_zone("UTC")
+	  
+	  @trip_change_request.new_date = Time.at(params[:new_date].to_i) if params[:new_date].present?
 
       if @trip_change_request.save
 
@@ -150,13 +175,13 @@ module API::V1
      "success": true
     }'
     def create
+		p "=== trip created"
       authorize! :request_trip, @employee
 
       shift = false
       if params[:shift] == true
         shift = true
       end
-
       if params[:trip_type] == "check_out"
         e_t= Time.at(params[:new_date].to_i) if params[:new_date].present?
         end_time = e_t.strftime("%H:%M")
@@ -174,7 +199,7 @@ module API::V1
           shift_selected_id = nil
         end  
       end
-
+		p "===shift_selected_id : #{shift_selected_id}"
       @trip_change_request = TripChangeRequest.new(
           trip_type: params[:trip_type],
           request_type: :new_trip,
@@ -231,7 +256,7 @@ module API::V1
     # @TODO: test
     def exception
       authorize! :edit, @employee_trip
-
+		p "exception"
       if @trip_route
         @trip_route_exception = @trip_route.trip_route_exceptions.new( exception_type: params[:exception_type], date: Time.now )
 

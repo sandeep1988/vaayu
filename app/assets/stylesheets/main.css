@@ -347,7 +347,7 @@
   margin-bottom: 7px;
 }
 
-.inner-box{
+li.input-group .inner-box{
   position: absolute;
   top: 55px;
   padding: 0 7px;
@@ -358,7 +358,11 @@
   box-shadow: 3px 3px 6px 2px rgba(0,0,0,0.3);
   z-index: 1;
   background: #fff;
+  display: none;
 }
+
+
+
 .hover-box :nth-child(2){
   margin-top: 8px;
 }

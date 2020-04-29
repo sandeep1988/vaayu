@@ -76,16 +76,16 @@ function setSelectedDateVal(selectedDate) {
   });
 }
 
-function getEmployeeTrips(dates) {
+function getEmployeeTrips(dates, skip_trip="") {
   clearFrom();
   applyDefaultContent();
 
   if (Object.keys(employeeTripObjects).indexOf(getWeek(new Date(dates[0])).toString()) < 0 ) {
-    $.get( modalUrl, { range_from: dateFormatter(dates[0]), range_to: dateFormatter(dates[1]) } )
+    $.get( modalUrl, { range_from: dateFormatter(dates[0]), range_to: dateFormatter(dates[1]), skip_trip: skip_trip} )
       .done(function( data ) {
         if(data.length !== 0) {
 
-          console.log( "<<<<<<<<<<<<<<data shedule",data );
+          console.log( "<<<<<<<<<<<<<<data shedule",data);
           employeeTripObjects[Object.keys(data[0])[0]] = Object.values(data[0])[0];
           reloadForm(getWeek(new Date(dates[0])), new Date(dates[0]));
         }
@@ -203,7 +203,7 @@ function updateCheckOutForm(etObj) {
     checkOutVal = etObj.check_out;
     currentForm.find(inputField).val(checkOutVal);
   }
-
+	
   if (etObj.site_id !== "") { currentForm.find(".check_out_location_select").val(etObj.site_id) }
   // if (etObj.shift_id !== "") { currentForm.find(".check_out_shift_select").val(etObj.shift_id) }
   if(checkOutVal !== "") {createOrSelectShift(checkOutVal, currentForm, "check_out",etObj.shift_id)}

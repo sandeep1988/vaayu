@@ -28,16 +28,16 @@ class Employee < ApplicationRecord
   accepts_nested_attributes_for :employee_schedules
   # enum gender: [:female, :male]
 
-  # validates :gender, presence: true
+  validates :gender, presence: true
   validates :home_address, presence: true
   validates :home_address_latitude, presence: true
   validates :home_address_longitude, presence: true
   validates :landmark, presence: true
   # validates :nodal_address_latitude, presence: true
-  # validates :nodal_address_longitude, presence: true
+  # validates :process_code, presence: true, uniqueness: true
   validates :landmark, presence: true
   validates :site, presence: true
-  validates :employee_id, presence: true
+  validates :employee_id, presence: true, uniqueness: true
   validates :employee_company, presence: true
   # validate :home_address_location_calculated
   # validate :distance_to_site_calculated

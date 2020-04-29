@@ -11,6 +11,7 @@ class AutoCreateEmployeeTripsWorker
   end
 
   def create_employee_trips
+	p "======= coming here"
     # Fetch all employee trips for the current day where schedule id is not null
     date = Time.now.in_time_zone('Chennai')
     employee_trips_copied = {}

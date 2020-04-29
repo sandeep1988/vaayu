@@ -234,7 +234,7 @@ $(function () {
                         data: null,
                         orderable: false,
                         render: function (data) {
-                            var txt = data.status === "Invited" ? '<a href="#" data-url="/employees/'+ data.id +'/invite" class="invite-count"><span>Re-Invite</span></a> <a href="#" class="editor_remove text-danger">Delete</a>/ <a href="/employees/' + data.id + '/edit" data-remote="true" class="edit employer_view" id="viewEmployee" >View</a>' : '<a href="#" class="editor_remove text-danger">Delete</a> <a href="/employees/' + data.id + '/edit" data-remote="true" class="edit employer_view" id="viewEmployee">View</a>'
+                            var txt = data.status === "Invited" ? '<a href="#" data-url="/employees/'+ data.id +'/invite" class="invite-count"><span>Re-Invite</span></a> <a href="#" class="editor_remove text-danger">Delete</a>/ <a href="/employees/' + data.id + '/edit" data-remote="true" class="edit employer_view" id="viewEmployee" >Edit</a>' : '<a href="#" class="editor_remove text-danger">Delete</a> <a href="/employees/' + data.id + '/edit" data-remote="true" class="edit employer_view" id="viewEmployee">Edit</a>'
                             return txt;
                         }
                     }
@@ -290,7 +290,54 @@ $(function () {
         }, 200)
     });
 
-    $(".nav-actions").on("click", ".edit-buttons .submit-btn.form-employees", function(e) {        
+    var came_in_error = "no";
+    $(".nav-actions").on("click", ".edit-buttons .submit-btn.form-employees", function(e) {
+        //adding code of validation starts here        
+        var employee_form_required_element = ["user[f_name]",
+          "user[l_name]",
+          "user[email]",
+          "user[phone]",
+          "user[entity_attributes][employee_company_id]",
+          "user[entity_attributes][employee_id]",
+          "user[entity_attributes][gender]",
+          "user[entity_attributes][site_id]",
+          "user[entity_attributes][home_address]",
+          "user[entity_attributes][home_address_latitude]",
+          "user[entity_attributes][home_address_longitude]",
+          "user[entity_attributes][landmark]"];
+
+        var checking_form_errror = "no";
+        $.each($('input, select ,textarea', '#form-employees'),function(k){
+            //console.log(k+' '+$(this).attr('name'));
+            if(employee_form_required_element.indexOf($(this).attr('name'))>-1)
+            {
+                //console.log(k+' Coming here : '+$(this).attr('name'));
+                if($(this).val()==="")
+                {
+                    console.log(k+' Coming here : '+$(this).attr('name'));
+                    //e.preventDefault();
+                    checking_form_errror = "yes";
+                    $(this).blur();
+                    //return false;
+                    //adding the error message to blank details
+                    //$(this).closest("div").parent().addClass("has-error");
+                    //$(this).closest("div").find("p").remove();
+                    //$(this).closest("div").find("span").remove();
+                    //spanTxt = "<p class='help-block'>can't be blank</p>";
+                    //$(this).closest("div").append(spanTxt);
+                    //adding the error message to blank details
+                }
+                else
+                {
+                    //$(this).closest("div").removeClass("has-error");                    
+                    //$(this).closest("div").find("p").remove();
+                    //$(this).closest("div").find("span").remove();
+                }
+            }
+        });  
+        console.log("Checking form error : "+checking_form_errror);
+        //adding code of validation end
+        
         console.log($(".bus_travel").attr("value"))
         if($(".bus_travel").attr("checked") == "checked" || checked){
             var selectedStop = $("#user_entity_attributes_bus_trip_route_id option:selected").val();
@@ -307,7 +354,12 @@ $(function () {
 
         }
         clearTimeout(focusOutTimer);
-        $.call("/employees/validate", $("#form-employees"), "", "", true);
+        if(checking_form_errror=="no")
+        {
+            $.call("/employees/validate", $("#form-employees"), "", "", true);
+        }
+        //$.call("/employees/validate", $("#form-employees"), "", "", true);
+        
         $("select.required").focusout();
         var table = $('#dataTables_wrapper').DataTable();
         table.ajax.reload();
@@ -316,7 +368,7 @@ $(function () {
 
 
 
-    $(".nav-actions").on("click", ".edit-buttons .submit-btn.form-guards", function(e) {        
+    $(".nav-actions").on("click", ".edit-buttons .submit-btn.form-guards", function(e) { 
         console.log($(".bus_travel").attr("value"))
         if($(".bus_travel").attr("checked") == "checked" || checked){
             var selectedStop = $("#user_entity_attributes_bus_trip_route_id option:selected").val();
@@ -463,10 +515,10 @@ $(function () {
   });
 
     $("#employees").on("change","#user_entity_attributes_site_id",function(){
-
         updateBillingZone($(this).val());
     });
 
+     
 
     // $("#guards").on("change","#user_entity_attributes_site_id",function(){
 
@@ -526,7 +578,16 @@ $(document).on("click",".employer_edit",function(){
     }
 
 });
+var $loader = $('<div class="timeline-loading"><div class="loader-spinner"></div></div>');
+$(document).on('click','.form-employees', function(){
+$(".form-employees").append($loader);
+  setTimeout(function () {
+    $loader.remove();
+  }, 5000);
 
+ 
+
+ });
 
 
 
