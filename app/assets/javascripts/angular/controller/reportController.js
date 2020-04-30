@@ -33,7 +33,12 @@ angular.module('app').controller('reportCtrl', function ($scope,RosterService, R
             {
                 displayValue: 'Daily Shift Wise Occupency Report',
                 sendValue: 'dailyShiftWiseOccupency'
+            },
+            {
+                displayValue: 'Notification Report',
+                sendValue: 'driverOffDutyNotificationReport'
             }
+
         ];
         $scope.reportValue = $scope.reportType[0].sendValue;
         $scope.isChanged = false;
@@ -161,6 +166,12 @@ angular.module('app').controller('reportCtrl', function ($scope,RosterService, R
         }
 
         $scope.checkIsDownloadable = () => {
+
+            if($scope.reportId === 'driverOffDutyNotificationReport'){
+                let url = BASE_URL_API_8005 + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
+                $scope.downloadSample(url)
+                return
+            }
             // $http({
             //     method: 'GET',
             //     url: 'http://qaapi.mllvaayu.com/isReportsDownloadable/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate

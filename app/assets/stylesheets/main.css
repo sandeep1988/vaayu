@@ -400,3 +400,11 @@ li.input-group .inner-box{
 .hover-ele:last-child{
   border-bottom: 0;
 }
+
+.margin-right-small{
+  margin-right: 5px;
+}
+
+.btn-small{
+  padding: 7px 5px !important;
+}
