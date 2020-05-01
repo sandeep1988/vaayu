@@ -35,7 +35,8 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
       scrollable: true,
       enableSearch: true,
       width: '300px',
-      selectionLimit: 1
+      selectionLimit: 1,
+      dropdownPosition: 'auto'
     };
 
     $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
@@ -361,6 +362,11 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
         return;
       }
 
+      $scope.sosAlert = data.data.stats['sos_count']
+      if($scope.sosAlert > 0){
+        $scope.playAudio()
+      }
+
       // $scope.fullRoster = TripboardResponse.tempResponse.data.tripsdetails;
       $scope.fullRoster = data.data.tripsdetails;
       $scope.rosters = $scope.fullRoster;
@@ -639,22 +645,96 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
     let params = { shiftId, shift_type: shiftType, searchBy: '' , forceVehicleSearch: 1,
     to_date:moment($scope.filterDate).format('YYYY-MM-DD')};
-    console.log('searchAllVehicles req', params)
+    // console.log('searchAllVehicles req', params)
     RouteService.searchVechicle(params, function (res) {
-      console.log('searchAllVehicles res', res)
+      // console.log('searchAllVehicles res', res)
       if (res['success']) {
         //vehicleList.push(res.data);
         // var array = VehicleListResponse.listResponse.data;
+        $scope.vehicleRes = res['data']
         var newarray = [];
         for (let item of vehicleList) {
-          newarray.push({ id: item.id, name: item.vehicleNumber })
+          newarray.push({ id: item.id, name: item.vehicleNumber, tripData: item.tripData })
         }
         for (let item of res.data) {
-          newarray.push({ id: item.id, name: item.vehicleNumber  })
+          newarray.push({ id: item.id, name: item.vehicleNumber, tripData: item.tripData  })
         }
 
-        $scope.vehicleList = newarray;
+        var distinctArray = Array.from(new Set(newarray.map(s => s.id)))
+          .map(id  => {
+            return {
+              id: id,
+              name: newarray.find(s => s.id === id).name,
+              tripData: newarray.find(e => e.id === id).tripData
+            }
+          })
+        
+        $scope.vehicleList = distinctArray;
+        console.log('tempArray', distinctArray)
         console.log('vehicleList', $scope.vehicleList)
+        console.log('vehicle Res', $scope.vehicleRes)
+
+        
+        $scope.dropdownParent = document.getElementById('dropdownParent')
+        $scope.hoverELement = ''  
+        if(dropdownParent){
+          dropdownParent.addEventListener('click', (event) => {
+            event.stopPropagation()
+            $scope.optionsEle = document.querySelectorAll('.option');
+              if($scope.optionsEle && $scope.vehicleRes){
+                for(var i =0; i < $scope.vehicleRes.length; i++){
+                  $scope.hoverELement = '<div id="'+i+'index" class="hoverELe"></div>'
+                  $scope.optionsEle[i].insertAdjacentHTML('afterend', $scope.hoverELement)
+                  $scope.insideHoverElement = ''
+                  for(var j = 0; j < $scope.vehicleRes[i]['tripData'].length; j++){
+                    function returnValues(text){
+                      if(text === 0){
+                        return 'Login'
+                      } else if(text === 1){
+                        return 'Logout'
+                      } else if(text === 'active'){
+                        return 'Ongoing'
+                      } else if(text === 'assigned'){
+                        return 'Assigned'
+                      } else if('assign_requested'){
+                        return 'Assign requested'
+                      } else if('assign_request_expired'){
+                        return 'Assign request expired'
+                      } else if('canceled') {
+                        return 'Cancelled'
+                      } else if('completed'){
+                        return 'Completed'
+                      } else if('created'){
+                        return 'Trip created'
+                      } else {
+                        return 'NA'
+                      }
+                  
+                    }
+                    $scope.insideHoverElement += '<div class="inside-hover"><p>Trip Id: '+ $scope.vehicleRes[i]['tripData'][j]['trip_id'] +'</p><p>Status: '+ returnValues($scope.vehicleRes[i]['tripData'][j]['trip_status']) +'</p><p>Type: '+ returnValues($scope.vehicleRes[i]['tripData'][j]['trip_type'])  +'</p><p>Trip end time:'+$scope.vehicleRes[i]['tripData'][j]['tripdate']+' | '+$scope.vehicleRes[i]['tripData'][j]['estimated_trip_endtime']+'</p></div>'
+                    document.getElementById(i+'index').innerHTML = $scope.insideHoverElement
+                    console.log('check here', document.getElementById(i+'index').innerHTML, $scope.insideHoverElement)
+                  }
+                  $scope.optionsEle[i].addEventListener('mouseover', function(event){
+                    console.log('mouseenter', event)
+                    event.toElement.nextElementSibling.style.display = 'block'
+                    // document.getElementById(i+'index').style.height = "auto"
+                  })
+                  $scope.optionsEle[i].addEventListener('mouseleave', function(event){
+                    console.log('mouseleave', event)
+                    event.fromElement.nextElementSibling.style.display = "none"
+                    // if(event.toElement.nextElementSibling){
+                    //   event.toElement.nextElementSibling.style.display = 'none'
+                    // }
+                    // document.getElementById(i+'index').style.height = "0"
+                  })              
+                }
+      
+              }
+            
+          })
+        }      
+        
       } else {
         console.log(res['message']);
       }
@@ -743,6 +823,10 @@ angular.module('app').controller('tripboardCtrl', function ($scope, VehicleListR
 
     return '../assets/angular_images/img_avatar.png';
   }
+
+  
+
+
 
 
 });

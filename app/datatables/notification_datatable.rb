@@ -44,7 +44,7 @@ class NotificationDatatable
        :badge_count => @badge_count,
        :reporter => @notifications_data[:first_notification]&.reporter
     }
-    
+
   end
   
   private

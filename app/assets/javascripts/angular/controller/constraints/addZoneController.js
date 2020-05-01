@@ -5,9 +5,11 @@ angular.
   module('app').controller('addZone', function ($scope, $http, $state, ConstraintService, SessionService, ToasterService) {
     this.$onInit = () => {
       console.log('onInit called addZone');
+      $scope.toggleView = false;
       $scope.fetchSiteList();
 
     }
+
 
     $scope.site_list = [];
     $scope.siteID = "";
@@ -24,10 +26,12 @@ angular.
           $scope.$broadcast('onSiteListReceived', res.data.list);
           
         } else {
+          $scope.toggleView = true;
           ToasterService.showError('Error', res['message']);
         }
       }, er => {
         console.log(err)
+        $scope.toggleView = true;
         ToasterService.showError('Error', 'Something went wrong, Try again later.');
       });
     }
@@ -46,14 +50,16 @@ angular.
 
 
     $scope.fetchZones = () => {
-      ConstraintService.getZones({ siteId: $scope.siteID }, res => {
+      ConstraintService.getZone({ siteId: $scope.siteID }, res => {
         if (res['success']) {
           $scope.zoneList = res.data.zoneList;
           
         } else {
+          $scope.toggleView = true;
           ToasterService.showError('Error', res['message']);
         }
       }, er => {
+        $scope.toggleView = true;
         ToasterService.showError('Error', 'Something went wrong, Try again later.');
       });
     }
@@ -65,6 +71,7 @@ angular.
 
       if ($scope.siteID == null) {
         // alert('Select Site Name');
+        $scope.toggleView = true;
         ToasterService.showError('Error', 'Select Site Name');
       } else if (form.$valid && $scope.isValidZipcodes()) {
         $scope.addZone();
@@ -77,6 +84,7 @@ angular.
       let array = $scope.zipcode.split(',');
       for (let item of array) {
         if (item.trim().length != 6) {
+          $scope.toggleView = true;
           ToasterService.showError('Error', 'Invalid zipcode, must contain exact 6 digits.');
           return false;
         }
@@ -103,13 +111,16 @@ angular.
 
       ConstraintService.createZones(params, res => {
         if (res['success']) {
+          $scope.toggleView = true;
           ToasterService.showSuccess('Success', 'Zone added successfully.');
           console.log(JSON.stringify(res.data))
           $scope.fetchZones()
         } else {
+          $scope.toggleView = true;
           ToasterService.showError('Error', res['message']);
         }
       }, er => {
+        $scope.toggleView = true;
         ToasterService.showError('Error', 'Something went wrong, Try again later.');
       });
     }
@@ -118,13 +129,16 @@ angular.
 
       ConstraintService.delete_zone({ zoneId: zone.id }, res => {
         if (res['success']) {
+          $scope.toggleView = true;
           ToasterService.showSuccess('Success', res['message']);
           console.log('zone deleted', JSON.stringify(res.data))
           $scope.fetchZones()
         } else {
+          $scope.toggleView = true;
           ToasterService.showError('Error', res['message']);
         }
       }, er => {
+        $scope.toggleView = true;
         ToasterService.showError('Error', 'Something went wrong, Try again later.');
       });
     

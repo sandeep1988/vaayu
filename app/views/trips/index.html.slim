@@ -20,6 +20,9 @@
           li
             a[href="#routing-testing" data-toggle="tab"]
               | Routing
+
+        - if !current_user.operator? || current_user.operator?
+          
           li
             a[href="#trips-notifications" data-toggle="tab"]
               span.hidden.center[style="margin-bottom: 2px;" class="badge badge-danger" id="badge-unresolved-notification"]

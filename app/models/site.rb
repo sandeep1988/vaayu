@@ -11,7 +11,7 @@ class Site < ApplicationRecord
   has_many :services, :dependent => :destroy
   has_many :shifts
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
   validates :latitude, presence: true
   validates :longitude, presence: true
   validates :employee_company, presence: true

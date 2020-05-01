@@ -29,6 +29,8 @@ module Overrides
       app = resource_params[:app]
       if app.blank? 
         render_create_error_app_not_specified
+      elsif resource_params[:app] == "driver" && @resource.present? && @resource.role == "employee"
+          render_wrong_user_for_driver_app
       elsif resource_params[:app] == "driver" && @resource.present? && @resource.entity.present? && (@resource.entity.blacklisted? || !@resource.entity.active? || @resource.entity.compliance_status != "Ready For Allocation" || (@resource.entity.induction_status.present? && @resource.entity.induction_status != "Inducted"))
         render_blocked_user
       elsif @resource and valid_params?(field, q_value) and @resource.valid_password?(resource_params[:password]) and (!@resource.respond_to?(:active_for_authentication?) or @resource.active_for_authentication?) and @resource.has_access_to_app?(resource_params[:app])
@@ -101,6 +103,13 @@ module Overrides
       render json: {
         success: false,
         errors: ['Your account has blocked or not Inducted or not ready for allocation']
+        }, status: 422
+    end
+
+    def render_wrong_user_for_driver_app
+      render json: {
+        success: false,
+        errors: ['You are using wrong user for driver app']
         }, status: 422
     end
 

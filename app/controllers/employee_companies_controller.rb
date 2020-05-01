@@ -27,6 +27,11 @@ class EmployeeCompaniesController < ApplicationController
     }
   end
 
+  def get_customers_name
+    @customers = EmployeeCompany.pluck(:name)
+    render :json => { :customers =>  @customers }
+  end
+
   def get_all_sites
     @employee_companies = EmployeeCompany.where(active: "1")
     @logistics_companies = LogisticsCompany.all
@@ -51,7 +56,8 @@ class EmployeeCompaniesController < ApplicationController
           @employee_company.update(active: company_params[:active] == "Inactive" ? false : true)
           format.json { render json: EmployeeCompanyDatatable.new(@employee_company), status: :created, location: @employee_companies}
         else
-          format.json { render json: @employee_company.errors, status: '404' }
+          format.json { render json: { success: false , errors:  @employee_company.errors.full_messages }, status: '200' }
+          # format.json { render json: @employee_company.errors.messages, status: '404' }
         end
       end
     else
@@ -69,7 +75,8 @@ class EmployeeCompaniesController < ApplicationController
           @employee_company.update(active: company_params[:active] == "Inactive" ? false : true)
           format.json { render json: EmployeeCompanyDatatable.new(@employee_company), status: :ok, location: @employee_company }
         else
-          format.json { render json: @employee_company.errors, status: :unprocessable_entity }
+          # format.json { render json: @employee_company.errors, status: :unprocessable_entity }
+          format.json { render json: { success: false , errors:  @employee_company.errors.full_messages }, status: '200' }
         end
       end
     else

@@ -64,6 +64,7 @@ Rails.application.routes.draw do
     collection do
       get :get_all
       get :get_all_sites
+      get :get_customers_name
     end
     member do
       get 'active_customer'

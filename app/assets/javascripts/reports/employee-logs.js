@@ -32,7 +32,20 @@ $(function () {
                     {data: "trip_id"},
                     {data: "status", orderable: false},
                     {data: "shift_time"},
-                    {data: "direction"},
+                    {
+                      data: "direction",
+                      orderable: false,
+                      render: function (data) {
+                        
+                            if( data.toLowerCase() == "check in" ){
+                            return "Login";
+                            }else if( data.toLowerCase() == "check out" ){
+                                return "Log out";
+                            }else{
+                               return data; 
+                            }
+                        }
+                    },
                     {data: "employee_id"},
                     {data: "rider_name", orderable: false},
                     {data: "driver_name", orderable: false},

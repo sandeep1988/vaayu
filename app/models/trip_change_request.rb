@@ -37,10 +37,14 @@ class TripChangeRequest < ApplicationRecord
   protected
 
   def approve_request
-    case request_type.to_sym
+		p "approve_request"
+	case request_type.to_sym
       when :change        
+		p "approve_request 1"
         if employee_trip.trip.present?
+			p "approve_request 2"
           employee_trip.trip_canceled!
+		  p "approve_request 3"
           #Create a new employee trip
           self.create_employee_trip!( date: new_date, trip_type: employee_trip.trip_type, employee: employee, bus_rider: employee.bus_travel)
           if Configurator.get('change_request_require_approval') == '1'
@@ -49,6 +53,7 @@ class TripChangeRequest < ApplicationRecord
             Notification.create!(:trip => employee_trip.trip, :employee => employee_trip.employee, :message => 'change_request_approved', :new_notification => true, :resolved_status => true, :reporter => "Vaayu System").send_notifications    
           end          
         else
+			p "approve_request 4"
           time_to_change = (self.new_date + 5.hours + 30.minutes).strftime("%H:%M")
           if employee_trip.trip_type == "check_out"
             employee.shifts.each do |shift|
@@ -58,9 +63,11 @@ class TripChangeRequest < ApplicationRecord
             employee.shifts.each do |shift|
               @shift_to_change = shift.id if shift.start_time == time_to_change
             end
-          end    
+          end
+			p "approve_request 5"
           employee_trip.update(:date => self.new_date, shift_id: @shift_to_change)
-        end
+			p "approve_request 6"
+		end
       when :cancel
         # if employee_trip.trip.present? && employee_trip.trip.passengers == 1
         #   employee_trip.trip.cancel!
@@ -85,6 +92,7 @@ class TripChangeRequest < ApplicationRecord
           end         
         end
       when :new_trip
+		p "new_trip 1"
         if self.shift
           trip_request_new_date = self.new_date.strftime("%H:%M")
           shift_id = employee.shifts.where(:start_time => trip_request_new_date).first.id if trip_request_new_date.present? && trip_type == "check_in"
@@ -97,7 +105,8 @@ class TripChangeRequest < ApplicationRecord
     end
   end
 
-  def new_date_cannot_be_in_the_past    
+  def new_date_cannot_be_in_the_past
+	p "new_date_cannot_be_in_the_past"
     if request_type == 'cancel'
       if employee_trip.check_in?
         if employee_trip.trip.present?
@@ -118,20 +127,21 @@ class TripChangeRequest < ApplicationRecord
       end
     end
 
-    if request_type == 'change'
-      if employee_trip.check_in?
-        time = Configurator.get('change_time_check_in').to_i * 60
-        if self.new_date.in_time_zone("Kolkata") < Time.now + time        
-          errors.add(:new_date, "can't change check in trip in next #{formatted_duration(time)}")
-        end      
-      else
-        time = Configurator.get('change_time_check_out').to_i * 60
-        if self.new_date.in_time_zone("Kolkata") < Time.now + time
-          errors.add(:new_date, "can't change check out trip in next #{formatted_duration(time)}")
-        end        
-      end
-    end
-
+   ## AS Start Rushikesh said for comment on 14 april 2020 
+    # if request_type == 'change'
+    #   if employee_trip.check_in?
+    #     time = Configurator.get('change_time_check_in').to_i * 60
+    #     if self.new_date.in_time_zone("Kolkata") < Time.now + time        
+    #       errors.add(:new_date, "can't change check in trip in next #{formatted_duration(time)}")
+    #     end      
+    #   else
+    #     time = Configurator.get('change_time_check_out').to_i * 60
+    #     if self.new_date.in_time_zone("Kolkata") < Time.now + time
+    #       errors.add(:new_date, "can't change check out trip in next #{formatted_duration(time)}")
+    #     end        
+    #   end
+    # end
+    ## AS END Rushikesh said for comment on 14 april 2020 
     # if new_date.present? && new_date < Time.now + MIN_AVAILABLE_TIME_TO_CHANGE
     #   errors.add(:new_date, "can't be earlier than in two hours")
     # end

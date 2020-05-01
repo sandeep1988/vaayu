@@ -234,32 +234,49 @@ class EmployeeTripsController < TripValidationController
   end
 
   def trips
-    employee = Employee.find(params[:id])
-    trips = EmployeeTrip.trips_by_range(employee, params[:range_from], params[:range_to])
+	p ">>>>>>>>>>>testing param "
+	p params[:skip_trip]
+    skip_cancel_trip = "no"
+	if params[:skip_trip].present?
+		if params[:skip_trip]=="cancel"
+			skip_cancel_trip = "yes"
+		end
+	end
+	p ">>> Cancel trip"
+	p skip_cancel_trip 
+	
+	employee = Employee.find(params[:id])
+    if skip_cancel_trip=="yes"
+		trips = EmployeeTrip.where("status != 'canceled'").trips_by_range(employee, params[:range_from], params[:range_to])
+	else
+		trips = EmployeeTrip.trips_by_range(employee, params[:range_from], params[:range_to])
+	end
+	
     render json: trips, status: 200
   end
-
   def schedule_trip
     @employee = Employee.find(params[:id])
-    @schedule = @employee.employee_schedules
-    @current_week_employee_trips = []
+	@schedule = @employee.employee_schedules
+	@current_week_employee_trips = []
     @new_employee_trips = []
     14.times { @new_employee_trips << EmployeeTrip.new }
+	
     range_from, range_to = (Time.now.beginning_of_week - 1.day).strftime("%Y-%m-%d"), (Time.now.end_of_week - 1.day).strftime("%Y-%m-%d")
-    @current_week_trips = EmployeeTrip.trips_by_range(@employee, range_from, range_to)
+    @current_week_trips = EmployeeTrip.where("status != 'canceled'").trips_by_range(@employee, range_from, range_to)
     # @sites = @employee.employee_company.sites.select("id,name").map {|x| [x.name, x.id]}
     @sites = []
     @sites.push([@employee.site.name, @employee.site.id])
-    @sites
-    @all_shifts = @employee.shifts.to_json.html_safe
+	@sites
+	@all_shifts = @employee.shifts.to_json.html_safe
   end
 
   def schedule_trip_update
+	
     return_data = {}
     @employee = Employee.find(params[:id])
     return_data[:status] = 400 and raise RuntimeError unless params[:employee].present?
     return_data[:status] = 400 and raise RuntimeError if params[:employee][:check_in_attributes].blank? || params[:employee][:check_out_attributes].blank?
-    EmployeeTrip.create_or_update(@employee, employee_trip_params)
+	EmployeeTrip.create_or_update(@employee, employee_trip_params)
     (0..params[:employee][:check_in_attributes].count - 1).to_a.each do  |check_in|
       if params[:employee][:check_in_attributes][check_in.to_s]["id"].present?
         EmployeeTrip.find(params[:employee][:check_in_attributes][check_in.to_s]["id"]).update(shift_id: params[:employee][:check_in_attributes][check_in.to_s]["shift_id"])

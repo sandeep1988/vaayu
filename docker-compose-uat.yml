@@ -1,0 +1,139 @@
+version: '3'
+
+services:
+  web:
+    build:
+        context: "/home/ubuntu/pts-webapp"
+        dockerfile: "Dockerfile_uat"
+    command: bin/rails server --port 3000 --binding 0.0.0.0
+    ports:
+      - 3000:3000
+    restart: on-failure
+    env_file:
+      - .env
+    links:
+      - redis
+    depends_on:
+      - redis
+      # - location_service
+      # - clustering_core
+      #- mysql
+  redis:
+    image: 'redis:3.2.9-alpine'
+    command: redis-server
+    ports:
+      - 6379:6379
+    sysctls:
+      - net.core.somaxconn=1024
+    volumes:
+      - ./data/redis
+    #restart: on-failure
+  # location_service:
+  #   # TODO: Fix location_services' environment loading
+  #   # TODO: Setup local make file to tag docker builds with moove/location_service:latest
+  #   image: 482532497705.dkr.ecr.ap-south-1.amazonaws.com/location_service:0.1.193
+  #   ports:
+  #     - 4343
+  # clustering_core:
+  #   image: 482532497705.dkr.ecr.ap-south-1.amazonaws.com/location_service:build-1
+  #   ports:
+  #     - 8989
+  sidekiq:
+      build:   
+          context: "/home/ubuntu/pts-webapp"
+          dockerfile: "Dockerfile_uat"
+      command: bundle exec sidekiq -C config/sidekiq.yml
+      env_file:
+          - .env
+      links:
+          - redis
+      restart: on-failure
+  selenium:
+    image: selenium/standalone-chrome-debug:3.0.1-germanium
+    ports: ['4444:4444', '5900:5900']
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - web
+  api_ms:
+      env_file:
+          - .env
+      build:
+          context: "/home/ubuntu/vaayu_compliance_nodejs/api_ms"
+          dockerfile: "Dockerfile"
+      ports:
+          - '4002:4002'
+      restart: on-failure
+  compliance_ms:
+      env_file:
+          - .env
+      build:
+          context: "/home/ubuntu/vaayu_compliance_nodejs/compliance_ms"
+          dockerfile: "Dockerfile"
+      ports:
+          - '8000:8000'
+      restart: on-failure
+  induction_ms:
+      env_file:
+          - .env
+      build:
+          context: "/home/ubuntu/vaayu_compliance_nodejs/induction_ms"
+          dockerfile: "Dockerfile"
+      ports:
+          - '8001:8001'
+      restart: on-failure
+  roastering_routing_ms:
+      env_file:
+          - .env
+      build:
+          context: "/home/ubuntu/vaayu_compliance_nodejs/roastering_routing_ms"
+          dockerfile: "Dockerfile"
+      ports:
+          - '8002:8002'
+      restart: on-failure
+  contract_ms:
+      env_file:
+          - .env
+      build:
+          context: "/home/ubuntu/vaayu_compliance_nodejs/contract_ms"
+          dockerfile: "Dockerfile"
+      ports:
+          - '8003:8003'
+      restart: on-failure
+  trips_dashboard_ms:
+      env_file:
+          - .env
+      build:
+          context: "/home/ubuntu/vaayu_compliance_nodejs/trips_dashboard_ms"
+          dockerfile: "Dockerfile"
+      ports:
+          - '8004:8004'
+      restart: on-failure
+  python_rounting_ms:
+      env_file:
+          - .env
+      build:
+          context: "/home/ubuntu/flask_Api"
+          dockerfile: "Dockerfile"
+      ports:
+          - '8090:8090'
+      restart: on-failure
+  vaayu_compliance_angular:
+        build:
+            context: "/home/ubuntu/vaayu_compliance_angular"
+            dockerfile: "Dockerfile_uat"
+        ports:
+            - '4200:4200'
+        restart: on-failure
+  nginx_reverseproxy:
+        build:
+            context: "/home/ubuntu/nginx_reverseproxy"
+            dockerfile: "Dockerfile"
+        ports:
+            - '80:80'
+        links:
+            - web
+            - api_ms
+            - vaayu_compliance_angular
+            - python_rounting_ms
+        restart: on-failure

@@ -1,5 +1,5 @@
 json.extract! employee_trip, :id, :trip_type, :status
-
+json.shift_time Time.at(employee_trip.date).in_time_zone("Kolkata").to_i
 json.approximate_driver_arrive_date employee_trip.approximate_driver_arrive_date.to_i
 json.approximate_drop_off_date employee_trip.approximate_drop_off_date.to_i
 

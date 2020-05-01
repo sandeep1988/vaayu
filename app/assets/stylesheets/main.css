@@ -334,3 +334,77 @@
   bottom: 20px;
   cursor: pointer;
 }
+
+.hover-parent{
+  position: relative;
+}
+
+.warning-wrap{
+  background: #ff3c2e;
+  color: #fff;
+  padding: 0 3px;
+  border-radius: 2px;
+  margin-bottom: 7px;
+}
+
+li.input-group .inner-box{
+  position: absolute;
+  top: 55px;
+  padding: 0 7px;
+  border: 0.5px solid #3597ec;
+  border-radius: 3px;
+  -webkit-box-shadow: 3px 3px 6px 2px rgba(0,0,0,0.3);
+  -moz-box-shadow: 3px 3px 6px 2px rgba(0,0,0,0.3);
+  box-shadow: 3px 3px 6px 2px rgba(0,0,0,0.3);
+  z-index: 1;
+  background: #fff;
+  display: none;
+}
+
+
+
+.hover-box :nth-child(2){
+  margin-top: 8px;
+}
+
+.hover-p{
+  margin: 0;
+}
+
+.hoverELe{
+  color: #394264;
+  display: none;
+  overflow: hidden;
+  margin: 0 18px;
+  font-size: 13px;
+}
+
+.inside-hover{
+  border-bottom: 1px solid #394264;
+  padding-top: 5px;
+}
+
+.custom-message{
+  background-color: #49AFCD;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px;
+  display: none;
+}
+
+.hover-ele{
+  padding: 7px 0;
+  border-bottom: 0.5px solid #3597ec;
+}
+
+.hover-ele:last-child{
+  border-bottom: 0;
+}
+
+.margin-right-small{
+  margin-right: 5px;
+}
+
+.btn-small{
+  padding: 7px 5px !important;
+}

@@ -12,7 +12,7 @@ function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_800
       method: "POST"
     },
     downloadSample: {
-      url: BASE_URL_MAIN + 'employeeupload/downloadEmployeeExcel/:siteId',
+      url: BASE_URL_API_8002 + 'employeeupload/downloadEmployeeExcel/:siteId',
       method: "GET"
     },
     isDownloadable: {
@@ -20,7 +20,7 @@ function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_800
       method: "GET"
     },
     getAllSiteList: {
-      url: BASE_URL_MAIN + 'getAllSiteList',
+      url: BASE_URL_8002 + 'getAllSiteList',
       method: "POST"
     },
     addCustomEmployee: {
@@ -47,8 +47,16 @@ function ($resource, BASE_URL_8002, BASE_URL,BASE_URL_API_8002, BASE_URL_API_800
       url: BASE_URL_8002 + 'isReportsDownloadable/ksjdfhsi5735936/:siteId/:fromDate/:toDate',
       method: 'GET'
     },
+    notificationReport: {
+      url: BASE_URL_API_8005 + 'driverOffDutyNotificationReport/ksjdfhsi5735936/:siteId/:fromDate/:toDate',
+      method: 'GET'
+    },
     copyRoutes: {
       url: BASE_URL_8002 + 'copyexistingroutes',
+      method: 'POST'
+    },
+    routerFilters: {
+      url: BASE_URL_API_8002 + 'routeFilter',
       method: 'POST'
     }
   });

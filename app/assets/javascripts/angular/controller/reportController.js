@@ -33,7 +33,12 @@ angular.module('app').controller('reportCtrl', function ($scope,RosterService, R
             {
                 displayValue: 'Daily Shift Wise Occupency Report',
                 sendValue: 'dailyShiftWiseOccupency'
+            },
+            {
+                displayValue: 'Notification Report',
+                sendValue: 'driverOffDutyNotificationReport'
             }
+
         ];
         $scope.reportValue = $scope.reportType[0].sendValue;
         $scope.isChanged = false;
@@ -161,6 +166,12 @@ angular.module('app').controller('reportCtrl', function ($scope,RosterService, R
         }
 
         $scope.checkIsDownloadable = () => {
+
+            if($scope.reportId === 'driverOffDutyNotificationReport'){
+                let url = BASE_URL_API_8005 + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
+                $scope.downloadSample(url)
+                return
+            }
             // $http({
             //     method: 'GET',
             //     url: 'http://qaapi.mllvaayu.com/isReportsDownloadable/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate
@@ -178,6 +189,15 @@ angular.module('app').controller('reportCtrl', function ($scope,RosterService, R
             //     }, function errorCallback(err) {
             //       console.log('error: ', err)
             //     });
+
+            let from_date = new Date($scope.fromDate);
+            let to_date = new Date($scope.toDate)
+
+            if(from_date > to_date){
+                $scope.toggleView = true
+                ToasterService.showError('Error', 'From date is greater than toDate')
+                return
+            }
 
 
             RosterService.isExcelDownloadable({siteId:$scope.siteId, fromDate: $scope.fromDate, toDate: $scope.toDate},(res, err) => {
@@ -202,7 +222,7 @@ angular.module('app').controller('reportCtrl', function ($scope,RosterService, R
 
         $scope.downloadReport = function(){
             // var url = 'http://qaapi.mllvaayu.com:8005/api/v1/' + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
-            url = BASE_URL_MAIN + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
+            url = BASE_URL_API_8005 + $scope.reportId +'/ksjdfhsi5735936/' + $scope.siteId + '/' + $scope.fromDate + '/' + $scope.toDate;
             if($scope.reportId && $scope.siteId && $scope.fromDate && $scope.toDate ){
                 $scope.downloadSample(url);
             }

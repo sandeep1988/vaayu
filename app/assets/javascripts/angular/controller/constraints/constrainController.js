@@ -202,16 +202,16 @@ app.controller('constraintController', function ($scope, $http, $state, Constrai
     if($scope.we_checkin && $scope.we_checkout && $scope.wd_checkin && $scope.wd_checkout){
       params['site_id'] = Number($scope.selectedSiteId);
       params['WE_cutoff_checkin'] = {
-        value: $scope.we_checkin
+        value: parseInt($scope.we_checkin)
       }
       params['WE_cutoff_checkout'] = {
-        value: $scope.we_checkout
+        value:parseInt($scope.we_checkout)
       }
       params['WD_cutoff_checkin'] = {
-        value: $scope.wd_checkin
+        value: parseInt($scope.wd_checkin)
       }
       params['WD_cutoff_checkout'] = {
-        value: $scope.wd_checkout,
+        value: parseInt($scope.wd_checkout),
         display_name: 'Cutoff time for weekday Checkout Shift'
       }
       console.log('params', params)

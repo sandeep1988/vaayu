@@ -1,7 +1,7 @@
 
 angular.module('app').factory('SiteService', ['$resource','BASE_URL','SessionService','BASE_URL_MAIN',
     function ($resource,BASE_URL,SessionService,BASE_URL_MAIN) {
-        return $resource(BASE_URL_MAIN+'getAllSiteList', {}, {
+        return $resource(BASE_URL+'getAllSiteList', {}, {
             query: { method: "GET", isArray: true },
             create: { method: "POST"},
             get: { 
@@ -17,9 +17,9 @@ angular.module('app').factory('SiteService', ['$resource','BASE_URL','SessionSer
         });
 }]);
 
-angular.module('app').factory('GuardService', ['$resource','BASE_URL','BASE_URL_MAIN',
-    function ($resource,BASE_URL, BASE_URL_MAIN) {
-        return $resource(BASE_URL_MAIN+'guard', {}, {
+angular.module('app').factory('GuardService', ['$resource','BASE_URL','BASE_URL_RUBY',
+    function ($resource,BASE_URL, BASE_URL_RUBY) {
+        return $resource(BASE_URL_RUBY+'guard', {}, {
             query: { method: "GET", isArray: true },
             create: { method: "POST"},
             get: { method: "POST"},

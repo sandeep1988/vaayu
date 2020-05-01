@@ -241,7 +241,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
     
     $http({
       method: 'GET',
-      url: this.baseUrl3 + 'is-downloadable-employee-excel/' + $scope.selectedSite.id
+      url: this.baseUrl2 + 'is-downloadable-employee-excel/' + $scope.selectedSite.id
     }).then(function successCallback(res) {
         console.log('response: ', res)
         if (res['data'].success == false) {
@@ -260,7 +260,7 @@ angular.module('app').controller('rosterCtrl', function ($scope, RosterService, 
   }
 
   $scope.downloadSample = function () {
-      var url = this.baseUrl3 + 'employeeupload/downloadEmployeeExcel/' + $scope.selectedSite.id;
+      var url = this.baseUrl + 'employeeupload/downloadEmployeeExcel/' + $scope.selectedSite.id;
       $scope.isLoader =true;
     
       var link = document.createElement('a');

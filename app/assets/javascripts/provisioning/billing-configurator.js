@@ -176,7 +176,7 @@ function generate_edit(response, type, operator_id, orig_service_html){
                     // '</div>' +
                     '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="phone_1">Phone 1*</label>' + 
-                        '<input class="form-control" id="phone_1" name="phone_1" type="text" value="' + `${!response.site.phone_1 ? "": response.site.phone_1}` + '" required="true">' + 
+                        '<input class="form-control" id="phone_1" name="phone_1" type="text" value="' + `${!response.site.phone_1 ? "": response.site.phone_1}` + '" required="true" maxlength="10">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="phone_2">phone 2</label>' + 
@@ -282,11 +282,11 @@ function generate_edit(response, type, operator_id, orig_service_html){
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="party_phone_1"> Phone 1 *</label>' + 
-                        '<input class="form-control" id="party_phone_1" name="party_phone_1" type="text" value="' + `${!response.site.party_phone_1 ? "": response.site.party_phone_1}`  + '">' + 
+                        '<input class="form-control" id="party_phone_1" name="party_phone_1" type="text" value="' + `${!response.site.party_phone_1 ? "": response.site.party_phone_1}`  + '" maxlength="10">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="party_phone_2">Phone 2</label>' + 
-                        '<input class="form-control" id="party_phone_2" name="party_phone_2" type="text" value="' + `${!response.site.party_phone_2  ? "":  response.site.party_phone_2}`+ '">' + 
+                        '<input class="form-control" id="party_phone_2" name="party_phone_2" type="text" value="' + `${!response.site.party_phone_2  ? "":  response.site.party_phone_2}`+ '" maxlength="10">' + 
                     '</div>' +
                     '<div class="col-md-4 no-margin">' + 
                         '<label class="site_labels" for="party_pan_no"> PAN *</label>' + 
