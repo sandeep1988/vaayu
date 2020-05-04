@@ -219,7 +219,7 @@ angular.module('app').controller('routeCtrl', function ($scope, $http, $state, R
   
       $http({
         method: 'POST',
-        url: BASE_URL_API_8002 + 'categoryList',
+        url: BASE_URL_MAIN + 'categoryList',
         headers: {
           'Content-Type': 'application/json',
           'uid': SessionService.uid,
