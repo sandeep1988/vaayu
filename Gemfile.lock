@@ -257,7 +257,9 @@ GEM
     memory_profiler (0.9.8)
     method_source (0.8.2)
     mime-types (2.99.3)
-    mimemagic (0.3.2)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
     mini_portile2 (2.2.0)
     minitest (5.10.2)
     multi_json (1.12.1)
@@ -301,7 +303,8 @@ GEM
     pry-rails (0.3.6)
       pry (>= 0.10.4)
     public_suffix (2.0.5)
-    puma (3.9.1)
+    puma (5.5.1)
+      nio4r (~> 2.0)
     rack (2.0.3)
     rack-attack (5.0.1)
       rack
