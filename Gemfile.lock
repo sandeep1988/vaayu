@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/thoughtbot/shoulda-matchers.git
+  remote: https://github.com/thoughtbot/shoulda-matchers.git
   revision: 4b160bd19ecca7f97d7ac22dccd5fde9b0da5a9f
   branch: rails-5
   specs:
@@ -257,7 +257,9 @@ GEM
     memory_profiler (0.9.8)
     method_source (0.8.2)
     mime-types (2.99.3)
-    mimemagic (0.3.2)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
     mini_portile2 (2.2.0)
     minitest (5.10.2)
     multi_json (1.12.1)
@@ -452,7 +454,7 @@ GEM
     tilt (2.0.7)
     timers (4.1.2)
       hitimes
-    tzinfo (1.2.3)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     tzinfo-data (1.2017.3)
       tzinfo (>= 1.0.0)
