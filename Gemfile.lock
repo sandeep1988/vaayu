@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/thoughtbot/shoulda-matchers.git
+  remote: https://github.com/thoughtbot/shoulda-matchers.git
   revision: 4b160bd19ecca7f97d7ac22dccd5fde9b0da5a9f
   branch: rails-5
   specs:
@@ -197,7 +197,7 @@ GEM
       hurley (~> 0.1)
       multi_json (~> 1.11)
       retriable (~> 2.0)
-    hashie (3.5.5)
+    hashie (5.0.0)
     headless (2.3.1)
     hitimes (1.2.5)
     htmlentities (4.3.4)
@@ -257,7 +257,9 @@ GEM
     memory_profiler (0.9.8)
     method_source (0.8.2)
     mime-types (2.99.3)
-    mimemagic (0.3.2)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
     mini_portile2 (2.2.0)
     minitest (5.10.2)
     multi_json (1.12.1)
@@ -271,8 +273,8 @@ GEM
     nokogiri (1.8.0)
       mini_portile2 (~> 2.2.0)
     oj (3.3.9)
-    omniauth (1.6.1)
-      hashie (>= 3.4.6, < 3.6.0)
+    omniauth (1.9.2)
+      hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
     orm_adapter (0.5.0)
     paperclip (5.1.0)
@@ -302,7 +304,7 @@ GEM
       pry (>= 0.10.4)
     public_suffix (2.0.5)
     puma (3.9.1)
-    rack (2.0.3)
+    rack (2.2.4)
     rack-attack (5.0.1)
       rack
     rack-mini-profiler (0.10.6)
