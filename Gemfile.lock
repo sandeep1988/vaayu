@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/thoughtbot/shoulda-matchers.git
+  remote: https://github.com/thoughtbot/shoulda-matchers.git
   revision: 4b160bd19ecca7f97d7ac22dccd5fde9b0da5a9f
   branch: rails-5
   specs:
@@ -133,7 +133,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.0.5)
+    concurrent-ruby (1.1.10)
     connection_pool (2.2.1)
     cucumber (2.4.0)
       builder (>= 2.1.2)
@@ -207,9 +207,10 @@ GEM
       multi_xml (>= 0.5.2)
     humanize (1.4.0)
     hurley (0.2)
-    i18n (0.8.6)
+    i18n (0.9.5)
+      concurrent-ruby (~> 1.0)
     ice_cube (0.14.0)
-    inline_svg (1.2.2)
+    inline_svg (1.7.2)
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
     io-like (0.3.0)
@@ -257,9 +258,11 @@ GEM
     memory_profiler (0.9.8)
     method_source (0.8.2)
     mime-types (2.99.3)
-    mimemagic (0.3.2)
-    mini_portile2 (2.2.0)
-    minitest (5.10.2)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
+    mini_portile2 (2.4.0)
+    minitest (5.15.0)
     multi_json (1.12.1)
     multi_test (0.1.2)
     multi_xml (0.6.0)
@@ -268,8 +271,8 @@ GEM
     netrc (0.11.0)
     newrelic_rpm (4.2.0.334)
     nio4r (2.1.0)
-    nokogiri (1.8.0)
-      mini_portile2 (~> 2.2.0)
+    nokogiri (1.10.10)
+      mini_portile2 (~> 2.4.0)
     oj (3.3.9)
     omniauth (1.6.1)
       hashie (>= 3.4.6, < 3.6.0)
@@ -452,7 +455,7 @@ GEM
     tilt (2.0.7)
     timers (4.1.2)
       hitimes
-    tzinfo (1.2.3)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     tzinfo-data (1.2017.3)
       tzinfo (>= 1.0.0)
